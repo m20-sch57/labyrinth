@@ -1,2 +1,2 @@
-# labirinth
-Labirinth web server
+# labyrinth
+Labyrinth web server
