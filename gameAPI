@@ -1,0 +1,10 @@
+class Game
+
+аргументы :
+
+room
+
+методы :
+
+make_turn(turn) 
+get_active_player_id()
