@@ -1,1 +1,1 @@
-from game import Labyrinth, LabyrinthObject
+# from Labyrin import Labyrinth, LabyrinthObject, Field
