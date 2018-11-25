@@ -1,11 +1,11 @@
 class LabyrinthObject:
+	def __init__(self):
+		self.turn_set = []
+
 	#new available turn
 	def new_at(self, function, condition_function, turn_name):
-		try:
-			self.turn_set
-		except:
-			self.turn_set = {}
-		if not turn_name in self.labyrinth.turn_set:
+		self.turn_set = {}
+		if not turn_name in self.turn_set:
 			self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
 
 	def get_object_id(self):
@@ -17,7 +17,7 @@ class LabyrinthObject:
 	def set_parent_id(self, new_id):
 		self.parent_id.nomber  = new_id
 
-	def main():
+	def main(self):
 		pass
 
 class ObjectID:
@@ -32,13 +32,9 @@ class ObjectID:
 	#TODO += 1; 
 
 
-class Player:
+class Player(LabyrinthObject):
 	def __init__(self, user_id):
 		self.user_id = user_id
-
-
-	def main():
-		pass
 
 
 class Field:
@@ -58,6 +54,30 @@ class Field:
 		return self.adjacence_list[id][3]
 
 
+	def add_player(self, user_id, parent_id, parent_type='location'):
+		P = Player(user_id)
+		P.object_id = ObjectID('player', len(self.players_list))
+		P.parent_id = ObjectID(parent_type, parent_id)
+		self.players_list.append(P)
+		return P.object_id.nomber
+
+	def add_item(self, item, parent_id, parent_type='location'):
+		item.object_id = ObjectID('item', len(self.items_list))
+		item.parent_id = ObjectID(parent_type, parent_id)
+		self.items_list.append(item)
+		return item.object_id.nomber
+
+	def add_location(self, location, adjacence_locations):
+		location.object_id = ObjectID('location', len(self.locations_list))
+		self.locations_list.append(location)
+		self.adjacence_list.append(adjacence_locations)  #adjacence_locations - список номеров соседних локаций
+		return location.object_id.nomber
+
+	#TODO remove_object
+	def remove_object(self, object_id):
+		pass
+
+
 	def object_with_id(self, object_id):
 		lists = {
 			'location': self.locations_list,
@@ -74,51 +94,51 @@ class Labyrinth:
 
 		self.active_player_nomber = 0
 		self.turn_set = {}
-		for labyrinth_object in self.field.objects_list:
+		for labyrinth_object in self.field.locations_list:
+			labyrinth_object.labyrinth = self
+		for labyrinth_object in self.field.items_list:
 			labyrinth_object.labyrinth = self
 
+	def ready(self):
+		for location in self.field.locations_list:
+			location.labyrinth = self
+			location.field = self.field
+		for item in self.field.items_list:
+			item.labyrinth = self
+			item.field = self.field
 
 	def make_turn(self, turn):
-		self.turn_set[turn]['function']()
-		for labyrinth_object in self.field.objects_list:
-			labyrinth_object.main()
+		for location in self.field.locations_list:
+			if turn in location.turn_set and location.turn_set[turn]['condition']():
+				location.turn_set[turn]['function']()
+		for item in self.field.items_list:
+			if turn in item.turn_set and item.turn_set[turn]['condition']():
+				item.turn_set[turn]['function']()
+		for location in self.field.locations_list:
+			location.main()
+		for item in self.field.items_list:
+			item.main()
+		self.active_player_nomber += 1
+		self.active_player_nomber %= len(self.field.players_list)
 
 
 	def add_player(self, user_id):
 		self.field.add_player(Player(user_id), 0)
 
 
-	def get_active_player_id(self):
+	def get_active_player(self):
 		return self.field.players_list[self.active_player_nomber]
-	def get_next_active_player_id(self):
+	def get_next_active_player(self):
 		return self.field.players_list[(self.active_player_nomber + 1)%len(self.field.players_list)]
 	def get_active_player_ats(self):
 		active_player_ats = []
-		for turn_name in self.turn_set:
-			if self.turn_set[turn_name]['condition']():
-				active_player_ats.append(turn_name)
+		for location in self.field.locations_list:
+			for turn in location.turn_set:
+				if location.turn_set[turn]['condition']():
+					active_player_ats.append(turn)
+		for item in self.field.items_list:
+			for turn in item.turn_set:
+				if item.turn_set[turn]['condition']():
+					active_player_ats.append(turn)		
 		return active_player_ats
 
-
-	def add_player(self, user_id, parent_id, parent_type='location'):
-		P = Player(user_id)
-		P.object_id = ObjectID('player', len(self.players_list))
-		P.parent_id = ObjectID(parent_type, parent_id)
-		self.field.players_list.append(P)
-		return P.object_id.nomber
-
-	def add_item(self, item, parent_id, parent_type='location'):
-		item.object_id = ObjectID('item', len(self.items_list))
-		item.parent_id = ObjectID(parent_type, parent_id)
-		self.field.items_list.append(item)
-		return item.object_id.nomber
-
-	def add_location(self, location, adjacence_locations):
-		location.object_id = ObjectID('location', len(self.locations_list))
-		self.field.locations_list.append(location)
-		self.field.adjacence_list.append(adjacence_locations)  #adjacence_locations - список номеров соседних локаций
-		return location.object_id.nomber
-
-	#TODO remove_object
-	def remove_object(self, object_id):
-		pass
