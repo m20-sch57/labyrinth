@@ -1,27 +1,26 @@
-﻿###Класс лабиринт
+﻿### Класс лабиринт
 
-#####аргументы:
+##### аргументы:
 
 	field
-	user_id_list
 	send_msg_function
 
-#####методы:
+##### методы:
 
 	make_turn(turn)
 
 turn - ход сделанный игроком. должным быть элементом множества доступных ходов 
 
-	get_active_player_user_id() 
+	get_active_player_user_id() #TODO
 	get_active_player_ats() 
 
 ats - available turns set - множество доступных ходов  
 
 	add_player(user_id)
-	start_game()
+	ready()
  
 
-###Локации, предметы
+### Локации, предметы
 
 <!-- новая локация/предмет должна быть унаследованна от класса `LabirinthObject` -->
 
@@ -34,27 +33,33 @@ ats - available turns set - множество доступных ходов
 	set_object_id(object_id)
 	field.object_with_id(object_id)
 	field.up(object_id) и другие
-	labyrinth.get_active_player_id()
+	labyrinth.get_active_player()
+	labyrinth.get_next_active_player()
 	labyrinth.set_active_player(object_id)
 	labyrinth.send_msg(msg, user_id)
 
-###`new_at`
-испульзуйте декоратор `new_at` (new available turn) чтобы создать действие доступное игроку
+### `new_at`
+испульзуйте функцию `new_at` (new available turn) чтобы создать действие доступное игроку
 
-#####аргументы:
-
+##### аргументы:
+	-function
+основная функция действия
 	-condition_function 
-должент быть функцией возвращающей True или False в зависимости от того  
+должен быть функцией возвращающей True или False в зависимости от того  
 должно соответствующее действие быть доступным игроку или нет
 
 	-turn_name имя команды, которое должен ввести игрок, чтобы выполнить это действие
 
 
-#####пример:
+##### пример:
 
 ```
-@self.new_at(condition_function = lambda: self.parent_id == self.active_player.parent_id,
-	    turn_name = 'Поднять предмет')
-def rise(self):
-	self.parent_id = self.active_player.object_id	
+class Legs(LabyrinthObject):
+	def __init__(self):
+		self.new_at(self.up, condition_function = lambda: self.parent_id == self.labyrinth.get_active_player().get_object_id()
+			, turn_name = 'Идти вверх')
+
+	def up(self):
+		active_player = self.labyrinth.get_active_player()
+		active_player.set_parent_id(self.field.up(active_player.get_object_id().nomber))
 ```
