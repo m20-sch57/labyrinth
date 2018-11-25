@@ -1,19 +1,3 @@
-# def new_at(self, condition_function, turn_name):
-# 	def decorator(function):
-# 		def wrapper():
-# 			if condition_function():
-# 				function(self)
-# 			else:
-# 				pass
-# 		#сохраняем информацию про этот available turn
-# 		if not turn_name in self.labyrinth.turn_set:
-# 			self.labyrynth.turn_set[turn_name] = {'function': wrapper, 'condition': condition_function}
-# 		#возвращем функцию без изменений, т.к. больше она не нужна. Везде дальше будет
-# 		#использоваться функция wrapper: self.labyrinth.turn_set[turn_name]['function']()
-# 		return function
-# 	return decorator
-
-
 class LabyrinthObject:
 	#new available turn
 	def new_at(self, function, condition_function, turn_name):
