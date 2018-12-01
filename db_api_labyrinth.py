@@ -21,7 +21,7 @@ class database:
         conn.commit()
         
     def add_map(self, maplink, description):
-        map_data = [maplink, descriptions]
+        map_data = [maplink, description]
         cursor.execute('INSERT INTO maps VALUES (NULL, ?, ?)', map_data)
         conn.commit()
     
