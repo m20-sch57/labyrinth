@@ -1,17 +1,18 @@
 from app import app
+from flask import render_template
 
-@app.route('')
+@app.route('/')
 @app.route('/index')
 def index():
-	pass
+	return render_template('index.html', is_enter=False, is_index=True)
 
 @app.route('/login')
 def login():
-	pass
+	return render_template('login.html')
 
 @app.route('/register')
 def register():
-	pass
+	return render_template('register.html')
 
 @app.route('/profile')
 def profile():
@@ -28,4 +29,4 @@ def room():
 
 @app.route('/rules')
 def rules():
-	pass
+	return render_template('rules.html', is_enter=True)
