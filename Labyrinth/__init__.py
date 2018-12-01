@@ -1,1 +1,0 @@
-# from Labyrin import Labyrinth, LabyrinthObject, Field
