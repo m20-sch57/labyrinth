@@ -1,27 +1,36 @@
 from app import app
-from flask import render_template
+from flask import render_template, request, session, redirect, url_for
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html', is_enter=False, is_index=True)
+	return render_template('index.html', username = session.get('username'))
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
+	if request.method == 'POST':
+		print('test')
+		session['username'] = request.form.get('login')
+		return redirect(url_for('index'))
 	return render_template('login.html')
 
-@app.route('/register')
+@app.route('/logout')
+def logout():
+	session.pop('username', None)
+	return redirect(url_for('index'))
+
+@app.route('/register', methods=['POST', 'GET'])
 def register():
-	return render_template('register.html')
+	pass
 
 @app.route('/profile')
 def profile():
-	pass
+	return render_template('profile.html', username = session.get('username'))
 
 #бывшее /choose_your_room
 @app.route('/room_list')
 def room_list():
-	pass
+	return render_template('room_list.html', username = session.get('username'))
 
 @app.route('/room/<room_id>')
 def room():

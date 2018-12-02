@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<h3> Регистрация </h3>
-	<form>
-		<div>Имя : <input type="string"></div>
-		<div>Пароль : <input type="string"></div>
-		<div><input type="submit"></div>
+	<h2> Регистрация </h2>
+	<form action="{{ url_for('register') }}" method="post">
+		<p>
+			Имя : <input type="string" name="login" minlength=4 required><br>
+		</p>
+		<p>
+			Пароль : <input type="string" name="password" minlength=8 required><br>
+		</p>
+		<input type="submit" value="Зарегестрироваться">
 	</form>
 {% endblock %}

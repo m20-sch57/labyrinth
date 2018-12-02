@@ -2,9 +2,13 @@
 
 {% block content %}
 	<h3> Войти </h3>
-	<form>
-		<div>Имя : <input type="string"></div>
-		<div>Пароль : <input type="string"></div>
-		<div><input type="submit"></div>
+	<form action="{{ url_for('login') }}" method="post">
+		<p>
+			Имя : <input type="string" name="login" minlength=4 required><br>
+		</p>
+	<!--<p>
+			Пароль : <input type="string" name="password" minlength=8 required><br>
+		</p> -->
+		<input type="submit" value="Войти">
 	</form>
 {% endblock %}
