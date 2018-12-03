@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Лабиринт</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css')
+		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css') }}">
 	</head>
 	<body>
 		<div id='navbar-upper'>
@@ -12,9 +12,9 @@
 				<a href="{{ url_for('register') }}">Регистрация</a>
 				<a href="{{ url_for('login') }}">Вход</a>
 			{% endif %}
-			<a href="{{ url_for('index') }}"На главную</a>
+			<a href="{{ url_for('index') }}>"На главную</a>
 		</div>
 		<hr>
-		<% block content %}{% endblock %}
+		{% block content %}{% endblock %}
 	</body>
 </html>
