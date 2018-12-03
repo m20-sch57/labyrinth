@@ -1,10 +1,24 @@
 {% extends "base_with_header.html" %}
 
 {% block content %}
-	<h3> Тупо важная информация! </h3>
-	{% if username == None %}
-		<p> Войдите, пожалуйста </p>
-	{% else %}
-		<p> Привет, {{ username }}</p>
-	{% endif %}
+	<div class='main'>
+		<h2>Лабиринт 10М</h2>
+		<p>Тут будет какой-нибудь текст</p>
+	</div>
+	<aside class='navbar-sidebar'>
+		{% if username == None %}
+			<form class='loginform' action="{{ url_for('login') }}" method='post'>
+				Имя: <input type="text" name="login" minlength=4 required><br>
+				Пароль: <input type='password' name='password' minlength=8 required><br>
+				<input type='submit' value='Войти'>
+			</form>
+			<p>Хотите играть без регистрации?</p>
+			<a href="{{ url_for('nologin') }}">Выберите временное имя!</a>
+		{% else %}
+			<a href="{{ url_for('profile') }}">Профиль</a><br>
+			<a href="{{ url_for('room_list') }}">Комнаты</a><br>
+			<a href="{{ url_for('logout') }}">Выход</a><br> -->
+		{% endif %}
+		<!-- <a href="{{ url_for('rules') }}">Правила</a>
+	</aside>
 {% endblock %}
