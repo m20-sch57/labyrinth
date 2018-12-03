@@ -1,0 +1,24 @@
+html, body {
+	background: rgb(249, 249, 249);
+}
+
+.navbar {
+	font-family: Verdana;
+	color: rgb(128, 128, 255);
+	text-align: right;
+	height: 40px;
+}
+
+.loginform {
+	background: rgb(230, 230, 230);
+	float: right;
+	position: relative;
+	width: 200px;
+	margin-top: 300px;
+	margin-right: 50px;
+}
+
+#logo {
+	position: relative;
+	float: left;
+	font-size: 24pt;
