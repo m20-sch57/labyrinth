@@ -13,21 +13,21 @@ class LabyrinthObject:
 	def get_parent_id(self):
 		return self.parent_id
 	def set_object_id(self, new_id):
-		self.object_id.nomber = new_id
+		self.object_id.number = new_id
 	def set_parent_id(self, new_id):
-		self.parent_id.nomber  = new_id
+		self.parent_id.number  = new_id
 
 	def main(self):
 		pass
 
 class ObjectID:
-	def __init__(self, object_type, object_nomber):
+	def __init__(self, object_type, object_number):
 		self.type = object_type
-		self.nomber= object_nomber
+		self.number= object_number
 		# тип один из: location, item, player
 
 	def __eq__(self ,other):
-		return self.type == other.type and self.nomber == other.nomber
+		return self.type == other.type and self.number == other.number
 
 	#TODO += 1; 
 
@@ -59,19 +59,19 @@ class Field:
 		P.object_id = ObjectID('player', len(self.players_list))
 		P.parent_id = ObjectID(parent_type, parent_id)
 		self.players_list.append(P)
-		return P.object_id.nomber
+		return P.object_id.number
 
 	def add_item(self, item, parent_id, parent_type='location'):
 		item.object_id = ObjectID('item', len(self.items_list))
 		item.parent_id = ObjectID(parent_type, parent_id)
 		self.items_list.append(item)
-		return item.object_id.nomber
+		return item.object_id.number
 
 	def add_location(self, location, adjacence_locations):
 		location.object_id = ObjectID('location', len(self.locations_list))
 		self.locations_list.append(location)
 		self.adjacence_list.append(adjacence_locations)  #adjacence_locations - список номеров соседних локаций
-		return location.object_id.nomber
+		return location.object_id.number
 
 	#TODO remove_object
 	def remove_object(self, object_id):
@@ -84,7 +84,7 @@ class Field:
 			'item': self.items_list,
 			'player': self.players_list
 		}
-		return lists[object_id.type][object_id.nomber]
+		return lists[object_id.type][object_id.number]
 
 
 class Labyrinth:
@@ -92,7 +92,7 @@ class Labyrinth:
 		self.send_msg = send_msg_function
 		self.field = field
 
-		self.active_player_nomber = 0
+		self.active_player_number = 0
 		self.turn_set = {}
 		for labyrinth_object in self.field.locations_list:
 			labyrinth_object.labyrinth = self
@@ -118,8 +118,8 @@ class Labyrinth:
 			location.main()
 		for item in self.field.items_list:
 			item.main()
-		self.active_player_nomber += 1
-		self.active_player_nomber %= len(self.field.players_list)
+		self.active_player_number += 1
+		self.active_player_number %= len(self.field.players_list)
 
 
 	def add_player(self, user_id):
@@ -127,9 +127,9 @@ class Labyrinth:
 
 
 	def get_active_player(self):
-		return self.field.players_list[self.active_player_nomber]
+		return self.field.players_list[self.active_player_number]
 	def get_next_active_player(self):
-		return self.field.players_list[(self.active_player_nomber + 1)%len(self.field.players_list)]
+		return self.field.players_list[(self.active_player_number + 1)%len(self.field.players_list)]
 	def get_active_player_ats(self):
 		active_player_ats = []
 		for location in self.field.locations_list:
@@ -141,4 +141,3 @@ class Labyrinth:
 				if item.turn_set[turn]['condition']():
 					active_player_ats.append(turn)		
 		return active_player_ats
-
