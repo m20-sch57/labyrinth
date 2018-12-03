@@ -1,10 +1,9 @@
 class LabyrinthObject:
 	def __init__(self):
-		self.turn_set = []
+		self.turn_set = {}
 
 	#new available turn
 	def new_at(self, function, condition_function, turn_name):
-		self.turn_set = {}
 		if not turn_name in self.turn_set:
 			self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
 
