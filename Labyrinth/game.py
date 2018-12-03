@@ -29,8 +29,6 @@ class ObjectID:
 	def __eq__(self ,other):
 		return self.type == other.type and self.number == other.number
 
-	#TODO += 1; 
-
 
 class Player(LabyrinthObject):
 	def __init__(self, user_id):
@@ -93,13 +91,9 @@ class Labyrinth:
 		self.field = field
 
 		self.active_player_number = 0
-		self.turn_set = {}
-		for labyrinth_object in self.field.locations_list:
-			labyrinth_object.labyrinth = self
-		for labyrinth_object in self.field.items_list:
-			labyrinth_object.labyrinth = self
 
 	def ready(self):
+		# Создаёт всем локациям артибуты field и labyrinth 
 		for location in self.field.locations_list:
 			location.labyrinth = self
 			location.field = self.field
@@ -108,16 +102,19 @@ class Labyrinth:
 			item.field = self.field
 
 	def make_turn(self, turn):
+		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		for location in self.field.locations_list:
 			if turn in location.turn_set and location.turn_set[turn]['condition']():
 				location.turn_set[turn]['function']()
 		for item in self.field.items_list:
 			if turn in item.turn_set and item.turn_set[turn]['condition']():
 				item.turn_set[turn]['function']()
+		# Запускаем для всех объектов main-функцию
 		for location in self.field.locations_list:
 			location.main()
 		for item in self.field.items_list:
 			item.main()
+		# Делаем слудующего игрока активным
 		self.active_player_number += 1
 		self.active_player_number %= len(self.field.players_list)
 
@@ -131,6 +128,7 @@ class Labyrinth:
 	def get_next_active_player(self):
 		return self.field.players_list[(self.active_player_number + 1)%len(self.field.players_list)]
 	def get_active_player_ats(self):
+		# Возвращает имена возможных ходов для активного игрока
 		active_player_ats = []
 		for location in self.field.locations_list:
 			for turn in location.turn_set:
