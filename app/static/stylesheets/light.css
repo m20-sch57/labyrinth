@@ -19,6 +19,9 @@ html, body {
 	margin-top: 20%;
 	margin-left: 10%;
 	background: rgb(230, 230, 230);
+	height: 50%;
+	width: 10%;
+	padding: 10%;
 }
 
 .navbar-upper {
@@ -27,5 +30,9 @@ html, body {
 	background: rgb(220, 220, 220);
 	margin-right: 10%;
 	margin-left: 10%;
+}
+
+.main: {
+	margin-left: 30%;
 }
 	
