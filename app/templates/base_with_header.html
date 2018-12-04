@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css') }}">
 	</head>
 	<body>
-		<div id='navbar-upper'>
+		<div class='navbar-upper'>
 			<span id='logo'>Лабиринт 10М</span>
 			{% if username == None %}
 				<a href="{{ url_for('register') }}">Регистрация</a>
