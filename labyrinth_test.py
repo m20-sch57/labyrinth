@@ -1,31 +1,37 @@
-from Labyrinth.itemLO_legs import Legs
-from Labyrinth.locLO_empty import EmptyLocation
-from Labyrinth.locLO_hole import HoleLocation
-from Labyrinth.locLO_global_wall import GlobalWall
-from Labyrinth.game import ObjectID, Field, Labyrinth
+from Labyrinth.game import Field, Labyrinth, Player, ObjectID
+from Labyrinth.LS_walk import Legs, Wall, EmptyLocation
 
 def send_msg_func(msg, user_id):
 	print('[{}] - {}'.format(user_id, msg))
 
-field = Field()
+locations_list = [EmptyLocation() for _ in range(6)]
+locations_list.append(Wall())
+adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
+				{'up':6, 'down':4, 'right':2, 'left':6},
+				{'up':6, 'down':5, 'right':6, 'left':1},
+				{'up':0, 'down':6, 'right':4, 'left':6},
+				{'up':1, 'down':6, 'right':5, 'left':3},
+				{'up':2, 'down':6, 'right':6, 'left':4},
+				{}]
+items_list = [Legs()]
+P = Player('player #1')
+P.set_parent_id(ObjectID('location', 0))
+players_list = [P]
+
+# ----------
+# | 0 x 1 | 2 |
+# ----------
+# | 3 | 4 | 5 |
+# ----------
+
+
+field = Field(adjance_list, locations_list, items_list, players_list)
 MyLab = Labyrinth(field, send_msg_func)
-
-field.add_location(GlobalWall(), [0, 0, 0, 0])
-field.add_location(EmptyLocation(), [0, 4, 2, 0])
-field.add_location(EmptyLocation(), [0, 5, 3, 1])
-field.add_location(HoleLocation(6), [0, 6, 0, 2])
-field.add_location(EmptyLocation(), [1, 0, 5, 0])
-field.add_location(EmptyLocation(), [2, 0, 6, 4])
-field.add_location(HoleLocation(3), [1, 0, 1, 1])
-
-field.add_player(0, 1)
-
-L = Legs()
-field.add_item(L, 0, parent_type='location')
 
 # print(MyLab.get_active_player_ats())
 MyLab.ready()
 while True:
-	print(MyLab.get_active_player().get_parent_id().nomber, MyLab.get_active_player().get_parent_id().type)
-	print(MyLab.get_active_player_ats())
+	# print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number, MyLab.get_active_player().get_parent_id().type)
+	print()
+	print(', '.join(MyLab.get_active_player_ats()))
 	MyLab.make_turn(input())
