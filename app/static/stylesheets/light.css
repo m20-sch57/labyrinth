@@ -1,5 +1,7 @@
 html, body {
 	background: rgb(249, 249, 249);
+	margin-left: 10%;
+	margin-right: 10%;
 }
 
 [class^='navbar'] {
@@ -14,25 +16,42 @@ html, body {
 }
 
 .navbar-sidebar {
-	position: relative;
-	float: left;
-	margin-top: 20%;
-	margin-left: 10%;
+	position: absolute;
+	top: 20%;
+	left: 68%;
 	background: rgb(230, 230, 230);
 	height: 50%;
 	width: 10%;
-	padding: 10%;
+	padding: 2%;
 }
 
 .navbar-upper {
 	height: 40px;
 	text-align: right;
 	background: rgb(220, 220, 220);
-	margin-right: 10%;
-	margin-left: 10%;
 }
 
-.main: {
-	margin-left: 30%;
+
+
+.news {
+	position: absolute;
+	width: 50%;
 }
-	
+
+.header {
+	color: rgb(255, 128, 128);
+}
+
+.create-room {
+	position: absolute;
+	top: 20%;
+	left: 60%;
+	width: 20%;
+	background: rgb(230, 230, 230);
+	color: rgb(128, 128, 255);
+	height: 50%;
+	padding-top: 5%;
+	padding-left: 1%;
+	padding-right: 1%;	
+}
+		
