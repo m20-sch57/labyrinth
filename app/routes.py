@@ -40,6 +40,6 @@ def room():
 def rules():
 	return render_template('rules.html', is_enter=True)
 
-@app.route('/create_room/<room_link>')
+@app.route('/create_room')
 def create_room():
 	pass
