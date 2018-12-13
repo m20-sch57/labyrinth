@@ -39,3 +39,7 @@ def room():
 @app.route('/rules')
 def rules():
 	return render_template('rules.html', is_enter=True)
+
+@app.route('/create_room')
+def create_room():
+	pass
