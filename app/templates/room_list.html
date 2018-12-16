@@ -13,9 +13,9 @@
 					<input type='submit' value='Войти'>
 				</form>
 			{% else %}
-				<form action="{{ url_for('create_room') }}" method='post'>
+				<form action="{{ url_for('room_list') }}" method='post'>
 					Ссылка на комнату: labyrinth.xyz/<input type='text' name='joinlink' minlength=4 required><br>
-					Количество игроков(от 3 до 8): <input type='number' min='3' max='8' value='4'><br>
+					Количество игроков(от 3 до 8): <input type='number' name='players' min='3' max='8' value='4'><br>
 					<!-- Карта: реализация этой формы, скорее всего, потребует жаваскрипта, а я его еще не начинал учить -->
 					<input type='submit' value='Создать комнату!'>
 				</form>
