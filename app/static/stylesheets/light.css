@@ -54,4 +54,31 @@ html, body {
 	padding-left: 1%;
 	padding-right: 1%;	
 }
+
+.rooms {
+	position: absolute;
+	top: 20%;
+	height: 60.35%;
+	width: 770px;
+	background: rgb(230, 230, 230);
+}
+
+.room {
+	width: 770px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+		
+.join_form {
+	position: relative;
+	float: right; 
+	bottom: 20px;
+}
+
+.error {
+	background: rgb(255, 200, 200);
+	margin-top: 50px;
+	padding: 1%;
+	border: solid 1px rgb(255, 100, 100);
+	color: rgb(255, 10, 10);
+}
 		
