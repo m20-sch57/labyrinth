@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 from app import app, dbase
 from flask import render_template, request, session, redirect, url_for
 
@@ -5,7 +7,7 @@ from flask import render_template, request, session, redirect, url_for
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', username=session.get('username'))
+    return render_template('index.html', username=session.get('username'), reg_error=False)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -52,7 +54,7 @@ def register():
 
 @app.route('/login_failed')
 def login_failed():
-    return render_template('login_failed.html')
+    return render_template('index.html', username= None, reg_error=True)
 
 
 @app.route('/register_failed')
@@ -67,16 +69,26 @@ def profile():
     return render_template('profile.html', username=session.get('username'))
 
 
-#бывшее /choose_your_room
+#Ð±Ñ‹Ð²ÑˆÐµÐµ /choose_your_room
+@app.route('/room_list/<page>', methods=['POST', 'GET'])
 @app.route('/room_list', methods=['POST', 'GET'])
 def room_list():
     if request.method == 'POST':
         joinlink = request.form.get('joinlink')
         players = request.form.get('players')
         username = session.get('username')
-
-        dbase.add_room(joinlink, players, '', username)
-    return render_template('room_list.html', username=session.get('username'))
+        if players:
+            dbase.add_room(joinlink, players, '', username)
+        else:
+            joinlink = request.form.get('roomlink')
+        #return redirect(url_for('/room/' + joinlink))
+        #Редирект пока не работает.
+    pages = dbase.get_pages()
+    try:
+        pagen = page
+    except: 
+        pagen = 0
+    return render_template('room_list.html', username=session.get('username'), pager=pages[pagen])
 
 
 @app.route('/room/<room_id>')
