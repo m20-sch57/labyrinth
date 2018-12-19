@@ -3,7 +3,15 @@
 {% block content %}
 	<div id='main'>
 		<div class='rooms'>
-			<h3> Пока не готово! =( </h3>
+			{% for i in pager %}
+				<div class='room'>
+					<h3>Комната {{ i[0] }}</h3>
+					Игроки: {{ i[6] }}/{{ i[2] }}
+					<form action="{{ url_for('room_list') }}" method='post' class='join_form'>
+						<button value='{{ i[1] }}' name='roomlink'>Join!</button>
+					</form>
+				</div>
+			{% endfor %}
 		</div>
 		<aside class='create-room'>
 			{% if username == None %}
