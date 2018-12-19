@@ -13,6 +13,11 @@
 					Пароль: <input type='password' name='password' minlength=8 required><br>
 					<input type='submit' value='Войти'>
 				</form>
+				{% if reg_error %}
+					<div class='error'>
+						<p>Неверный логин или пароль!</p>
+					</div>
+				{% endif %}
 			{% else %}
 				<a href="{{ url_for('profile') }}">Профиль</a><br>
 				<a href="{{ url_for('room_list') }}">Комнаты</a><br>
@@ -22,4 +27,5 @@
 		</aside>
 	</div>
 {% endblock %}
+
 
