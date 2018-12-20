@@ -87,7 +87,7 @@ class Labyrinth:
 			location.labyrinth = self
 			location.field = self.field
 			try:
-				locations.turn_set
+				location.turn_set
 			except:
 				location.turn_set = {}
 		for item in self.field.items_list:
@@ -100,14 +100,17 @@ class Labyrinth:
 
 
 	def make_turn(self, turn):
+		to_do = []
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		for location in self.field.locations_list:
 			if turn in location.turn_set and location.turn_set[turn]['condition']():
-				location.turn_set[turn]['function']()
+				to_do.append(location.turn_set[turn]['function'])
 		for item in self.field.items_list:
 			if turn in item.turn_set and item.turn_set[turn]['condition']():
-				item.turn_set[turn]['function']()
+				to_do.append(item.turn_set[turn]['function'])
+		for function in to_do:
+			function()
 
 		# Запускаем для всех объектов main-функцию
 		for location in self.field.locations_list:
