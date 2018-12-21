@@ -7,7 +7,7 @@
 				<div class='room'>
 					<h3>Комната {{ i[0] }}</h3>
 					Игроки: {{ i[6] }}/{{ i[2] }}
-					<form action="{{ url_for('room_list') }}" method='post' class='join_form'>
+					<form action="{{ url_for('room_list', page=0) }}" method='post' class='join_form'>
 						<button value='{{ i[1] }}' name='roomlink'>Join!</button>
 					</form>
 				</div>
@@ -21,7 +21,7 @@
 					<input type='submit' value='Войти'>
 				</form>
 			{% else %}
-				<form action="{{ url_for('room_list') }}" method='post'>
+				<form action="{{ url_for('room_list', page=0) }}" method='post'>
 					Ссылка на комнату: labyrinth.xyz/<input type='text' name='joinlink' minlength=4 required><br>
 					Количество игроков(от 3 до 8): <input type='number' name='players' min='3' max='8' value='4'><br>
 					<!-- Карта: реализация этой формы, скорее всего, потребует жаваскрипта, а я его еще не начинал учить -->
