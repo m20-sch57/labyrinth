@@ -20,12 +20,14 @@
 				{% endif %}
 			{% else %}
 				<a href="{{ url_for('profile') }}">Профиль</a><br>
-				<a href="{{ url_for('room_list') }}">Комнаты</a><br>
+				<a href="{{ url_for('room_list', page=0) }}">Комнаты</a><br>
 				<a href="{{ url_for('logout') }}">Выход</a><br>
 			{% endif %}
 			<a href="{{ url_for('rules') }}">Правила</a>
 		</aside>
 	</div>
 {% endblock %}
+
+
 
 
