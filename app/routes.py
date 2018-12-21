@@ -71,8 +71,7 @@ def profile():
 
 #Ð±Ñ‹Ð²ÑˆÐµÐµ /choose_your_room
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
-@app.route('/room_list', methods=['POST', 'GET'])
-def room_list():
+def room_list(page):
     if request.method == 'POST':
         joinlink = request.form.get('joinlink')
         players = request.form.get('players')
@@ -81,13 +80,9 @@ def room_list():
             dbase.add_room(joinlink, players, '', username)
         else:
             joinlink = request.form.get('roomlink')
-        #return redirect(url_for('/room/' + joinlink))
-        #Редирект пока не работает.
+        return redirect(url_for('room', room_id=joinlink))
     pages = dbase.get_pages()
-    try:
-        pagen = page
-    except: 
-        pagen = 0
+    pagen = int(page)
     return render_template('room_list.html', username=session.get('username'), pager=pages[pagen])
 
 
