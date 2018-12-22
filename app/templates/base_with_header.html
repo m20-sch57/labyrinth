@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Лабиринт</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css') }}">
+	</head>
+	<body>
+		<div class='navbar-upper'>
+			<span id='logo'>Лабиринт 10М</span>
+			{% if username == None %}
+				<a href="{{ url_for('register') }}">Регистрация</a>
+			{% endif %}
+			<a href="{{ url_for('index') }}">На главную</a>
+		</div>
+		<hr>
+		{% block content %}{% endblock %}
+	</body>
+</html>

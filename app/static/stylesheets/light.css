@@ -1,0 +1,83 @@
+html, body {
+	background: rgb(249, 249, 249);
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+[class^='navbar'] {
+	font-family: Verdana;
+	color: rgb(128, 128, 255);
+}
+
+#logo {
+	position: relative;
+	float: left;
+	font-size: 24pt;
+}
+
+.navbar-sidebar {
+	position: absolute;
+	top: 20%;
+	left: 68%;
+	background: rgb(230, 230, 230);
+	height: 50%;
+	width: 10%;
+	padding: 2%;
+}
+
+.navbar-upper {
+	height: 40px;
+	text-align: right;
+	background: rgb(220, 220, 220);
+}
+
+
+
+.news {
+	position: absolute;
+	width: 50%;
+}
+
+.header {
+	color: rgb(255, 128, 128);
+}
+
+.create-room {
+	position: absolute;
+	top: 20%;
+	left: 60%;
+	width: 20%;
+	background: rgb(230, 230, 230);
+	color: rgb(128, 128, 255);
+	height: 50%;
+	padding-top: 5%;
+	padding-left: 1%;
+	padding-right: 1%;	
+}
+
+.rooms {
+	position: absolute;
+	top: 20%;
+	height: 60%;
+	width: 770px;
+	background: rgb(230, 230, 230);
+}
+
+.room {
+	width: 770px;
+	border-bottom: 1px solid rgb(200, 200, 200);
+}
+		
+.join_form {
+	position: relative;
+	float: right; 
+	bottom: 20px;
+}
+
+.error {
+	background: rgb(255, 200, 200);
+	margin-top: 50px;
+	padding: 1%;
+	border: solid 1px rgb(255, 100, 100);
+	color: rgb(255, 10, 10);
+}
