@@ -105,7 +105,7 @@ def rules():
 
 @app.route('/single_room')
 def single_room():
-    return render_template('single_room.html')
+    return render_template('single_room.html', head='single mode')
 
 @app.route('/single_turn/<turn>')
 def single_turn(turn):
