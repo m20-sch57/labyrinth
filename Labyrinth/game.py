@@ -133,7 +133,7 @@ class Labyrinth:
 
 		# Делаем слудующего игрока активным
 		self.active_player_number += 1
-		self.active_player_number %= self.number_of_players
+		self.active_player_number %= len(self.field.players_list)
 
 
 	def add_player(self, user_id):
