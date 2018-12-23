@@ -1,13 +1,19 @@
 # LabyrinthObject is class of objects that can be used by players at their turns
 class LabyrinthObject:
-	def __init__(self):
-		# Declaration of turn_set that'll contain TODO: contain what?
-		self.turn_set = {}
 
 	# new available turn
 	def new_at(self, function, condition_function, turn_name):
+
+		# если turn_set не определён для предмета, то self.turn_set вызовет ошибку,
+		# и тогда выполнится self.turn_set = {}
+		try:
+			self.turn_set
+		except:
+			self.turn_set = {}
+
 		if not turn_name in self.turn_set:
 			self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
+
 
 	# This two functions return object and parent's IDs.
 	def get_object_id(self):
@@ -17,9 +23,9 @@ class LabyrinthObject:
 
 	# This two function set object and parent's IDs to given value.
 	def set_object_id(self, new_id):
-		self.object_id.number = new_id
+		self.object_id = new_id
 	def set_parent_id(self, new_id):
-		self.parent_id.number  = new_id
+		self.parent_id  = new_id
 
 	# TODO: understand what is this marvellous magic
 	def main(self):
@@ -44,58 +50,32 @@ class Player(LabyrinthObject):
 	# On the level of program player is LabyrinthObject.
 	def __init__(self, user_id):
 		self.user_id = user_id
+		self.turn_set = {} # На всякий случай
+
+	def get_user_id(self):
+		return self.user_id
 
 # Class of ALL field. There is only one field in every game.
 class Field:
-	def __init__(self):
-		# TODO: what is it?
-		self.adjacence_list = []
-		# List of all locations in the game.
-		self.locations_list = []
-		# List of all items (but not players) in the game.
-		self.items_list = []
-		# List of all players in the game.
-		self.players_list = []
+	def __init__(self, adjacence_list, locations_list, items_list, players_list):
+		self.adjacence_list = adjacence_list
+		self.locations_list = locations_list
+		self.items_list = items_list
+		self.players_list = players_list
 
-	# This functions return location above, under, on the right and on the left (respectively) of given location.
-	def up(self, id):
-		return self.adjacence_list[id][0]
-	def down(self, id):
-		return self.adjacence_list[id][1]
-	def right(self, id):
-		return self.adjacence_list[id][2]
-	def left(self, id):
-		return self.adjacence_list[id][3]
-
-	# This functions add player, item and location (respectively) in the game and return its ID in the game.
-	# Functions themselves make ID for given object and append it to list of its type objects.
-	def add_player(self, user_id, parent_id, parent_type='location'):
-		P = Player(user_id)
-		P.object_id = ObjectID('player', len(self.players_list))
-		P.parent_id = ObjectID(parent_type, parent_id)
-		self.players_list.append(P)
-		return P.object_id.number
-
-	def add_item(self, item, parent_id, parent_type='location'):
-		item.object_id = ObjectID('item', len(self.items_list))
-		item.parent_id = ObjectID(parent_type, parent_id)
-		item.field = self
-		self.items_list.append(item)
-		return item.object_id.number
-
-	def add_location(self, location, adjacence_locations):
-		location.object_id = ObjectID('location', len(self.locations_list))
-		location.field = self
-		self.locations_list.append(location)
-		self.adjacence_list.append(adjacence_locations)  #adjacence_locations - список номеров соседних локаций
-		return location.object_id.number
-
-	#TODO: make remove_object
-	def remove_object(self, object_id):
-		pass
+		#раздаём всем id
+		for i in range(len(self.locations_list)):
+			self.locations_list[i].object_id = ObjectID('location', i)
+		for i in range(len(self.items_list)):
+			self.items_list[i].object_id = ObjectID('item', i)
+		for i in range(len(self.players_list)):
+			self.players_list[i].object_id = ObjectID('player', i)
 
 
-	def object_with_id(self, object_id):
+	def get_neighbor_location(self, object_id, direction):
+		return self.locations_list[self.adjacence_list[object_id.number][direction]].get_object_id()
+
+	def get_object(self, object_id):
 		lists = {
 			'location': self.locations_list,
 			'item': self.items_list,
@@ -114,21 +94,36 @@ class Labyrinth:
 		self.number_of_players = 0
 
 	def ready(self):
-		# Создаёт всем локациям артибуты field и labyrinth со значением данного Labyrinth
+		# Создаёт всем локациям артибуты field и labyrinth и turn_set
 		for location in self.field.locations_list:
 			location.labyrinth = self
+			location.field = self.field
+			try:
+				location.turn_set
+			except:
+				location.turn_set = {}
 		for item in self.field.items_list:
 			item.labyrinth = self
+			item.field = self.field
+			try:
+				item.turn_set
+			except:
+				item.turn_set = {}
+
 
 	def make_turn(self, turn):
+		to_do = []
+
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		# и запускаем действия найденных локаций и предметов.
 		for location in self.field.locations_list:
-			if turn in location.turn_set and location.turn_set[turn]['condition'](): # TODO: do condition function uses NOthing?!
-				location.turn_set[turn]['function']()
+			if turn in location.turn_set and location.turn_set[turn]['condition']():
+				to_do.append(location.turn_set[turn]['function'])
 		for item in self.field.items_list:
 			if turn in item.turn_set and item.turn_set[turn]['condition']():
-				item.turn_set[turn]['function']()
+				to_do.append(item.turn_set[turn]['function'])
+		for function in to_do:
+			function()
 
 		# Запускаем для всех объектов main-функцию
 		for location in self.field.locations_list:
@@ -148,8 +143,11 @@ class Labyrinth:
 
 	def get_active_player(self):
 		return self.field.players_list[self.active_player_number]
+	def get_active_player_user_id(self):
+		return self.get_active_player().user_id
 	def get_next_active_player(self):
-		return self.field.players_list[(self.active_player_number + 1) % len(self.field.players_list)]
+		return self.field.players_list[(self.active_player_number + 1)%len(self.field.players_list)]
+
 	def get_active_player_ats(self):
 		# Возвращает имена возможных ходов для активного игрока
 		active_player_ats = []
