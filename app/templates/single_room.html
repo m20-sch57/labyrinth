@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id = 'log'>
+</div>
+<form>
+	<input type="text" id="turn">
+	<input type="button" value="Сходить" id="send">
+</form>
+<script>
+	function ButtonClick() {
+		var xhr = new XMLHttpRequest()
+		var turn = document.getElementById('turn')
+		var log = document.getElementById('log')
+		var ats = document.getElementById('ats')
+
+		xhr.open('GET', Flask.url_for("single_turn", {"turn": turn.value}), false)
+		xhr.send()
+		log.innerHTML += ('<p>'+xhr.responseText+'</p>')
+	}
+
+	var send_button = document.getElementById('send')
+
+	send_button.onclick = ButtonClick
+</script>
+{% endblock %}

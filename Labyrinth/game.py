@@ -86,12 +86,16 @@ class Field:
 # Class of Labyrinths.
 class Labyrinth:
 	# Every Labyrinth is field and send_msg_function to send messages.
-	def __init__(self, field, send_msg_function):
-		self.send_msg = send_msg_function
+	def __init__(self, field):
+		self.to_send = ''
 		self.field = field
 
 		self.active_player_number = 0
 		self.number_of_players = 0
+
+	#временный вариант спепциально для single_room
+	def send_msg(self, msg, user_id):
+		self.to_send += ('\n' + msg)
 
 	def ready(self):
 		# Создаёт всем локациям артибуты field и labyrinth и turn_set
@@ -134,6 +138,11 @@ class Labyrinth:
 		# Делаем слудующего игрока активным
 		self.active_player_number += 1
 		self.active_player_number %= len(self.field.players_list)
+
+		#временный вариант специально для single game
+		answ = self.to_send
+		self.to_send = ''
+		return answ
 
 
 	def add_player(self, user_id):
