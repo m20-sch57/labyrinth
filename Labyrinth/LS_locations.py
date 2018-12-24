@@ -18,10 +18,45 @@ class EmptyLocation(LO):
                 self.labyrinth.send_msg(FIRST_ENTER_MSG, next_active_player.user_id)
 
 
-# TODO: To recode class of Wall for class of bombs
-class Wall(LO):
+class Outside(LO):
     pass
 
+
+class Wall(LO):
+    reverse_direction = {'up': 'down',
+                         'down': 'up',
+                         'left': 'right',
+                         'right': 'left'}
+
+    def __init__(self, arg):
+        if arg is list:
+            new_arg = {}
+            for arr in arg:
+                d0 = new_arg.get(arr[0], {})
+                d0[arr[2]] = arr[1]
+                new_arg[arr[0]] = d0
+                d1 = new_arg.get(arr[1], {})
+                d1[self.reverse_direction[arr[2]]] = arr[0]
+                new_arg[arr[1]] = d1
+            arg = new_arg
+        self.behind_the_wall = arg
+
+    def breake_wall(self, object_id_1, direction):
+        object_id_2 = self.field.locations_list[self.behind_the_wall[object_id_1.number][direction]].get_object_id()
+        self.field.adjacence_list[object_id_1.number][direction] = object_id_2
+        self.field.adjacence_list[object_id_2.number][self.reverse_direction[direction]] = object_id_1
+        del self.behind_the_wall[object_id_1.number][direction]
+        del self.behind_the_wall[object_id_2.number][self.reverse_direction[direction]]
+
+    def make_wall(self, object_id_1, object_id_2, direction):
+        num_1 = object_id_1.number
+        num_2 = object_id_2.number
+        d1 = self.behind_the_wall.get(num_1, {})
+        d1[direction] = num_2
+        self.behind_the_wall[num_1] = d1
+        d2 = self.behind_the_wall.get(num_2, {})
+        d2[self.reverse_direction[direction]] = num_1
+        self.behind_the_wall[num_2] = d2
 
 class Hole(LO):
     is_not_fall = set()

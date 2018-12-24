@@ -1,33 +1,38 @@
 from Labyrinth.game import Field, Labyrinth, Player, ObjectID
-from Labyrinth.LS_walk import Legs, Wall, EmptyLocation
-from Labyrinth.LS_hole import Hole
-from Labyrinth.LS_items import Bullet
+from Labyrinth.LS_locations import Wall, EmptyLocation, Hole, Outside
+from Labyrinth.LS_items import Legs, Bullet, Bomb
 
 # TODO: To code classes of: treasure, river, outfall, arsenal, first-aid post and bear.
 
 def send_msg_func(msg, user_id):
     print('[{}] - {}'.format(user_id, msg))
 
-locations_list = [EmptyLocation() for _ in range(6)]
-locations_list.append(Wall())
+locations_list = [Outside()]
+locations_list += [EmptyLocation() for _ in range(6)]
+locations_list.append(Wall([
+    (1, 2, 'right'),
+    (5, 6, 'right')
+                            ]))
 locations_list[1] = Hole(ObjectID('location', 5))
 locations_list[5] = Hole(ObjectID('location', 1))
-adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
-                {'up':6, 'down':4, 'right':2, 'left':6},
-                {'up':6, 'down':5, 'right':6, 'left':1},
-                {'up':0, 'down':6, 'right':4, 'left':6},
-                {'up':1, 'down':6, 'right':6, 'left':3},
-                {'up':2, 'down':6, 'right':6, 'left':6},
+adjance_list = [{},
+                {'up':0, 'down':4, 'right':7, 'left':0},
+                {'up':0, 'down':5, 'right':3, 'left':7},
+                {'up':0, 'down':6, 'right':0, 'left':2},
+                {'up':1, 'down':0, 'right':5, 'left':0},
+                {'up':2, 'down':0, 'right':7, 'left':4},
+                {'up':3, 'down':0, 'right':0, 'left':7},
                 {}]
 items_list = [Legs(), Bullet()]
 P = Player('player #1')
 P.set_parent_id(ObjectID('location', 0))
 players_list = [P]
 
+# Outside = 0
 # -------------
-# | 0 | 1   2 |
+# | 1 | 2   3 |
 # -           -
-# | 3   4 | 5 |    HOLE  1<-->5
+# | 4   5 | 6 |    HOLE  2<-->6
 # -------------
 
 

@@ -1,6 +1,6 @@
 from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO, ObjectID
-
+from Labyrinth.LS_locations import Wall, Outside
 
 class Legs(LO):
     def __init__(self):
@@ -14,7 +14,7 @@ class Legs(LO):
             active_player = self.labyrinth.get_active_player()
             next_position = self.field.get_object(self.field.get_neighbor_location(active_player.get_parent_id(),
                                                                                    direction))
-            if type(next_position) is Wall:
+            if type(next_position) in [Wall, Outside]:
                 self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
             else:
                 active_player.set_parent_id(next_position.get_object_id())
@@ -75,19 +75,28 @@ class Bullet(LO):
         return bool(self.counts_of_bul[active_player.get_object_id().number])
 
 
-# In progress...
-# TODO: To code class of bombs
 class Bomb(LO):
     def __init__(self):
         self.counts_of_bombs = {}
 
-        self.new_at(self.turn_blow_up('up'), self.condition(), BLOW_UP_UP)
-        self.new_at(self.turn_blow_up('down'), self.condition(), BLOW_UP_DOWN)
-        self.new_at(self.turn_blow_up('left'), self.condition(), BLOW_UP_LEFT)
-        self.new_at(self.turn_blow_up('right'), self.condition(), BLOW_UP_RIGHT)
+        self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
+        self.new_at(self.turn_blow_up('down'), self.condition, BLOW_UP_DOWN)
+        self.new_at(self.turn_blow_up('left'), self.condition, BLOW_UP_LEFT)
+        self.new_at(self.turn_blow_up('right'), self.condition, BLOW_UP_RIGHT)
 
     def turn_blow_up(self, direction):
         def blow_up():
             active_player = self.labyrinth.get_active_player()
+            self.counts_of_bombs[active_player.get_object_id.number] -= 1
+
             current_location = active_player.get_parent_id
             location_in_direction = self.field.get_neighbor_location(current_location, direction)
+            if location_in_direction is Wall:
+                location_in_direction.breake_wall(current_location, direction)
+        return blow_up
+
+    def condition(self):
+        active_player = self.labyrinth.get_active_player()
+        if active_player.get_object_id().number not in self.counts_of_bombs:
+            self.counts_of_bombs[active_player.get_object_id().number] = INITIAL_COUNT_OF_BOMBS
+        return bool(self.counts_of_bombs[active_player.get_object_id().number])
