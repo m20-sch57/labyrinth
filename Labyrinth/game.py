@@ -62,6 +62,7 @@ class Field:
 		self.locations_list = locations_list
 		self.items_list = items_list
 		self.players_list = players_list
+		self.dead_players_list
 
 		#раздаём всем id
 		for i in range(len(self.locations_list)):
@@ -82,6 +83,9 @@ class Field:
 			'player': self.players_list
 		}
 		return lists[object_id.type][object_id.number]
+
+	def get_players_in_location(self, object_id):
+		return list(filter(lambda player: player.get_parent_id() == object_id, self.players_list))
 
 # Class of Labyrinths.
 class Labyrinth:
@@ -158,5 +162,5 @@ class Labyrinth:
 		for item in self.field.items_list:
 			for turn in item.turn_set:
 				if item.turn_set[turn]['condition']():
-					active_player_ats.append(turn)		
+					active_player_ats.append(turn)
 		return active_player_ats

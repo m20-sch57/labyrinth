@@ -1,6 +1,7 @@
 from Labyrinth.game import Field, Labyrinth, Player, ObjectID
 from Labyrinth.LS_walk import Legs, Wall, EmptyLocation
 from Labyrinth.LS_hole import Hole
+from Labyrinth.LS_items import Bullet
 
 def send_msg_func(msg, user_id):
 	print('[{}] - {}'.format(user_id, msg))
@@ -16,7 +17,7 @@ adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
 				{'up':1, 'down':6, 'right':6, 'left':3},
 				{'up':2, 'down':6, 'right':6, 'left':6},
 				{}]
-items_list = [Legs()]
+items_list = [Legs(), Bullet()]
 P = Player('player #1')
 P.set_parent_id(ObjectID('location', 0))
 players_list = [P]
