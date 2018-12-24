@@ -3,6 +3,7 @@ from Labyrinth.game import LabyrinthObject as LO, ObjectID
 INITIAL_COUNT_OF_BULLETS = 3
 CAN_PLAYER_HURT_HIMSELF = False
 FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
+FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
 FIRE_UP = 'Стрелять вверх'
 FIRE_DOWN = 'Стрелять вниз'
 FIRE_LEFT = 'Стрелять влево'
@@ -17,22 +18,23 @@ class Bullet(LO):
         self.counts_of_bul = {}
         self.hurt_players = set()
 
-        self.new_at(self.turn_fire('up'), self.condition(), FIRE_UP)
-        self.new_at(self.turn_fire('down'), self.condition(), FIRE_DOWN)
-        self.new_at(self.turn_fire('left'), self.condition(), FIRE_LEFT)
-        self.new_at(self.turn_fire('right'), self.condition(), FIRE_RIGHT)
+        self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
+        self.new_at(self.turn_fire('down'), self.condition, FIRE_DOWN)
+        self.new_at(self.turn_fire('left'), self.condition, FIRE_LEFT)
+        self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
 
     def turn_fire(self, direction):
         def fire():
             active_player = self.labyrinth.get_active_player()
+            self.counts_of_bul[active_player.get_object_id().number] -= 1
 
             kicked_players = set()
             met_locations = set()
             current_location = active_player.get_parent_id()
-            while current_location not in met_locations:
+            while current_location.number not in met_locations:
                 current_location = self.field.get_neighbor_location(current_location, direction)
-                met_locations.add(current_location)
-                kicked_players += set(self.field.get_players_in_location(current_location))
+                met_locations.add(current_location.number)
+                kicked_players &= set(self.field.get_players_in_location(current_location))
             if not CAN_PLAYER_HURT_HIMSELF:
                 kicked_players.discard(active_player.user_id)
             for player in kicked_players:
@@ -49,9 +51,12 @@ class Bullet(LO):
                     player.set_parent_id(None)
                     self.labyrinth.number_of_players -= 1
             self.labyrinth.active_player_number = active_player.get_object_id().number
-            self.labyrinth.send_msg(FIRE_SUCCESS_MSG +
-                ', '.join(list(map(lambda player: player.user_id, kicked_players))) + '.', active_player.user_id)
-        return fire()
+            if kicked_players:
+                self.labyrinth.send_msg(FIRE_SUCCESS_MSG +
+                    ', '.join(list(map(lambda player: player.user_id, kicked_players))) + '.', active_player.user_id)
+            else:
+                self.labyrinth.send_msg(FIRE_FAILURE_MSG, active_player.user_id)
+        return fire
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()
