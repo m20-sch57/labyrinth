@@ -2,12 +2,12 @@
 
 from app import app, dbase
 from flask import render_template, request, session, redirect, url_for
+from labyrinth_test import MyLab
 
 import sys
 sys.path.append('../')
-
-from labyrinth_test import MyLab
 MyLab.ready()
+
 
 @app.route('/')
 @app.route('/index')
@@ -103,9 +103,11 @@ def room(room_id):
 def rules():
     return render_template('rules.html', is_enter=True)
 
+
 @app.route('/single_room')
 def single_room():
     return render_template('single_room.html', head='single mode')
+
 
 @app.route('/single_turn/<turn>')
 def single_turn(turn):
