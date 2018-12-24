@@ -27,7 +27,7 @@ class LabyrinthObject:
     def set_parent_id(self, new_id):
         self.parent_id  = new_id
 
-    # TODO: understand what is this marvellous magic
+    # Make false main in order not to remember every time to type it where it's not necessary.
     def main(self):
         pass
 
@@ -62,6 +62,7 @@ class Field:
         self.locations_list = locations_list
         self.items_list = items_list
         self.players_list = players_list
+        self.hurt_players = set()
         self.dead_players_list = []
 
         #раздаём всем id
@@ -157,7 +158,7 @@ class Labyrinth:
     def get_active_player_ats(self):
         # Возвращает имена возможных ходов для активного игрока
         active_player_ats = []
-        for location in self.field.locations_list: # TODO: There are a lot of passages of lists of location and items. Is it worth to make class of available turns?
+        for location in self.field.locations_list:
             for turn in location.turn_set:
                 if location.turn_set[turn]['condition']():
                     active_player_ats.append(turn)

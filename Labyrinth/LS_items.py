@@ -16,7 +16,6 @@ BLOW_UP_RIGHT = 'Подорвать справа'
 class Bullet(LO):
     def __init__(self):
         self.counts_of_bul = {}
-        self.hurt_players = set()
 
         self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
         self.new_at(self.turn_fire('down'), self.condition, FIRE_DOWN)
@@ -38,11 +37,11 @@ class Bullet(LO):
             if not CAN_PLAYER_HURT_HIMSELF:
                 kicked_players.discard(active_player.user_id)
             for player in kicked_players:
-                if player.get_object_id().number not in self.hurt_players:
-                    self.hurt_players.add(player.get_object_id().number)
+                if player.get_object_id().number not in self.field.hurt_players:
+                    self.field.hurt_players.add(player.get_object_id().number)
                 else:
                     ind = player.get_object_id().number
-                    self.hurt_players.discard(ind)
+                    self.field.hurt_players.discard(ind)
                     player.set_object_id(ObjectID('dead_player', len(self.field.dead_players_list)))
                     self.field.dead_players_list.append(player)
                     self.field.players_list = self.field.players_list[:ind] + self.field.players_list[ind+1:]
@@ -65,6 +64,7 @@ class Bullet(LO):
         return bool(self.counts_of_bul[active_player.get_object_id().number])
 
 # In progress...
+# TODO: To code class of bombs
 class Bomb(LO):
     def __init__(self):
         self.counts_of_bombs = {}

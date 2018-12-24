@@ -42,5 +42,6 @@ class Legs(LO):
     def condition(self):
         return True
 
+# TODO: To recode class of Wall for class of bombs
 class Wall(LO):
     pass

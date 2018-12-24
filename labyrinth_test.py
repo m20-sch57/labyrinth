@@ -3,6 +3,9 @@ from Labyrinth.LS_walk import Legs, Wall, EmptyLocation
 from Labyrinth.LS_hole import Hole
 from Labyrinth.LS_items import Bullet
 
+# TODO: To merge LS_walk.py and LS_hole.py
+# TODO: To code classes of: treasure, river, outfall, arsenal, first-aid post and bear.
+
 def send_msg_func(msg, user_id):
     print('[{}] - {}'.format(user_id, msg))
 
