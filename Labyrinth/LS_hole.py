@@ -1,9 +1,8 @@
 from Labyrinth.game import LabyrinthObject as LO
 
 FALL_MSG = 'И в ямку бух!'
-ENTER_HOLE_MSG = 'Теперь проход ещё и вниз?!'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
-INTO_TURN = 'В дыру'
+INTO_TURN = 'Зайти в яму'
 
 class Hole(LO):
 	is_not_fall = set()

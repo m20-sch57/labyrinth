@@ -6,7 +6,7 @@ RIGHT_TURN = 'Идти вправо'
 LEFT_TURN = 'Идти влево'
 WALL_MSG = 'Упсс. Стена'
 FIRST_ENTER_MSG = 'Ты попал в прямоугольную пустую комнату. Что ещё сказать?'
-ENTER_MSG = 'Опять нашёл пустую комнату?'
+ENTER_MSG = 'Ты в пустой комнате.'
 
 class EmptyLocation(LO):
 	used = {}

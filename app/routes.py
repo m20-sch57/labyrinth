@@ -111,5 +111,7 @@ def single_room():
 def single_turn(turn):
     print(turn)
     msg = MyLab.make_turn(turn)
+    ats = ', '.join(MyLab.get_active_player_ats())
+    print('turn:', turn)
     print('player position: ', MyLab.get_active_player().get_parent_id().number, MyLab.get_active_player().get_parent_id().type)
-    return msg
+    return(msg +' ('+ats+')')
