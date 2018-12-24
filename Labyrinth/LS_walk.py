@@ -1,15 +1,10 @@
+from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO
 
-UP_TURN = 'Идти вверх'
-DOWN_TURN = 'Идти вниз'
-RIGHT_TURN = 'Идти вправо'
-LEFT_TURN = 'Идти влево'
-WALL_MSG = 'Упсс. Стена'
-FIRST_ENTER_MSG = 'Ты попал в прямоугольную пустую комнату. Что ещё сказать?'
-ENTER_MSG = 'Опять нашёл пустую комнату?'
 
 class EmptyLocation(LO):
     used = {}
+
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
         active_player = self.labyrinth.get_active_player()
@@ -22,6 +17,7 @@ class EmptyLocation(LO):
                 self.used[next_active_player.get_object_id().number] = 1
                 self.labyrinth.send_msg(FIRST_ENTER_MSG, next_active_player.user_id)
 
+
 class Legs(LO):
     def __init__(self):
         self.new_at(self.turn_move('up'), condition_function = self.condition, turn_name = UP_TURN)
@@ -32,7 +28,8 @@ class Legs(LO):
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
-            next_position = self.field.get_object(self.field.get_neighbor_location(active_player.get_parent_id(), direction))
+            next_position = self.field.get_object(self.field.get_neighbor_location(active_player.get_parent_id(),
+                                                                                   direction))
             if type(next_position) is Wall:
                 self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
             else:
@@ -41,6 +38,7 @@ class Legs(LO):
 
     def condition(self):
         return True
+
 
 # TODO: To recode class of Wall for class of bombs
 class Wall(LO):

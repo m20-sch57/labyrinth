@@ -1,17 +1,6 @@
+from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO, ObjectID
 
-INITIAL_COUNT_OF_BULLETS = 3
-CAN_PLAYER_HURT_HIMSELF = False
-FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
-FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
-FIRE_UP = 'Стрелять вверх'
-FIRE_DOWN = 'Стрелять вниз'
-FIRE_LEFT = 'Стрелять влево'
-FIRE_RIGHT = 'Стрелять вправо'
-BLOW_UP_UP = 'Подорвать сверху'
-BLOW_UP_DOWN = 'Подорвать снизу'
-BLOW_UP_LEFT = 'Подорвать слева'
-BLOW_UP_RIGHT = 'Подорвать справа'
 
 class Bullet(LO):
     def __init__(self):
@@ -62,6 +51,7 @@ class Bullet(LO):
         if active_player.get_object_id().number not in self.counts_of_bul:
             self.counts_of_bul[active_player.get_object_id().number] = INITIAL_COUNT_OF_BULLETS
         return bool(self.counts_of_bul[active_player.get_object_id().number])
+
 
 # In progress...
 # TODO: To code class of bombs

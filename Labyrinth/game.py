@@ -1,4 +1,4 @@
-# LabyrinthObject is class of objects that can be used by players at their turns
+# LabyrinthObject is class of prototypes that can be used to make everything in Field.
 class LabyrinthObject:
 
     # new available turn
@@ -11,25 +11,27 @@ class LabyrinthObject:
         except:
             self.turn_set = {}
 
-        if not turn_name in self.turn_set:
+        if turn_name not in self.turn_set:
             self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
-
 
     # This two functions return object and parent's IDs.
     def get_object_id(self):
         return self.object_id
+
     def get_parent_id(self):
         return self.parent_id
 
     # This two function set object and parent's IDs to given value.
     def set_object_id(self, new_id):
         self.object_id = new_id
-    def set_parent_id(self, new_id):
-        self.parent_id  = new_id
 
-    # Make false main in order not to remember every time to type it where it's not necessary.
+    def set_parent_id(self, new_id):
+        self.parent_id = new_id
+
+    # Make false main-function in order not to remember every time to type it where it's not necessary.
     def main(self):
         pass
+
 
 # Class for IDs. Nothing more.
 class ObjectID:
@@ -37,42 +39,46 @@ class ObjectID:
     # Every ID is type of object and its individual number among all objects with this type
     def __init__(self, object_type, object_number):
         self.type = object_type
-        self.number= object_number
+        self.number = object_number
     # тип один из: location, item, player
 
     # This one helps to distinguish the differing and find the same objects.
-    def __eq__(self ,other):
+    def __eq__(self, other):
         # Obviously it needs only to compare types and IDs
         return self.type == other.type and self.number == other.number
+
 
 # Class of players of the game.
 class Player(LabyrinthObject):
     # On the level of program player is LabyrinthObject.
     def __init__(self, user_id):
         self.user_id = user_id
-        self.turn_set = {} # На всякий случай
+        self.turn_set = {}  # На всякий случай
 
     def get_user_id(self):
         return self.user_id
 
-# Class of ALL field. There is only one field in every game.
+
+# Class of ALL field (including players and items). There is only one field in every game.
 class Field:
     def __init__(self, adjacence_list, locations_list, items_list, players_list):
+        # List of dicts of adjacences. It looks like [{'up': loc_above_id, 'down': under_id, 'left': left_id,
+        # 'right': right_id}, ...]
         self.adjacence_list = adjacence_list
         self.locations_list = locations_list
         self.items_list = items_list
+        # List of PLAYABLE players.
         self.players_list = players_list
         self.hurt_players = set()
         self.dead_players_list = []
 
-        #раздаём всем id
+        # раздаём всем id
         for i in range(len(self.locations_list)):
             self.locations_list[i].object_id = ObjectID('location', i)
         for i in range(len(self.items_list)):
             self.items_list[i].object_id = ObjectID('item', i)
         for i in range(len(self.players_list)):
             self.players_list[i].object_id = ObjectID('player', i)
-
 
     def get_neighbor_location(self, object_id, direction):
         return self.locations_list[self.adjacence_list[object_id.number][direction]].get_object_id()
@@ -87,6 +93,7 @@ class Field:
 
     def get_players_in_location(self, object_id):
         return list(filter(lambda player: player.get_parent_id() == object_id, self.players_list))
+
 
 # Class of Labyrinths.
 class Labyrinth:
@@ -115,7 +122,6 @@ class Labyrinth:
             except:
                 item.turn_set = {}
 
-
     def make_turn(self, turn):
         to_do = []
 
@@ -142,18 +148,18 @@ class Labyrinth:
         self.active_player_number += 1
         self.active_player_number %= self.number_of_players
 
-
     def add_player(self, user_id):
         self.field.add_player(user_id, 0)
         self.number_of_players += 1
 
-
     def get_active_player(self):
         return self.field.players_list[self.active_player_number]
+
     def get_active_player_user_id(self):
         return self.get_active_player().user_id
+
     def get_next_active_player(self):
-        return self.field.players_list[(self.active_player_number + 1)%len(self.field.players_list)]
+        return self.field.players_list[(self.active_player_number + 1) % len(self.field.players_list)]
 
     def get_active_player_ats(self):
         # Возвращает имена возможных ходов для активного игрока

@@ -1,16 +1,13 @@
+from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO
 
-FALL_MSG = 'И в ямку бух!'
-ENTER_HOLE_MSG = 'Теперь проход ещё и вниз?!'
-TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
-INTO_TURN = 'В дыру'
 
 class Hole(LO):
     is_not_fall = set()
+
     def __init__(self, fall_to):
         self.fall_to = fall_to # type is ObjectID
         self.new_at(function = self.go_into_hole, condition_function = self.condition, turn_name = INTO_TURN)
-
 
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
@@ -24,7 +21,6 @@ class Hole(LO):
 
         if not type(self.field.get_object(next_active_player.get_parent_id())) is Hole:
             self.is_not_fall.discard(next_active_player.get_object_id().number)
-
 
     def go_into_hole(self):
         active_player = self.labyrinth.get_active_player()
