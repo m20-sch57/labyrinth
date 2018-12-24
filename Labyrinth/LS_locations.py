@@ -2,6 +2,27 @@ from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO
 
 
+class EmptyLocation(LO):
+    used = {}
+
+    def main(self):
+        next_active_player = self.labyrinth.get_next_active_player()
+        active_player = self.labyrinth.get_active_player()
+
+        if next_active_player.get_parent_id() == self.object_id:
+            if next_active_player.get_object_id().number in self.used:
+                self.used[next_active_player.get_object_id().number] += 1
+                self.labyrinth.send_msg(ENTER_MSG, next_active_player.user_id)
+            else:
+                self.used[next_active_player.get_object_id().number] = 1
+                self.labyrinth.send_msg(FIRST_ENTER_MSG, next_active_player.user_id)
+
+
+# TODO: To recode class of Wall for class of bombs
+class Wall(LO):
+    pass
+
+
 class Hole(LO):
     is_not_fall = set()
 
