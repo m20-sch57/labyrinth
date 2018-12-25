@@ -2,6 +2,7 @@
 
 from app import app, dbase
 from flask import render_template, request, session, redirect, url_for
+from hashlib import sha1
 
 
 @app.route('/')
@@ -21,7 +22,7 @@ def login():
         if user is None:
             return redirect(url_for('login_failed'))
 
-        if user[1] != password:
+        if user[1] != sha1(password.encode('utf-8')).hexdigest():
             return redirect(url_for('login_failed'))
 
         session['username'] = username
@@ -45,7 +46,7 @@ def register():
         if user is not None:
             return redirect(url_for('register_failed'))
 
-        dbase.add_user(username, password)
+        dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest())
 
         session['username'] = username
         return redirect(url_for('index'))
