@@ -1,3 +1,5 @@
+from Labyrinth.LS_CONSTS import *
+
 # LabyrinthObject is class of prototypes that can be used to make everything in Field.
 class LabyrinthObject:
 
@@ -23,9 +25,13 @@ class LabyrinthObject:
 
     # This two function set object and parent's IDs to given value.
     def set_object_id(self, new_id):
+        if type(new_id) is not ObjectID:
+            raise ValueError('Invalid literal for set_object_id()')
         self.object_id = new_id
 
     def set_parent_id(self, new_id):
+        if type(new_id) is not ObjectID:
+            raise ValueError('Invalid literal for set_parent_id()')
         self.parent_id = new_id
 
     # Make false main-function in order not to remember every time to type it where it's not necessary.
@@ -44,6 +50,8 @@ class ObjectID:
 
     # This one helps to distinguish the differing and find the same objects.
     def __eq__(self, other):
+        if type(other) is not ObjectID:
+            raise ValueError('Invalid literal for __eq__')
         # Obviously it needs only to compare types and IDs
         return self.type == other.type and self.number == other.number
 
@@ -54,6 +62,7 @@ class Player(LabyrinthObject):
     def __init__(self, user_id):
         self.user_id = user_id
         self.turn_set = {}  # На всякий случай
+        self.states = {}
 
     def get_user_id(self):
         return self.user_id
@@ -80,10 +89,19 @@ class Field:
         for i in range(len(self.players_list)):
             self.players_list[i].object_id = ObjectID('player', i)
 
-    def get_neighbor_location(self, object_id, direction):
-        return self.locations_list[self.adjacence_list[object_id.number][direction]].get_object_id()
+    def get_neighbour_location(self, object_id, direction):
+        if type(object_id) is not ObjectID or type(direction) is not str:
+            raise ValueError('Invalid literal for get_neighbour_location()')
+        return self.locations_list[self.adjacence_list[object_id.number][direction]]
+
+    def get_neighbour_location_id(self, object_id, direction):
+        if type(object_id) is not ObjectID or type(direction) is not str:
+            raise ValueError('Invalid literal for get_neighbour_location()')
+        return self.get_neighbour_location(object_id, direction).get_object_id()
 
     def get_object(self, object_id):
+        if type(object_id) is not ObjectID:
+            raise ValueError('Invalid literal for get_object()')
         lists = {
             'location': self.locations_list,
             'item': self.items_list,
@@ -92,7 +110,15 @@ class Field:
         return lists[object_id.type][object_id.number]
 
     def get_players_in_location(self, object_id):
+        if type(object_id) is not ObjectID:
+            raise ValueError('Invalid literal for get_players_in_location()')
         return list(filter(lambda player: player.get_parent_id() == object_id, self.players_list))
+
+    def get_players_ids_in_location(self, object_id):
+        if type(object_id) is not ObjectID:
+            raise ValueError('Invalid literal for get_players_ids_in_location()')
+        return list(map(lambda p: p.get_object_id(),
+                        filter(lambda player: player.get_parent_id() == object_id, self.players_list)))
 
 
 # Class of Labyrinths.
@@ -122,10 +148,15 @@ class Labyrinth:
             except:
                 item.turn_set = {}
 
+        for player in self.field.players_list:
+            player.states['hurt'] = False
+            player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
+            player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
+
     def make_turn(self, turn):
         to_do = []
 
-        # В списке возможных ходов локаций и предметов ищем ход с именем turn
+        # В списке возможных ходов, локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов.
         for location in self.field.locations_list:
             if turn in location.turn_set and location.turn_set[turn]['condition']():
@@ -155,11 +186,17 @@ class Labyrinth:
     def get_active_player(self):
         return self.field.players_list[self.active_player_number]
 
+    def get_active_player_id(self):
+        return self.get_active_player().get_object_id()
+
     def get_active_player_user_id(self):
         return self.get_active_player().user_id
 
     def get_next_active_player(self):
         return self.field.players_list[(self.active_player_number + 1) % len(self.field.players_list)]
+
+    def get_next_active_player_id(self):
+        return self.get_next_active_player().get_object_id()
 
     def get_active_player_ats(self):
         # Возвращает имена возможных ходов для активного игрока
