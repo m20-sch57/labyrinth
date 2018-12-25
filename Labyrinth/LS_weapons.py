@@ -34,34 +34,31 @@ class Gun(LO):
     def turn_fire(self, direction):
         def fire():
             active_player = self.labyrinth.get_active_player()
-            self.counts_of_bul[active_player.get_object_id().number] -= 1
+            active_player.states['count_of_bullets'] -= 1
 
             kicked_players = set()
             met_locations = set()
-            current_location = active_player.get_parent_id()
-            # TODO: Add HURT_EVBD_IN_SAME_LOC
-            while current_location.number not in met_locations:
-                current_location = self.field.get_neighbour_location(current_location, direction)
-                met_locations.add(current_location.number)
-                kicked_players &= set(self.field.get_players_in_location(current_location))
+            current_location_id = active_player.get_parent_id()
+
+            if CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
+                kicked_players |= set(self.field.get_players_in_location(current_location_id))
+
+            current_location_id = self.field.get_neighbour_location_id(current_location_id, direction)
+            while current_location_id.number not in met_locations\
+                    and type(self.field.locations_list[current_location_id.number]) not in [Wall, Outside]:
+                met_locations.add(current_location_id.number)
+                kicked_players |= set(self.field.get_players_in_location(current_location_id))
+                current_location_id = self.field.get_neighbour_location_id(current_location_id, direction)
+
             if not CAN_PLAYER_HURT_HIMSELF:
-                kicked_players.discard(active_player.user_id)
+                kicked_players.discard(active_player)
             for player in kicked_players:
-                if not player.states['hurt']:
-                    player.states['hurt'] = True
-                else:
-                    ind = player.get_object_id().number
-                    player.set_object_id(ObjectID('dead_player', len(self.field.dead_players_list)))
-                    self.field.dead_players_list.append(player)
-                    del self.field.players_list[ind]
-                    for i in range(ind, len(self.field.players_list)):
-                        self.field.players_list[i].get_object_id().number = i
-                    del player.parent_id
-                    self.labyrinth.number_of_players -= 1
+                player.hurt()
             self.labyrinth.active_player_number = active_player.get_object_id().number
+
             if kicked_players:
                 self.labyrinth.send_msg(FIRE_SUCCESS_MSG
-                                        + ', '.join(list(map(lambda player: player.user_id, kicked_players)))
+                                        + ', '.join(list(map(lambda pl: pl.user_id, kicked_players)))
                                         + '.', active_player.user_id)
             else:
                 self.labyrinth.send_msg(FIRE_FAILURE_MSG, active_player.user_id)
@@ -88,8 +85,17 @@ class Bomb(LO):
             location_in_direction = self.field.get_neighbour_location(current_location_id, direction)
             if type(location_in_direction) is Wall:
                 location_in_direction.break_wall(current_location_id, direction)
-            # TODO: HURT_EVBD_IN_DIR
-            # TODO: To code massage of blowing up.
+                self.labyrinth.send_msg(BLOW_UP_SUCCESS_MSG, active_player.user_id)
+            elif type(location_in_direction) is not Outside:
+                players_in_direction = self.field.get_players_in_location(location_in_direction.get_object_id())
+                if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:
+                    for player in players_in_direction:
+                        player.hurt()
+                    self.labyrinth.send_msg(BLOW_UP_INJURING_MSG
+                                            + ', '.join(list(map(lambda pl: pl.user_id, players_in_direction)))
+                                            + '.', active_player.user_id)
+                else:
+                    self.labyrinth.send_msg(BLOW_UP_FAILURE_MSG, active_player.user_id)
         return blow_up
 
     def condition(self):

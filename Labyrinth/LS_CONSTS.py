@@ -1,4 +1,7 @@
 # TODO: To put all consts here
+# Player's consts.
+DEATH_MSG = '«Умирать — скучное и безотрадное дело. Мой вам совет — никогда этим не занимайтесь.»'
+
 # Legs' consts.
 UP_TURN = 'Идти вверх'
 DOWN_TURN = 'Идти вниз'
@@ -21,12 +24,13 @@ INTO_TURN = 'В дыру'
 # Bullet's consts
 INITIAL_COUNT_OF_BULLETS = 3
 CAN_PLAYER_HURT_HIMSELF = False
-FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
-FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
+CAN_PLAYER_HURT_EVB_IN_SAME_LOC = True
 FIRE_UP = 'Стрелять вверх'
 FIRE_DOWN = 'Стрелять вниз'
 FIRE_LEFT = 'Стрелять влево'
 FIRE_RIGHT = 'Стрелять вправо'
+FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
+FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
 
 # Bomb's consts
 INITIAL_COUNT_OF_BOMBS = 3
@@ -34,3 +38,7 @@ BLOW_UP_UP = 'Подорвать сверху'
 BLOW_UP_DOWN = 'Подорвать снизу'
 BLOW_UP_LEFT = 'Подорвать слева'
 BLOW_UP_RIGHT = 'Подорвать справа'
+BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite'
+BLOW_UP_FAILURE_MSG = 'Взорвать – взорвали, но толку-то?!'
+BLOW_UP_INJURING_MSG = 'О! А там оказывается были '
+CAN_PLAYER_HURT_EVB_IN_DIRECTION = False

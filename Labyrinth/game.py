@@ -67,6 +67,20 @@ class Player(LabyrinthObject):
     def get_user_id(self):
         return self.user_id
 
+    def hurt(self):
+        if not self.states['hurt']:
+            self.states['hurt'] = True
+        else:
+            ind = self.get_object_id().number
+            self.set_object_id(ObjectID('dead_player', len(self.field.dead_players_list)))
+            self.field.dead_players_list.append(self)
+            del self.field.players_list[ind]
+            for i in range(ind, len(self.field.players_list)):
+                self.field.players_list[i].get_object_id().number = i
+            del self.parent_id
+            self.labyrinth.number_of_players -= 1
+            self.labyrinth.send_msg(DEATH_MSG, self.user_id)
+
 
 # Class of ALL field (including players and items). There is only one field in every game.
 class Field:
@@ -149,6 +163,9 @@ class Labyrinth:
                 item.turn_set = {}
 
         for player in self.field.players_list:
+            player.labyrinth = self
+            player.field = self.field
+
             player.states['hurt'] = False
             player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
             player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS

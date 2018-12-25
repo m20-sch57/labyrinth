@@ -23,10 +23,12 @@ adjance_list = [{},
                 {'up':2, 'down':0, 'right':7, 'left':4},
                 {'up':3, 'down':0, 'right':0, 'left':7},
                 {}]
-items_list = [Legs(), Bomb()]
+items_list = [Legs(), Gun(), Bomb()]
 P = Player('player #1')
+Prey = Player('prey')
 P.set_parent_id(ObjectID('location', 1))
-players_list = [P]
+Prey.set_parent_id(ObjectID('location', 4))
+players_list = [P, Prey]
 
 # Outside = 0
 # -------------
@@ -44,6 +46,6 @@ MyLab.ready()
 while True:
     print()
     print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number, MyLab.get_active_player().get_parent_id().type)
-    print(field.locations_list[-1].behind_the_wall)
+    # print(field.locations_list[-1].behind_the_wall)
     print(', '.join(MyLab.get_active_player_ats()))
-    MyLab.make_turn(input())
+    MyLab.make_turn(input('(' + MyLab.get_active_player().get_user_id() + ') '))
