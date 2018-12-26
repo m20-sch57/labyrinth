@@ -20,7 +20,7 @@ class EmptyLocation(LO):
 class Outside(LO):
     pass
 
-
+# TODO: To recode wall.
 class Wall(LO):
     reverse_direction = {'up': 'down',
                          'down': 'up',
@@ -53,20 +53,24 @@ class Wall(LO):
         del self.behind_the_wall[object_id_1.number][direction]
         del self.behind_the_wall[object_id_2.number][self.reverse_direction[direction]]
 
-    def make_wall(self, object_id_1, object_id_2, direction):
-        if type(object_id_1) is not OID or type(object_id_2) is not OID:
-            raise ValueError('Invalid literal for break_wall()')
+    def make_wall(self, object_id_1, direction):
+        if type(object_id_1) is not OID:
+            raise ValueError('Invalid literal for make_wall()')
+        object_id_2 = self.field.get_neighbour_location_id(object_id_1, direction)
         num_1 = object_id_1.number
         num_2 = object_id_2.number
         self_num = self.get_object_id().number
 
         d1 = self.behind_the_wall.get(num_1, {})
-        # TODO: To make ValueError here and below.
+        if direction in d1:
+            raise ValueError('There is already wall between first room and some another in the direction')
         d1[direction] = num_2
         self.behind_the_wall[num_1] = d1
         self.field.adjacence_list[num_1][direction] = self_num
 
         d2 = self.behind_the_wall.get(num_2, {})
+        if self.reverse_direction[direction] in d2:
+            raise ValueError('There is already wall between second room and some another in the opposite direction')
         d2[self.reverse_direction[direction]] = num_1
         self.behind_the_wall[num_2] = d2
         self.field.adjacence_list[num_2][direction] = self_num
@@ -101,3 +105,6 @@ class Hole(LO):
     def condition(self):
         active_player = self.labyrinth.get_active_player()
         return active_player.get_parent_id() == self.get_object_id()
+
+
+# TODO: To code classes of: treasure, river, outfall, arsenal, first-aid post and bear.

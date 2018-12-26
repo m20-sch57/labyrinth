@@ -2,7 +2,7 @@ from Labyrinth.game import Field, Labyrinth, Player, ObjectID
 from Labyrinth.LS_locations import Wall, EmptyLocation, Hole, Outside
 from Labyrinth.LS_weapons import Legs, Gun, Bomb
 
-# TODO: To code classes of: treasure, river, outfall, arsenal, first-aid post and bear.
+# TODO: To discuss file managing.
 
 def send_msg_func(msg, user_id):
     print('[{}] - {}'.format(user_id, msg))

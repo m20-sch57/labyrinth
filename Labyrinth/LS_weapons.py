@@ -68,7 +68,7 @@ class Gun(LO):
         active_player = self.labyrinth.get_active_player()
         return bool(active_player.states['count_of_bullets'])
 
-
+# TODO: To add message for Outside and remake message for only 1 player.
 class Bomb(LO):
     def __init__(self):
         self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
@@ -89,11 +89,11 @@ class Bomb(LO):
             elif type(location_in_direction) is not Outside:
                 players_in_direction = self.field.get_players_in_location(location_in_direction.get_object_id())
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:
-                    for player in players_in_direction:
-                        player.hurt()
                     self.labyrinth.send_msg(BLOW_UP_INJURING_MSG
                                             + ', '.join(list(map(lambda pl: pl.user_id, players_in_direction)))
                                             + '.', active_player.user_id)
+                    for player in players_in_direction:
+                        player.hurt()
                 else:
                     self.labyrinth.send_msg(BLOW_UP_FAILURE_MSG, active_player.user_id)
         return blow_up

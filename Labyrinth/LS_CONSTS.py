@@ -41,4 +41,4 @@ BLOW_UP_RIGHT = 'Подорвать справа'
 BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite'
 BLOW_UP_FAILURE_MSG = 'Взорвать – взорвали, но толку-то?!'
 BLOW_UP_INJURING_MSG = 'О! А там оказывается были '
-CAN_PLAYER_HURT_EVB_IN_DIRECTION = False
+CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
