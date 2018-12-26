@@ -57,6 +57,7 @@ class ObjectID:
 
 
 # Class of players of the game.
+# TODO: To code player's statuses.
 class Player(LabyrinthObject):
     # On the level of program player is LabyrinthObject.
     def __init__(self, user_id):
@@ -85,8 +86,8 @@ class Player(LabyrinthObject):
 # Class of ALL field (including players and items). There is only one field in every game.
 class Field:
     def __init__(self, adjacence_list, locations_list, items_list, players_list):
-        # List of dicts of adjacences. It looks like [{'up': loc_above_id, 'down': under_id, 'left': left_id,
-        # 'right': right_id}, ...]
+        # List of dicts of adjacences. It looks like [{'up': loc_above_id_num, 'down': under_id_num,
+        # 'left': left_id_num, 'right': right_id_num}, ...]
         self.adjacence_list = adjacence_list
         self.locations_list = locations_list
         self.items_list = items_list
@@ -166,6 +167,7 @@ class Labyrinth:
             player.labyrinth = self
             player.field = self.field
 
+            player.states['is_fell'] = False
             player.states['hurt'] = False
             player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
             player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
@@ -227,3 +229,5 @@ class Labyrinth:
                 if item.turn_set[turn]['condition']():
                     active_player_ats.append(turn)
         return active_player_ats
+
+# TODO: To code class Log.

@@ -1,4 +1,11 @@
 # TODO: To put all consts here
+# For everything.
+reverse_direction = {'up': 'down', 'down': 'up',
+                     'left': 'right', 'right': 'left',
+                     'forward': 'backward', 'backward': 'forward',
+                     'under': 'above', 'above': 'under'}
+basic_directions = ['up', 'down', 'left', 'right']
+
 # Player's consts.
 DEATH_MSG = '«Умирать — скучное и безотрадное дело. Мой вам совет — никогда этим не занимайтесь.»'
 
@@ -39,6 +46,7 @@ BLOW_UP_DOWN = 'Подорвать снизу'
 BLOW_UP_LEFT = 'Подорвать слева'
 BLOW_UP_RIGHT = 'Подорвать справа'
 BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite'
+BLOW_UP_PROHIBITION_MSG = 'О, нет! Это же "ничего"! Увы, вы не можете сломать "ничего".'
 BLOW_UP_FAILURE_MSG = 'Взорвать – взорвали, но толку-то?!'
 BLOW_UP_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True

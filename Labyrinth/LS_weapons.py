@@ -1,6 +1,6 @@
 from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO, ObjectID
-from Labyrinth.LS_locations import Wall, Outside
+from Labyrinth.LS_locations import GlobalWall, Wall, Outside
 
 
 class Legs(LO):
@@ -14,7 +14,7 @@ class Legs(LO):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = self.field.get_neighbour_location(active_player.get_parent_id(), direction)
-            if type(next_position) in [Wall, Outside]:
+            if type(next_position) in [GlobalWall, Wall, Outside]:
                 self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
             else:
                 active_player.set_parent_id(next_position.get_object_id())
@@ -45,7 +45,7 @@ class Gun(LO):
 
             current_location_id = self.field.get_neighbour_location_id(current_location_id, direction)
             while current_location_id.number not in met_locations\
-                    and type(self.field.locations_list[current_location_id.number]) not in [Wall, Outside]:
+                    and type(self.field.locations_list[current_location_id.number]) not in [GlobalWall, Wall, Outside]:
                 met_locations.add(current_location_id.number)
                 kicked_players |= set(self.field.get_players_in_location(current_location_id))
                 current_location_id = self.field.get_neighbour_location_id(current_location_id, direction)
@@ -83,9 +83,14 @@ class Bomb(LO):
 
             current_location_id = active_player.get_parent_id()
             location_in_direction = self.field.get_neighbour_location(current_location_id, direction)
-            if type(location_in_direction) is Wall:
+            if type(location_in_direction) is GlobalWall:
                 location_in_direction.break_wall(current_location_id, direction)
                 self.labyrinth.send_msg(BLOW_UP_SUCCESS_MSG, active_player.user_id)
+            elif type(location_in_direction) is Wall:
+                location_in_direction.break_wall()
+                self.labyrinth.send_msg(BLOW_UP_SUCCESS_MSG, active_player.user_id)
+            elif type(location_in_direction) is Outside:
+                self.labyrinth.send_msg(BLOW_UP_PROHIBITION_MSG, active_player.user_id)
             elif type(location_in_direction) is not Outside:
                 players_in_direction = self.field.get_players_in_location(location_in_direction.get_object_id())
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:

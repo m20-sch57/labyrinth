@@ -20,8 +20,9 @@ class EmptyLocation(LO):
 class Outside(LO):
     pass
 
-# TODO: To recode wall.
-class Wall(LO):
+
+# Just prototype. But it's more useful than new Wall sometimes...
+class GlobalWall(LO):
     reverse_direction = {'up': 'down',
                          'down': 'up',
                          'left': 'right',
@@ -38,10 +39,10 @@ class Wall(LO):
                 d1[self.reverse_direction[arr[2]]] = arr[0]
                 new_arg[arr[1]] = d1
             arg = new_arg
-        # behind_the_wall is list of dicts. For location with ID i on i-th place will be dict like
+        # behind_the_wall is dict of dicts. For location with ID i on i-th place will be dict like
         # {'direction1': location_in_direction1_behind_wall, ...}.
-        # So all list looks like [{'dir1': loc_in_dir1, ...}, ...].
-        # loc_in_dir is integer (not location or ID) too.
+        # So all list looks like {loc1: {'dir1': loc_in_dir1, ...}, ...}.
+        # loc and loc_in_dir are integers (not location or ID) too.
         self.behind_the_wall = arg
 
     def break_wall(self, object_id_1, direction):
@@ -76,9 +77,39 @@ class Wall(LO):
         self.field.adjacence_list[num_2][direction] = self_num
 
 
-class Hole(LO):
-    is_not_fall = set()
+class Wall(LO):
+    def __init__(self, *args):
+        if len(args) == 0:
+            raise ValueError('Invalid literal for Wall')
+        if type(args[0]) is list:
+            if len(args) > 1:
+                raise ValueError('Invalid literal for Wall')
+            args = args[0]
 
+        self.behind_the_wall = {}
+        for i in range(len(args)):
+            pair = args[i]
+            next_pair = args[(i + 1) % len(args)]
+            if type(pair) is not tuple or len(pair) != 2 or type(pair[0]) is not int:
+                raise ValueError('Invalid literal for Wall')
+            d = self.behind_the_wall.get(pair[0], {})
+            d[pair[1]] = next_pair[0]
+            self.behind_the_wall[pair[0]] = d
+        # behind_the_wall is dict of dicts. For location with ID i on i-th place will be dict like
+        # {'direction1': location_in_direction1_behind_wall, ...}.
+        # So all list looks like {loc1: {'dir1': loc_in_dir1, ...}, ...}.
+        # loc and loc_in_dir are integers (not location or ID) too.
+
+    def break_wall(self):
+        for num in self.behind_the_wall:
+            for dir in self.behind_the_wall[num]:
+                neighbour_num = self.behind_the_wall[num][dir]
+                self.field.adjacence_list[num][dir] = neighbour_num
+
+        del self
+
+
+class Hole(LO):
     def __init__(self, fall_to):
         self.fall_to = fall_to  # type is ObjectID
         self.new_at(function = self.go_into_hole, condition_function = self.condition, turn_name = INTO_TURN)
@@ -88,14 +119,14 @@ class Hole(LO):
         active_player = self.labyrinth.get_active_player()
 
         if active_player.get_parent_id() == self.get_object_id()\
-                and active_player.get_object_id().number not in self.is_not_fall:
+                and not active_player.states['is_fell']:
             active_player.set_parent_id(self.fall_to)
             if type(self.field.get_object(self.fall_to)) is Hole:
-                self.is_not_fall.add(active_player.get_object_id().number)
+                active_player.states['is_fell'] = True
             self.labyrinth.send_msg(FALL_MSG, active_player.user_id)
 
-        if not type(self.field.get_object(next_active_player.get_parent_id())) is Hole:
-            self.is_not_fall.discard(next_active_player.get_object_id().number)
+        if type(self.field.get_object(next_active_player.get_parent_id())) is not Hole:
+            next_active_player.states['is_fell'] = False
 
     def go_into_hole(self):
         active_player = self.labyrinth.get_active_player()
