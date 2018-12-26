@@ -49,7 +49,7 @@ class Database:
     
     def add_player(self, roomid, player):
         data = self.get_user(player)
-        self.cursor.execute('DELETE * FROM users WHERE login=?', [player])
+        self.cursor.execute('DELETE FROM users WHERE login=?', [player])
         data = list(data)
         data[2] = roomid
         self.cursor.execute('INSERT INTO users VALUES(?, ?, ?)', data)
@@ -57,10 +57,11 @@ class Database:
        
     def remove_player(self, player):
         data = self.get_user(player)
-        self.cursor.execute('DELETE * FROM users WHERE login=?', [player])
+        self.cursor.execute('DELETE FROM users WHERE login=?', [player])
         data = list(data)
         data[2] = -1
         self.cursor.execute('INSERT INTO users VALUES(?, ?, ?)', data)
+        self.cursor.execute('DELETE FROM rooms WHERE pl_num = 0')
         self.conn.commit()
         
     def get_pages(self): 
