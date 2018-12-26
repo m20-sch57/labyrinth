@@ -91,6 +91,8 @@ def room_list(page):
 def room(room_id):
     current_room = dbase.get_room_by_link(room_id)
     print(room_id)
+    username = session.get('username')
+    dbase.add_player(room_id, username)
     print(current_room)
     return render_template('room_list.html', username=session.get('username'))
 
