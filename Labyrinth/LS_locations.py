@@ -138,4 +138,4 @@ class Hole(LO):
         return active_player.get_parent_id() == self.get_object_id()
 
 
-# TODO: To code classes of: treasure, river, outfall, arsenal, first-aid post and bear.
+# TODO: To code classes of: arsenal and first-aid post.

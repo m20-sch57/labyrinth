@@ -1,4 +1,5 @@
 from Labyrinth.LS_CONSTS import *
+from Labyrinth.LS_weapons import Treasure
 
 # LabyrinthObject is class of prototypes that can be used to make everything in Field.
 class LabyrinthObject:
@@ -64,11 +65,17 @@ class Player(LabyrinthObject):
         self.user_id = user_id
         self.turn_set = {}  # На всякий случай
         self.states = {}
+        self.in_hands = set()
 
     def get_user_id(self):
         return self.user_id
 
     def hurt(self):
+        for item_id in self.in_hands:
+            item = self.field.get_object(item_id)
+            if type(item) is Treasure:
+                item.drop(self.get_object_id())
+
         if not self.states['hurt']:
             self.states['hurt'] = True
         else:

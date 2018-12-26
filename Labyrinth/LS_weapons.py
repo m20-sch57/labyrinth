@@ -42,6 +42,7 @@ class Gun(LO):
 
             if CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
                 kicked_players |= set(self.field.get_players_in_location(current_location_id))
+                kicked_players.discard(active_player)
 
             current_location_id = self.field.get_neighbour_location_id(current_location_id, direction)
             while current_location_id.number not in met_locations\
@@ -68,7 +69,7 @@ class Gun(LO):
         active_player = self.labyrinth.get_active_player()
         return bool(active_player.states['count_of_bullets'])
 
-# TODO: To add message for Outside and remake message for only 1 player.
+
 class Bomb(LO):
     def __init__(self):
         self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
@@ -91,10 +92,14 @@ class Bomb(LO):
                 self.labyrinth.send_msg(BLOW_UP_SUCCESS_MSG, active_player.user_id)
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(BLOW_UP_PROHIBITION_MSG, active_player.user_id)
-            elif type(location_in_direction) is not Outside:
+            else:
                 players_in_direction = self.field.get_players_in_location(location_in_direction.get_object_id())
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:
-                    self.labyrinth.send_msg(BLOW_UP_INJURING_MSG
+                    if len(players_in_direction) == 1:
+                        msg = BLOW_UP_SINGLE_INJURING_MSG
+                    else:
+                        msg = BLOW_UP_MASSIVE_INJURING_MSG
+                    self.labyrinth.send_msg(msg
                                             + ', '.join(list(map(lambda pl: pl.user_id, players_in_direction)))
                                             + '.', active_player.user_id)
                     for player in players_in_direction:
@@ -106,3 +111,77 @@ class Bomb(LO):
     def condition(self):
         active_player = self.labyrinth.get_active_player()
         return bool(active_player.states['count_of_bombs'])
+
+
+class Treasure(LO):
+    def __init__(self, is_true):
+        Treasure.is_true = is_true
+
+        self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
+        self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
+
+    def take(self, player_id):
+        player = self.field.get_object(player_id)
+        self.set_parent_id(player_id)
+        if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+            self.initial_location = self.get_parent_id()
+        player.in_hands.add(self.get_object_id())
+
+    def drop(self, player_id):
+        player = self.field.get_object(player_id)
+        if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+            self.set_parent_id(self.initial_location)
+        else:
+            self.set_parent_id(player_id)
+        player.in_hands.discard(self.get_object_id)
+
+    def turn_take(self):
+        def take():
+            player = self.labyrinth.get_active_player()
+            player_id = player.get_object_id()
+            self.set_parent_id(player_id)
+            if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+                self.initial_location = self.get_parent_id()
+            player.in_hands.add(self.get_object_id())
+        return take
+
+    def turn_drop(self):
+        def drop():
+            player = self.labyrinth.get_active_player()
+            player_id = player.get_object_id()
+            if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+                self.set_parent_id(self.initial_location)
+            else:
+                self.set_parent_id(player_id)
+            player.in_hands.discard(self.get_object_id)
+        return drop
+
+    def take_condition(self):
+        active_player = self.labyrinth.get_active_player()
+        return active_player.get_parent_id() == self.get_parent_id()
+
+    def drop_condition(self):
+        active_player_id = self.labyrinth.get_active_player_id()
+        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id == active_player_id
+
+
+class Bear:
+    turn_to_direction = {UP_TURN: 'up',
+                         DOWN_TURN: 'down',
+                         RIGHT_TURN: 'right',
+                         LEFT_TURN: 'left'}
+
+    def main(self):
+        nonlocal turn
+        if turn in self.turn_to_direction:
+            direction = self.turn_to_direction[turn]
+            next_position = self.field.get_neighbour_location(self.get_parent_id(), direction)
+            if type(next_position) not in [GlobalWall, Wall, Outside]:
+                self.set_parent_id(next_position.get_object_id())
+
+        # TODO: To make hole's sense.
+
+        for player in self.field.get_players_in_location(self.get_parent_id())
+            player.hurt()
+
+# TODO: To code classes of treasure, bear
