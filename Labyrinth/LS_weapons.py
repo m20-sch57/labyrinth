@@ -183,5 +183,3 @@ class Bear:
 
         for player in self.field.get_players_in_location(self.get_parent_id())
             player.hurt()
-
-# TODO: To code classes of treasure, bear
