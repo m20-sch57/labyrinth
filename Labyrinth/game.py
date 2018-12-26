@@ -86,12 +86,14 @@ class Field:
 # Class of Labyrinths.
 class Labyrinth:
 	# Every Labyrinth is field and send_msg_function to send messages.
-	def __init__(self, field, send_msg_function):
-		self.send_msg = send_msg_function
+	def __init__(self, field):
 		self.field = field
+		self.to_send = {player.user_id:'' for player in self.field.players_list}
 
 		self.active_player_number = 0
-		self.number_of_players = 0
+
+	def send_msg(self, msg, user_id):
+		self.to_send[user_id] += (' ' + msg)
 
 	def ready(self):
 		# Создаёт всем локациям артибуты field и labyrinth и turn_set
@@ -135,10 +137,10 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.field.players_list)
 
-
-	def add_player(self, user_id):
-		self.field.add_player(user_id, 0)
-		self.number_of_players += 1
+		#возвращаем все сообщения, которые нужно отправить, обнуляем to_send
+		for_return = self.to_send
+		self.to_send = {player.user_id:'' for player in self.field.players_list}
+		return for_return
 
 
 	def get_active_player(self):
