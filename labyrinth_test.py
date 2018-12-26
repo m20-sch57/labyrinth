@@ -29,7 +29,7 @@ players_list = [P]
 
 
 field = Field(adjance_list, locations_list, items_list, players_list)
-MyLab = Labyrinth(field, send_msg_func)
+MyLab = Labyrinth(field)
 
 
 MyLab.ready()
@@ -37,4 +37,6 @@ while True:
 	print()
 	print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number, MyLab.get_active_player().get_parent_id().type)
 	print(', '.join(MyLab.get_active_player_ats()))
-	MyLab.make_turn(input())
+	msgs = MyLab.make_turn(input())
+	for player in msgs:
+		print('[{}] -{}'.format(player, msgs[player]))
