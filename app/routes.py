@@ -74,7 +74,7 @@ def room_list(page):
         return redirect(url_for('room', room_id=joinlink))
     # pages = dbase.get_pages()
     # pagen = int(page)
-    return render_template('room_list.html', username=session.get('username'), pager=dbase.get_all_rooms())
+    return render_template('room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page[int(page)])
 
 
 @app.route('/room/<room_id>')

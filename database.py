@@ -109,6 +109,13 @@ class Database:
         rooms = self.cursor.fetchall()
         return list(map(lambda room: self.get_room(room[0]) ,rooms))
 
+    def get_rooms_page_by_page(self):
+        pages = []
+        self.cursor.execute('SELECT * FROM rooms')
+        for i in range(3):
+            pages.append(self.cursor.fetchmany(size=6))
+        return pages
+
     def delete_room(self, room_id):
         self.cursor.execute('DELETE FROM rooms WHERE room_id=?', (room_id,))
         self.conn.commit()
