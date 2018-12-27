@@ -1,8 +1,11 @@
 #encoding: utf-8
 
-from app import app, dbase
+from app import app, dbase, socketio
+from flask_socketio import emit, join_room, leave_room
 from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
+import random
+import string
 
 
 @app.route('/')
@@ -74,29 +77,41 @@ def profile():
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
 def room_list(page):
     if request.method == 'POST':
-        joinlink = request.form.get('joinlink')
-        players = request.form.get('players')
-        username = session.get('username')
-        if players:
-            dbase.add_room(joinlink, players, '', username)
-        else:
-            joinlink = request.form.get('roomlink')
-        return redirect(url_for('room', room_id=joinlink))
+        room_id = request.form.get('join_button')
+        return redirect(url_for('waiting_room', room_id=room_id))
     pages = dbase.get_pages()
     pagen = int(page)
     return render_template('room_list.html', username=session.get('username'), pager=pages[pagen])
 
 
-@app.route('/room/<room_id>')
-def room(room_id):
-    current_room = dbase.get_room_by_link(room_id)
-    print(room_id)
-    username = session.get('username')
-    dbase.add_player(room_id, username)
-    print(current_room)
-    return render_template('room_list.html', username=session.get('username'))
-
-
 @app.route('/rules')
 def rules():
     return render_template('rules.html', is_enter=True)
+
+
+@app.route('/create_room')
+def create_room():
+    def genereate_room_id(size):
+        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    room_id = genereate_room_id(8)
+    dbase.add_room(room_id, 4, '', session.get('username'))
+    return redirect(url_for('waiting_room', room_id=room_id))
+
+@app.route('/waiting_room/<room_id>')
+def waiting_room(room_id):
+    return render_template('waiting_room.html', room_id=room_id)
+
+@socketio.on('player join', namespace='/wrws')
+def wrws_pj(msg):
+    room_id = msg['room_id']
+    session['room'] = room_id
+    join_room(session.get('room')) 
+    # print('{} enter into the room {}'.format(session.get('username'), session.get('room')))
+    emit('update', {'room_id': session.get('room'), 'event': session.get('username') + ' join'}, broadcast = True, room=session.get('room'))
+
+@socketio.on('disconnect', namespace='/wrws')
+def wrws_pl():
+    # print('{} leave room {}'.format(session.get('username'), session.get('room')))
+    leave_room(session.get('room'))
+    emit('update', {'room_id': session.get('room'), 'event': session.get('username') + ' leave'}, broadcast = True, room=session.get('room'))
+    session.pop('room', None)

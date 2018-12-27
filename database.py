@@ -8,9 +8,26 @@ class Database:
     def __init__(self):
         self.conn = sqlite3.connect('database.db', check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS users (login text PRIMARY KEY, pass_hash text, room integer)''')
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS maps (id integer PRIMARY KEY, maplink text, description text)''') #description - Ñ�Ñ‚Ð¾ Ð¾Ð¿Ð¸Ñ�Ð°Ð½Ð¸Ðµ ÐºÐ°Ñ€Ñ‚Ñ‹, Ð´Ð°ÑŽÑ‰ÐµÐµÑ�Ñ� Ñ�Ð¾Ð·Ð´Ð°Ñ‚ÐµÐ»ÐµÐ¼
-        self.cursor.execute('CREATE TABLE IF NOT EXISTS rooms (id integer PRIMARY KEY, joinlink text, settings text, description text, creator text, cr_date text, pl_num integer)') #settings - Ð½Ð°Ñ�Ñ‚Ñ€Ð¾Ð¹ÐºÐ¸ ÐºÐ¾Ð¼Ð½Ð°Ñ‚Ñ‹, ÐºÐ°Ðº Ð¸Ð¼ÐµÐ½Ð½Ð¾ Ñ…Ñ€Ð°Ð½Ñ�Ñ‚Ñ�Ñ� - Ð¿Ð¾ÐºÐ° Ð½ÐµÐ¿Ð¾Ð½Ñ�Ñ‚Ð½Ð¾, Ñ‚Ð¸Ð¿ text, Ð¸Ð±Ð¾ Ñ�Ð°Ð¼Ñ‹Ð¹ ÑƒÐ½Ð¸Ð²ÐµÑ€Ñ�Ð°Ð»ÑŒÐ½Ñ‹Ð¹
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+            login text PRIMARY KEY,
+            pass_hash text,
+            room integer)''')
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
+            id integer PRIMARY KEY, 
+            maplink text, 
+            description text)''') #description
+
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
+            id integer PRIMARY KEY, 
+            joinlink text, 
+            settings text, 
+            description text, 
+            creator text, 
+            cr_date text, 
+            pl_num integer)''') #settings
+        
         self.conn.commit()
         
     def quit(self):
