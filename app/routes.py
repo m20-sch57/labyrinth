@@ -85,9 +85,19 @@ def create_room():
     dbase.add_room(room_id, session.get('username'))
     return redirect(url_for('waiting_room', room_id=room_id))
 
-@app.route('/waiting_room/<room_id>')
+
+
+@app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
 def waiting_room(room_id):
-    return render_template('waiting_room.html', room_id=room_id)
+    if request.method == 'POST':
+        event_type = request.headers.get('Event-Type')
+
+        if event_type == 'change_name':
+            room_name = request.form.get('new_name')
+            dbase.set_room_name(room_id, room_name)
+            emit('update', {'event': 'change_name', 'room_name': room_name}, broadcast=True, room=room_id, namespace='/wrws')
+            
+    return render_template('waiting_room.html', room_id=room_id, room_name=dbase.get_room_name(room_id))
 
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
@@ -96,7 +106,7 @@ def wrws_pj(msg):
 
     join_room(room_id)
     dbase.add_player(room_id, username)
-    emit('update', {'players': str(dbase.get_room_players(room_id))}, broadcast = True, room=room_id)
+    emit('update', {'event': 'player_enter_or_leave', 'players': str(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session['room'] = room_id
 
@@ -107,6 +117,6 @@ def wrws_pl():
 
     leave_room(room_id)
     dbase.remove_player(room_id, username)
-    emit('update', {'players': str(dbase.get_room_players(room_id))}, broadcast = True, room=room_id)
+    emit('update', {'event': 'player_enter_or_leave', 'players': str(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session.pop('room', None)
