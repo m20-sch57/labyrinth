@@ -17,12 +17,7 @@ def login():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        user = dbase.get_user(username)
-        print(user)
-        if user is None:
-            return redirect(url_for('login_failed'))
-
-        if user[1] != sha1(password.encode('utf-8')).hexdigest():
+        if not dbase.user_login_in_table(username) or dbase.get_user_password_hash(username) != sha1(password.encode('utf-8')).hexdigest():
             return redirect(url_for('login_failed'))
 
         session['username'] = username
@@ -42,11 +37,8 @@ def register():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        user = dbase.get_user(username)
-        if user is not None:
+        if not dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest()):
             return redirect(url_for('register_failed'))
-
-        dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest())
 
         session['username'] = username
         return redirect(url_for('index'))
@@ -66,11 +58,9 @@ def register_failed():
 @app.route('/profile')
 def profile():
     username = session.get('username')
-    user = dbase.get_user(username)
     return render_template('profile.html', username=session.get('username'))
 
 
-#Ð±Ñ‹Ð²ÑˆÐµÐµ /choose_your_room
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
 def room_list(page):
     if request.method == 'POST':
@@ -78,22 +68,19 @@ def room_list(page):
         players = request.form.get('players')
         username = session.get('username')
         if players:
-            dbase.add_room(joinlink, players, '', username)
+            dbase.add_room(joinlink, username)
         else:
             joinlink = request.form.get('roomlink')
         return redirect(url_for('room', room_id=joinlink))
-    pages = dbase.get_pages()
-    pagen = int(page)
-    return render_template('room_list.html', username=session.get('username'), pager=pages[pagen])
+    # pages = dbase.get_pages()
+    # pagen = int(page)
+    return render_template('room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page()[int(page)])
 
 
 @app.route('/room/<room_id>')
 def room(room_id):
-    current_room = dbase.get_room_by_link(room_id)
-    print(room_id)
     username = session.get('username')
     dbase.add_player(room_id, username)
-    print(current_room)
     return render_template('room_list.html', username=session.get('username'))
 
 
