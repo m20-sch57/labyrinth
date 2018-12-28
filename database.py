@@ -82,16 +82,7 @@ class Database:
     rooms functions
 
     ''' 
-    def add_room(self, room_id, creator_id):
-        crid = creator_id
-        self.cursor.execute('''INSERT INTO rooms (room_id, name, creator, players_set, create_date) 
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid, crid))
-        self.conn.commit()
-
-    def get_room(self, room_id):
-        self.cursor.execute('SELECT * FROM rooms WHERE room_id=?', (room_id,))
-        room = self.cursor.fetchone()
-
+    def parse_room(self, room_arr):
         room_dir = {
             'room_id': room[0],
             'name': room[1],
@@ -104,6 +95,17 @@ class Database:
         }
         return room_dir
 
+    def add_room(self, room_id, creator_id):
+        crid = creator_id
+        self.cursor.execute('''INSERT INTO rooms (room_id, name, creator, players_set, create_date) 
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid, crid))
+        self.conn.commit()
+
+    def get_room(self, room_id):
+        self.cursor.execute('SELECT * FROM rooms WHERE room_id=?', (room_id,))
+        room = self.cursor.fetchone()
+        return self.parse_room(room)
+
     def get_all_rooms(self):
         self.cursor.execute('SELECT * FROM rooms')
         rooms = self.cursor.fetchall()
@@ -113,7 +115,8 @@ class Database:
         pages = []
         self.cursor.execute('SELECT * FROM rooms')
         for i in range(3):
-            pages.append(self.cursor.fetchmany(size=6))
+            # взяли 6 комнат, распарсили, и добавили в pages как list
+            pages.append(list(map(lambda room_arr: self.parse_room(room_arr), self.cursor.fetchmany(size=6))))
         return pages
 
     def delete_room(self, room_id):
