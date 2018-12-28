@@ -82,7 +82,7 @@ class Database:
     rooms functions
 
     ''' 
-    def parse_room(self, room_arr):
+    def parse_room(self, room):
         room_dir = {
             'room_id': room[0],
             'name': room[1],
