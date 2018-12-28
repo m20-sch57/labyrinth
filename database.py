@@ -83,12 +83,14 @@ class Database:
 
     ''' 
     def parse_room(self, room):
+        players_set = set(room[3].split(','))
+        if len(room[3]) == 0:
+            players_set = set()
         room_dir = {
             'room_id': room[0],
             'name': room[1],
             'creator': room[2],
-            # convert string into list, then convert into set
-            'players_set': set(room[3].split(',')),
+            'players_set': players_set,
             'settings': room[4],
             'description': room[5],
             'create_date': room[6]
