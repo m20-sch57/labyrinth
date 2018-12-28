@@ -8,12 +8,11 @@
 			</form>
 		</div>
 		<div class='rooms'>
-			{% for i in pager %}
+			{% for room in pager %}
 				<div class='room'>
-					<h3>Комната {{ i[0] }}</h3>
-					Игроки: {{ i[6] }}/{{ i[2] }}
+					<h3>Комната {{ room['name'] }}</h3>
 					<form action="{{ url_for('room_list', page=0) }}" method='post' class='join_form'>
-						<button value='{{ i[1] }}' name='join_button'>Join!</button>
+						<button value="{{ room['room_id'] }}" name='roomlink'>Join!</button>
 					</form>
 				</div>
 			{% endfor %}
