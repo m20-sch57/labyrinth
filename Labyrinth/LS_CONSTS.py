@@ -6,6 +6,9 @@ reverse_direction = {'up': 'down', 'down': 'up',
                      'under': 'above', 'above': 'under'}
 basic_directions = ['up', 'down', 'left', 'right']
 
+# Labyrinth's consts.
+INITIAL_STATES = {}
+
 # Player's consts.
 DEATH_MSG = '«Умирать — скучное и безотрадное дело. Мой вам совет — никогда этим не занимайтесь.»'
 
@@ -14,9 +17,9 @@ UP_TURN = 'Идти вверх'
 DOWN_TURN = 'Идти вниз'
 RIGHT_TURN = 'Идти вправо'
 LEFT_TURN = 'Идти влево'
+WALL_MSG = 'Упсс. Стена'
 
 # Wall's const.
-WALL_MSG = 'Упсс. Стена'
 
 # EmptyLocation's consts.
 FIRST_ENTER_MSG = 'Ты попал в прямоугольную пустую комнату. Что ещё сказать?'

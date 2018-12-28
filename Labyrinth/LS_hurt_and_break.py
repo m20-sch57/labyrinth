@@ -1,29 +1,54 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO, ObjectID
-from Labyrinth.LS_locations import GlobalWall, Wall, Outside
+from Labyrinth.game import LabyrinthObject as LO, ObjectID, Player, NPC
+from Labyrinth.LS_move_and_bump import GlobalWall, Wall, Outside
 
 
-class Legs(LO):
-    def __init__(self):
-        self.new_at(self.turn_move('up'), condition_function = self.condition, turn_name = UP_TURN)
-        self.new_at(self.turn_move('down'), condition_function = self.condition, turn_name = DOWN_TURN)
-        self.new_at(self.turn_move('right'), condition_function = self.condition, turn_name = RIGHT_TURN)
-        self.new_at(self.turn_move('left'), condition_function = self.condition, turn_name = LEFT_TURN)
-
-    def turn_move(self, direction):
-        def move():
-            active_player = self.labyrinth.get_active_player()
-            next_position = self.field.get_neighbour_location(active_player.get_parent_id(), direction)
-            if type(next_position) in [GlobalWall, Wall, Outside]:
-                self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
-            else:
-                active_player.set_parent_id(next_position.get_object_id())
-        return move
-
-    def condition(self):
-        return True
+INITIAL_STATES['hurt'] = False,
+INITIAL_STATES['count_of_bullets'] = 3
+INITIAL_STATES['count_of_bombs'] = 3
 
 
+def hurt_player(self):
+    for item_id in self.in_hands:
+        item = self.field.get_object(item_id)
+        item.hurt_action()
+
+    if not self.states['hurt']:
+        self.states['hurt'] = True
+    else:
+        ind = self.get_object_id().number
+        self.set_object_id(ObjectID('dead_player', len(self.field.dead_players_list)))
+        self.field.dead_players_list.append(self)
+        del self.field.players_list[ind]
+        for i in range(ind, len(self.field.players_list)):
+            self.field.players_list[i].get_object_id().number = i
+        del self.parent_id
+        self.labyrinth.number_of_players -= 1
+        self.labyrinth.send_msg(DEATH_MSG, self.user_id)
+
+
+def hurt_npc(self):
+    if not self.states['hurt']:
+        self.states['hurt'] = True
+    else:
+        ind = self.get_object_id().number
+        del self.field.NPCs_list[ind]
+        for i in range(ind, len(self.field.NPCs_list)):
+            self.field.NPCs_list[i].get_object_id().number = i
+        del self
+
+
+def heal(self):
+    self.states['hurt'] = False
+
+
+Player.hurt = hurt_player
+NPC.hurt = hurt_npc
+NPC.heal = Player.heal = heal
+
+
+# Item.
+# TODO: To fix bug: NPCs can be hurt and healed.
 class Gun(LO):
     def __init__(self):
         self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
@@ -70,6 +95,7 @@ class Gun(LO):
         return bool(active_player.states['count_of_bullets'])
 
 
+# Item.
 class Bomb(LO):
     def __init__(self):
         self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
@@ -113,73 +139,16 @@ class Bomb(LO):
         return bool(active_player.states['count_of_bombs'])
 
 
-class Treasure(LO):
-    def __init__(self, is_true):
-        Treasure.is_true = is_true
-
-        self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
-        self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
-
-    def take(self, player_id):
-        player = self.field.get_object(player_id)
-        self.set_parent_id(player_id)
-        if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
-            self.initial_location = self.get_parent_id()
-        player.in_hands.add(self.get_object_id())
-
-    def drop(self, player_id):
-        player = self.field.get_object(player_id)
-        if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
-            self.set_parent_id(self.initial_location)
-        else:
-            self.set_parent_id(player_id)
-        player.in_hands.discard(self.get_object_id)
-
-    def turn_take(self):
-        def take():
-            player = self.labyrinth.get_active_player()
-            player_id = player.get_object_id()
-            self.set_parent_id(player_id)
-            if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
-                self.initial_location = self.get_parent_id()
-            player.in_hands.add(self.get_object_id())
-        return take
-
-    def turn_drop(self):
-        def drop():
-            player = self.labyrinth.get_active_player()
-            player_id = player.get_object_id()
-            if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
-                self.set_parent_id(self.initial_location)
-            else:
-                self.set_parent_id(player_id)
-            player.in_hands.discard(self.get_object_id)
-        return drop
-
-    def take_condition(self):
-        active_player = self.labyrinth.get_active_player()
-        return active_player.get_parent_id() == self.get_parent_id()
-
-    def drop_condition(self):
-        active_player_id = self.labyrinth.get_active_player_id()
-        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id == active_player_id
-
-
-class Bear:
-    turn_to_direction = {UP_TURN: 'up',
-                         DOWN_TURN: 'down',
-                         RIGHT_TURN: 'right',
-                         LEFT_TURN: 'left'}
-
+# Location.
+class Arsenal(LO):
     def main(self):
-        nonlocal turn
-        if turn in self.turn_to_direction:
-            direction = self.turn_to_direction[turn]
-            next_position = self.field.get_neighbour_location(self.get_parent_id(), direction)
-            if type(next_position) not in [GlobalWall, Wall, Outside]:
-                self.set_parent_id(next_position.get_object_id())
+        for player in self.field.get_players_in_location(self.get_object_id()):
+            player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
+            player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
-        # TODO: To make hole's sense.
 
-        for player in self.field.get_players_in_location(self.get_parent_id())
-            player.hurt()
+# Location.
+class FirstAidPost(LO):
+    def main(self):
+        for player in self.field.get_players_in_location(self.get_object_id()):
+            player.heal()

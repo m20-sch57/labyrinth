@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_weapons import Treasure
+
 
 # LabyrinthObject is class of prototypes that can be used to make everything in Field.
 class LabyrinthObject:
@@ -47,7 +47,7 @@ class ObjectID:
     def __init__(self, object_type, object_number):
         self.type = object_type
         self.number = object_number
-    # тип один из: location, item, player
+    # тип один из: location, item, player, NPC
 
     # This one helps to distinguish the differing and find the same objects.
     def __eq__(self, other):
@@ -56,6 +56,9 @@ class ObjectID:
         # Obviously it needs only to compare types and IDs
         return self.type == other.type and self.number == other.number
 
+    def __str__(self):
+        return 'ID<{}, {}>'.format(self.type, str(self.number))
+
 
 # Class of players of the game.
 # TODO: To code player's statuses.
@@ -63,36 +66,23 @@ class Player(LabyrinthObject):
     # On the level of program player is LabyrinthObject.
     def __init__(self, user_id):
         self.user_id = user_id
-        self.turn_set = {}  # На всякий случай
-        self.states = {}
+        self.turn_set = {}
         self.in_hands = set()
+
+    def __str__(self):
+        return 'Player<{}>'.format(self.user_id)
 
     def get_user_id(self):
         return self.user_id
 
-    def hurt(self):
-        for item_id in self.in_hands:
-            item = self.field.get_object(item_id)
-            if type(item) is Treasure:
-                item.drop(self.get_object_id())
 
-        if not self.states['hurt']:
-            self.states['hurt'] = True
-        else:
-            ind = self.get_object_id().number
-            self.set_object_id(ObjectID('dead_player', len(self.field.dead_players_list)))
-            self.field.dead_players_list.append(self)
-            del self.field.players_list[ind]
-            for i in range(ind, len(self.field.players_list)):
-                self.field.players_list[i].get_object_id().number = i
-            del self.parent_id
-            self.labyrinth.number_of_players -= 1
-            self.labyrinth.send_msg(DEATH_MSG, self.user_id)
+class NPC(LabyrinthObject):
+    pass
 
 
 # Class of ALL field (including players and items). There is only one field in every game.
 class Field:
-    def __init__(self, adjacence_list, locations_list, items_list, players_list):
+    def __init__(self, adjacence_list, locations_list, items_list, players_list, NPCs_list, dead_players_list=[]):
         # List of dicts of adjacences. It looks like [{'up': loc_above_id_num, 'down': under_id_num,
         # 'left': left_id_num, 'right': right_id_num}, ...]
         self.adjacence_list = adjacence_list
@@ -100,8 +90,8 @@ class Field:
         self.items_list = items_list
         # List of PLAYABLE players.
         self.players_list = players_list
-        self.hurt_players = set()
-        self.dead_players_list = []
+        self.dead_players_list = dead_players_list
+        self.NPCs_list = NPCs_list
 
         # раздаём всем id
         for i in range(len(self.locations_list)):
@@ -110,6 +100,8 @@ class Field:
             self.items_list[i].object_id = ObjectID('item', i)
         for i in range(len(self.players_list)):
             self.players_list[i].object_id = ObjectID('player', i)
+        for i in range(len(self.NPCs_list)):
+            self.NPCs_list[i].object_id = ObjectID('NPC', i)
 
     def get_neighbour_location(self, object_id, direction):
         if type(object_id) is not ObjectID or type(direction) is not str:
@@ -127,7 +119,8 @@ class Field:
         lists = {
             'location': self.locations_list,
             'item': self.items_list,
-            'player': self.players_list
+            'player': self.players_list,
+            'NPC': self.NPCs_list
         }
         return lists[object_id.type][object_id.number]
 
@@ -162,6 +155,7 @@ class Labyrinth:
                 location.turn_set
             except:
                 location.turn_set = {}
+
         for item in self.field.items_list:
             item.labyrinth = self
             item.field = self.field
@@ -173,11 +167,15 @@ class Labyrinth:
         for player in self.field.players_list:
             player.labyrinth = self
             player.field = self.field
+            player.states = INITIAL_STATES
 
-            player.states['is_fell'] = False
-            player.states['hurt'] = False
-            player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
-            player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
+        for npc in self.field.NPCs_list:
+            npc.labyrinth = self
+            npc.field = self.field
+            try:
+                npc.turn_set
+            except:
+                npc.turn_set = {}
 
     def make_turn(self, turn):
         to_do = []
@@ -190,12 +188,22 @@ class Labyrinth:
         for item in self.field.items_list:
             if turn in item.turn_set and item.turn_set[turn]['condition']():
                 to_do.append(item.turn_set[turn]['function'])
+        for player in self.field.players_list:
+            if turn in player.turn_set and player.turn_set[turn]['condition']():
+                to_do.append(player.turn_set[turn]['function'])
+        for npc in self.field.NPCs_list:
+            if turn in npc.turn_set and npc.turn_set[turn]['condition']():
+                to_do.append(npc.turn_set[turn]['function'])
         # if not to_do:
         #     raise ValueError('Invalid turn')
         for function in to_do:
             function()
 
         # Запускаем для всех объектов main-функцию
+        for player in self.field.players_list:
+            player.main()
+        for npc in self.field.NPCs_list:
+            npc.main()
         for location in self.field.locations_list:
             location.main()
         for item in self.field.items_list:

@@ -2,6 +2,34 @@ from Labyrinth.LS_CONSTS import *
 from Labyrinth.game import LabyrinthObject as LO, ObjectID as OID
 
 
+# Item.
+class Legs(LO):
+    def __init__(self):
+        self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
+        self.new_at(self.turn_move('down'), condition_function=self.condition, turn_name=DOWN_TURN)
+        self.new_at(self.turn_move('right'), condition_function=self.condition, turn_name=RIGHT_TURN)
+        self.new_at(self.turn_move('left'), condition_function=self.condition, turn_name=LEFT_TURN)
+
+    def turn_move(self, direction):
+        def move():
+            active_player = self.labyrinth.get_active_player()
+            next_position = self.field.get_neighbour_location(active_player.get_parent_id(), direction)
+            if type(next_position) in [GlobalWall, Wall, Outside]:
+                self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
+            else:
+                active_player.set_parent_id(next_position.get_object_id())
+        return move
+
+    def move(self, character, direction):
+        next_position = self.field.get_neighbour_location(character.get_parent_id(), direction)
+        if type(next_position) not in [GlobalWall, Wall, Outside]:
+            character.set_parent_id(next_position.get_object_id())
+
+    def condition(self):
+        return True
+
+
+# Location.
 class EmptyLocation(LO):
     used = {}
 
@@ -17,10 +45,12 @@ class EmptyLocation(LO):
                 self.labyrinth.send_msg(FIRST_ENTER_MSG, next_active_player.user_id)
 
 
+# Location.
 class Outside(LO):
     pass
 
 
+# Location.
 # Just prototype. But it's more useful than new Wall sometimes...
 class GlobalWall(LO):
     reverse_direction = {'up': 'down',
@@ -77,6 +107,7 @@ class GlobalWall(LO):
         self.field.adjacence_list[num_2][direction] = self_num
 
 
+# Location.
 class Wall(LO):
     def __init__(self, *args):
         if len(args) == 0:
@@ -102,40 +133,8 @@ class Wall(LO):
 
     def break_wall(self):
         for num in self.behind_the_wall:
-            for dir in self.behind_the_wall[num]:
-                neighbour_num = self.behind_the_wall[num][dir]
-                self.field.adjacence_list[num][dir] = neighbour_num
+            for direction in self.behind_the_wall[num]:
+                neighbour_num = self.behind_the_wall[num][direction]
+                self.field.adjacence_list[num][direction] = neighbour_num
 
         del self
-
-
-class Hole(LO):
-    def __init__(self, fall_to):
-        self.fall_to = fall_to  # type is ObjectID
-        self.new_at(function = self.go_into_hole, condition_function = self.condition, turn_name = INTO_TURN)
-
-    def main(self):
-        next_active_player = self.labyrinth.get_next_active_player()
-        active_player = self.labyrinth.get_active_player()
-
-        if active_player.get_parent_id() == self.get_object_id()\
-                and not active_player.states['is_fell']:
-            active_player.set_parent_id(self.fall_to)
-            if type(self.field.get_object(self.fall_to)) is Hole:
-                active_player.states['is_fell'] = True
-            self.labyrinth.send_msg(FALL_MSG, active_player.user_id)
-
-        if type(self.field.get_object(next_active_player.get_parent_id())) is not Hole:
-            next_active_player.states['is_fell'] = False
-
-    def go_into_hole(self):
-        active_player = self.labyrinth.get_active_player()
-        active_player.set_parent_id(self.fall_to)
-        self.labyrinth.send_msg(TROUGH_HOLE_MSG, active_player.user_id)
-
-    def condition(self):
-        active_player = self.labyrinth.get_active_player()
-        return active_player.get_parent_id() == self.get_object_id()
-
-
-# TODO: To code classes of: arsenal and first-aid post.
