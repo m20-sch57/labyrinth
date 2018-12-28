@@ -5,16 +5,16 @@
 		var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
 
 		socket.on('update', function(msg) {
-			var log = document.getElementById('log')
+			var players = document.getElementById('players')
 
-			log.innerHTML += ('<p>'+msg.event+'</p>')
+			players.innerHTML = ('<p>'+msg.players+'</p>')
 		});
 
 		socket.on('connect', function() {
 			socket.emit('player join', {'room_id': '{{ room_id }}'})
 		})
 	</script>
-	<div id="log">
-		<h1>Room {{ room_id }}</h1>
+	<h1>Room {{ room_id }}</h1>
+	<div id="players">
 	</div>
 {% endblock %}

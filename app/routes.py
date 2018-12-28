@@ -82,7 +82,7 @@ def create_room():
     def genereate_room_id(size):
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
     room_id = genereate_room_id(8)
-    dbase.add_room(room_id, 4, '', session.get('username'))
+    dbase.add_room(room_id, session.get('username'))
     return redirect(url_for('waiting_room', room_id=room_id))
 
 @app.route('/waiting_room/<room_id>')
@@ -92,14 +92,21 @@ def waiting_room(room_id):
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
     room_id = msg['room_id']
+    username = session.get('username')
+
+    join_room(room_id)
+    dbase.add_player(room_id, username)
+    emit('update', {'players': str(dbase.get_room_players(room_id))}, broadcast = True, room=room_id)
+
     session['room'] = room_id
-    join_room(session.get('room')) 
-    # print('{} enter into the room {}'.format(session.get('username'), session.get('room')))
-    emit('update', {'room_id': session.get('room'), 'event': session.get('username') + ' join'}, broadcast = True, room=session.get('room'))
 
 @socketio.on('disconnect', namespace='/wrws')
 def wrws_pl():
-    # print('{} leave room {}'.format(session.get('username'), session.get('room')))
-    leave_room(session.get('room'))
-    emit('update', {'room_id': session.get('room'), 'event': session.get('username') + ' leave'}, broadcast = True, room=session.get('room'))
+    room_id = session.get('room')
+    username = session.get('username')
+
+    leave_room(room_id)
+    dbase.remove_player(room_id, username)
+    emit('update', {'players': str(dbase.get_room_players(room_id))}, broadcast = True, room=room_id)
+
     session.pop('room', None)
