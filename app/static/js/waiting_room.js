@@ -1,33 +1,33 @@
-var changeNameInput = document.getElementById('room_name');
+function xhrOpen(eventType) {
+	var xhr = new XMLHttpRequest();
+
+	xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
+	xhr.setRequestHeader('Event-Type', eventType);
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+	return xhr;
+};
 function changeDescription(event) {
 	if (event.keyCode == 13){
-		var xhr = new XMLHttpRequest();
+		var xhr = xhrOpen('change_description');
 		var newDescription = document.getElementById('room_description');
 
-		xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
-		xhr.setRequestHeader('Event-Type', 'change_description');
-		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xhr.send("new_description=" + newDescription.value);	
 	};
 };
 function changeName(event) {
 	if (event.keyCode == 13){
-		var xhr = new XMLHttpRequest();
+		var xhr = xhrOpen('change_name');
 		var newName = document.getElementById('room_name');
 
-		xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
-		xhr.setRequestHeader('Event-Type', 'change_name');
-		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		xhr.send("new_name=" + newName.value);
 	};
 };
 function startGame() {
-	var xhr = new XMLHttpRequest();
+	var xhr = xhrOpen('start_game');
 
-	xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
-	xhr.setRequestHeader('Event-Type', 'start_game');
 	xhr.send();
-}
+};
 
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
 socket.on('update', function(msg) {
@@ -43,8 +43,10 @@ socket.on('update', function(msg) {
 		case 'change_description':
 			var description = document.getElementById('description');
 			description.innerHTML = ('Description: ' + msg.description);
+			break;
 		case 'start_game':
 			document.location.href = document.getElementById('info').getAttribute('redirect');
+			break;
 	};
 });
 socket.on('connect', function() {
