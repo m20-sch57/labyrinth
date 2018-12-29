@@ -87,6 +87,10 @@ def create_room():
 
 
 
+@app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+def game_room(room_id):
+    return render_template('game_room.html', room=dbase.get_room(room_id))
+
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
 def waiting_room(room_id):
     if request.method == 'POST':
@@ -100,6 +104,8 @@ def waiting_room(room_id):
             description = request.form.get('new_description')
             dbase.set_description(room_id, description)
             emit('update', {'event': 'change_description', 'description': description}, broadcast=True, room=room_id, namespace='/wrws')
+        elif event_type == 'start_game':
+            emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
     
     username = session.get('username')
     return render_template('waiting_room.html', room=dbase.get_room(room_id), user=username)

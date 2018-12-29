@@ -21,6 +21,13 @@ function changeName(event) {
 		xhr.send("new_name=" + newName.value);
 	};
 };
+function startGame() {
+	var xhr = new XMLHttpRequest();
+
+	xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
+	xhr.setRequestHeader('Event-Type', 'start_game');
+	xhr.send();
+}
 
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
 socket.on('update', function(msg) {
@@ -35,7 +42,9 @@ socket.on('update', function(msg) {
 			break;
 		case 'change_description':
 			var description = document.getElementById('description');
-			description.innerHTML = ('Description: ' + msg.description)
+			description.innerHTML = ('Description: ' + msg.description);
+		case 'start_game':
+			document.location.href = document.getElementById('info').getAttribute('redirect');
 	};
 });
 socket.on('connect', function() {
@@ -46,4 +55,7 @@ var changeNameInput = document.getElementById('room_name');
 changeNameInput.onkeydown = changeName;
 
 var changeDescriptionInput = document.getElementById('room_description');
-changeDescriptionInput.onkeydown = changeDescription
+changeDescriptionInput.onkeydown = changeDescription;
+
+var startButton = document.getElementById('start_button');
+startButton.onclick = startGame;
