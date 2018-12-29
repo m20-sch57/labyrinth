@@ -117,7 +117,7 @@ def wrws_pj(msg):
 
     join_room(room_id)
     dbase.add_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': str(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
+    emit('update', {'event': 'player_enter_or_leave', 'players': ', '.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session['room'] = room_id
 

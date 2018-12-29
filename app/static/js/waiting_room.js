@@ -10,17 +10,17 @@ function xhrOpen(eventType) {
 function changeDescription(event) {
 	if (event.keyCode == 13){
 		var xhr = xhrOpen('change_description');
-		var newDescription = document.getElementById('room_description');
+		var newDescription = document.getElementById('room_description').value;
 
-		xhr.send("new_description=" + newDescription.value);	
+		xhr.send("new_description=" + newDescription);	
 	};
 };
 function changeName(event) {
 	if (event.keyCode == 13){
 		var xhr = xhrOpen('change_name');
-		var newName = document.getElementById('room_name');
+		var newName = document.getElementById('room_name').value;
 
-		xhr.send("new_name=" + newName.value);
+		xhr.send("new_name=" + newName);
 	};
 };
 function startGame() {
@@ -32,13 +32,13 @@ function startGame() {
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
 socket.on('update', function(msg) {
 	switch (msg.event) {
-		case 'player_enter_or_leave' :
-			var players = document.getElementById('players');
-			players.innerHTML = ('Players: ' + JSON.parse(msg.players).join(', '));
-			break;
 		case 'change_name':
 			var title = document.getElementById('title');
 			title.innerHTML = ('Room ' + msg.name);
+			break;
+		case 'player_enter_or_leave' :
+			var players = document.getElementById('players');
+			players.innerHTML = ('Players: ' + msg.players);
 			break;
 		case 'change_description':
 			var description = document.getElementById('description');

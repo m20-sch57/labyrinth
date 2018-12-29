@@ -4,7 +4,7 @@
 	<div id='info' room_id="{{ room['room_id'] }}" post="{{ url_for('waiting_room', room_id=room['room_id']) }}" redirect="{{ url_for('game_room', room_id=room['room_id']) }}"></div>
 	<h1 id="title">Room {{ room['name'] }}</h1>
 	<p id='description'>Description: {{ room['description'] }}</p>
-	<p id="players"></p>
+	<p id="players">Players: </p>
 	{% if room['creator']==user %}
 		Имя комнаты: <input type="text" id="room_name"/>
 		Описание:    <textarea id="room_description"></textarea>
