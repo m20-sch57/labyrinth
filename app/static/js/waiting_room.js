@@ -34,7 +34,7 @@ socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'player_enter_or_leave' :
 			var players = document.getElementById('players');
-			players.innerHTML = ('Players: ' + msg.players);
+			players.innerHTML = ('Players: ' + JSON.parse(msg.players).join(', '));
 			break;
 		case 'change_name':
 			var title = document.getElementById('title');
