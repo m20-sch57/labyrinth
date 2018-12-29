@@ -10,7 +10,9 @@ class Database:
         self.cursor = self.conn.cursor()
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS users (
             login VARCHAR(32) PRIMARY KEY, 
-            password_hash VARCHAR(40)
+            password_hash VARCHAR(40),
+            room_id CHAR(8),
+            FOREIGN KEY (room_id) REFERENCES rooms (room_id)
             )''')
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
@@ -22,7 +24,6 @@ class Database:
             room_id CHAR(8) PRIMARY KEY, 
             name VARCHAR(128),
             creator VARCHAR(32),
-            players_set TEXT,
             settings TEXT, 
             description TEXT, 
             create_date DATETIME,
@@ -46,17 +47,17 @@ class Database:
         if self.user_login_in_table(login):
             return False
         else:
-            self.cursor.execute("INSERT INTO users (login, password_hash) VALUES (?, ?)", (login, password_hash))
+            self.cursor.execute("INSERT INTO users (login, password_hash, room_id) VALUES (?, ?, NULL)", (login, password_hash))
             self.conn.commit()
             return True
 
 
-    def get_user(self, login):
-        self.cursor.execute('SELECT * FROM users WHERE login=?', (login,))
+    def get_user(self, user_id):
+        self.cursor.execute('SELECT * FROM users WHERE login=?', (user_id,))
         return self.cursor.fetchone()
 
-    def get_user_password_hash(self, login):
-        return self.get_user(login)[1] # password_hash
+    def get_user_password_hash(self, user_id):
+        return self.get_user(user_id)[1] # password_hash
 
 
     def set_user_login(self, user_id, login):
@@ -68,7 +69,11 @@ class Database:
             return True
 
     def set_user_password_hash(self, user_id, password_hash):
-        self.cursor.execute('UPDATE users SET password_hash=? WHERE user_id=?', (password_hash, str(user_id)))
+        self.cursor.execute('UPDATE users SET password_hash=? WHERE login=?', (password_hash, str(user_id)))
+        self.conn.commit()
+
+    def set_user_room(self, user_id, room_id):
+        self.cursor.execute('UPDATE users SET room_id=? WHERE login=?', (room_id, user_id))
         self.conn.commit()
 
 
@@ -83,24 +88,23 @@ class Database:
 
     ''' 
     def parse_room(self, room):
-        players_set = set(room[3].split(','))
-        if len(room[3]) == 0:
-            players_set = set()
+        self.cursor.execute('SELECT * FROM users WHERE room_id=?', (room[0],))
+        players_set = set(map(lambda user: user[0], self.cursor.fetchall()))
         room_dir = {
             'room_id': room[0],
             'name': room[1],
             'creator': room[2],
             'players_set': players_set,
-            'settings': room[4],
-            'description': room[5],
-            'create_date': room[6]
+            'settings': room[3],
+            'description': room[4],
+            'create_date': room[5]
         }
         return room_dir
 
     def add_room(self, room_id, creator_id):
         crid = creator_id
-        self.cursor.execute('''INSERT INTO rooms (room_id, name, creator, players_set, create_date) 
-            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid, crid))
+        self.cursor.execute('''INSERT INTO rooms (room_id, name, creator, create_date) 
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid))
         self.conn.commit()
 
     def get_room(self, room_id):
@@ -154,21 +158,10 @@ class Database:
 
 
     def add_player(self, room_id, user_id):
-        players_set = self.get_room_players(room_id) # set of user_id
-        players_set.add(str(user_id)) # add new user_id to list
-        self.cursor.execute('UPDATE rooms SET players_set=? WHERE room_id=?', 
-            (','.join(list(players_set)), room_id)) # convert into TEXT format
-
-        self.conn.commit()
+        self.set_user_room(user_id, room_id)
        
     def remove_player(self, room_id, user_id):
-        players_set = self.get_room_players(room_id) # set of user_id
-        players_set.discard(str(user_id)) # discart player with respective user_id
-        self.cursor.execute('UPDATE rooms SET players_set=?  WHERE room_id=?', 
-            (','.join(list(players_set)), room_id)) # convert into TEXT format
-
-        self.conn.commit()     
-
+        self.set_user_room(user_id, 'NULL') 
 
 
     '''
