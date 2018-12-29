@@ -137,4 +137,9 @@ class Wall(LO):
                 neighbour_num = self.behind_the_wall[num][direction]
                 self.field.adjacence_list[num][direction] = neighbour_num
 
+        ind = self.get_object_id().number
+        del self.field.locations_list[ind]
+        for i in range(ind, len(self.field.locations_list)):
+            self.field.locations_list[i].get_object_id().number = i
+        del self.field.adjacence_list[ind]
         del self

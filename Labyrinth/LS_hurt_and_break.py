@@ -3,7 +3,7 @@ from Labyrinth.game import LabyrinthObject as LO, ObjectID, Player, NPC
 from Labyrinth.LS_move_and_bump import GlobalWall, Wall, Outside
 
 
-INITIAL_STATES['hurt'] = False,
+INITIAL_STATES['hurt'] = False
 INITIAL_STATES['count_of_bullets'] = 3
 INITIAL_STATES['count_of_bombs'] = 3
 

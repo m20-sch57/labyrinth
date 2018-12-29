@@ -5,7 +5,7 @@ from Labyrinth.game import LabyrinthObject as LO
 # Item.
 class Treasure(LO):
     def __init__(self, is_true):
-        Treasure.is_true = is_true
+        self.is_true = is_true
 
         self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
         self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
@@ -52,4 +52,4 @@ class Treasure(LO):
 
     def drop_condition(self):
         active_player_id = self.labyrinth.get_active_player_id()
-        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id == active_player_id
+        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id() == active_player_id

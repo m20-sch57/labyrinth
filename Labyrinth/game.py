@@ -1,3 +1,4 @@
+from copy import copy
 from Labyrinth.LS_CONSTS import *
 
 
@@ -135,6 +136,8 @@ class Field:
         return list(map(lambda p: p.get_object_id(),
                         filter(lambda player: player.get_parent_id() == object_id, self.players_list)))
 
+    # TODO: def pop(self, object_id):
+
 
 # Class of Labyrinths.
 class Labyrinth:
@@ -167,7 +170,7 @@ class Labyrinth:
         for player in self.field.players_list:
             player.labyrinth = self
             player.field = self.field
-            player.states = INITIAL_STATES
+            player.states = copy(INITIAL_STATES)
 
         for npc in self.field.NPCs_list:
             npc.labyrinth = self

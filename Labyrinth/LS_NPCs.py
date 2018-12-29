@@ -20,6 +20,9 @@ class Bear(NPC):
                 self.set_parent_id(next_position.get_object_id())
         return move
 
+    def condition(self):
+        return True
+
     def main(self):
         for player in self.field.get_players_in_location(self.get_parent_id()):
             player.hurt()

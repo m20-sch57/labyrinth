@@ -12,7 +12,7 @@ def send_msg_func(msg, user_id):
 
 # ------------------------------------------------
 locations_list = [Outside()]
-locations_list += [EmptyLocation() for _ in range(6)]
+locations_list += [EmptyLocation() for _ in range(8)]
 locations_list.append(Wall([
     (1, 'right'),
     (2, 'left')
@@ -21,35 +21,43 @@ locations_list.append(Wall([
     (5, 'right'),
     (6, 'left')
                             ]))
-locations_list[2] = Hole(ObjectID('location', 6))
-locations_list[6] = Hole(ObjectID('location', 2))
+locations_list[2] = Hole(ObjectID('location', 7))
+locations_list[7] = Hole(ObjectID('location', 2))
+locations_list[4] = Arsenal()
+locations_list[8] = FirstAidPost()
 # -------------------------------------------------
 adjacence_list = [{},
-                  {'up': 0, 'down': 4, 'right': 7, 'left': 0},
-                  {'up': 0, 'down': 5, 'right': 3, 'left': 7},
-                  {'up': 0, 'down': 6, 'right': 0, 'left': 2},
-                  {'up': 1, 'down': 0, 'right': 5, 'left': 0},
-                  {'up': 2, 'down': 0, 'right': 8, 'left': 4},
-                  {'up': 3, 'down': 0, 'right': 0, 'left': 8},
+                  {'up': 0, 'down': 5, 'right': 9, 'left': 0},
+                  {'up': 0, 'down': 6, 'right': 3, 'left': 9},
+                  {'up': 0, 'down': 7, 'right': 4, 'left': 2},
+                  {'up': 0, 'down': 8, 'right': 0, 'left': 3},
+                  {'up': 1, 'down': 0, 'right': 6, 'left': 0},
+                  {'up': 2, 'down': 0, 'right': 10, 'left': 5},
+                  {'up': 3, 'down': 0, 'right': 8, 'left': 10},
+                  {'up': 4, 'down': 0, 'right': 0, 'left': 7},
                   {},
                   {}]
 
 # OutSide = 0
-# ┌───┬───────┐
-# │ 1 │ 2   3 │
-# │           │
-# │ 4   5 │ 6 │
-# └───────┴───┘
-# HOLES:  2↔6
+# ┌───┬───────────┐
+# │ 1 │ 2   3   4 │
+# │               │
+# │ 5   6 │ 7   8 │
+# └───────┴───────┘
+# HOLES:  2↔7
 
 # -------------------------------------------------
-items_list = [Legs(), Gun(), Bomb()]
+tres = Treasure(True)
+tres.set_parent_id(ObjectID('location', 3))
+bear = Bear()
+bear.set_parent_id(ObjectID('location', 4))
+items_list = [Legs(), Gun(), Bomb(), tres, bear]
 # -------------------------------------------------
-P = Player('player #1')
-Prey = Player('prey')
-P.set_parent_id(ObjectID('location', 1))
-Prey.set_parent_id(ObjectID('location', 4))
-players_list = [P]
+player = Player('player #1')
+prey = Player('prey')
+player.set_parent_id(ObjectID('location', 1))
+prey.set_parent_id(ObjectID('location', 5))
+players_list = [player]
 # -------------------------------------------------
 NPCs_list = []
 
@@ -64,5 +72,9 @@ while True:
     print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number,
           MyLab.get_active_player().get_parent_id().type)
     # print(field.locations_list[-1].behind_the_wall)
+    print(field.locations_list)
+    print(field.adjacence_list)
+    print(MyLab.get_active_player().states)
+    print(bear.get_parent_id())
     print(', '.join(MyLab.get_active_player_ats()))
     MyLab.make_turn(input('(' + MyLab.get_active_player().get_user_id() + ') '))
