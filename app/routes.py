@@ -93,11 +93,16 @@ def waiting_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'change_name':
-            room_name = request.form.get('new_name')
-            dbase.set_room_name(room_id, room_name)
-            emit('update', {'event': 'change_name', 'room_name': room_name}, broadcast=True, room=room_id, namespace='/wrws')
-            
-    return render_template('waiting_room.html', room_id=room_id, room_name=dbase.get_room_name(room_id))
+            name = request.form.get('new_name')
+            dbase.set_room_name(room_id, name)
+            emit('update', {'event': 'change_name', 'name': name}, broadcast=True, room=room_id, namespace='/wrws')
+        elif event_type == 'change_description':
+            description = request.form.get('new_description')
+            dbase.set_description(room_id, description)
+            emit('update', {'event': 'change_description', 'description': description}, broadcast=True, room=room_id, namespace='/wrws')
+    
+    username = session.get('username')
+    return render_template('waiting_room.html', room=dbase.get_room(room_id), user=username)
 
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):

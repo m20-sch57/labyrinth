@@ -1,10 +1,13 @@
 {% extends "base_with_header.html" %}
 
 {% block content %}
-	<div id='info' room_id='{{ room_id }}' post="{{ url_for('waiting_room', room_id=room_id) }}"></div>
-	<h1 id="title">Room {{ room_name }}</h1>
-	<div id="players">
-	</div>
-	Имя комнаты:<input type="text" id="room_name"/>
+	<div id='info' room_id="{{ room['room_id'] }}" post="{{ url_for('waiting_room', room_id=room['room_id']) }}"></div>
+	<h1 id="title">Room {{ room['name'] }}</h1>
+	<p id='description'>Description: {{ room['description'] }}</p>
+	<p id="players"></p>
+	{% if room['creator']==user %}
+		Имя комнаты:<input type="text" id="room_name"/>
+		Описание:<textarea id="room_description"></textarea>
+	{% endif %}
 	<script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
 {% endblock %}
