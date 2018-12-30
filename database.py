@@ -23,6 +23,7 @@ class Database:
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
             room_id CHAR(8) PRIMARY KEY, 
             name VARCHAR(128),
+            players_in_game TEXT,
             creator VARCHAR(32),
             settings TEXT, 
             description TEXT, 
@@ -93,18 +94,19 @@ class Database:
         room_dir = {
             'room_id': room[0],
             'name': room[1],
-            'creator': room[2],
+            'creator': room[3],
+            'players_in_game': room[4]
             'players_set': players_set,
-            'settings': room[3],
-            'description': room[4],
-            'create_date': room[5]
+            'settings': room[4],
+            'description': room[5],
+            'create_date': room[6]
         }
         return room_dir
 
     def add_room(self, room_id, creator_id):
         crid = creator_id
-        self.cursor.execute('''INSERT INTO rooms (room_id, name, creator, create_date) 
-            VALUES (?, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid))
+        self.cursor.execute('''INSERT INTO rooms (room_id, players_in_game, name, creator, create_date) 
+            VALUES (?, NULL, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid))
         self.conn.commit()
 
     def get_room(self, room_id):
@@ -163,6 +165,12 @@ class Database:
     def remove_player(self, room_id, user_id):
         self.set_user_room(user_id, 'NULL') 
 
+
+    def start_game(self, room_id):
+        self.cursor.execute('UPDATE rooms SET players_in_game=? WHERE room_id=?', (','.join(self.get_room_players(room_id)), room_id))
+
+    def end_game(self, room_id):
+        self.cursor.execute('UPDATE rooms SET players_in_game=NULL WHERE room_id=?', (room_id,))
 
     '''
     maps functions
