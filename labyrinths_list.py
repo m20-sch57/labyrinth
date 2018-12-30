@@ -9,7 +9,7 @@ class LabyrinthsList:
 
 
 	def get_labyrinth(room_id):
-		return self.list(room_id)
+		return self.list[room_id]
 
 
 	def add_labyrinth(room_id, labyrinth):
