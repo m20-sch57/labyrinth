@@ -1,4 +1,4 @@
-{% extends "base_with_header.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 	<div id='info' room_id="{{ room['room_id'] }}" post="{{ url_for('waiting_room', room_id=room['room_id']) }}" redirect="{{ url_for('game_room', room_id=room['room_id']) }}"></div>

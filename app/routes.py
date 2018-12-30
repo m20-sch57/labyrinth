@@ -25,7 +25,7 @@ def login():
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login.html')
+    return render_template('login_register/login.html')
 
 
 @app.route('/logout')
@@ -45,7 +45,7 @@ def register():
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('register.html')
+    return render_template('login_register/register.html')
 
 
 @app.route('/login_failed')
@@ -55,7 +55,7 @@ def login_failed():
 
 @app.route('/register_failed')
 def register_failed():
-    return render_template('register_failed.html')
+    return render_template('login_register/register_failed.html')
 
 
 @app.route('/profile')
@@ -69,7 +69,7 @@ def room_list(page):
     if request.method == 'POST':
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
-    return render_template('room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page()[int(page)])
+    return render_template('rooms/room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page()[int(page)])
 
 
 @app.route('/rules')
@@ -89,7 +89,7 @@ def create_room():
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
 def game_room(room_id):
-    return render_template('game_room.html', room=dbase.get_room(room_id))
+    return render_template('rooms/game_room.html', room=dbase.get_room(room_id))
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
 def waiting_room(room_id):
@@ -108,7 +108,7 @@ def waiting_room(room_id):
             emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
     
     username = session.get('username')
-    return render_template('waiting_room.html', room=dbase.get_room(room_id), user=username)
+    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), user=username)
 
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
