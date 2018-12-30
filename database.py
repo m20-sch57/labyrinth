@@ -95,7 +95,7 @@ class Database:
             'room_id': room[0],
             'name': room[1],
             'creator': room[3],
-            'players_in_game': room[4]
+            'players_in_game': room[2]
             'players_set': players_set,
             'settings': room[4],
             'description': room[5],
