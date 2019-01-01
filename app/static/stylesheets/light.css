@@ -81,3 +81,55 @@ html, body {
 	border: solid 1px rgb(255, 100, 100);
 	color: rgb(255, 10, 10);
 }
+
+.action-link { 
+  display: block;
+  text-decoration: None;
+}
+
+.action-link:hover {
+  background: rgb(128, 128, 255);
+  color: rgb(230, 230, 230);
+}
+
+.room-name { 
+  width: 20%;
+  background: rgb(230, 230, 230);
+  position: absolute;
+  top: 0%;
+  left: 40%;
+  text-align: center;
+}
+
+.player-list {
+  width: 33%;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  overflow: auto;
+  border: 1px solid rgb(200, 200, 200);
+}
+
+#room-info {
+  width: 33%;
+  position: absolute;
+  top: 0%;
+  left: 33.5%;
+}
+
+.room-data-wrapper {
+  background: rgb(230, 230, 230);
+  color: rgb(128, 128, 255);
+  position: absolute;
+  top: 20%;
+  height: 50%;
+  width: 60%;
+  left: 20%;
+  font-family: Verdana;
+}
+
+.room-actions {
+  position: absolute;
+  left: 67%;
+  width: 33%;
+}
