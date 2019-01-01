@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div id='main'>
+		<div>
+			<form action="{{ url_for('create_room') }}">
+				<button class='enter_button'>Create room!</button>
+			</form>
+		</div>
+		<div class='rooms'>
+			{% for room in pager %}
+				<div class='room'>
+					<h3>Комната {{ room['name'] }}</h3>
+					<form action="{{ url_for('room_list', page=0) }}" method='post' class='join_form'>
+						<button value="{{ room['room_id'] }}" name='join_button'>Join!</button>
+					</form>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
