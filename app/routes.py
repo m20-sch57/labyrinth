@@ -108,26 +108,28 @@ def waiting_room(room_id):
             emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
     
     username = session.get('username')
-    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), user=username)
+    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, show_header=True)
 
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
+    print('connect')
     room_id = msg['room_id']
     username = session.get('username')
 
     join_room(room_id)
     dbase.add_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ', '.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session['room'] = room_id
 
 @socketio.on('disconnect', namespace='/wrws')
 def wrws_pl():
+    print('disconnect')
     room_id = session.get('room')
     username = session.get('username')
 
     leave_room(room_id)
     dbase.remove_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': str(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session.pop('room', None)

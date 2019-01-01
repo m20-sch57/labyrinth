@@ -34,11 +34,14 @@ socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'change_name':
 			var title = document.getElementById('title');
-			title.innerHTML = ('Room ' + msg.name);
+			title.innerHTML = (msg.name);
 			break;
-		case 'player_enter_or_leave' :
-			var players = document.getElementById('players');
-			players.innerHTML = ('Players: ' + msg.players);
+		case 'player_enter_or_leave':
+			var player_list = document.getElementById('player_list');
+			player_list.innerHTML = '';
+			for (var i = 0; i < msg.players.split(',').length; i++) {
+				player_list.innerHTML += ("<p class='player'>" + msg.players.split(',')[i] + "</p><hr>")
+			};
 			break;
 		case 'change_description':
 			var description = document.getElementById('description');
