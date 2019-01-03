@@ -3,6 +3,16 @@
 from app import app, dbase
 from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
+from functools import wraps
+
+def login_required(f):
+  @wraps(f)
+  def wrapped():
+    if session.get('username') == None:
+      return redirect(url_for('index'))
+    else: 
+      return f
+  return wrapped
 
 
 @app.route('/')
@@ -31,6 +41,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
@@ -64,6 +75,7 @@ def register_failed():
 
 
 @app.route('/profile')
+@login_required
 def profile():
     username = session.get('username')
     user = dbase.get_user(username)
@@ -88,6 +100,7 @@ def room_list(page):
 
 
 @app.route('/room/<room_id>')
+@login_required
 def room(room_id):
     current_room = dbase.get_room_by_link(room_id)
     print(room_id)
