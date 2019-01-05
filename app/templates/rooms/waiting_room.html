@@ -4,24 +4,24 @@
   <div id='info' room_id="{{ room['room_id'] }}" post="{{ url_for('waiting_room', room_id=room['room_id']) }}" redirect="{{ url_for('game_room', room_id=room['room_id']) }}"></div>
 
   <header class="room-name" id="title">{{ room['name'] }}</header>
-  <div class='room-data-wrapper'>
-    <div class='player-list' id='player_list'>
+  <div class="room-data-wrapper">
+    <div class="player-list" id="player_list">
       {% for player in room['players_set'] %}
-      <p class='player'>
+      <p class="player">
         {{ player }}
       </p>
       <hr>
       {% endfor %}
     </div>
-    <div id='room-info'>
+    <div id="room-info">
       <p>Создана {{ room['create_date'] }} пользователем {{ room['creator'] }}</p>
-      <p id='description'>Description: {{ room['description'] }}</p>
+      <p id="description">Description: {{ room['description'] }}</p>
     </div>
-    <div class='room-actions'>
-      <a class='action-link' href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
+    <div class="room-actions">
+      <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
       {% if room['creator']==username %}
-        <a class='action-link' href="">УДАЛИТЬ КОМНАТУ</a><br>
-        <a class='action-link' href="">НАЧАТЬ ИГРУ</a><br>
+        <a class="action-link" href="">УДАЛИТЬ КОМНАТУ</a><br>
+        <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
         <span class='action-link'>НАСТРОЙКИ КОМНАТЫ</span><br>
         Имя комнаты:<input type="text" id="room_name"/>
         Описание:<textarea id="room_description"></textarea>

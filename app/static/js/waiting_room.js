@@ -40,7 +40,7 @@ socket.on('update', function(msg) {
 			var player_list = document.getElementById('player_list');
 			player_list.innerHTML = '';
 			for (var i = 0; i < msg.players.split(',').length; i++) {
-				player_list.innerHTML += ("<p class='player'>" + msg.players.split(',')[i] + "</p><hr>")
+				player_list.innerHTML += ('<p class="player">' + msg.players.split(',')[i] + '</p><hr>')
 			};
 			break;
 		case 'change_description':

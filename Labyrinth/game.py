@@ -114,6 +114,7 @@ class Labyrinth:
 
 
 	def make_turn(self, turn):
+		self.to_send = {player.user_id:'' for player in self.field.players_list}
 		to_do = []
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
@@ -137,11 +138,6 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.field.players_list)
 
-		#возвращаем все сообщения, которые нужно отправить, обнуляем to_send
-		for_return = self.to_send
-		self.to_send = {player.user_id:'' for player in self.field.players_list}
-		return for_return
-
 
 	def get_active_player(self):
 		return self.field.players_list[self.active_player_number]
@@ -162,3 +158,7 @@ class Labyrinth:
 				if item.turn_set[turn]['condition']():
 					active_player_ats.append(turn)		
 		return active_player_ats
+
+	# возвращает сообщение, которое надо отправить пользователю user_id
+	def player_to_send(self, user_id):
+		return self.to_send[user_id]

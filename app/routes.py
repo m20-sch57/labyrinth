@@ -1,11 +1,14 @@
 #encoding: utf-8
 
-from app import app, dbase, socketio
+from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
 from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
 import random
 import string
+
+from labyrinth_test import generate_labyrinth
+
 
 
 @app.route('/')
@@ -86,11 +89,6 @@ def create_room():
     return redirect(url_for('waiting_room', room_id=room_id))
 
 
-
-@app.route('/game_room/<room_id>', methods=['POST', 'GET'])
-def game_room(room_id):
-    return render_template('rooms/game_room.html', room=dbase.get_room(room_id))
-
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
 def waiting_room(room_id):
     if request.method == 'POST':
@@ -105,14 +103,38 @@ def waiting_room(room_id):
             dbase.set_description(room_id, description)
             emit('update', {'event': 'change_description', 'description': description}, broadcast=True, room=room_id, namespace='/wrws')
         elif event_type == 'start_game':
+            labyrinth = generate_labyrinth(dbase.get_room_players(room_id))
+            labyrinths_list.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
     
     username = session.get('username')
-    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, show_header=True)
+    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, hide_header=True)
 
+
+@app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+def game_room(room_id):
+    username = session.get('username')
+    labyrinth = labyrinths_list.get_labyrinth(room_id)
+    if request.method == 'POST':
+        event_type = request.headers.get('Event-Type')
+
+        if event_type == 'update':
+            msg = labyrinth.player_to_send(username)
+            if labyrinth.get_active_player_user_id() == username:
+                return 'y' + msg
+            else:
+                return 'n' + msg
+        elif event_type == 'turn':
+            if labyrinth.get_active_player_user_id() == username:
+                turn = request.form.get('turn')
+                labyrinth.make_turn(turn)
+                emit('update', {'event': 'player_make_turn'}, broadcast=True, room=room_id, namespace='/grws')
+    
+    return render_template('rooms/game_room.html', room=dbase.get_room(room_id), username=username, hide_header=True)
+
+@socketio.on('player join', namespace='/grws')  
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
-    print('connect')
     room_id = msg['room_id']
     username = session.get('username')
 
@@ -124,7 +146,6 @@ def wrws_pj(msg):
 
 @socketio.on('disconnect', namespace='/wrws')
 def wrws_pl():
-    print('disconnect')
     room_id = session.get('room')
     username = session.get('username')
 
