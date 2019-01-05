@@ -6,6 +6,16 @@ from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
 import random
 import string
+from functools import wraps
+
+def login_required(f):
+    @wraps(f)
+        def wrapped(*args, **kwargs):
+            if session.get('username') == None:
+                return redirect(url_for('index'))
+        else: 
+            return f
+    return wrapped
 
 
 @app.route('/')
@@ -29,6 +39,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
@@ -59,6 +70,7 @@ def register_failed():
 
 
 @app.route('/profile')
+@login_required
 def profile():
     username = session.get('username')
     return render_template('profile.html', username=session.get('username'))
@@ -78,6 +90,7 @@ def rules():
 
 
 @app.route('/create_room')
+@login_required
 def create_room():
     def genereate_room_id(size):
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -88,10 +101,12 @@ def create_room():
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def game_room(room_id):
     return render_template('rooms/game_room.html', room=dbase.get_room(room_id))
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
