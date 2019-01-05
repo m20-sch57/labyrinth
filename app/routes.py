@@ -7,7 +7,7 @@ from functools import wraps
 
 def login_required(f):
   @wraps(f)
-  def wrapped():
+  def wrapped(*args, **kwargs):
     if session.get('username') == None:
       return redirect(url_for('index'))
     else: 
