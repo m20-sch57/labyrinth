@@ -90,6 +90,7 @@ def rules():
 
 
 @app.route('/create_room')
+@login_required
 def create_room():
     def genereate_room_id(size):
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -100,10 +101,12 @@ def create_room():
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def game_room(room_id):
     return render_template('rooms/game_room.html', room=dbase.get_room(room_id))
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
