@@ -105,3 +105,6 @@ venv.bak/
 
 # PyCharm env
 .idea/
+
+# Database. let it always be empty
+database.db

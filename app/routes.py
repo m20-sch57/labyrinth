@@ -1,8 +1,11 @@
 #encoding: utf-8
 
-from app import app, dbase
+from app import app, dbase, socketio
+from flask_socketio import emit, join_room, leave_room
 from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
+import random
+import string
 from functools import wraps
 
 def login_required(f):
@@ -27,17 +30,12 @@ def login():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        user = dbase.get_user(username)
-        print(user)
-        if user is None:
-            return redirect(url_for('login_failed'))
-
-        if user[1] != sha1(password.encode('utf-8')).hexdigest():
+        if not dbase.user_login_in_table(username) or dbase.get_user_password_hash(username) != sha1(password.encode('utf-8')).hexdigest():
             return redirect(url_for('login_failed'))
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login.html')
+    return render_template('login_register/login.html')
 
 
 @app.route('/logout')
@@ -53,15 +51,12 @@ def register():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        user = dbase.get_user(username)
-        if user is not None:
+        if not dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest()):
             return redirect(url_for('register_failed'))
-
-        dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest())
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('register.html')
+    return render_template('login_register/register.html')
 
 
 @app.route('/login_failed')
@@ -71,45 +66,82 @@ def login_failed():
 
 @app.route('/register_failed')
 def register_failed():
-    return render_template('register_failed.html')
+    return render_template('login_register/register_failed.html')
 
 
 @app.route('/profile')
 @login_required
 def profile():
     username = session.get('username')
-    user = dbase.get_user(username)
     return render_template('profile.html', username=session.get('username'))
 
 
-#Ð±Ñ‹Ð²ÑˆÐµÐµ /choose_your_room
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
 def room_list(page):
     if request.method == 'POST':
-        joinlink = request.form.get('joinlink')
-        players = request.form.get('players')
-        username = session.get('username')
-        if players:
-            dbase.add_room(joinlink, players, '', username)
-        else:
-            joinlink = request.form.get('roomlink')
-        return redirect(url_for('room', room_id=joinlink))
-    pages = dbase.get_pages()
-    pagen = int(page)
-    return render_template('room_list.html', username=session.get('username'), pager=pages[pagen])
-
-
-@app.route('/room/<room_id>')
-@login_required
-def room(room_id):
-    current_room = dbase.get_room_by_link(room_id)
-    print(room_id)
-    username = session.get('username')
-    dbase.add_player(room_id, username)
-    print(current_room)
-    return render_template('room_list.html', username=session.get('username'))
+        room_id = request.form.get('join_button')
+        return redirect(url_for('waiting_room', room_id=room_id))
+    return render_template('rooms/room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page()[int(page)])
 
 
 @app.route('/rules')
 def rules():
     return render_template('rules.html', is_enter=True)
+
+
+@app.route('/create_room')
+def create_room():
+    def genereate_room_id(size):
+        return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    room_id = genereate_room_id(8)
+    dbase.add_room(room_id, session.get('username'))
+    return redirect(url_for('waiting_room', room_id=room_id))
+
+
+
+@app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+def game_room(room_id):
+    return render_template('rooms/game_room.html', room=dbase.get_room(room_id))
+
+@app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
+def waiting_room(room_id):
+    if request.method == 'POST':
+        event_type = request.headers.get('Event-Type')
+
+        if event_type == 'change_name':
+            name = request.form.get('new_name')
+            dbase.set_room_name(room_id, name)
+            emit('update', {'event': 'change_name', 'name': name}, broadcast=True, room=room_id, namespace='/wrws')
+        elif event_type == 'change_description':
+            description = request.form.get('new_description')
+            dbase.set_description(room_id, description)
+            emit('update', {'event': 'change_description', 'description': description}, broadcast=True, room=room_id, namespace='/wrws')
+        elif event_type == 'start_game':
+            emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
+    
+    username = session.get('username')
+    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, show_header=True)
+
+@socketio.on('player join', namespace='/wrws')
+def wrws_pj(msg):
+    print('connect')
+    room_id = msg['room_id']
+    username = session.get('username')
+
+    join_room(room_id)
+    dbase.add_player(room_id, username)
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
+
+    session['room'] = room_id
+
+@socketio.on('disconnect', namespace='/wrws')
+def wrws_pl():
+    print('disconnect')
+    room_id = session.get('room')
+    username = session.get('username')
+
+    leave_room(room_id)
+    dbase.remove_player(room_id, username)
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
+
+    session.pop('room', None)
