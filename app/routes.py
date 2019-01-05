@@ -108,7 +108,7 @@ def waiting_room(room_id):
             emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
     
     username = session.get('username')
-    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, show_header=True)
+    return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, hide_header=True)
 
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
