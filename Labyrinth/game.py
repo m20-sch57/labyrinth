@@ -18,7 +18,7 @@
 		if not issubclass(type(parent), LabyrinthObject): 
 			raise ValueError('Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
 		else:
-			self.parent  = parent
+			self.parent = parent
 
 	def get_parent(self):
 		'''
@@ -31,11 +31,8 @@
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
-			# какая-то ошибка
 			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.get_neighbour: '
 							+ str(type(direction)))
-			pass
-			# какая-то ошибка
 		elif direction not in self.directions:
 			raise ValueError('Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
 		else:
@@ -43,8 +40,9 @@
 
 	def set_neighbour(self, direction, neighbour):
 		if self.type != 'location':
-			# какая-то ошибка
-		elif type(neighbour) not is LabyrinthObject: 
+			raise TypeError('Invalid type in "self" argument for LabyrinthObject.set_neighbour: it should be "location", not '
+							+ str(type(direction)))
+		elif type(neighbour) is not LabyrinthObject:
 			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.set_neighbour: '
 							+ str(type(direction)))
 		elif type(neighbour) is not LabyrinthObject:
