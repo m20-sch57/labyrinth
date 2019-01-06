@@ -10,13 +10,16 @@
 
 		try:
 			if turn_name not in self.turn_set:
-				self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
+				self.turn_set[turn_name] = {
+					'function': function, 'condition': condition_function}
 		except:
-			self.turn_set = {turn_name: {'function': function, 'condition': condition_function}}
+			self.turn_set = {turn_name: {
+				'function': function, 'condition': condition_function}}
 
 	def set_parent(self, parent):
-		if not issubclass(type(parent), LabyrinthObject): 
-			raise ValueError('Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
+		if not issubclass(type(parent), LabyrinthObject):
+			raise ValueError(
+				'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
 		else:
 			self.parent = parent
 
@@ -31,17 +34,21 @@
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
-			raise TypeError('You can\'t get neighbour for object with type ' + self.type)
+			raise TypeError(
+				'You can\'t get neighbour for object with type ' + self.type)
 		elif direction not in self.directions:
-			raise ValueError('Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
+			raise ValueError(
+				'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
 		else:
 			return self.directions[direction]
 
 	def set_neighbour(self, direction, neighbour):
 		if self.type != 'location':
-			raise TypeError('You can\'t set neighbour for object with type ' + self.type)
-		elif not issubclass(type(neighbour), LabyrinthObject): 
-			raise ValueError('Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
+			raise TypeError(
+				'You can\'t set neighbour for object with type ' + self.type)
+		elif not issubclass(type(neighbour), LabyrinthObject):
+			raise ValueError(
+				'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
 			self.directions[direction] = neighbour
 
@@ -80,7 +87,8 @@ class Labyrinth:
 	'''
 	def __init__(self, locations_list, items_list, npcs_list, players_list, adjance_list):
 		for i in range(len(locations_list)):
-			locations_list[i].directions = {direction: locations_list[k] for direction, k in adjance_list[i].items()}
+			locations_list[i].directions = {
+				direction: locations_list[k] for direction, k in adjance_list[i].items()}
 			locations_list[i]._type = 'location'
 		for item in items_list:
 			item._type = 'item'
