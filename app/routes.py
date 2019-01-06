@@ -6,16 +6,27 @@ from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
 import random
 import string
+from functools import wraps
 import json
 
 from labyrinth_test import generate_labyrinth
 
+def login_required(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        if session.get('username') == None:
+            return redirect(url_for('index'))
+        else: 
+            return f(*args, **kwargs)
+    return wrapped
 
+def simple_render_template(url, **kwargs):
+    return render_template(url, username = session.get('username'), **kwargs)
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', username=session.get('username'), reg_error=False)
+    return simple_render_template('index.html', reg_error=False)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -33,6 +44,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
@@ -63,9 +75,10 @@ def register_failed():
 
 
 @app.route('/profile')
+@login_required
 def profile():
     username = session.get('username')
-    return render_template('profile.html', username=session.get('username'))
+    return simple_render_template('profile.html')
 
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
@@ -73,15 +86,16 @@ def room_list(page):
     if request.method == 'POST':
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
-    return render_template('rooms/room_list.html', username=session.get('username'), pager=dbase.get_rooms_page_by_page()[int(page)])
+    return simple_render_template('rooms/room_list.html', pager=dbase.get_rooms_page_by_page()[int(page)])
 
 
 @app.route('/rules')
 def rules():
-    return render_template('rules.html', is_enter=True)
+    return simple_render_template('rules.html')
 
 
 @app.route('/create_room')
+@login_required
 def create_room():
     def genereate_room_id(size):
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -91,6 +105,7 @@ def create_room():
 
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
@@ -114,7 +129,7 @@ def waiting_room(room_id):
     if labyrinths_list.get_labyrinth(room_id) != None and username in list(map(lambda user: user.get_user_id(), labyrinths_list.get_labyrinth(room_id).field.players_list)):
         return redirect(url_for('game_room', room_id=room_id))
     else:
-        return render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), username=username, hide_header=True)
+        return simple_render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), hide_header=True)
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
@@ -140,7 +155,7 @@ def game_room(room_id):
     if labyrinth == None or username not in list(map(lambda user: user.get_user_id(), labyrinth.field.players_list)):
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
-        return render_template('rooms/game_room.html', room=dbase.get_room(room_id), username=username, hide_header=True)
+        return simple_render_template('rooms/game_room.html', room=dbase.get_room(room_id), hide_header=True)
 
 @socketio.on('player join', namespace='/grws')  
 @socketio.on('player join', namespace='/wrws')
