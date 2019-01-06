@@ -30,10 +30,20 @@ class LabyrinthObject:
 
 
 	def get_neighbour(self, direction):
-		return self.directions[direction]
+		if self.type != 'location':
+			# какая-то ошибка
+		elif direction not in self.directions:
+			raise ValueError('Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
+		else:
+			return self.directions[direction]
 
 	def set_neighbour(self, direction, neighbour):
-		self.directions[direction] =  neighbour
+		if self.type != 'location':
+			# какая-то ошибка
+		elif type(neighbour) not is LabyrinthObject: 
+			raise ValueError('Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
+		else:
+			self.directions[direction] =  neighbour
 
 	def get_turn_set(self):
 		try:
