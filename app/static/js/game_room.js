@@ -23,13 +23,14 @@ socket.on('update', function(msg) {
 		case 'player_make_turn':
 			var xhr = xhrOpen('update');
 			xhr.send();
+			responseData = JSON.parse(xhr.responseText);
 
 			var log = document.getElementById('log');
-			log.innerHTML += ('<p>'+xhr.responseText.substr(1)+'</p>');
+			log.innerHTML += ('<p>'+ responseData.msg +'</p>');
 
 			var turnState = document.getElementById('turn_state');
-			if (xhr.responseText.substr(0, 1) == 'y') {
-				turnState.innerHTML = 'Твой ход';
+			if (responseData.your_turn == 'yes') {
+				turnState.innerHTML = 'Твой ход (' + responseData.ats + ')';
 			} else {
 				turnState.innerHTML = 'Подожди';
 			};

@@ -6,6 +6,7 @@ from flask import render_template, request, session, redirect, url_for
 from hashlib import sha1
 import random
 import string
+import json
 
 from labyrinth_test import generate_labyrinth
 
@@ -125,10 +126,11 @@ def game_room(room_id):
 
         if event_type == 'update':
             msg = labyrinth.player_to_send(username)
+            ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_user_id() == username:
-                return 'y' + msg
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
             else:
-                return 'n' + msg
+                return json.dumps({'your_turn': 'no', 'msg': msg})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_user_id() == username:
