@@ -9,7 +9,7 @@ class LabyrinthObject:
 		'''
 
 		try:
-			if not turn_name in self.turn_set:
+			if turn_name not in self.turn_set:
 				self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
 		except:
 			self.turn_set = {turn_name: {'function': function, 'condition': condition_function}}
