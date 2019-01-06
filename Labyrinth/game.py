@@ -40,11 +40,7 @@
 
 	def set_neighbour(self, direction, neighbour):
 		if self.type != 'location':
-			raise TypeError('Invalid type in "self" argument for LabyrinthObject.set_neighbour: it should be "location", not '
-							+ str(type(direction)))
-		elif type(neighbour) is not LabyrinthObject:
-			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.set_neighbour: '
-							+ str(type(direction)))
+			raise TypeError('You can\'t set neighbour for object with type ' + self.type)
 		elif not issubclass(type(neighbour), LabyrinthObject): 
 			raise ValueError('Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
