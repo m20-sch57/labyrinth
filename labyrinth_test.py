@@ -1,14 +1,13 @@
-from Labyrinth.game import Field, Labyrinth, Player, ObjectID
+from Labyrinth.game import Labyrinth, Player
 from Labyrinth.LS_walk import Legs, Wall, EmptyLocation
 from Labyrinth.LS_hole import Hole
 
-def send_msg_func(msg, user_id):
-	print('[{}] - {}'.format(user_id, msg))
-
 locations_list = [EmptyLocation() for _ in range(6)]
 locations_list.append(Wall())
-locations_list[1] = Hole(ObjectID('location', 5))
-locations_list[5] = Hole(ObjectID('location', 1))
+locations_list[1] = Hole()
+locations_list[5] = Hole()
+locations_list[1].set_fall_to(locations_list[5])
+locations_list[5].set_fall_to(locations_list[1])
 adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
 				{'up':6, 'down':4, 'right':2, 'left':6},
 				{'up':6, 'down':5, 'right':6, 'left':1},
@@ -18,7 +17,7 @@ adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
 				{}]
 items_list = [Legs()]
 P = Player('player #1')
-P.set_parent_id(ObjectID('location', 0))
+P.set_parent(locations_list[0])
 players_list = [P]
 
 # -------------
@@ -28,15 +27,10 @@ players_list = [P]
 # -------------
 
 
-field = Field(adjance_list, locations_list, items_list, players_list)
-MyLab = Labyrinth(field)
-
-
-MyLab.ready()
+MyLab = Labyrinth(locations_list, items_list, [], players_list, adjance_list)
 while True:
 	print()
-	print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number, MyLab.get_active_player().get_parent_id().type)
 	print(', '.join(MyLab.get_active_player_ats()))
 	msgs = MyLab.make_turn(input())
 	for player in msgs:
-		print('[{}] -{}'.format(player, msgs[player]))
+		print('[{}] - {}'.format(player, msgs[player]))
