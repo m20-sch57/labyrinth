@@ -41,6 +41,10 @@ class LabyrinthObject:
 		except:
 			return {}
 
+	@property
+	def type(self):
+		return self._type
+
 
 	def main(self):
 		'''
@@ -68,10 +72,10 @@ class Labyrinth:
 	def __init__(self, locations_list, items_list, npcs_list, players_list, adjance_list):
 		for i in range(len(locations_list)):
 			locations_list[i].directions =  {direction: locations_list[k] for direction, k in adjance_list[i].items()}
-			locations_list[i].type = 'location'
-		for item in items_list: item.type = 'item'
-		for npc in npcs_list: npc.type = 'npc'
-		for player in players_list: player.type = 'player'
+			locations_list[i]._type = 'location'
+		for item in items_list: item._type = 'item'
+		for npc in npcs_list: npc._type = 'npc'
+		for player in players_list: player._type = 'player'
 
 		for obj in locations_list + items_list + npcs_list + players_list:
 			obj.labyrinth = self
