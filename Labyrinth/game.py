@@ -14,9 +14,8 @@ class LabyrinthObject:
 		except:
 			self.turn_set = {turn_name: {'function': function, 'condition': condition_function}}
 
-
 	def set_parent(self, parent):
-		self.parent  = parent
+		self.parent = parent
 		# TODO: вызвать ошибку, если parent - не LabyrinthObject
 
 	def get_parent(self):
@@ -28,10 +27,10 @@ class LabyrinthObject:
 		except:
 			return None
 
-
 	def get_neighbour(self, direction):
 		if self.type != 'location':
-			# какая-то ошибка
+			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.get_neighbour: '
+							+ str(type(direction)))
 		elif direction not in self.directions:
 			raise ValueError('Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
 		else:
@@ -39,11 +38,12 @@ class LabyrinthObject:
 
 	def set_neighbour(self, direction, neighbour):
 		if self.type != 'location':
-			# какая-то ошибка
-		elif type(neighbour) not is LabyrinthObject: 
+			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.set_neighbour: '
+							+ str(type(direction)))
+		elif type(neighbour) is not LabyrinthObject:
 			raise ValueError('Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
-			self.directions[direction] =  neighbour
+			self.directions[direction] = neighbour
 
 	def get_turn_set(self):
 		try:
@@ -54,7 +54,6 @@ class LabyrinthObject:
 	@property
 	def type(self):
 		return self._type
-
 
 	def main(self):
 		'''
@@ -81,15 +80,17 @@ class Labyrinth:
 	'''
 	def __init__(self, locations_list, items_list, npcs_list, players_list, adjance_list):
 		for i in range(len(locations_list)):
-			locations_list[i].directions =  {direction: locations_list[k] for direction, k in adjance_list[i].items()}
+			locations_list[i].directions = {direction: locations_list[k] for direction, k in adjance_list[i].items()}
 			locations_list[i]._type = 'location'
-		for item in items_list: item._type = 'item'
-		for npc in npcs_list: npc._type = 'npc'
-		for player in players_list: player._type = 'player'
+		for item in items_list:
+			item._type = 'item'
+		for npc in npcs_list:
+			npc._type = 'npc'
+		for player in players_list:
+			player._type = 'player'
 
 		for obj in locations_list + items_list + npcs_list + players_list:
 			obj.labyrinth = self
-
 
 		self.locations = set(locations_list)
 		self.items = set(items_list)
@@ -99,10 +100,8 @@ class Labyrinth:
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0
 
-
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()] += (msg + ';')
-
 
 	def make_turn(self, turn):
 		'''
@@ -112,7 +111,7 @@ class Labyrinth:
 		{username1: msg1, ... , username_n: msg_n}
 		'''
 
-		#обнуляем to_send
+		# обнуляем to_send
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
@@ -132,17 +131,17 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.players_list)
 
-		#возвращаем все сообщения, которые нужно отправить, обнуляем to_send
+		# возвращаем все сообщения, которые нужно отправить, обнуляем to_send
 		return self.to_send
 
-
 	def get_next_active_player(self):
-		return self.players_list[(self.active_player_number + 1)%len(self.players_list)]
+		return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
+
 	def get_active_player(self):
 		return self.players_list[self.active_player_number]
+
 	def get_active_player_username(self):
 		return self.get_active_player().get_username()
-
 
 	def get_active_player_ats(self):
 		'''

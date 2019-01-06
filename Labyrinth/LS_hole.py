@@ -5,10 +5,12 @@ ENTER_HOLE_MSG = 'Ты в комнате с дырой'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
 INTO_TURN = 'В дыру'
 
+
 class Hole(LO):
 	is_not_fall = set()
+
 	def __init__(self):
-		self.new_at(function = self.go_into_hole, condition_function = self.condition, turn_name = INTO_TURN)
+		self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
 
 	def set_fall_to(self, fall_to):
 		self.fall_to = fall_to
@@ -25,7 +27,6 @@ class Hole(LO):
 
 		if not type(next_active_player.get_parent()) is Hole:
 			self.is_not_fall.discard(next_active_player)
-
 
 	def go_into_hole(self):
 		active_player = self.labyrinth.get_active_player()
