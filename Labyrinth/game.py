@@ -17,12 +17,12 @@ class LabyrinthObject:
 
 	def set_parent(self, parent):
 		self.parent  = parent
+		# TODO: вызвать ошибку, если parent - не LabyrinthObject
 
 	def get_parent(self):
 		'''
 		Если parent определён для данного объекта, вернёт его, иначе вернёт None
 		'''
-		# TODO: вызвать ошибку, если parent - не LabyrinthObject
 		try:
 			return self.parent
 		except:
