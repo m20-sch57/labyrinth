@@ -8,12 +8,12 @@ locations_list[1] = Hole()
 locations_list[5] = Hole()
 locations_list[1].set_fall_to(locations_list[5])
 locations_list[5].set_fall_to(locations_list[1])
-adjance_list = [{'up':6, 'down':3, 'right':6, 'left':6},
-				{'up':6, 'down':4, 'right':2, 'left':6},
-				{'up':6, 'down':5, 'right':6, 'left':1},
-				{'up':0, 'down':6, 'right':4, 'left':6},
-				{'up':1, 'down':6, 'right':6, 'left':3},
-				{'up':2, 'down':6, 'right':6, 'left':6},
+adjance_list = [{'up': 6, 'down': 3, 'right': 6, 'left': 6},
+				{'up': 6, 'down': 4, 'right': 2, 'left': 6},
+				{'up': 6, 'down': 5, 'right': 6, 'left': 1},
+				{'up': 0, 'down': 6, 'right': 4, 'left': 6},
+				{'up': 1, 'down': 6, 'right': 6, 'left': 3},
+				{'up': 2, 'down': 6, 'right': 6, 'left': 6},
 				{}]
 items_list = [Legs()]
 P = Player('player #1')
