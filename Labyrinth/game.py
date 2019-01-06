@@ -31,7 +31,7 @@
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
-			raise TypeError('You can\'t set neigbour for object with type ' + str(type(direction)))
+			raise TypeError('You can\'t get neighbour for object with type ' + self.type)
 		elif direction not in self.directions:
 			raise ValueError('Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
 		else:
