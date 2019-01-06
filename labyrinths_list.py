@@ -8,11 +8,11 @@ class LabyrinthsList:
 		self.list = {}
 
 
-	def get_labyrinth(room_id):
+	def get_labyrinth(self, room_id):
 		return self.list[room_id]
 
 
-	def add_labyrinth(room_id, labyrinth):
+	def add_labyrinth(self, room_id, labyrinth):
 		if room_id in self.list:
 			return False
 		else:
@@ -20,7 +20,7 @@ class LabyrinthsList:
 			return True
 
 
-	def remove_labyrinth(room_id):
+	def remove_labyrinth(self, room_id):
 		if room_id in self.list:
 			return False
 		else:

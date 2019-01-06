@@ -1,24 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div id='main'>
-		<div class='profile'>
-			<h3> Профиль </h3>
-			<p> Ваше имя: {{ username }}</p>
-		</div>
-		<aside class='navbar-sidebar'>
-			{% if username == None %}
-				<form class='loginform' action="{{ url_for('login') }}" method='post'>
-					Имя: <input type="text" name="login" minlength=4 required><br>
-					Пароль: <input type='password' name='password' minlength=8 required><br>
-					<input type='submit' value='Войти'>
-				</form>
-			{% else %}
-				<a href="{{ url_for('profile') }}">Профиль</a><br>
-				<a href="{{ url_for('room_list', page=0) }}">Комнаты</a><br>
-				<a href="{{ url_for('logout') }}">Выход</a><br>
-			{% endif %}
-			<a href="{{ url_for('rules') }}">Правила</a>
-		</aside>
-	</div>
+  <div id="main">
+    <div class="profile">
+      <h3> Профиль </h3>
+      <p> Ваше имя: {{ username }}</p>
+    </div>
+    <aside class="navbar-sidebar">
+      {% if username == None %}
+        <form class='loginform' action="{{ url_for('login') }}" method="post">
+          Имя: <input type="text" name="login" minlength=4 required><br>
+          Пароль: <input type="password' name='password" minlength=8 required><br>
+          <input type="submit" value="Войти">
+        </form>
+      {% else %}
+        <a href="{{ url_for('profile') }}">Профиль</a><br>
+        <a href="{{ url_for('room_list', page=0) }}">Комнаты</a><br>
+        <a href="{{ url_for('logout') }}">Выход</a><br>
+      {% endif %}
+      <a href="{{ url_for('rules') }}">Правила</a>
+    </aside>
+  </div>
 {% endblock %}
