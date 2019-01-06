@@ -17,7 +17,7 @@ class LabyrinthObject:
 
 	def set_parent(self, parent):
 		if not issubclass(type(parent), LabyrinthObject): 
-			raise ValueError('Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + type(parent))
+			raise ValueError('Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
 		else:
 			self.parent  = parent
 
