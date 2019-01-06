@@ -45,9 +45,6 @@
 		elif type(neighbour) is not LabyrinthObject:
 			raise TypeError('Invalid type of "direction" argument for LabyrinthObject.set_neighbour: '
 							+ str(type(direction)))
-		elif type(neighbour) is not LabyrinthObject:
-			pass
-			# какая-то ошибка
 		elif not issubclass(type(neighbour), LabyrinthObject): 
 			raise ValueError('Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
