@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 
 import sqlite3
@@ -33,8 +33,6 @@ class Database:
 
         self.conn.commit()
 
-   
-
     '''
     users functions
     '''
@@ -52,14 +50,12 @@ class Database:
             self.conn.commit()
             return True
 
-
     def get_user(self, user_id):
         self.cursor.execute('SELECT * FROM users WHERE login=?', (user_id,))
         return self.cursor.fetchone()
 
     def get_user_password_hash(self, user_id):
-        return self.get_user(user_id)[1] # password_hash
-
+        return self.get_user(user_id)[1]  # password_hash
 
     def set_user_login(self, user_id, login):
         if self.user_login_in_table(login):
@@ -77,12 +73,10 @@ class Database:
         self.cursor.execute('UPDATE users SET room_id=? WHERE login=?', (room_id, user_id))
         self.conn.commit()
 
-
     def user_login_in_table(self, user_login):
         # return True if login in table and False in other cases
         self.cursor.execute('SELECT * FROM users WHERE login=?', (user_login,))
-        return not self.cursor.fetchone() == None
-
+        return not self.cursor.fetchone() is None
 
     '''
     rooms functions
@@ -117,7 +111,7 @@ class Database:
     def get_all_rooms(self):
         self.cursor.execute('SELECT * FROM rooms')
         rooms = self.cursor.fetchall()
-        return list(map(lambda room: self.get_room(room[0]) ,rooms))
+        return list(map(lambda room: self.get_room(room[0]), rooms))
 
     def get_rooms_page_by_page(self):
         pages = []
@@ -130,7 +124,6 @@ class Database:
     def delete_room(self, room_id):
         self.cursor.execute('DELETE FROM rooms WHERE room_id=?', (room_id,))
         self.conn.commit()
-
 
     def get_room_name(self, room_id):
         return self.get_room(room_id)['name']
@@ -147,7 +140,6 @@ class Database:
     def get_room_create_date(self, room_id):
         return self.get_room(room_id)['create_date']
 
-
     def set_room_name(self, room_id, name):
         self.cursor.execute('UPDATE rooms SET name=? WHERE room_id=?', (name, room_id))
         self.conn.commit()
@@ -158,13 +150,11 @@ class Database:
         self.cursor.execute('UPDATE rooms SET description=? WHERE room_id=?', (description, room_id))
         self.conn.commit()              
 
-
     def add_player(self, room_id, user_id):
         self.set_user_room(user_id, room_id)
        
     def remove_player(self, room_id, user_id):
         self.set_user_room(user_id, 'NULL') 
-
 
     def start_game(self, room_id):
         self.cursor.execute('UPDATE rooms SET players_in_game=? WHERE room_id=?', (','.join(self.get_room_players(room_id)), room_id))
@@ -179,12 +169,9 @@ class Database:
         self.cursor.execute('INSERT INTO maps VALUES (?, ?)', (maplink, description))
         self.conn.commit()
 
-
     def get_map(self, maplink):
         self.cursor.execute('SELECT * FROM maps WHERE maplink=?', [maplink])
         return self.cursor.fetchone()
-
-
 
     '''
     another functions

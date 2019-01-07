@@ -139,7 +139,7 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.players_list)
 
-		#возвращаем все сообщения, которые нужно отправить
+		# возвращаем все сообщения, которые нужно отправить
 		return self.to_send
 
 	def get_next_active_player(self):
@@ -163,7 +163,6 @@ class Labyrinth:
 					active_player_ats.append(turn)
 
 		return active_player_ats
-
 
 	def player_to_send(self, user_id):
 		return self.to_send[user_id]

@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 from app import app, dbase, socketio
 from flask_socketio import emit, join_room, leave_room
@@ -8,17 +8,20 @@ import random
 import string
 from functools import wraps
 
+
 def login_required(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
-        if session.get('username') == None:
+        if session.get('username') is None:
             return redirect(url_for('index'))
         else: 
             return f(*args, **kwargs)
     return wrapped
 
+
 def simple_render_template(url, **kwargs):
-    return render_template(url, username = session.get('username'), **kwargs)
+    return render_template(url, username=session.get('username'), **kwargs)
+
 
 @app.route('/')
 @app.route('/index')
@@ -63,7 +66,7 @@ def register():
 
 @app.route('/login_failed')
 def login_failed():
-    return render_template('index.html', username= None, reg_error=True)
+    return render_template('index.html', username=None, reg_error=True)
 
 
 @app.route('/register_failed')
@@ -101,11 +104,11 @@ def create_room():
     return redirect(url_for('waiting_room', room_id=room_id))
 
 
-
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
 @login_required
 def game_room(room_id):
     return simple_render_template('rooms/game_room.html', room=dbase.get_room(room_id))
+
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
 @login_required
@@ -127,6 +130,7 @@ def waiting_room(room_id):
     username = session.get('username')
     return simple_render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), hide_header=True)
 
+
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
     print('connect')
@@ -138,6 +142,7 @@ def wrws_pj(msg):
     emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id)
 
     session['room'] = room_id
+
 
 @socketio.on('disconnect', namespace='/wrws')
 def wrws_pl():
