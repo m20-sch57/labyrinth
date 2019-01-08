@@ -85,10 +85,10 @@ class Player(LabyrinthObject):
 class Labyrinth:
 	'''
 	'''
-	def __init__(self, locations, items, npcs, players, adjance_list):
+	def __init__(self, locations, items, npcs, players, adjacence_list):
 		for i in range(len(locations)):
 			locations[i].directions = {
-				direction: locations[k] for direction, k in adjance_list[i].items()}
+				direction: locations[k] for direction, k in adjacence_list[i].items()}
 			locations[i]._type = 'location'
 		for item in items:
 			item._type = 'item'
