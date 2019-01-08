@@ -11,10 +11,10 @@
 	adjacence_list
 лист словарей вида `{[направление (куда можно пойти): str]: [локация: LO subclass], ...}`<br>
 
-между `adjacence_list` и `locations` установленно соотношение:
-i-ый словарь в `adjacence_list` соответствует i-ой локации в `locations`
+между `adjacence_list` и `locations` установленно соотношение:<br>
+`i`-ый словарь в `adjacence_list` соответствует `i`-ой локации в `locations`
 
-(!) длины `adjacence_list` и `locations` должны совпадать
+**(!)** длины `adjacence_list` и `locations` должны совпадать
 
 ##### методы:
 
