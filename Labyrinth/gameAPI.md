@@ -42,7 +42,7 @@ turn должным быть элементом множества доступ�
 
 	.type
 
-тип объекта: `'location' or 'item' or 'npc' or 'player'`
+тип объекта: `'location'` or `'item'` or `'npc'` or `'player'`
 
 	labyrinth.get_active_player()
 	labyrinth.get_next_active_player()
