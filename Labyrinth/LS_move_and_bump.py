@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO, ObjectID as OID
+from Labyrinth.game_LR2 import LabyrinthObject as LO, ObjectID as OID
 
 
 # Item.

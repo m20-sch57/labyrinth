@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from Labyrinth.game_LR2 import LabyrinthObject as LO
 
 
 # Item.

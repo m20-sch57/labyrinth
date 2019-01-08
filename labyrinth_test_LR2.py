@@ -1,4 +1,4 @@
-from Labyrinth.game import Field, Labyrinth, Player, ObjectID
+from Labyrinth.game_LR2 import Field, Labyrinth, Player, ObjectID
 from Labyrinth.LS_move_and_bump import Legs, EmptyLocation, Outside, Wall
 from Labyrinth.LS_appear_and_disappear import Hole
 from Labyrinth.LS_hurt_and_break import Gun, Bomb, Arsenal, FirstAidPost
