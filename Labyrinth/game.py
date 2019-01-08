@@ -85,25 +85,25 @@ class Player(LabyrinthObject):
 class Labyrinth:
 	'''
 	'''
-	def __init__(self, locations_list, items_list, npcs_list, players_list, adjance_list):
-		for i in range(len(locations_list)):
-			locations_list[i].directions = {
-				direction: locations_list[k] for direction, k in adjance_list[i].items()}
-			locations_list[i]._type = 'location'
-		for item in items_list:
+	def __init__(self, locations, items, npcs, players, adjance_list):
+		for i in range(len(locations)):
+			locations[i].directions = {
+				direction: locations[k] for direction, k in adjance_list[i].items()}
+			locations[i]._type = 'location'
+		for item in items:
 			item._type = 'item'
-		for npc in npcs_list:
+		for npc in npcs:
 			npc._type = 'npc'
-		for player in players_list:
+		for player in players:
 			player._type = 'player'
 
-		for obj in locations_list + items_list + npcs_list + players_list:
+		for obj in locations + items + npcs + players:
 			obj.labyrinth = self
 
-		self.locations = set(locations_list)
-		self.items = set(items_list)
-		self.npcs = set(npcs_list)
-		self.players_list = players_list
+		self.locations = set(locations)
+		self.items = set(items)
+		self.npcs = set(npcs)
+		self.players_list = players
 
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0

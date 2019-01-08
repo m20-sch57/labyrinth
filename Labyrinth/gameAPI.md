@@ -2,53 +2,61 @@
 
 ##### аргументы:
 
-	field
-	send_msg_function
+	locations
+	items
+	npcs
+	players
+листы экземпляров подклассов `LabyrinthObject` (далее сокращенно `LO`)
+
+	adjance_list
+лист словарей вида `{[направление]: [локация - экз. кл LO], ...}`<br>
+описывает граф игры
 
 ##### методы:
 
-	make_turn(turn)
+	make_turn(turn: str)
 
 turn должным быть элементом множества доступных ходов 
+(далее `ats` Available Turns Set)
 
-	get_active_player_user_id()
+	get_active_player_username()
 	get_active_player_ats() 
-
-ats (available turns set) множество доступных ходов  
-
-	ready()
-необходимо вызвать перед началом игры
  
-
 ### Локации, предметы
 
-новая локация/предмет должна быть унаследованна от класса `LabyrinthObject`
+Новая локация/предмет должна быть унаследованна от класса `LabyrinthObject`
 
-логику поведения предмета или локации определяет метод main. он вызывается на каждом ходу  
+Логику поведения предмета или локации определяет метод main.<br>
+Этод метод вызывается на каждом ходу  
+
 можно использовать `self.<вставить_что-то_из_следующего_списка>`
 
-	get_parent_id()
-	get_object_id()
-	set_parent_id(parent_id)
-	set_object_id(object_id)
-	field.get_object(object_id)
-	field.get_neighbor_location(object_id, direction)
+	get_parent()
+	set_parent(parent: LO subclass)
+геттер и сеттер для рожительского объекта
+
+	.type
+
+тип объекта: `'location' or 'item' or 'npc' or 'player'`
+
 	labyrinth.get_active_player()
 	labyrinth.get_next_active_player()
-	labyrinth.send_msg(msg, user_id)
+	labyrinth.send_msg(msg: str, username: str)
 
-используйте функцию `new_at` (new available turn) чтобы создать действие доступное игроку
+### Новые действия
+
+Используйте метод `new_at` (new available turn) чтобы создать действие доступное игроку
 
 ##### аргументы:
 	function
-основная функция действия
+Основная функция действия. Вызывается, если игрок совершил это действие
 
 	condition_function 
-должен быть функцией возвращающей True или False в зависимости от того  
+Функция, возвращающая True или False в зависимости от того, 
 должно соответствующее действие быть доступным игроку или нет
 
 	turn_name 
-имя команды, которое должен ввести игрок, чтобы выполнить это действие
+Команда, которую должен ввести игрок, чтобы выполнить это действие
 
 
 ##### пример:
@@ -56,24 +64,16 @@ ats (available turns set) множество доступных ходов
 ```
 class Legs(LabyrinthObject):
 	def __init__(self):
-		self.new_at(self.up, condition_function = self.condition, turn_name = UP_TURN)
+		self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
 
-	def up(self):
+	def turn_move(self):
 		active_player = self.labyrinth.get_active_player()
-		active_player.set_parent_id(self.field.get_neighbor_location(active_player.get_parent_id(), 'up'))
+		next_position = active_player.get_parent().get_neighbour('up')
+		if type(next_position) is Wall:
+			self.labyrinth.send_msg(WALL_MSG, active_player)
+		else:
+			active_player.set_parent(next_position)
+
+	def condition(self):
+		return True
 ```
-
-
-### Сделать
-
-##### Настройки
-Возможность добавить к предметам настройки.
-Интеграция настроек в редактор.
-
-##### Расстановка игроков
-Придумать систему описания начальной расстановки игроков.
-
-##### Панель состояния
-Возможность добавлять игрокам различные свойства.
-Интеграция табло в веб интерфейс.
-
