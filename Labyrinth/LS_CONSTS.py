@@ -22,12 +22,11 @@ WALL_MSG = 'Упсс. Стена'
 # Wall's const.
 
 # EmptyLocation's consts.
-FIRST_ENTER_MSG = 'Ты попал в прямоугольную пустую комнату. Что ещё сказать?'
-ENTER_MSG = 'Опять нашёл пустую комнату?'
+ENTER_MSG = 'Ты в пустой комнате'
 
 # Hole's consts.
 FALL_MSG = 'И в ямку бух!'
-ENTER_HOLE_MSG = 'Теперь проход ещё и вниз?!'
+ENTER_HOLE_MSG = 'Ты в комнате с дырой'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
 INTO_TURN = 'В дыру'
 

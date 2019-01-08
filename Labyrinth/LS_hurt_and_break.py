@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game_LR2 import LabyrinthObject as LO, ObjectID, Player, NPC
+from Labyrinth.game import LabyrinthObject as LO, Player
 from Labyrinth.LS_move_and_bump import GlobalWall, Wall, Outside
 
 

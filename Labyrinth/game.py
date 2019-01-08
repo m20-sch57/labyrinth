@@ -1,4 +1,7 @@
-﻿class LabyrinthObject:
+﻿from copy import copy
+from Labyrinth.LS_CONSTS import *
+
+class LabyrinthObject:
 	'''
 	LabyrinthObject is class of objects that can be used by players at their turns
 	'''
@@ -78,6 +81,9 @@ class Player(LabyrinthObject):
 		self.username = username
 		self.turn_set = {}
 
+	def __str__(self):
+		return 'Player<{}>'.format(self.get_username())
+
 	def get_username(self):
 		return self.username
 
@@ -94,8 +100,13 @@ class Labyrinth:
 			item._type = 'item'
 		for npc in npcs:
 			npc._type = 'npc'
+			try:
+				npc.turn_set
+			except:
+				npc.turn_set = {}
 		for player in players:
 			player._type = 'player'
+			player.states = copy(INITIAL_STATES)
 
 		for obj in locations + items + npcs + players:
 			obj.labyrinth = self

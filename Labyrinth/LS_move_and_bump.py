@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game_LR2 import LabyrinthObject as LO, ObjectID as OID
+from Labyrinth.game import LabyrinthObject as LO
 
 
 # Item.
@@ -13,17 +13,13 @@ class Legs(LO):
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
-            next_position = self.field.get_neighbour_location(active_player.get_parent_id(), direction)
-            if type(next_position) in [GlobalWall, Wall, Outside]:
-                self.labyrinth.send_msg(WALL_MSG, active_player.get_user_id())
+            next_position = active_player.get_parent().get_neighbour(direction)
+            if type(next_position) is Wall:
+                self.labyrinth.send_msg(WALL_MSG, active_player)
             else:
-                active_player.set_parent_id(next_position.get_object_id())
-        return move
+                active_player.set_parent(next_position)
 
-    def move(self, character, direction):
-        next_position = self.field.get_neighbour_location(character.get_parent_id(), direction)
-        if type(next_position) not in [GlobalWall, Wall, Outside]:
-            character.set_parent_id(next_position.get_object_id())
+        return move
 
     def condition(self):
         return True
@@ -31,18 +27,12 @@ class Legs(LO):
 
 # Location.
 class EmptyLocation(LO):
-    used = {}
-
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
+        active_player = self.labyrinth.get_active_player()
 
-        if next_active_player.get_parent_id() == self.object_id:
-            if next_active_player.get_object_id().number in self.used:
-                self.used[next_active_player.get_object_id().number] += 1
-                self.labyrinth.send_msg(ENTER_MSG, next_active_player.user_id)
-            else:
-                self.used[next_active_player.get_object_id().number] = 1
-                self.labyrinth.send_msg(FIRST_ENTER_MSG, next_active_player.user_id)
+        if next_active_player.get_parent() == self:
+            self.labyrinth.send_msg(ENTER_MSG, next_active_player)
 
 
 # Location.
