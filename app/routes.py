@@ -17,7 +17,7 @@ def login_required(f):
     def wrapped(*args, **kwargs):
         if session.get('username') is None:
             return redirect(url_for('index'))
-        else: 
+        else:
             return f(*args, **kwargs)
     return wrapped
 
@@ -38,7 +38,8 @@ def login():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        if not dbase.user_login_in_table(username) or dbase.get_user_password_hash(username) != sha1(password.encode('utf-8')).hexdigest():
+        if not dbase.user_login_in_table(username) or \
+                dbase.get_user_password_hash(username) != sha1(password.encode('utf-8')).hexdigest():
             return redirect(url_for('login_failed'))
 
         session['username'] = username
@@ -116,20 +117,24 @@ def waiting_room(room_id):
         if event_type == 'change_name':
             name = request.form.get('new_name')
             dbase.set_room_name(room_id, name)
-            emit('update', {'event': 'change_name', 'name': name}, broadcast=True, room=room_id, namespace='/wrws')
+            emit('update', {'event': 'change_name', 'name': name},
+                 broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'change_description':
             description = request.form.get('new_description')
             dbase.set_description(room_id, description)
-            emit('update', {'event': 'change_description', 'description': description}, broadcast=True, room=room_id, namespace='/wrws')
+            emit('update', {'event': 'change_description', 'description': description},
+                 broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'start_game':
             labyrinth = generate_labyrinth(dbase.get_room_players(room_id))
             labyrinths_list.add_labyrinth(room_id, labyrinth)
-            emit('update', {'event': 'start_game'}, broadcast=True, room=room_id, namespace='/wrws')
-    
+            emit('update', {'event': 'start_game'},
+                 broadcast=True, room=room_id, namespace='/wrws')
+
     username = session.get('username')
-    if labyrinths_list.get_labyrinth(room_id) != None and username in list(map(lambda user: user.get_user_id(), labyrinths_list.get_labyrinth(room_id).field.players_list)):
+    labyrinth = labyrinths_list.get_labyrinth(room_id)
+    if labyrinth is not None and username in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('game_room', room_id=room_id))
     else:
         return simple_render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), hide_header=True)
@@ -145,22 +150,24 @@ def game_room(room_id):
         if event_type == 'update':
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
-            if labyrinth.get_active_player_user_id() == username:
+            if labyrinth.get_active_player_username() == username:
                 return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
             else:
                 return json.dumps({'your_turn': 'no', 'msg': msg})
 
         elif event_type == 'turn':
-            if labyrinth.get_active_player_user_id() == username:
+            if labyrinth.get_active_player_username() == username:
                 turn = request.form.get('turn')
                 labyrinth.make_turn(turn)
-                emit('update', {'event': 'player_make_turn'}, broadcast=True, room=room_id, namespace='/grws')
-    if labyrinth == None or username not in list(map(lambda user: user.get_user_id(), labyrinth.field.players_list)):
+                emit('update', {'event': 'player_make_turn'},
+                     broadcast=True, room=room_id, namespace='/grws')
+    if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
         return simple_render_template('rooms/game_room.html', room=dbase.get_room(room_id), hide_header=True)
 
-@socketio.on('player join', namespace='/grws')  
+
+@socketio.on('player join', namespace='/grws')
 @socketio.on('player join', namespace='/wrws')
 def wrws_pj(msg):
     room_id = msg['room_id']
@@ -168,9 +175,11 @@ def wrws_pj(msg):
 
     join_room(room_id)
     dbase.add_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id, namespace='/wrws')
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
+         broadcast=True, room=room_id, namespace='/wrws')
 
     session['room'] = room_id
+
 
 @socketio.on('disconnect', namespace='/grws')
 @socketio.on('disconnect', namespace='/wrws')
@@ -180,6 +189,7 @@ def wrws_pl():
 
     leave_room(room_id)
     dbase.remove_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))}, broadcast=True, room=room_id, namespace='/wrws')
+    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
+         broadcast=True, room=room_id, namespace='/wrws')
 
     session.pop('room', None)

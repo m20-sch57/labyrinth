@@ -4,6 +4,7 @@ class LabyrinthsList:
 
 	room_id - это id комнаты в которой происходит игра
 	'''
+
 	def __init__(self):
 		self.list = {}
 
@@ -17,7 +18,7 @@ class LabyrinthsList:
 		if room_id in self.list:
 			return False
 		else:
-			self.list[room_id] = labyrinth 
+			self.list[room_id] = labyrinth
 			return True
 
 	def remove_labyrinth(self, room_id):

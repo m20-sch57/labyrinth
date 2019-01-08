@@ -45,7 +45,7 @@ socket.on('update', function(msg) {
 			break;
 		case 'change_description':
 			var description = document.getElementById('description');
-			description.innerHTML = ('Description: ' + msg.description);
+			description.innerHTML = ('Description:<br>' + msg.description.replace(/\n/g, '<br>'));
 			break;
 		case 'start_game':
 			document.location.href = document.getElementById('info').getAttribute('redirect');

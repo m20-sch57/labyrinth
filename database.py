@@ -29,14 +29,14 @@ class Database:
             description TEXT, 
             create_date DATETIME,
             FOREIGN KEY (creator) REFERENCES users (login)
-            )''') 
+            )''')
 
         self.conn.commit()
 
     '''
     users functions
     '''
-        
+
     def add_user(self, login, password_hash):
         '''
         Return False if user with such login alredy employed
@@ -127,10 +127,8 @@ class Database:
 
     def get_room_name(self, room_id):
         return self.get_room(room_id)['name']
-    def get_room_creator_id(self, room_id):
-        return self.get_room(room_id)['creator_id']
-    def get_room_creator_login(self, room_id):
-        return self.get_user_login(self.get_creator_id(room_id))
+    def get_room_creator(self, room_id):
+        return self.get_room(room_id)['creator']
     def get_room_players(self, room_id):
         return self.get_room(room_id)['players_set']
     def get_room_settings(self, room_id):
