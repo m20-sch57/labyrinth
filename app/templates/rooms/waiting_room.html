@@ -15,7 +15,11 @@
     </div>
     <div class="room-info" id="room_info">
       <p>Создана {{ room['create_date'] }} пользователем {{ room['creator'] }}</p>
-      <p id="description">Description: {{ room['description'] }}</p>
+      <p id="description">
+      {% if room['description'] != None %}
+        Description: {% autoescape false %}{{ room['description'].split('\n') | join(' <br> ')}}{% endautoescape %}
+      {% endif %}
+      </p>
     </div>
     <div class="room-settings" id="room_settings">
       Имя комнаты:<input type="text" id="room_name"/>
