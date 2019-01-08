@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Лабиринт</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css') }}">
-		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-	</head>
-	<body>
-		{% if not hide_header %}
-		<div class='navbar-upper'>
-			<span id='logo'>Лабиринт</span>
-			{% if username == None %}
-				<a href="{{ url_for('register') }}">Регистрация</a>
-			{% endif %}
-			<a href="{{ url_for('index') }}">На главную</a>
-		</div>
-		<hr>
-		{% endif %}
-		{% block content %}{% endblock %}
-	</body>
+  <head>
+    <title>Лабиринт</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/light.css') }}">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  </head>
+  <body>
+    {% if not hide_header %}
+    <div class="navbar-upper">
+      <span id="logo">Лабиринт</span>
+      {% if username == None %}
+        <a href="{{ url_for('register') }}">Регистрация</a>
+      {% endif %}
+      <a href="{{ url_for('index') }}">На главную</a>
+    </div>
+    <hr>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </body>
 </html>

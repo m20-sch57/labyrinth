@@ -1,164 +1,168 @@
-# LabyrinthObject is class of objects that can be used by players at their turns
-class LabyrinthObject:
+﻿class LabyrinthObject:
+	'''
+	LabyrinthObject is class of objects that can be used by players at their turns
+	'''
 
-	# new available turn
 	def new_at(self, function, condition_function, turn_name):
+		'''
+		new available turn
+		'''
 
-		# если turn_set не определён для предмета, то self.turn_set вызовет ошибку,
-		# и тогда выполнится self.turn_set = {}
 		try:
-			self.turn_set
+			if turn_name not in self.turn_set:
+				self.turn_set[turn_name] = {
+					'function': function, 'condition': condition_function}
 		except:
-			self.turn_set = {}
+			self.turn_set = {turn_name: {
+				'function': function, 'condition': condition_function}}
 
-		if not turn_name in self.turn_set:
-			self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
+	def set_parent(self, parent):
+		if not issubclass(type(parent), LabyrinthObject):
+			raise ValueError(
+				'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
+		else:
+			self.parent = parent
 
+	def get_parent(self):
+		'''
+		Если parent определён для данного объекта, вернёт его, иначе вернёт None
+		'''
+		try:
+			return self.parent
+		except:
+			return None
 
-	# This two functions return object and parent's IDs.
-	def get_object_id(self):
-		return self.object_id
-	def get_parent_id(self):
-		return self.parent_id
+	def get_neighbour(self, direction):
+		if self.type != 'location':
+			raise TypeError(
+				'You can\'t get neighbour for object with type ' + self.type)
+		elif direction not in self.directions:
+			raise ValueError(
+				'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
+		else:
+			return self.directions[direction]
 
-	# This two function set object and parent's IDs to given value.
-	def set_object_id(self, new_id):
-		self.object_id = new_id
-	def set_parent_id(self, new_id):
-		self.parent_id  = new_id
+	def set_neighbour(self, direction, neighbour):
+		if self.type != 'location':
+			raise TypeError(
+				'You can\'t set neighbour for object with type ' + self.type)
+		elif not issubclass(type(neighbour), LabyrinthObject):
+			raise ValueError(
+				'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
+		else:
+			self.directions[direction] = neighbour
 
-	# TODO: understand what is this marvellous magic
+	def get_turn_set(self):
+		try:
+			return self.turn_set
+		except:
+			return {}
+
+	@property
+	def type(self):
+		return self._type
+
 	def main(self):
+		'''
+		Основная функция объекта. Определяется здесь, чтобы потом не было ошибки при её вызове.
+		'''
 		pass
 
-# Class for IDs. Nothing more.
-class ObjectID:
-	# Here object's type and number was declared in its ObjectID.
-	# Every ID is type of object and its individual number among all objects with this type
-	def __init__(self, object_type, object_number):
-		self.type = object_type
-		self.number= object_number
-		# тип один из: location, item, player
 
-	# This one helps to distinguish the differing and find the same objects.
-	def __eq__(self ,other):
-		# Obviously it needs only to compare types and IDs
-		return self.type == other.type and self.number == other.number
-
-# Class of players of the game.
 class Player(LabyrinthObject):
-	# On the level of program player is LabyrinthObject.
-	def __init__(self, user_id):
-		self.user_id = user_id
-		self.turn_set = {} # На всякий случай
+	'''
+	Class of players of the game
+	'''
 
-	def get_user_id(self):
-		return self.user_id
+	def __init__(self, username):
+		self.username = username
+		self.turn_set = {}
 
-# Class of ALL field. There is only one field in every game.
-class Field:
-	def __init__(self, adjacence_list, locations_list, items_list, players_list):
-		self.adjacence_list = adjacence_list
-		self.locations_list = locations_list
-		self.items_list = items_list
+	def get_username(self):
+		return self.username
+
+
+class Labyrinth:
+	'''
+	'''
+	def __init__(self, locations_list, items_list, npcs_list, players_list, adjance_list):
+		for i in range(len(locations_list)):
+			locations_list[i].directions = {
+				direction: locations_list[k] for direction, k in adjance_list[i].items()}
+			locations_list[i]._type = 'location'
+		for item in items_list:
+			item._type = 'item'
+		for npc in npcs_list:
+			npc._type = 'npc'
+		for player in players_list:
+			player._type = 'player'
+
+		for obj in locations_list + items_list + npcs_list + players_list:
+			obj.labyrinth = self
+
+		self.locations = set(locations_list)
+		self.items = set(items_list)
+		self.npcs = set(npcs_list)
 		self.players_list = players_list
 
-		#раздаём всем id
-		for i in range(len(self.locations_list)):
-			self.locations_list[i].object_id = ObjectID('location', i)
-		for i in range(len(self.items_list)):
-			self.items_list[i].object_id = ObjectID('item', i)
-		for i in range(len(self.players_list)):
-			self.players_list[i].object_id = ObjectID('player', i)
-
-
-	def get_neighbor_location(self, object_id, direction):
-		return self.locations_list[self.adjacence_list[object_id.number][direction]].get_object_id()
-
-	def get_object(self, object_id):
-		lists = {
-			'location': self.locations_list,
-			'item': self.items_list,
-			'player': self.players_list
-		}
-		return lists[object_id.type][object_id.number]
-
-# Class of Labyrinths.
-class Labyrinth:
-	# Every Labyrinth is field and send_msg_function to send messages.
-	def __init__(self, field):
-		self.field = field
-		self.to_send = {player.user_id:'' for player in self.field.players_list}
-
+		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0
 
-	def send_msg(self, msg, user_id):
-		self.to_send[user_id] += (' ' + msg)
-
-	def ready(self):
-		# Создаёт всем локациям артибуты field и labyrinth и turn_set
-		for location in self.field.locations_list:
-			location.labyrinth = self
-			location.field = self.field
-			try:
-				location.turn_set
-			except:
-				location.turn_set = {}
-		for item in self.field.items_list:
-			item.labyrinth = self
-			item.field = self.field
-			try:
-				item.turn_set
-			except:
-				item.turn_set = {}
-
+	def send_msg(self, msg, player):
+		self.to_send[player.get_username()] += (msg + ';')
 
 	def make_turn(self, turn):
-		self.to_send = {player.user_id:'' for player in self.field.players_list}
-		to_do = []
+		'''
+		Вызвать эту функцию, если активный игрок сделал ход turn
+
+		to_send: словарь сообщения для отправки.
+		{username1: msg1, ... , username_n: msg_n}
+		'''
+
+		# обнуляем to_send
+		self.to_send = {player.get_username(): '' for player in self.players_list}
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
-		# и запускаем действия найденных локаций и предметов.
-		for location in self.field.locations_list:
-			if turn in location.turn_set and location.turn_set[turn]['condition']():
-				to_do.append(location.turn_set[turn]['function'])
-		for item in self.field.items_list:
-			if turn in item.turn_set and item.turn_set[turn]['condition']():
-				to_do.append(item.turn_set[turn]['function'])
+		# и запускаем действия найденных локаций и предметов
+		to_do = []
+		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+			if turn in obj.get_turn_set() and obj.get_turn_set()[turn]['condition']():
+				to_do.append(obj.get_turn_set()[turn]['function'])
 		for function in to_do:
 			function()
 
 		# Запускаем для всех объектов main-функцию
-		for location in self.field.locations_list:
-			location.main()
-		for item in self.field.items_list:
-			item.main()
+		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+			obj.main()
 
 		# Делаем слудующего игрока активным
 		self.active_player_number += 1
-		self.active_player_number %= len(self.field.players_list)
+		self.active_player_number %= len(self.players_list)
 
+		# возвращаем все сообщения, которые нужно отправить
+		return self.to_send
+
+	def get_next_active_player(self):
+		return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
 
 	def get_active_player(self):
-		return self.field.players_list[self.active_player_number]
-	def get_active_player_user_id(self):
-		return self.get_active_player().user_id
-	def get_next_active_player(self):
-		return self.field.players_list[(self.active_player_number + 1)%len(self.field.players_list)]
+		return self.players_list[self.active_player_number]
+
+	def get_active_player_username(self):
+		return self.get_active_player().get_username()
 
 	def get_active_player_ats(self):
-		# Возвращает имена возможных ходов для активного игрока
+		'''
+		Возвращает возможные для активного игрока
+		'''
+
 		active_player_ats = []
-		for location in self.field.locations_list: # TODO: There are a lot of passages of lists of location and items. Is it worth to make class of available turns?
-			for turn in location.turn_set:
-				if location.turn_set[turn]['condition']():
+		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+			for turn in obj.get_turn_set():
+				if obj.get_turn_set()[turn]['condition']():
 					active_player_ats.append(turn)
-		for item in self.field.items_list:
-			for turn in item.turn_set:
-				if item.turn_set[turn]['condition']():
-					active_player_ats.append(turn)		
+
 		return active_player_ats
 
-	# возвращает сообщение, которое надо отправить пользователю user_id
 	def player_to_send(self, user_id):
 		return self.to_send[user_id]

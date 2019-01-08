@@ -1,4 +1,4 @@
-#encoding: utf-8
+# encoding: utf-8
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
@@ -11,17 +11,20 @@ import json
 
 from labyrinth_test import generate_labyrinth
 
+
 def login_required(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
-        if session.get('username') == None:
+        if session.get('username') is None:
             return redirect(url_for('index'))
         else: 
             return f(*args, **kwargs)
     return wrapped
 
+
 def simple_render_template(url, **kwargs):
-    return render_template(url, username = session.get('username'), **kwargs)
+    return render_template(url, username=session.get('username'), **kwargs)
+
 
 @app.route('/')
 @app.route('/index')
@@ -66,7 +69,7 @@ def register():
 
 @app.route('/login_failed')
 def login_failed():
-    return render_template('index.html', username= None, reg_error=True)
+    return render_template('index.html', username=None, reg_error=True)
 
 
 @app.route('/register_failed')

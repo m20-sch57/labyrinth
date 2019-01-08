@@ -7,13 +7,11 @@ class LabyrinthsList:
 	def __init__(self):
 		self.list = {}
 
-
 	def get_labyrinth(self, room_id):
 		if room_id in self.list:
 			return self.list[room_id]
 		else:
 			return None
-
 
 	def add_labyrinth(self, room_id, labyrinth):
 		if room_id in self.list:
