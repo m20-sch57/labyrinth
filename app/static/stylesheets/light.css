@@ -110,8 +110,16 @@ html, body {
   border: 1px solid rgb(200, 200, 200);
 }
 
-#room-info {
+.room-info {
   width: 33%;
+  position: absolute;
+  top: 0%;
+  left: 33.5%;
+}
+
+.room-settings {
+	display: none;
+	width: 33%;
   position: absolute;
   top: 0%;
   left: 33.5%;

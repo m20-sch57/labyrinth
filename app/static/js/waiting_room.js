@@ -64,3 +64,11 @@ changeDescriptionInput.onkeydown = changeDescription;
 
 var startButton = document.getElementById('start_button');
 startButton.onclick = startGame;
+
+var settingButton = document.getElementById('settings_button');
+var roomInfo = document.getElementById('room_info');
+var roomSettings = document.getElementById('room_settings');
+settingButton.onclick = function() {
+	toggle(roomInfo);
+	toggle(roomSettings);
+};

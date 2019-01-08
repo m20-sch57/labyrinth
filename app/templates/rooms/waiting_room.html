@@ -13,18 +13,20 @@
       <hr>
       {% endfor %}
     </div>
-    <div id="room-info">
+    <div class="room-info" id="room_info">
       <p>Создана {{ room['create_date'] }} пользователем {{ room['creator'] }}</p>
       <p id="description">Description: {{ room['description'] }}</p>
+    </div>
+    <div class="room-settings" id="room_settings">
+      Имя комнаты:<input type="text" id="room_name"/>
+      Описание:<textarea id="room_description"></textarea>
     </div>
     <div class="room-actions">
       <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
       {% if room['creator']==username %}
         <a class="action-link" href="">УДАЛИТЬ КОМНАТУ</a><br>
         <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
-        <span class="action-link">НАСТРОЙКИ КОМНАТЫ</span><br>
-        Имя комнаты:<input type="text" id="room_name"/>
-        Описание:<textarea id="room_description"></textarea>
+        <a class="action-link" id="settings_button">НАСТРОЙКИ КОМНАТЫ</a><br>
       {% endif %}
     </div>
   </div>
