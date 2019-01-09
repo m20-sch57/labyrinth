@@ -56,7 +56,7 @@ class GlobalWall(LO):
                 d0[arr[2]] = arr[1]
                 new_arg[arr[0]] = d0
                 d1 = new_arg.get(arr[1], {})
-                d1[self.reverse_direction[arr[2]]] = arr[0]
+                d1[reverse_direction[arr[2]]] = arr[0]
                 new_arg[arr[1]] = d1
             arg = new_arg
         # behind_the_wall is dict of dicts. For location with ID i on i-th place will be dict like
@@ -65,36 +65,33 @@ class GlobalWall(LO):
         # loc and loc_in_dir are integers (not location or ID) too.
         self.behind_the_wall = arg
 
-    def break_wall(self, object_id_1, direction):
-        if type(object_id_1) is not OID:
+    def break_wall(self, object_1, direction):
+        if issubclass(LO, object_1):
             raise ValueError('Invalid literal for break_wall()')
-        object_id_2 = self.field.locations_list[self.behind_the_wall[object_id_1.number][direction]].get_object_id()
-        self.field.adjacence_list[object_id_1.number][direction] = object_id_2.number
-        self.field.adjacence_list[object_id_2.number][self.reverse_direction[direction]] = object_id_1.number
-        del self.behind_the_wall[object_id_1.number][direction]
-        del self.behind_the_wall[object_id_2.number][self.reverse_direction[direction]]
+        object_2 = self.behind_the_wall[object_1][direction]
+        object_1.set_neighbour(direction, object_2)
+        object_2.set_neighbour(reverse_direction[direction], object_1)
+        del self.behind_the_wall[object_1][direction]
+        del self.behind_the_wall[object_2][reverse_direction[direction]]
 
-    def make_wall(self, object_id_1, direction):
-        if type(object_id_1) is not OID:
+    def make_wall(self, object_1, direction):
+        if issubclass(LO, object_1):
             raise ValueError('Invalid literal for make_wall()')
-        object_id_2 = self.field.get_neighbour_location_id(object_id_1, direction)
-        num_1 = object_id_1.number
-        num_2 = object_id_2.number
-        self_num = self.get_object_id().number
+        object_2 = object_1.get_neighbour(direction)
 
-        d1 = self.behind_the_wall.get(num_1, {})
+        d1 = self.behind_the_wall.get(object_1, {})
         if direction in d1:
             raise ValueError('There is already wall between first room and some another in the direction')
-        d1[direction] = num_2
-        self.behind_the_wall[num_1] = d1
-        self.field.adjacence_list[num_1][direction] = self_num
+        d1[direction] = object_2
+        self.behind_the_wall[object_1] = d1
+        object_1.set_nrighbour(direction, self)
 
-        d2 = self.behind_the_wall.get(num_2, {})
+        d2 = self.behind_the_wall.get(object_2, {})
         if self.reverse_direction[direction] in d2:
             raise ValueError('There is already wall between second room and some another in the opposite direction')
-        d2[self.reverse_direction[direction]] = num_1
-        self.behind_the_wall[num_2] = d2
-        self.field.adjacence_list[num_2][direction] = self_num
+        d2[self.reverse_direction[direction]] = object_1
+        self.behind_the_wall[object_2] = d2
+        object_2.set_neighbour(reverse_direction[direction], self)
 
 
 # Location.
@@ -122,14 +119,10 @@ class Wall(LO):
         # loc and loc_in_dir are integers (not location or ID) too.
 
     def break_wall(self):
-        for num in self.behind_the_wall:
-            for direction in self.behind_the_wall[num]:
-                neighbour_num = self.behind_the_wall[num][direction]
-                self.field.adjacence_list[num][direction] = neighbour_num
+        for loc in self.behind_the_wall:
+            for direction in self.behind_the_wall[loc]:
+                neighbour = self.behind_the_wall[loc][direction]
+                loc.set_neighbour(direction, neighbour)
 
-        ind = self.get_object_id().number
-        del self.field.locations_list[ind]
-        for i in range(ind, len(self.field.locations_list)):
-            self.field.locations_list[i].get_object_id().number = i
-        del self.field.adjacence_list[ind]
+        self.labyrinth.locations.discard(self)
         del self

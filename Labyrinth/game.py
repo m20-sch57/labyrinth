@@ -1,6 +1,7 @@
 ﻿from copy import copy
 from Labyrinth.LS_CONSTS import *
 
+
 class LabyrinthObject:
 	'''
 	LabyrinthObject is class of objects that can be used by players at their turns
@@ -81,6 +82,14 @@ class Player(LabyrinthObject):
 		self.username = username
 		self.turn_set = {}
 
+	def get_everything_in_it(self):
+		permited = []
+		lab = self.labyrinth
+		for obj in lab.locations | lab.items | lab.npcs | set(lab.players_list):
+			if obj.get_parent() == self:
+				permited.append(obj)
+		return permited
+
 	def __str__(self):
 		return 'Player<{}>'.format(self.get_username())
 
@@ -88,10 +97,14 @@ class Player(LabyrinthObject):
 		return self.username
 
 
+class NPC(LabyrinthObject):
+	pass
+
+
 class Labyrinth:
 	'''
 	'''
-	def __init__(self, locations, items, npcs, players, adjacence_list):
+	def __init__(self, locations, items, npcs, players, adjacence_list, dead_players = []):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
@@ -107,6 +120,8 @@ class Labyrinth:
 		for player in players:
 			player._type = 'player'
 			player.states = copy(INITIAL_STATES)
+		for player in dead_players:
+			player._type = 'dead_player'
 
 		for obj in locations + items + npcs + players:
 			obj.labyrinth = self
@@ -115,6 +130,7 @@ class Labyrinth:
 		self.items = set(items)
 		self.npcs = set(npcs)
 		self.players_list = players
+		self.dead_players = set(dead_players)
 
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0

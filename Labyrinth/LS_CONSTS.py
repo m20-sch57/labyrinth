@@ -50,8 +50,8 @@ BLOW_UP_RIGHT = 'Подорвать справа'
 BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite'
 BLOW_UP_PROHIBITION_MSG = 'О, нет! Это же "ничего"! Увы, вы не можете сломать "ничего".'
 BLOW_UP_FAILURE_MSG = 'Взорвать – взорвали, но толку-то?!'
-BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается были '
-BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается был '
+BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается был(а) '
+BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
 
 # Treasure's consts.
