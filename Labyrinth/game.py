@@ -1,4 +1,41 @@
-﻿class LabyrinthObject:
+﻿class LogError(Exception):
+	def __init__(self, msg):
+		self.msg = msg
+
+	def __str__(self):
+		return 'LogError: ' + repr(self.msg)
+
+
+class LabyrinthLogger:
+	def __init__(self, filename):
+		self.turns = []
+		self.filename = filename
+		self.save(filename)
+
+	def save(self, file = None):
+		if file is None:
+			file = self.filename
+		with open('tmp\\' + file + '.log', 'w') as f:
+			for turn in self.turns:
+				print('player: {}\nturn: {}'.format(turn['player'], turn['turn']), file=f)
+
+	def load(self, file = None):
+		if file is None:
+			file = self.filename
+		self.turns = []
+		with open('tmp\\' + file + '.log', 'r') as f:
+			player, turn = f.readline().rstrip(), f.readline().rstrip()
+			while turn != '':
+				if not (player.startswith('player: ') and turn.startswith('turn: ')):
+					raise LogError('Invalid format in ' + file + '.log')
+				self.update(player[len('player: '):], turn[len('turn: '):])
+				player, turn = f.readline(), f.readline()
+
+	def update(self, player, turn):
+		self.turns.append({'player': player, 'turn': turn})
+
+
+class LabyrinthObject:
 	'''
 	LabyrinthObject is class of objects that can be used by players at their turns
 	'''
@@ -108,6 +145,9 @@ class Labyrinth:
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0
 
+		self.logger = LabyrinthLogger(filename = 'test2')
+		self.logger.load(file = 'test')
+
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()] += (msg + ';')
 
@@ -140,6 +180,8 @@ class Labyrinth:
 		self.active_player_number %= len(self.players_list)
 
 		# возвращаем все сообщения, которые нужно отправить
+		self.logger.update(self.get_active_player_username(), turn)
+		self.logger.save()
 		return self.to_send
 
 	def get_next_active_player(self):
