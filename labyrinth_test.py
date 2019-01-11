@@ -15,10 +15,12 @@ adjance_list = [{'up': 6, 'down': 3, 'right': 6, 'left': 6},
 				{'up': 1, 'down': 6, 'right': 6, 'left': 3},
 				{'up': 2, 'down': 6, 'right': 6, 'left': 6},
 				{}]
+
 items_list = [Legs()]
-P = Player('player #1')
-P.set_parent(locations_list[0])
-players_list = [P]
+
+# P = Player('player #1')
+# P.set_parent(locations_list[0])
+# players_list = [P]
 
 # -------------
 # | 0 | 1   2 |
@@ -27,10 +29,20 @@ players_list = [P]
 # -------------
 
 
-MyLab = Labyrinth(locations_list, items_list, [], players_list, adjance_list)
-while True:
-	print()
-	print(', '.join(MyLab.get_active_player_ats()))
-	msgs = MyLab.make_turn(input())
-	for player in msgs:
-		print('[{}] - {}'.format(player, msgs[player]))
+def generate_labyrinth(user_id_list):
+	players_list = []
+	for user_id in user_id_list:
+		players_list.append(Player(user_id))
+		players_list[-1].set_parent(locations_list[0])
+	lab = Labyrinth(locations_list, items_list, [], players_list, adjance_list)
+	return lab
+
+
+if __name__ == '__main__':
+	lab = Labyrinth(locations_list, items_list, [], players_list, adjance_list)
+	while True:
+		print()
+		print(', '.join(lab.get_active_player_ats()))
+		msgs = lab.make_turn(input())
+		for player in msgs:
+			print('[{}] - {}'.format(player, msgs[player]))
