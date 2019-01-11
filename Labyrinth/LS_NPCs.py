@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game_LR2 import NPC
+from Labyrinth.game import NPC
 from Labyrinth.LS_move_and_bump import Outside, GlobalWall, Wall
 
 
@@ -15,14 +15,14 @@ class Bear(NPC):
 
     def turn_move(self, direction):
         def move():
-            next_position = self.field.get_neighbour_location(self.get_parent_id(), direction)
+            next_position = self.get_parent().get_neighbour(direction)
             if type(next_position) not in [GlobalWall, Wall, Outside]:
-                self.set_parent_id(next_position.get_object_id())
+                self.set_parent(next_position)
         return move
 
     def condition(self):
         return True
 
     def main(self):
-        for player in self.field.get_players_in_location(self.get_parent_id()):
+        for player in self.labyrinth.get_players_in_location(self.get_parent()):
             player.hurt()
