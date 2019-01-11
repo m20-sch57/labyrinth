@@ -12,11 +12,10 @@ class LabyrinthObject:
 		new available turn
 		'''
 
-		try:
-			if turn_name not in self.turn_set:
-				self.turn_set[turn_name] = {
-					'function': function, 'condition': condition_function}
-		except:
+		if hasattr(self, 'turn_set'):
+			self.turn_set[turn_name] = {
+				'function': function, 'condition': condition_function}
+		else:
 			self.turn_set = {turn_name: {
 				'function': function, 'condition': condition_function}}
 
@@ -31,10 +30,18 @@ class LabyrinthObject:
 		'''
 		Если parent определён для данного объекта, вернёт его, иначе вернёт None
 		'''
-		try:
+		if hasattr(self, 'parent'):
 			return self.parent
-		except:
+		else:
 			return None
+
+	def get_children(self):
+		permitted = []
+		lab = self.labyrinth
+		for obj in lab.locations | lab.items | lab.npcs | set(lab.players_list):
+			if obj.get_parent() == self:
+				permitted.append(obj)
+		return permitted
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
@@ -57,9 +64,9 @@ class LabyrinthObject:
 			self.directions[direction] = neighbour
 
 	def get_turn_set(self):
-		try:
+		if hasattr(self, 'turn_set'):
 			return self.turn_set
-		except:
+		else:
 			return {}
 
 	@property
@@ -72,39 +79,20 @@ class LabyrinthObject:
 		'''
 		pass
 
-
-class Player(LabyrinthObject):
-	'''
-	Class of players of the game
-	'''
-
-	def __init__(self, username):
-		self.username = username
-		self.turn_set = {}
-
-	def get_everything_in_it(self):
-		permited = []
-		lab = self.labyrinth
-		for obj in lab.locations | lab.items | lab.npcs | set(lab.players_list):
-			if obj.get_parent() == self:
-				permited.append(obj)
-		return permited
+	def get_name(self):
+		if hasattr(self, 'name'):
+			return self.name
+		else:
+			return self
 
 	def __str__(self):
-		return 'Player<{}>'.format(self.get_username())
-
-	def get_username(self):
-		return self.username
-
-
-class NPC(LabyrinthObject):
-	pass
+		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
 
 
 class Labyrinth:
 	'''
 	'''
-	def __init__(self, locations, items, npcs, players, adjacence_list, dead_players = []):
+	def __init__(self, locations, items, npcs, players, adjacence_list, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
@@ -113,10 +101,6 @@ class Labyrinth:
 			item._type = 'item'
 		for npc in npcs:
 			npc._type = 'npc'
-			try:
-				npc.turn_set
-			except:
-				npc.turn_set = {}
 		for player in players:
 			player._type = 'player'
 			player.states = copy(INITIAL_STATES)
@@ -125,6 +109,8 @@ class Labyrinth:
 
 		for obj in locations + items + npcs + players:
 			obj.labyrinth = self
+			if not hasattr(self, 'turn_set'):
+				obj.turn_set = {}
 
 		self.locations = set(locations)
 		self.items = set(items)

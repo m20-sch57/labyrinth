@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from Labyrinth.LS_fundamental_four import Location
 
 
 INITIAL_STATES['is_fell'] = False
@@ -7,7 +7,7 @@ INITIAL_STATES['is_fell'] = False
 
 # TODO: To add setting MUST_PLAYER_FALL_IN_IT.
 # Location.
-class Hole(LO):
+class Hole(Location):
     is_not_fall = set()
 
     def __init__(self):

@@ -1,9 +1,9 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from Labyrinth.LS_fundamental_four import Item
 
 
 # Item.
-class Treasure(LO):
+class Treasure(Item):
     def __init__(self, is_true):
         self.is_true = is_true
 

@@ -1,9 +1,9 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from Labyrinth.LS_fundamental_four import Location, Item
 
 
 # Item.
-class Legs(LO):
+class Legs(Item):
     def __init__(self):
         self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
         self.new_at(self.turn_move('down'), condition_function=self.condition, turn_name=DOWN_TURN)
@@ -26,7 +26,7 @@ class Legs(LO):
 
 
 # Location.
-class EmptyLocation(LO):
+class EmptyLocation(Location):
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
         active_player = self.labyrinth.get_active_player()
@@ -36,13 +36,13 @@ class EmptyLocation(LO):
 
 
 # Location.
-class Outside(LO):
+class Outside(Location):
     pass
 
 
 # Location.
 # Just prototype. But it's more useful than new Wall sometimes...
-class GlobalWall(LO):
+class GlobalWall(Location):
     reverse_direction = {'up': 'down',
                          'down': 'up',
                          'left': 'right',
@@ -95,7 +95,7 @@ class GlobalWall(LO):
 
 
 # Location.
-class Wall(LO):
+class Wall(Location):
     def __init__(self, *args):
         if len(args) == 0:
             raise ValueError('Invalid literal for Wall')
@@ -125,4 +125,3 @@ class Wall(LO):
                 loc.set_neighbour(direction, neighbour)
 
         self.labyrinth.locations.discard(self)
-        del self

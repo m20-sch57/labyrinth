@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO, Player
+from Labyrinth.LS_fundamental_four import Location, Item, Player, NPC
 from Labyrinth.LS_move_and_bump import GlobalWall, Wall, Outside
 
 
@@ -43,7 +43,7 @@ NPC.heal = Player.heal = heal
 
 # Item.
 # TODO: To fix bug: NPCs can be hurt and healed.
-class Gun(LO):
+class Gun(Item):
     def __init__(self):
         self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
         self.new_at(self.turn_fire('down'), self.condition, FIRE_DOWN)
@@ -89,7 +89,7 @@ class Gun(LO):
 
 
 # Item.
-class Bomb(LO):
+class Bomb(Item):
     def __init__(self):
         self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
         self.new_at(self.turn_blow_up('down'), self.condition, BLOW_UP_DOWN)
@@ -133,15 +133,15 @@ class Bomb(LO):
 
 
 # Location.
-class Arsenal(LO):
+class Arsenal(Location):
     def main(self):
-        for player in self.labyrinth.get_players_in_location(self.get_object_id()):
+        for player in self.labyrinth.get_players_in_location(self):
             player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
             player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 # Location.
-class FirstAidPost(LO):
+class FirstAidPost(Location):
     def main(self):
-        for player in self.labyrinth.get_players_in_location(self.get_object_id()):
+        for player in self.labyrinth.get_players_in_location(self):
             player.heal()

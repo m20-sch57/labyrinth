@@ -1,5 +1,5 @@
 from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import NPC
+from Labyrinth.LS_fundamental_four import NPC
 from Labyrinth.LS_move_and_bump import Outside, GlobalWall, Wall
 
 
