@@ -66,7 +66,7 @@ while True:
     print()
     print('Debug [player pos]', MyLab.get_active_player().get_parent())
     # print(MyLab.locations)
-    # print(bear.get_parent())
+    print('Debug [bear pos]', bear.get_parent())
     print(MyLab.get_active_player().states)
     print(', '.join(MyLab.get_active_player_ats()))
     msgs = MyLab.make_turn(input('(' + MyLab.get_active_player().get_username() + ') '))

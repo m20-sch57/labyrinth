@@ -36,7 +36,7 @@ class LabyrinthObject:
 	def get_parent(self):
 		return get_attr_safe(self, 'parent', None)
 
-	def get_children(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: True):
+	def get_children(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
 		lab = self.labyrinth
 		all_objs = lab.locations | lab.items | lab.NPCs | set(lab.players_list)
 		return list(filter(lambda obj: obj.get_parent() == self and (obj.type in types and and_key(obj) or or_key(obj)), all_objs))

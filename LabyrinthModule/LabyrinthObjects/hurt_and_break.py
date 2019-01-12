@@ -9,7 +9,7 @@ INITIAL_STATES['count_of_bombs'] = 3
 
 
 def hurt_player(self):
-    for item in self.get_everything_in_it():
+    for item in self.get_children():
         item.hurt_action()
 
     if not self.states['hurt']:
@@ -20,7 +20,6 @@ def hurt_player(self):
         self.labyrinth.dead_players.add(self)
         del self.labyrinth.players_list[ind]
         del self.parent
-        self.labyrinth.number_of_players -= 1
         self.labyrinth.send_msg(DEATH_MSG, self)
 
 

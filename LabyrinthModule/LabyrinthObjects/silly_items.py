@@ -20,7 +20,7 @@ class Treasure(Item):
         if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
             self.set_parent(self.initial_location)
         else:
-            self.set_parent(player.get_parent)
+            self.set_parent(player.get_parent())
 
     def turn_take(self):
         self.take(self.labyrinth.get_active_player())
