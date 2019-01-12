@@ -1,19 +1,20 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LabObj
+from LabyrinthModule.LabyrinthEngine.game import LabyrinthObject as LabObj
 
 
 class Location(LabObj):
-	pass
+	_type = 'location'
 
 
 class Item(LabObj):
-	pass
+	_type = 'item'
 
 
 class Player(LabObj):
 	'''
 	Class of players of the game
 	'''
+
+	_type = 'player'
 
 	def __init__(self, username):
 		self.name = self.username = username
@@ -23,4 +24,4 @@ class Player(LabObj):
 
 
 class NPC(LabObj):
-	pass
+	_type = 'NPC'

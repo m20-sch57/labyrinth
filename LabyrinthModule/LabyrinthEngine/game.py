@@ -1,5 +1,12 @@
 ﻿from copy import copy
-from Labyrinth.LS_CONSTS import *
+from LabyrinthModule.CONSTS import *
+
+
+def get_attr_safe(obj, attr, default_value):
+	if hasattr(obj, attr):
+		return obj.__dict__[attr]
+	else:
+		return default_value
 
 
 class LabyrinthObject:
@@ -27,21 +34,12 @@ class LabyrinthObject:
 			self.parent = parent
 
 	def get_parent(self):
-		'''
-		Если parent определён для данного объекта, вернёт его, иначе вернёт None
-		'''
-		if hasattr(self, 'parent'):
-			return self.parent
-		else:
-			return None
+		return get_attr_safe(self, 'parent', None)
 
-	def get_children(self):
-		permitted = []
+	def get_children(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: True):
 		lab = self.labyrinth
-		for obj in lab.locations | lab.items | lab.npcs | set(lab.players_list):
-			if obj.get_parent() == self:
-				permitted.append(obj)
-		return permitted
+		all_objs = lab.locations | lab.items | lab.NPCs | set(lab.players_list)
+		return list(filter(lambda obj: obj.get_parent() == self and (obj.type in types and and_key(obj) or or_key(obj)), all_objs))
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
@@ -64,10 +62,7 @@ class LabyrinthObject:
 			self.directions[direction] = neighbour
 
 	def get_turn_set(self):
-		if hasattr(self, 'turn_set'):
-			return self.turn_set
-		else:
-			return {}
+		return get_attr_safe(self, 'turn_set', {})
 
 	@property
 	def type(self):
@@ -80,41 +75,34 @@ class LabyrinthObject:
 		pass
 
 	def get_name(self):
-		if hasattr(self, 'name'):
-			return self.name
-		else:
-			return self
+		return get_attr_safe(self, 'name', '')
 
 	def __str__(self):
+		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
+
+	def __repr__(self):
 		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
 
 
 class Labyrinth:
 	'''
 	'''
-	def __init__(self, locations, items, npcs, players, adjacence_list, dead_players=[]):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
-			locations[i]._type = 'location'
-		for item in items:
-			item._type = 'item'
-		for npc in npcs:
-			npc._type = 'npc'
 		for player in players:
-			player._type = 'player'
 			player.states = copy(INITIAL_STATES)
 		for player in dead_players:
 			player._type = 'dead_player'
 
-		for obj in locations + items + npcs + players:
+		for obj in locations + items + NPCs + players:
 			obj.labyrinth = self
-			if not hasattr(self, 'turn_set'):
-				obj.turn_set = {}
+			self.turn_set = get_attr_safe(self, 'turn_set', {})
 
 		self.locations = set(locations)
 		self.items = set(items)
-		self.npcs = set(npcs)
+		self.NPCs = set(NPCs)
 		self.players_list = players
 		self.dead_players = set(dead_players)
 
@@ -138,14 +126,14 @@ class Labyrinth:
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		# и запускаем действия найденных локаций и предметов
 		to_do = []
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
 			if turn in obj.get_turn_set() and obj.get_turn_set()[turn]['condition']():
 				to_do.append(obj.get_turn_set()[turn]['function'])
 		for function in to_do:
 			function()
 
 		# Запускаем для всех объектов main-функцию
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
 			obj.main()
 
 		# Делаем слудующего игрока активным
@@ -170,7 +158,7 @@ class Labyrinth:
 		'''
 
 		active_player_ats = []
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
 			for turn in obj.get_turn_set():
 				if obj.get_turn_set()[turn]['condition']():
 					active_player_ats.append(turn)

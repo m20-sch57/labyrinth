@@ -1,6 +1,6 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_fundamental_four import Location, Item, Player, NPC
-from Labyrinth.LS_move_and_bump import GlobalWall, Wall, Outside
+from LabyrinthModule.CONSTS import *
+from LabyrinthModule.LabyrinthEngine.LTypes import Location, Item, Player, NPC
+from LabyrinthModule.LabyrinthObjects.move_and_bump import GlobalWall, Wall, Outside
 
 
 INITIAL_STATES['hurt'] = False
@@ -24,11 +24,11 @@ def hurt_player(self):
         self.labyrinth.send_msg(DEATH_MSG, self)
 
 
-def hurt_npc(self):
+def hurt_NPC(self):
     if not self.states['hurt']:
         self.states['hurt'] = True
     else:
-        self.labyrinth.npcs.discard(self)
+        self.labyrinth.NPCs.discard(self)
         del self
 
 
@@ -37,7 +37,7 @@ def heal(self):
 
 
 Player.hurt = hurt_player
-NPC.hurt = hurt_npc
+NPC.hurt = hurt_NPC
 NPC.heal = Player.heal = heal
 
 
@@ -60,13 +60,13 @@ class Gun(Item):
             current_location = active_player.get_parent()
 
             if CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
-                kicked_players |= set(self.labyrinth.get_players_in_location(current_location))
+                kicked_players |= set(current_location.get_children(types='player'))
                 kicked_players.discard(active_player)
 
                 current_location = current_location.get_neighbour(direction)
             while current_location not in met_locations and type(current_location) not in [GlobalWall, Wall, Outside]:
                 met_locations.add(current_location)
-                kicked_players |= set(self.labyrinth.get_players_in_location(current_location))
+                kicked_players |= set(current_location.get_children(types='player'))
                 current_location = current_location.get_neighbour(direction)
 
             if not CAN_PLAYER_HURT_HIMSELF:
@@ -112,7 +112,7 @@ class Bomb(Item):
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(BLOW_UP_PROHIBITION_MSG, active_player)
             else:
-                players_in_direction = self.labyrinth.get_players_in_location(location_in_direction)
+                players_in_direction = location_in_direction.get_children(types='player')
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:
                     if len(players_in_direction) == 1:
                         msg = BLOW_UP_SINGLE_INJURING_MSG
@@ -135,7 +135,7 @@ class Bomb(Item):
 # Location.
 class Arsenal(Location):
     def main(self):
-        for player in self.labyrinth.get_players_in_location(self):
+        for player in self.get_children(types='player'):
             player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
             player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
@@ -143,5 +143,5 @@ class Arsenal(Location):
 # Location.
 class FirstAidPost(Location):
     def main(self):
-        for player in self.labyrinth.get_players_in_location(self):
+        for player in self.get_children(types='player'):
             player.heal()

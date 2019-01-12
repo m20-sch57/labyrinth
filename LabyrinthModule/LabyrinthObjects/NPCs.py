@@ -1,6 +1,6 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_fundamental_four import NPC
-from Labyrinth.LS_move_and_bump import Outside, GlobalWall, Wall
+from LabyrinthModule.CONSTS import *
+from LabyrinthModule.LabyrinthEngine.LTypes import NPC
+from LabyrinthModule.LabyrinthObjects.move_and_bump import Outside, GlobalWall, Wall
 
 
 # NPC.
@@ -24,5 +24,5 @@ class Bear(NPC):
         return True
 
     def main(self):
-        for player in self.labyrinth.get_players_in_location(self.get_parent()):
+        for player in self.get_parent().get_children(types='player'):
             player.hurt()

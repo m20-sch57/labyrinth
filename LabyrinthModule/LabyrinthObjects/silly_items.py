@@ -1,5 +1,5 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_fundamental_four import Item
+from LabyrinthModule.CONSTS import *
+from LabyrinthModule.LabyrinthEngine.LTypes import Item
 
 
 # Item.
@@ -30,8 +30,8 @@ class Treasure(Item):
 
     def take_condition(self):
         active_player = self.labyrinth.get_active_player()
-        return active_player.get_parent_id() == self.get_parent_id()
+        return active_player.get_parent() == self.get_parent()
 
     def drop_condition(self):
-        active_player_id = self.labyrinth.get_active_player_id()
-        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id() == active_player_id
+        active_player = self.labyrinth.get_active_player()
+        return CAN_PLAYER_DROP_TREASURE and self.get_parent() == active_player

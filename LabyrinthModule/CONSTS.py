@@ -6,7 +6,7 @@ reverse_direction = {'up': 'down', 'down': 'up',
                      'under': 'above', 'above': 'under'}
 basic_directions = ['up', 'down', 'left', 'right']
 
-# Labyrinth's consts.
+# LabyrinthModule's consts.
 INITIAL_STATES = {}
 
 # Player's consts.

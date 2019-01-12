@@ -1,30 +1,27 @@
-from Labyrinth.game_LR2 import Field, Labyrinth, Player, ObjectID
-from Labyrinth.LS_move_and_bump import Legs, EmptyLocation, Outside, Wall
-from Labyrinth.LS_appear_and_disappear import Hole
-from Labyrinth.LS_hurt_and_break import Gun, Bomb, Arsenal, FirstAidPost
-from Labyrinth.LS_NPCs import Bear
-from Labyrinth.LS_silly_items import Treasure
-
-
-def send_msg_func(msg, user_id):
-    print('[{}] - {}'.format(user_id, msg))
+from LabyrinthModule import Labyrinth, Player, Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
+    FirstAidPost, Bear, Treasure
 
 
 # ------------------------------------------------
 locations_list = [Outside()]
 locations_list += [EmptyLocation() for _ in range(8)]
-locations_list.append(Wall([
-    (1, 'right'),
-    (2, 'left')
-                            ]))
-locations_list.append(Wall([
-    (5, 'right'),
-    (6, 'left')
-                            ]))
-locations_list[2] = Hole(ObjectID('location', 7))
-locations_list[7] = Hole(ObjectID('location', 2))
+locations_list[2] = Hole()
+locations_list[7] = Hole()
+locations_list[2].set_fall_to(locations_list[7])
+locations_list[7].set_fall_to(locations_list[2])
 locations_list[4] = Arsenal()
 locations_list[8] = FirstAidPost()
+locations_list.append(Wall([
+    (locations_list[1], 'right'),
+    (locations_list[2], 'left')
+                            ]))
+locations_list.append(Wall([
+    (locations_list[6], 'right'),
+    (locations_list[7], 'left')
+                            ]))
+
+for i in range(len(locations_list)):
+    locations_list[i].name = i
 # -------------------------------------------------
 adjacence_list = [{},
                   {'up': 0, 'down': 5, 'right': 9, 'left': 0},
@@ -48,33 +45,30 @@ adjacence_list = [{},
 
 # -------------------------------------------------
 tres = Treasure(True)
-tres.set_parent_id(ObjectID('location', 3))
-bear = Bear()
-bear.set_parent_id(ObjectID('location', 4))
-items_list = [Legs(), Gun(), Bomb(), tres, bear]
+tres.set_parent(locations_list[3])
+items_list = [Legs(), Gun(), Bomb(), tres]
 # -------------------------------------------------
 player = Player('player #1')
 prey = Player('prey')
-player.set_parent_id(ObjectID('location', 1))
-prey.set_parent_id(ObjectID('location', 5))
+player.set_parent(locations_list[1])
+prey.set_parent(locations_list[5])
 players_list = [player]
 # -------------------------------------------------
-NPCs_list = []
+bear = Bear()
+bear.set_parent(locations_list[4])
+NPCs_list = [bear]
 
 
-field = Field(adjacence_list, locations_list, items_list, players_list, NPCs_list)
-MyLab = Labyrinth(field, send_msg_func)
+MyLab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
 
 
-MyLab.ready()
 while True:
     print()
-    print('Debug [player pos]', MyLab.get_active_player().get_parent_id().number,
-          MyLab.get_active_player().get_parent_id().type)
-    # print(field.locations_list[-1].behind_the_wall)
-    print(field.locations_list)
-    print(field.adjacence_list)
+    print('Debug [player pos]', MyLab.get_active_player().get_parent())
+    # print(MyLab.locations)
+    # print(bear.get_parent())
     print(MyLab.get_active_player().states)
-    print(bear.get_parent_id())
     print(', '.join(MyLab.get_active_player_ats()))
-    MyLab.make_turn(input('(' + MyLab.get_active_player().get_user_id() + ') '))
+    msgs = MyLab.make_turn(input('(' + MyLab.get_active_player().get_username() + ') '))
+    for player in msgs:
+        print('[{}] - {}'.format(player, msgs[player]))

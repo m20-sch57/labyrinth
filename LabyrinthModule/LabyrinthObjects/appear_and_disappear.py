@@ -1,5 +1,5 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_fundamental_four import Location
+from LabyrinthModule.CONSTS import *
+from LabyrinthModule.LabyrinthEngine.LTypes import Location
 
 
 INITIAL_STATES['is_fell'] = False

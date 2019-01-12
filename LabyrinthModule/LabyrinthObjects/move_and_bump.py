@@ -1,5 +1,5 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.LS_fundamental_four import Location, Item
+from LabyrinthModule.CONSTS import *
+from LabyrinthModule.LabyrinthEngine.LTypes import Location, Item
 
 
 # Item.
@@ -66,7 +66,7 @@ class GlobalWall(Location):
         self.behind_the_wall = arg
 
     def break_wall(self, object_1, direction):
-        if issubclass(LO, object_1):
+        if issubclass(Location, object_1):
             raise ValueError('Invalid literal for break_wall()')
         object_2 = self.behind_the_wall[object_1][direction]
         object_1.set_neighbour(direction, object_2)
@@ -75,7 +75,7 @@ class GlobalWall(Location):
         del self.behind_the_wall[object_2][reverse_direction[direction]]
 
     def make_wall(self, object_1, direction):
-        if issubclass(LO, object_1):
+        if issubclass(Location, object_1):
             raise ValueError('Invalid literal for make_wall()')
         object_2 = object_1.get_neighbour(direction)
 
@@ -108,7 +108,7 @@ class Wall(Location):
         for i in range(len(args)):
             pair = args[i]
             next_pair = args[(i + 1) % len(args)]
-            if type(pair) is not tuple or len(pair) != 2 or type(pair[0]) is not int:
+            if type(pair) is not tuple or len(pair) != 2:
                 raise ValueError('Invalid literal for Wall')
             d = self.behind_the_wall.get(pair[0], {})
             d[pair[1]] = next_pair[0]
