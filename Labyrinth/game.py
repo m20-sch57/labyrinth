@@ -9,6 +9,7 @@
 class LabyrinthLogger:
 	def __init__(self, filename):
 		self.turns = []
+		self.msgs = {}
 		self.filename = filename
 		self.save(filename)
 
@@ -31,8 +32,33 @@ class LabyrinthLogger:
 				self.update(player[len('player: '):], turn[len('turn: '):])
 				player, turn = f.readline(), f.readline()
 
-	def update(self, player, turn):
+	def update_turn(self, player, turn):
 		self.turns.append({'player': player, 'turn': turn})
+
+	def update_msg(self, msgs):
+		for player in msgs:
+			if player in self.msgs:
+				self.msgs[player] += msgs[player]
+			else:
+				self.msgs[player] = msgs[player]
+
+	def get_all_msgs(self, player):
+		if player in self.msgs:
+			return self.msgs[player]
+		else:
+			return [] 
+
+	def get_turns(self, player = None):
+		if player == None:
+			return self.turns
+		else:
+			return list(filter(lambda turn: turn['player'] == player, self.turns))
+
+	def get_turn(self, *args):
+		if len(args) == 0:
+			return self.turns[-1]
+		else:
+			return self.turns[-int(args[0])]
 
 
 class LabyrinthObject:
@@ -180,7 +206,7 @@ class Labyrinth:
 		self.active_player_number %= len(self.players_list)
 
 		# возвращаем все сообщения, которые нужно отправить
-		self.logger.update(self.get_active_player_username(), turn)
+		self.logger.update_turn(self.get_active_player_username(), turn)
 		self.logger.save()
 		return self.to_send
 
