@@ -1,11 +1,11 @@
 from LabyrinthModule.CONSTS import *
 from LabyrinthModule.LabyrinthEngine.LTypes import Location, Item, Player, NPC
-from LabyrinthModule.LabyrinthObjects.move_and_bump import GlobalWall, Wall, Outside
+from LabyrinthModule.LabyrinthObjects.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
 INITIAL_STATES['hurt'] = False
-INITIAL_STATES['count_of_bullets'] = 3
-INITIAL_STATES['count_of_bombs'] = 3
+INITIAL_STATES['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
+INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 def hurt_player(self):
@@ -59,13 +59,13 @@ class Gun(Item):
             current_location = active_player.get_parent()
 
             if CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
-                kicked_players |= set(current_location.get_children(types='player'))
+                kicked_players |= current_location.get_children(types=['player', 'NPC'])
                 kicked_players.discard(active_player)
 
                 current_location = current_location.get_neighbour(direction)
-            while current_location not in met_locations and type(current_location) not in [GlobalWall, Wall, Outside]:
+            while current_location not in met_locations and type(current_location) not in borders:
                 met_locations.add(current_location)
-                kicked_players |= set(current_location.get_children(types='player'))
+                kicked_players |= current_location.get_children(types=['player', 'NPC'])
                 current_location = current_location.get_neighbour(direction)
 
             if not CAN_PLAYER_HURT_HIMSELF:
@@ -111,7 +111,7 @@ class Bomb(Item):
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(BLOW_UP_PROHIBITION_MSG, active_player)
             else:
-                players_in_direction = location_in_direction.get_children(types='player')
+                players_in_direction = location_in_direction.get_children(types=['player', 'NPC'])
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and players_in_direction:
                     if len(players_in_direction) == 1:
                         msg = BLOW_UP_SINGLE_INJURING_MSG

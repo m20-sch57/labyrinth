@@ -2,36 +2,43 @@ from LabyrinthModule.CONSTS import *
 from LabyrinthModule.LabyrinthEngine.LTypes import Location
 
 
-INITIAL_STATES['is_fell'] = False
-
-
-# TODO: To add setting MUST_PLAYER_FALL_IN_IT.
 # Location.
 class Hole(Location):
-    is_not_fall = set()
+    indulgence = {}
 
     def __init__(self):
         self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
+
+        self.types_who_must_fall = TYPES_WHO_MUST_FALL_IN_IT
+        self.and_who_must_fall = AND_WHO_MUST_FALL_IN_IT
+        self.or_who_must_fall = OR_WHO_MUST_FALL_IN_IT
 
     def set_fall_to(self, fall_to):
         self.fall_to = fall_to
 
     def main(self):
-        next_active_player = self.labyrinth.get_next_active_player()
-        active_player = self.labyrinth.get_active_player()
+        for obj in self.labyrinth.get_all_objects():
+            if obj in self.indulgence and obj.get_parent() != self.indulgence[obj]:
+                self.indulgence[obj] = None
 
-        if active_player.get_parent() == self and active_player not in self.is_not_fall:
-            active_player.set_parent(self.fall_to)
+        for obj in self.get_children(types=self.types_who_must_fall,
+                                     and_key=lambda obj: self.and_who_must_fall(obj) and
+                                                         self.indulgence.get(obj, None) is None,
+                                     or_key=self.or_who_must_fall):
+            obj.set_parent(self.fall_to)
             if type(self.fall_to) is Hole:
-                self.is_not_fall.add(active_player)
-            self.labyrinth.send_msg(FALL_MSG, active_player)
+                self.indulgence[obj] = self.fall_to
+            else:
+                self.indulgence[obj] = None
 
-        if not type(next_active_player.get_parent()) is Hole:
-            self.is_not_fall.discard(next_active_player)
+            if obj.type == 'player':
+                self.labyrinth.send_msg(FALL_MSG, obj)
 
     def go_into_hole(self):
         active_player = self.labyrinth.get_active_player()
         active_player.set_parent(self.fall_to)
+        if type(self.fall_to) is Hole:
+            self.indulgence[active_player] = self.fall_to
         self.labyrinth.send_msg(TROUGH_HOLE_MSG, active_player)
 
     def condition(self):

@@ -14,7 +14,7 @@ class Legs(Item):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
-            if type(next_position) is Wall:
+            if type(next_position) in borders:
                 self.labyrinth.send_msg(WALL_MSG, active_player)
             else:
                 active_player.set_parent(next_position)
@@ -125,3 +125,6 @@ class Wall(Location):
                 loc.set_neighbour(direction, neighbour)
 
         self.labyrinth.locations.discard(self)
+
+
+borders = [Outside, Wall, GlobalWall]

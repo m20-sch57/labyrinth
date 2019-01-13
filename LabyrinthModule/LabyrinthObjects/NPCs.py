@@ -1,6 +1,6 @@
 from LabyrinthModule.CONSTS import *
 from LabyrinthModule.LabyrinthEngine.LTypes import NPC
-from LabyrinthModule.LabyrinthObjects.move_and_bump import Outside, GlobalWall, Wall
+from LabyrinthModule.LabyrinthObjects.move_and_bump import borders
 
 
 # NPC.
@@ -16,7 +16,7 @@ class Bear(NPC):
     def turn_move(self, direction):
         def move():
             next_position = self.get_parent().get_neighbour(direction)
-            if type(next_position) not in [GlobalWall, Wall, Outside]:
+            if type(next_position) not in borders:
                 self.set_parent(next_position)
         return move
 

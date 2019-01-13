@@ -29,6 +29,9 @@ FALL_MSG = 'И в ямку бух!'
 ENTER_HOLE_MSG = 'Ты в комнате с дырой'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
 INTO_TURN = 'В дыру'
+TYPES_WHO_MUST_FALL_IN_IT = ['player', 'NPC']
+AND_WHO_MUST_FALL_IN_IT = lambda obj: True
+OR_WHO_MUST_FALL_IN_IT = lambda obj: False
 
 # Bullet's consts.
 INITIAL_COUNT_OF_BULLETS = 3

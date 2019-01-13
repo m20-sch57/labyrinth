@@ -37,9 +37,9 @@ class LabyrinthObject:
 		return get_attr_safe(self, 'parent', None)
 
 	def get_children(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
-		lab = self.labyrinth
-		all_objs = lab.locations | lab.items | lab.NPCs | set(lab.players_list)
-		return list(filter(lambda obj: obj.get_parent() == self and (obj.type in types and and_key(obj) or or_key(obj)), all_objs))
+		all_objs = self.labyrinth.get_all_objects()
+		return set(filter(lambda obj: obj.get_parent() == self and (obj.type in types and and_key(obj) or or_key(obj)),
+						all_objs))
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
@@ -87,6 +87,7 @@ class LabyrinthObject:
 class Labyrinth:
 	'''
 	'''
+
 	def __init__(self, locations, items, NPCs, players, adjacence_list, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
@@ -98,7 +99,6 @@ class Labyrinth:
 
 		for obj in locations + items + NPCs + players:
 			obj.labyrinth = self
-			self.turn_set = get_attr_safe(self, 'turn_set', {})
 
 		self.locations = set(locations)
 		self.items = set(items)
@@ -126,14 +126,14 @@ class Labyrinth:
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		# и запускаем действия найденных локаций и предметов
 		to_do = []
-		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
+		for obj in self.get_all_objects():
 			if turn in obj.get_turn_set() and obj.get_turn_set()[turn]['condition']():
 				to_do.append(obj.get_turn_set()[turn]['function'])
 		for function in to_do:
 			function()
 
 		# Запускаем для всех объектов main-функцию
-		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
+		for obj in self.get_all_objects():
 			obj.main()
 
 		# Делаем слудующего игрока активным
@@ -158,12 +158,18 @@ class Labyrinth:
 		'''
 
 		active_player_ats = []
-		for obj in self.locations | self.items | self.NPCs | set(self.players_list):
+		for obj in self.get_all_objects():
 			for turn in obj.get_turn_set():
 				if obj.get_turn_set()[turn]['condition']():
 					active_player_ats.append(turn)
 
 		return active_player_ats
+
+	def get_all_objects(self):
+		return self.locations | self.items | self.NPCs | set(self.players_list)
+
+	def get_objects(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+		return list(filter(lambda obj: obj.type in types and and_key(obj) or or_key(obj), self.get_all_objects()))
 
 	def player_to_send(self, user_id):
 		return self.to_send[user_id]
