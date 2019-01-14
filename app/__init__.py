@@ -12,4 +12,4 @@ labyrinths_list = LabyrinthsList()
 
 from app import routes
 
-socketio.run(app, debug=True,)
+socketio.run(app, debug=True)
