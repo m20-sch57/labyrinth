@@ -1,6 +1,6 @@
-from LabyrinthObjects.CONSTS import *
+from LabyrinthObjects.Vanilla.CONSTS import *
 from LabyrinthEngine.LTypes import NPC
-from LabyrinthObjects.move_and_bump import borders
+from LabyrinthObjects.Vanilla.move_and_bump import borders
 
 
 # NPC.

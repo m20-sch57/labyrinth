@@ -1,4 +1,4 @@
-from LabyrinthObjects.CONSTS import *
+from LabyrinthObjects.Vanilla.CONSTS import *
 from LabyrinthEngine.LTypes import Item
 
 

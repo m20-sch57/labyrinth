@@ -1,4 +1,5 @@
-from LabyrinthModule import Labyrinth, Player, Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
+from LabyrinthEngine import Labyrinth, Player
+from LabyrinthObjects.Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
     FirstAidPost, Bear, Treasure
 
 

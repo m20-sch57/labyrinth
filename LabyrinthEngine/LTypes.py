@@ -1,4 +1,4 @@
-from LabyrinthModule.LabyrinthEngine.game import LabyrinthObject as LabObj
+from LabyrinthEngine.game import LabyrinthObject as LabObj
 
 
 class Location(LabObj):
