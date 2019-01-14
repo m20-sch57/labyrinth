@@ -1,4 +1,4 @@
-from LabyrinthObjects.Vanilla.CONSTS import *
+from LabyirnthConsts.Basic.CONSTS import *
 from LabyrinthEngine.LTypes import Location, Item, Player, NPC
 from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 

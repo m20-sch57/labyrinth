@@ -1,5 +1,5 @@
 ﻿from copy import copy
-from LabyrinthObjects.Vanilla.CONSTS import *
+from LabyirnthConsts.Basic.CONSTS import *
 
 
 def get_attr_safe(obj, attr, default_value):
