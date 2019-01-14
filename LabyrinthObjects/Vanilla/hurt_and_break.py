@@ -1,6 +1,6 @@
-from LabyrinthModule.CONSTS import *
-from LabyrinthModule.LabyrinthEngine.LTypes import Location, Item, Player, NPC
-from LabyrinthModule.LabyrinthObjects.move_and_bump import GlobalWall, Wall, Outside, borders
+from LabyrinthObjects.CONSTS import *
+from LabyrinthEngine.LTypes import Location, Item, Player, NPC
+from LabyrinthObjects.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
 INITIAL_STATES['hurt'] = False
