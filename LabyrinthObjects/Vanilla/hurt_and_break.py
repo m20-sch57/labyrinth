@@ -9,8 +9,8 @@ INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 def hurt_player(self):
-    for item in self.get_children():
-        item.hurt_action()
+    # for item in self.get_children():
+    #     item.hurt_action()
 
     if not self.states['hurt']:
         self.states['hurt'] = True
@@ -72,14 +72,14 @@ class Gun(Item):
                 kicked_players.discard(active_player)
             for player in kicked_players:
                 player.hurt()
-            self.labyrinth.active_player_number = active_player.get_object_id().number
+            # self.labyrinth.active_player_number = active_player.get_object_id().number
 
             if kicked_players:
                 self.labyrinth.send_msg(FIRE_SUCCESS_MSG
                                         + ', '.join(list(map(lambda pl: pl.user_id, kicked_players)))
                                         + '.', active_player.user_id)
             else:
-                self.labyrinth.send_msg(FIRE_FAILURE_MSG, active_player.user_id)
+                self.labyrinth.send_msg(FIRE_FAILURE_MSG, active_player)
         return fire
 
     def condition(self):

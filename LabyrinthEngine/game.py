@@ -27,7 +27,7 @@ class LabyrinthObject:
 				'function': function, 'condition': condition_function}}
 
 	def set_parent(self, parent):
-		if not issubclass(type(parent), LabyrinthObject):
+		if not isinstance(parent, LabyrinthObject):
 			raise ValueError(
 				'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
 		else:
@@ -55,7 +55,7 @@ class LabyrinthObject:
 		if self.type != 'location':
 			raise TypeError(
 				'You can\'t set neighbour for object with type ' + self.type)
-		elif not issubclass(type(neighbour), LabyrinthObject):
+		elif not isinstance(neighbour, LabyrinthObject):
 			raise ValueError(
 				'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
