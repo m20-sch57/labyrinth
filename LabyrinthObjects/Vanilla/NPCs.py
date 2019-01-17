@@ -14,5 +14,4 @@ class Bear(NPC):
 
     def main(self):
         for player in self.get_parent().get_children(types='player'):
-            print('damage player', player)
             player.hurt()
