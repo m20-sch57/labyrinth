@@ -103,8 +103,8 @@ class Legs(LabyrinthObject):
 	save(filename: str)
 Метод. Сохраняет игру в файл `filename`
 
-	load_lsave(filename: str)
+	load_lrsave(filename: str)
 Функцияю. Загружает игру из файла `filename` и возвращает объект класса `labyrinth`<br>
 
-	load_lmap(filename: str, users: list of str)
+	load_lrmap(filename: str, users: list of str)
 Функция. Возврщает объект лабиринта на карте из файла `filename` с игроками `users`
