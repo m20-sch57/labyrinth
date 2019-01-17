@@ -1,4 +1,6 @@
-﻿def load_labyrinth(self, filename):
+﻿import json
+
+def load_labyrinth(self, filename):
 	# TODO: issue #30
 	pass
 
@@ -198,12 +200,11 @@ class Labyrinth:
 	def save(self, filename):
 		# TODO: issue #30
 		with open('tmp\\' + filename + '.log', 'w') as f:
-			for turn in self.turns_log:
-				print('username: {}\nturn: {}'.format(turn['username'], turn['turn']), file=f)
+			json.dump(self.turns_log, f, indent = 4)
 
 	def get_msgs(self, username):
 		'''
-		Возвращает все сообщения отосланные игроку player
+		Возвращает все сообщения отосланные игроку username
 		'''
 
 		if player in self.msgs_log:
@@ -214,7 +215,7 @@ class Labyrinth:
 	def get_turns(self, number = None, username = None):
 		'''
 		Возвращает все ходы сделанные игрокам
-		Возвращает ходы сделанные только указанным игрокам, если указан параметр player
+		Возвращает ходы сделанные только указанным игрокам, если указан параметр username
 		Возвращает ход под номером number с конца, если указан параметр number
 		Например get_turns(1, 'Вася') вернёт последний ход Васи
 		'''
