@@ -202,8 +202,8 @@ class Labyrinth:
 
 	def save(self, filename):
 		# TODO: issue #30
-		with open('tmp\\' + filename + '.log', 'w') as f:
-			json.dump(self.turns_log, f, indent = 4)
+		with open('tmp\\' + filename + '.save.json', 'w', encoding='utf-8') as f:
+			json.dump(self.turns_log, f, indent = 4, ensure_ascii=False)
 
 	def get_msgs(self, username):
 		'''
