@@ -23,7 +23,8 @@ class Bear(NPC):
 
     def move(self, direction):
         next_position = self.get_parent().get_neighbour(direction)
-        if type(next_position) not in borders:
+        if type(next_position) not in borders + [Exit]:
+            self.set_parent(next_position)
 
     def condition(self):
         return True

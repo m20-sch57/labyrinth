@@ -1,4 +1,5 @@
 ﻿from LabyirnthConsts.Basic.CONSTS import *
+from LabyrinthEngine.game import get_attr_safe
 from LabyrinthEngine.LTypes import Location, Item, Player, NPC
 from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
@@ -9,8 +10,10 @@ INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 def hurt_player(self):
-    # for item in self.get_children():
-    #     item.hurt_action()
+    active_player = self.labyrinth.get_active_player()
+
+    for item in self.get_children():
+        get_attr_safe(item, 'hurt_action', lambda: None)()
 
     if not self.states['hurt']:
         self.states['hurt'] = True
@@ -21,6 +24,8 @@ def hurt_player(self):
         del self.labyrinth.players_list[ind]
         del self.parent
         self.labyrinth.send_msg(DEATH_MSG, self)
+        if self != active_player:
+            self.labyrinth.active_player_number = self.labyrinth.locations.index(active_player)
 
 
 def hurt_NPC(self):
@@ -41,7 +46,6 @@ NPC.heal = Player.heal = heal
 
 
 # Item.
-# TODO: To fix bug: NPCs can be hurt and healed.
 class Gun(Item):
     def __init__(self):
         self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
@@ -72,8 +76,6 @@ class Gun(Item):
                 kicked_characters.discard(active_player)
             for character in kicked_characters:
                 character.hurt()
-            # self.labyrinth.active_player_number = active_player.get_object_id().number
-            # self.labyrinth.active_player_number = active_player.get_object_id().number
 
             kicked_players = set(filter(lambda obj: obj.type == 'player', kicked_characters))
             if kicked_characters:
