@@ -106,11 +106,11 @@ class Labyrinth:
 		self.players_list = players
 		self.dead_players = set(dead_players)
 
-		self.to_send = {player.get_username(): '' for player in self.players_list}
+		self.to_send = {player.get_username(): [] for player in self.players_list}
 		self.active_player_number = 0
 
 	def send_msg(self, msg, player):
-		self.to_send[player.get_username()] += (msg + ';')
+		self.to_send[player.get_username()].append(msg)
 
 	def make_turn(self, turn):
 		'''
@@ -121,7 +121,7 @@ class Labyrinth:
 		'''
 
 		# обнуляем to_send
-		self.to_send = {player.get_username(): '' for player in self.players_list}
+		self.to_send = {player.get_username(): [] for player in self.players_list}
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		# и запускаем действия найденных локаций и предметов
