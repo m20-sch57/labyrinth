@@ -1,7 +1,10 @@
 ﻿import json
 
-def load_labyrinth(self, filename):
-	# TODO: issue #30
+# TODO: issue #30
+def load_lsave(self, filename):
+	pass
+
+def load_lmap(self, filename, users):
 	pass
 
 
