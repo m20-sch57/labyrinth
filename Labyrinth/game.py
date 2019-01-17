@@ -1,64 +1,6 @@
-﻿class LogError(Exception):
-	def __init__(self, msg):
-		self.msg = msg
-
-	def __str__(self):
-		return 'LogError: ' + repr(self.msg)
-
-
-class LabyrinthLogger:
-	def __init__(self, filename):
-		self.turns = []
-		self.msgs = {}
-		self.filename = filename
-		self.save(filename)
-
-	def save(self, file = None):
-		if file is None:
-			file = self.filename
-		with open('tmp\\' + file + '.log', 'w') as f:
-			for turn in self.turns:
-				print('player: {}\nturn: {}'.format(turn['player'], turn['turn']), file=f)
-
-	def load(self, file = None):
-		if file is None:
-			file = self.filename
-		self.turns = []
-		with open('tmp\\' + file + '.log', 'r') as f:
-			player, turn = f.readline().rstrip(), f.readline().rstrip()
-			while turn != '':
-				if not (player.startswith('player: ') and turn.startswith('turn: ')):
-					raise LogError('Invalid format in ' + file + '.log')
-				self.update(player[len('player: '):], turn[len('turn: '):])
-				player, turn = f.readline(), f.readline()
-
-	def update_turn(self, player, turn):
-		self.turns.append({'player': player, 'turn': turn})
-
-	def update_msg(self, msgs):
-		for player in msgs:
-			if player in self.msgs:
-				self.msgs[player] += msgs[player]
-			else:
-				self.msgs[player] = msgs[player]
-
-	def get_all_msgs(self, player):
-		if player in self.msgs:
-			return self.msgs[player]
-		else:
-			return [] 
-
-	def get_turns(self, player = None):
-		if player == None:
-			return self.turns
-		else:
-			return list(filter(lambda turn: turn['player'] == player, self.turns))
-
-	def get_turn(self, *args):
-		if len(args) == 0:
-			return self.turns[-1]
-		else:
-			return self.turns[-int(args[0])]
+﻿def load_labyrinth(self, filename):
+	# TODO: issue #30
+	pass
 
 
 class LabyrinthObject:
@@ -146,8 +88,6 @@ class Player(LabyrinthObject):
 
 
 class Labyrinth:
-	'''
-	'''
 	def __init__(self, locations, items, npcs, players, adjacence_list):
 		for i in range(len(locations)):
 			locations[i].directions = {
@@ -171,8 +111,18 @@ class Labyrinth:
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0
 
-		self.logger = LabyrinthLogger(filename = 'test2')
-		self.logger.load(file = 'test')
+		'''
+		turns_log
+		[{'player': first_player_name, 'turn': his_turn}, {'player': second_player_name, 'turn': his_turn}, ...]
+		msgs_log
+		{player_name: [first_msg, second_msg, ...]}
+		'''
+		self.turns_log = []
+		self.msgs_log = {}
+
+		# Временное решение.
+		# Если True, то всё сохраняется
+		self.save_mode = True
 
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()] += (msg + ';')
@@ -205,9 +155,19 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.players_list)
 
+		# обновляем лог ходов
+		self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
+		# обновляем лог сообщений
+		for username in self.to_send:
+			if username in self.msgs_log:
+				self.msgs_log.append(self.player_to_send(username))
+			else:
+				self.msgs_log = [self.player_to_send(username)]
+		# если save_mode == True, сохраняем всё в файл tmp\test.log
+		if self.save_mode == True:
+			self.save('test')
+
 		# возвращаем все сообщения, которые нужно отправить
-		self.logger.update_turn(self.get_active_player_username(), turn)
-		self.logger.save()
 		return self.to_send
 
 	def get_next_active_player(self):
@@ -221,7 +181,7 @@ class Labyrinth:
 
 	def get_active_player_ats(self):
 		'''
-		Возвращает возможные для активного игрока
+		Возвращает возможные для активного игрока ходы
 		'''
 
 		active_player_ats = []
@@ -232,5 +192,40 @@ class Labyrinth:
 
 		return active_player_ats
 
-	def player_to_send(self, user_id):
-		return self.to_send[user_id]
+	def player_to_send(self, username):
+		return self.to_send[username]
+
+	def save(self, filename):
+		# TODO: issue #30
+		with open('tmp\\' + filename + '.log', 'w') as f:
+			for turn in self.turns_log:
+				print('username: {}\nturn: {}'.format(turn['username'], turn['turn']), file=f)
+
+	def get_msgs(self, username):
+		'''
+		Возвращает все сообщения отосланные игроку player
+		'''
+
+		if player in self.msgs_log:
+			return self.msgs_log[username]
+		else:
+			return [] 
+
+	def get_turns(self, number = None, username = None):
+		'''
+		Возвращает все ходы сделанные игрокам
+		Возвращает ходы сделанные только указанным игрокам, если указан параметр player
+		Возвращает ход под номером number с конца, если указан параметр number
+		Например get_turns(1, 'Вася') вернёт последний ход Васи
+		'''
+
+		if username is None:
+			if nomber is None:
+				return self.turns_log
+			else:
+				return self.turns_log[-number]
+		else:
+			if username is None:
+				return list(filter(lambda turn: turn['player'] in username, self.turns))
+			else:
+				return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
