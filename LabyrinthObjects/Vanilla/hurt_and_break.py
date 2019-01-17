@@ -26,6 +26,8 @@ def hurt_player(self):
         self.labyrinth.send_msg(DEATH_MSG, self)
         if self != active_player:
             self.labyrinth.active_player_number = self.labyrinth.locations.index(active_player)
+        else:
+            self.labyrinth.active_player_number %= len(self.labyrinth.players_list)
 
 
 def hurt_NPC(self):
