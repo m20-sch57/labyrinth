@@ -1,4 +1,4 @@
-from LabyirnthConsts.Basic.CONSTS import *
+﻿from LabyirnthConsts.Basic.CONSTS import *
 from LabyrinthEngine.LTypes import Location, Item, Player, NPC
 from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
@@ -9,8 +9,8 @@ INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 def hurt_player(self):
-    for item in self.get_children():
-        item.hurt_action()
+    # for item in self.get_children():
+    #     item.hurt_action()
 
     if not self.states['hurt']:
         self.states['hurt'] = True
@@ -72,6 +72,8 @@ class Gun(Item):
                 kicked_characters.discard(active_player)
             for character in kicked_characters:
                 character.hurt()
+            # self.labyrinth.active_player_number = active_player.get_object_id().number
+            # self.labyrinth.active_player_number = active_player.get_object_id().number
 
             kicked_players = set(filter(lambda obj: obj.type == 'player', kicked_characters))
             if kicked_characters:

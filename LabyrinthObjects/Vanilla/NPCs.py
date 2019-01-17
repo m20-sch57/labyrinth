@@ -1,4 +1,4 @@
-from LabyirnthConsts.Basic.CONSTS import *
+﻿from LabyirnthConsts.Basic.CONSTS import *
 from LabyrinthEngine.LTypes import NPC
 from LabyrinthObjects.Vanilla.move_and_bump import borders
 from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
@@ -20,6 +20,10 @@ class Bear(NPC):
             if type(next_position) not in borders + [Exit]:
                 self.set_parent(next_position)
         return move
+
+    def move(self, direction):
+        next_position = self.get_parent().get_neighbour(direction)
+        if type(next_position) not in borders:
 
     def condition(self):
         return True
