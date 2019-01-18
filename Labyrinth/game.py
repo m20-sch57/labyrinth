@@ -165,9 +165,9 @@ class Labyrinth:
 		# обновляем лог сообщений
 		for username in self.to_send:
 			if username in self.msgs_log:
-				self.msgs_log.append(self.player_to_send(username))
+				self.msgs_log[username].append(self.player_to_send(username))
 			else:
-				self.msgs_log = [self.player_to_send(username)]
+				self.msgs_log[username] = [self.player_to_send(username)]
 		# если save_mode == True, сохраняем всё в файл tmp\test.log
 		if self.save_mode == True:
 			self.save('test')
