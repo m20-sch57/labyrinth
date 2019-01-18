@@ -1,10 +1,10 @@
 ﻿import json
 
 # TODO: issue #30
-def load_lrsave(self, filename):
+def load_lrsave(filename):
 	pass
 
-def load_lrmap(self, filename, users):
+def load_lrmap(filename, users):
 	pass
 
 
