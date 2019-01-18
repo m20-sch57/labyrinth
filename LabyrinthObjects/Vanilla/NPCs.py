@@ -9,10 +9,10 @@ class Bear(NPC):
     def __init__(self):
         self.states = INITIAL_STATES
 
-        self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
-        self.new_at(self.turn_move('down'), condition_function=self.condition, turn_name=DOWN_TURN)
-        self.new_at(self.turn_move('right'), condition_function=self.condition, turn_name=RIGHT_TURN)
-        self.new_at(self.turn_move('left'), condition_function=self.condition, turn_name=LEFT_TURN)
+        self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
+        self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)
+        self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
+        self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
     def turn_move(self, direction):
         def move():
@@ -26,10 +26,7 @@ class Bear(NPC):
         if type(next_position) not in borders + [Exit]:
             self.set_parent(next_position)
 
-    def condition(self):
-        return True
-
     def main(self):
-        for player in self.get_parent().get_children(types='player'):
+        for player in self.get_parent().get_children(labtype='player'):
             player.hurt()
             self.labyrinth.send_msg(BEAR_MSG_ATTACK, player)
