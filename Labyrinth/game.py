@@ -210,7 +210,7 @@ class Labyrinth:
 		Возвращает все сообщения отосланные игроку username
 		'''
 
-		if player in self.msgs_log:
+		if username in self.msgs_log:
 			return self.msgs_log[username]
 		else:
 			return [] 
