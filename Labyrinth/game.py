@@ -224,7 +224,7 @@ class Labyrinth:
 		'''
 
 		if username is None:
-			if nomber is None:
+			if number is None:
 				return self.turns_log
 			else:
 				return self.turns_log[-number]
