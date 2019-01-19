@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 
 # Database. let it always be empty
-database.db
+*.db

@@ -1,4 +1,4 @@
-﻿from LabyrinthEngine import Labyrinth, Player
+from LabyrinthEngine import Labyrinth, Player
 from LabyrinthObjects import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
     FirstAidPost, Bear, Treasure, Exit
 
@@ -61,21 +61,28 @@ tres = Treasure(True)
 tres.set_parent(locations_list[3])
 items_list = [Legs(), Gun(), Bomb(), tres]
 # -------------------------------------------------
-player = Player('player #1')
-player.set_parent(locations_list[1])
-prey = Player('prey')
-prey.set_parent(locations_list[5])
-players_list = [player]
+# player = Player('player #1')
+# player.set_parent(locations_list[1])
+# prey = Player('prey')
+# prey.set_parent(locations_list[5])
+# players_list = [player]
 # -------------------------------------------------
 bear = Bear()
 bear.set_parent(locations_list[4])
 NPCs_list = [bear]
+# -------------------------------------------------
 
-MyLab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
-
+def generate_labyrinth(users_list):
+	players_list = []
+	for username in users_list:
+		players_list.append(Player(username))
+		players_list[-1].set_parent(locations_list[1])
+	lab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
+	return lab
 
 debug = True
 if __name__ == '__main__':
+    MyLab = generate_labyrinth(['player #1'])   
     while True:
         print('\n')
         print('┌───────────────────')
