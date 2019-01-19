@@ -1,32 +1,29 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from LabyirnthConsts.Basic.CONSTS import *
+from LabyrinthEngine.LTypes import Location, Item
 
 
 # Item.
-class Legs(LO):
+class Legs(Item):
     def __init__(self):
-        self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
-        self.new_at(self.turn_move('down'), condition_function=self.condition, turn_name=DOWN_TURN)
-        self.new_at(self.turn_move('right'), condition_function=self.condition, turn_name=RIGHT_TURN)
-        self.new_at(self.turn_move('left'), condition_function=self.condition, turn_name=LEFT_TURN)
+        self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
+        self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)
+        self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
+        self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
-            if type(next_position) is Wall:
+            if type(next_position) in borders:
                 self.labyrinth.send_msg(WALL_MSG, active_player)
             else:
                 active_player.set_parent(next_position)
 
         return move
 
-    def condition(self):
-        return True
-
 
 # Location.
-class EmptyLocation(LO):
+class EmptyLocation(Location):
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
         active_player = self.labyrinth.get_active_player()
@@ -36,13 +33,13 @@ class EmptyLocation(LO):
 
 
 # Location.
-class Outside(LO):
+class Outside(Location):
     pass
 
 
 # Location.
 # Just prototype. But it's more useful than new Wall sometimes...
-class GlobalWall(LO):
+class GlobalWall(Location):
     reverse_direction = {'up': 'down',
                          'down': 'up',
                          'left': 'right',
@@ -66,7 +63,7 @@ class GlobalWall(LO):
         self.behind_the_wall = arg
 
     def break_wall(self, object_1, direction):
-        if issubclass(LO, object_1):
+        if issubclass(Location, object_1):
             raise ValueError('Invalid literal for break_wall()')
         object_2 = self.behind_the_wall[object_1][direction]
         object_1.set_neighbour(direction, object_2)
@@ -75,7 +72,7 @@ class GlobalWall(LO):
         del self.behind_the_wall[object_2][reverse_direction[direction]]
 
     def make_wall(self, object_1, direction):
-        if issubclass(LO, object_1):
+        if issubclass(Location, object_1):
             raise ValueError('Invalid literal for make_wall()')
         object_2 = object_1.get_neighbour(direction)
 
@@ -95,7 +92,7 @@ class GlobalWall(LO):
 
 
 # Location.
-class Wall(LO):
+class Wall(Location):
     def __init__(self, *args):
         if len(args) == 0:
             raise ValueError('Invalid literal for Wall')
@@ -108,7 +105,7 @@ class Wall(LO):
         for i in range(len(args)):
             pair = args[i]
             next_pair = args[(i + 1) % len(args)]
-            if type(pair) is not tuple or len(pair) != 2 or type(pair[0]) is not int:
+            if type(pair) is not tuple or len(pair) != 2:
                 raise ValueError('Invalid literal for Wall')
             d = self.behind_the_wall.get(pair[0], {})
             d[pair[1]] = next_pair[0]
@@ -125,4 +122,6 @@ class Wall(LO):
                 loc.set_neighbour(direction, neighbour)
 
         self.labyrinth.locations.discard(self)
-        del self
+
+
+borders = [Outside, Wall, GlobalWall]
