@@ -13,14 +13,14 @@ locations_list[7].set_fall_to(locations_list[2])
 locations_list[4] = Arsenal()
 locations_list[8] = FirstAidPost()
 locations_list[9] = Exit()
-locations_list.append(Wall([
-    (locations_list[1], 'right'),
-    (locations_list[2], 'left')
-                            ]))
-locations_list.append(Wall([
-    (locations_list[6], 'right'),
-    (locations_list[7], 'left')
-                            ]))
+locations_list.append(Wall(
+    (locations_list[1], 'right', locations_list[2]),
+    (locations_list[2], 'left', locations_list[1])
+                            ))
+locations_list.append(Wall(
+    (locations_list[6], 'right', locations_list[7]),
+    (locations_list[7], 'left', locations_list[6])
+                            ))
 
 for i in range(len(locations_list)):
     locations_list[i].name = i
