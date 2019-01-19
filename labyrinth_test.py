@@ -73,16 +73,16 @@ NPCs_list = [bear]
 # -------------------------------------------------
 
 def generate_labyrinth(users_list):
-	players_list = []
-	for username in users_list:
-		players_list.append(Player(username))
-		players_list[-1].set_parent(locations_list[1])
-	lab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
-	return lab
+    players_list = []
+    for username in users_list:
+        players_list.append(Player(username))
+        players_list[-1].set_parent(locations_list[1])
+    lab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
+    return lab
 
 debug = True
 if __name__ == '__main__':
-    MyLab = generate_labyrinth(['player #1'])   
+    MyLab = generate_labyrinth(['player #1'])
     while True:
         print('\n')
         print('┌───────────────────')
