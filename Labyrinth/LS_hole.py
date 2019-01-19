@@ -12,8 +12,7 @@ class Hole(LO):
 	def __init__(self):
 		self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
 
-	def set_settings(self, settings, locations):
-		print(settings)
+	def set_settings(self, settings, locations, items, npcs, players):
 		self.fall_to = locations[settings['fall_to']]
 
 	def main(self):

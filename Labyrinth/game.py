@@ -15,23 +15,23 @@ def load_lrmap(filename, users):
 	players = list(map(lambda username: Player(username), users))
 	adjacence_list = lrmap['adjacence_list']
 
-	locations, items, npcs = [], [], []
-	for location in lrmap['locations']:
-		locations.append(importlib.import_module(location['module']).__dict__[location['class_name']]())
-	for item in lrmap['items']:
-		print()
-		items.append(importlib.import_module(item['module']).__dict__[item['class_name']]())
-	for npc in lrmap['npcs']:
-		npcs.append(importlib.import_module(npc['module']).__dict__[npc['class_name']]())
+	# Тут какой-то треш с именами. Я ничего лучше не придумал.
+	lrtypes = {
+		'locations': [],
+		'items': [],
+		'npcs': [],
+	}
+	lrlists = lrtypes['locations'], lrtypes['items'], lrtypes['npcs']
 
-	for i in range(len(locations)):
-		locations[i].set_settings(lrmap['locations'][i]['settings'], locations)
-	for i in range(len(items)):
-		items[i].set_settings(lrmap['items'][i]['settings'], locations)
-	for i in range(len(npcs)):
-		npcs[i].set_settings(lrmap['npcs'][i]['settings'], locations)
+	for lrtype in lrtypes:
+		for obj in lrmap[lrtype]:
+			lrtypes[lrtype].append(importlib.import_module(obj['module']).__dict__[obj['class_name']]())
 
-	return Labyrinth(locations, items, npcs, players, adjacence_list)
+	for lrtype in lrtypes:
+		for i in range(len(lrtypes[lrtype])):
+			lrtypes[lrtype][i].set_settings(lrmap[lrtype][i]['settings'], *lrlists, players)
+
+	return Labyrinth(*lrlists, players, adjacence_list)
 
 class LabyrinthObject:
 	'''
@@ -103,7 +103,7 @@ class LabyrinthObject:
 		'''
 		pass
 
-	def set_settings(self, settings, locations):
+	def set_settings(self, *args):
 		'''
 		Функция настроек
 		'''
