@@ -1,6 +1,6 @@
-import json
 ﻿from copy import copy
 from LabyirnthConsts.Basic.CONSTS import *
+import json
 
 
 def get_attr_safe(obj, attr, default_value):
