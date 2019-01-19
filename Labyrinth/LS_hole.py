@@ -12,8 +12,9 @@ class Hole(LO):
 	def __init__(self):
 		self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
 
-	def set_fall_to(self, fall_to):
-		self.fall_to = fall_to
+	def set_settings(self, settings, locations):
+		print(settings)
+		self.fall_to = locations[settings['fall_to']]
 
 	def main(self):
 		next_active_player = self.labyrinth.get_next_active_player()

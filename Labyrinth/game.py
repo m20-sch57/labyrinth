@@ -1,12 +1,37 @@
 ﻿import json
+import importlib
+
 
 # TODO: issue #30
 def load_lrsave(filename):
 	pass
 
 def load_lrmap(filename, users):
-	pass
+	# from Labyrinth.Ltype import Player
 
+	with open('tmp\\' + filename + '.map.json', 'r', encoding='utf-8') as f:
+		lrmap = json.load(f)
+
+	players = list(map(lambda username: Player(username), users))
+	adjacence_list = lrmap['adjacence_list']
+
+	locations, items, npcs = [], [], []
+	for location in lrmap['locations']:
+		locations.append(importlib.import_module(location['module']).__dict__[location['class_name']]())
+	for item in lrmap['items']:
+		print()
+		items.append(importlib.import_module(item['module']).__dict__[item['class_name']]())
+	for npc in lrmap['npcs']:
+		npcs.append(importlib.import_module(npc['module']).__dict__[npc['class_name']]())
+
+	for i in range(len(locations)):
+		locations[i].set_settings(lrmap['locations'][i]['settings'], locations)
+	for i in range(len(items)):
+		items[i].set_settings(lrmap['items'][i]['settings'], locations)
+	for i in range(len(npcs)):
+		npcs[i].set_settings(lrmap['npcs'][i]['settings'], locations)
+
+	return Labyrinth(locations, items, npcs, players, adjacence_list)
 
 class LabyrinthObject:
 	'''
@@ -78,6 +103,12 @@ class LabyrinthObject:
 		'''
 		pass
 
+	def set_settings(self, settings, locations):
+		'''
+		Функция настроек
+		'''
+		pass
+
 
 class Player(LabyrinthObject):
 	'''
@@ -104,6 +135,7 @@ class Labyrinth:
 			npc._type = 'npc'
 		for player in players:
 			player._type = 'player'
+			player.set_parent(locations[1])
 
 		for obj in locations + items + npcs + players:
 			obj.labyrinth = self
