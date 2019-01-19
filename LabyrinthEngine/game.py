@@ -93,7 +93,7 @@ class LabyrinthObject:
 
 
 class Labyrinth:
-	def __init__(self, locations, items, NPCs, players, adjacence_list, dead_players=[]):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, filename, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
@@ -114,6 +114,8 @@ class Labyrinth:
 		self.to_send = {player.get_username(): [] for player in self.players_list}
 		self.active_player_number = 0
 
+		self.filename = filename
+
 		'''
 		turns_log
 		[{'player': first_player_name, 'turn': his_turn}, {'player': second_player_name, 'turn': his_turn}, ...]
@@ -126,6 +128,9 @@ class Labyrinth:
 		# Временное решение.
 		# Если True, то всё сохраняется
 		self.save_mode = True
+
+	def __str__(self):
+		return '<labyrinth: {}>'.format(self.filename)
 
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()].append(msg)
@@ -168,7 +173,7 @@ class Labyrinth:
 				self.msgs_log[username] = [self.player_to_send(username)]
 		# если save_mode == True, сохраняем всё в файл tmp\test.log
 		if self.save_mode == True:
-			self.save('test')
+			self.save(self.filename)
 
 		# возвращаем все сообщения, которые нужно отправить
 		return self.to_send
