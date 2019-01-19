@@ -1,4 +1,14 @@
-﻿class LabyrinthObject:
+﻿import json
+
+# TODO: issue #30
+def load_lrsave(filename):
+	pass
+
+def load_lrmap(filename, users):
+	pass
+
+
+class LabyrinthObject:
 	'''
 	LabyrinthObject is class of objects that can be used by players at their turns
 	'''
@@ -83,8 +93,6 @@ class Player(LabyrinthObject):
 
 
 class Labyrinth:
-	'''
-	'''
 	def __init__(self, locations, items, npcs, players, adjacence_list):
 		for i in range(len(locations)):
 			locations[i].directions = {
@@ -107,6 +115,19 @@ class Labyrinth:
 
 		self.to_send = {player.get_username(): '' for player in self.players_list}
 		self.active_player_number = 0
+
+		'''
+		turns_log
+		[{'player': first_player_name, 'turn': his_turn}, {'player': second_player_name, 'turn': his_turn}, ...]
+		msgs_log
+		{player_name: [first_msg, second_msg, ...]}
+		'''
+		self.turns_log = []
+		self.msgs_log = {}
+
+		# Временное решение.
+		# Если True, то всё сохраняется
+		self.save_mode = True
 
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()] += (msg + ';')
@@ -139,6 +160,18 @@ class Labyrinth:
 		self.active_player_number += 1
 		self.active_player_number %= len(self.players_list)
 
+		# обновляем лог ходов
+		self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
+		# обновляем лог сообщений
+		for username in self.to_send:
+			if username in self.msgs_log:
+				self.msgs_log[username].append(self.player_to_send(username))
+			else:
+				self.msgs_log[username] = [self.player_to_send(username)]
+		# если save_mode == True, сохраняем всё в файл tmp\test.log
+		if self.save_mode == True:
+			self.save('test')
+
 		# возвращаем все сообщения, которые нужно отправить
 		return self.to_send
 
@@ -153,7 +186,7 @@ class Labyrinth:
 
 	def get_active_player_ats(self):
 		'''
-		Возвращает возможные для активного игрока
+		Возвращает возможные для активного игрока ходы
 		'''
 
 		active_player_ats = []
@@ -164,5 +197,39 @@ class Labyrinth:
 
 		return active_player_ats
 
-	def player_to_send(self, user_id):
-		return self.to_send[user_id]
+	def player_to_send(self, username):
+		return self.to_send[username]
+
+	def save(self, filename):
+		# TODO: issue #30
+		with open('tmp\\' + filename + '.save.json', 'w', encoding='utf-8') as f:
+			json.dump(self.turns_log, f, indent = 4, ensure_ascii=False)
+
+	def get_msgs(self, username):
+		'''
+		Возвращает все сообщения отосланные игроку username
+		'''
+
+		if username in self.msgs_log:
+			return self.msgs_log[username]
+		else:
+			return [] 
+
+	def get_turns(self, number = None, username = None):
+		'''
+		Возвращает все ходы сделанные игроками
+		Возвращает ходы сделанные только указанным игроками, если указан параметр username
+		Возвращает ход под номером number с конца, если указан параметр number
+		Например get_turns(1, 'Вася') вернёт последний ход Васи
+		'''
+
+		if username is None:
+			if number is None:
+				return self.turns_log
+			else:
+				return self.turns_log[-number]
+		else:
+			if number is None:
+				return list(filter(lambda turn: turn['player'] in username, self.turns))
+			else:
+				return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
