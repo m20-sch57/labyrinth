@@ -69,7 +69,7 @@ players_list = [player]
 # -------------------------------------------------
 bear = Bear()
 bear.set_parent(locations_list[4])
-NPCs_list = []
+NPCs_list = [bear]
 
 MyLab = Labyrinth(locations_list, items_list, NPCs_list, players_list, adjacence_list)
 
@@ -78,14 +78,15 @@ debug = True
 if __name__ == '__main__':
     while True:
         print('\n')
+        print('┌───────────────────')
         if debug:
-            print('Player position:   {}'.format(MyLab.get_active_player().get_parent()))
-            print('Bear position:     {}'.format(bear.get_parent()))
-            print('Treasure position: {}'.format(tres.get_parent()))
-            print('----------------')
-        print('\n'.join('{:<19}{}'.format(str(k)+':', str(v)) for k, v in MyLab.get_active_player().states.items()))
-        print('----------------')
+            print('│Player position:   {}'.format(MyLab.get_active_player().get_parent()))
+            print('│Bear position:     {}'.format(bear.get_parent()))
+            print('│Treasure position: {}'.format(tres.get_parent()))
+            print('├───────────────────')
+        print('\n'.join('│{:<19}{}'.format(str(k)+':', str(v)) for k, v in MyLab.get_active_player().states.items()))
+        print('└───────────────────')
         print(', '.join(MyLab.get_active_player_ats()))
         msgs = MyLab.make_turn(input('(' + MyLab.get_active_player().get_username() + ') '))
         for player in msgs:
-            print('[{}] - {}'.format(player, msgs[player]))
+            print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))
