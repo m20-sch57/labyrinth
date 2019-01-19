@@ -229,7 +229,7 @@ class Labyrinth:
 			else:
 				return self.turns_log[-number]
 		else:
-			if username is None:
+			if number is None:
 				return list(filter(lambda turn: turn['player'] in username, self.turns))
 			else:
 				return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
