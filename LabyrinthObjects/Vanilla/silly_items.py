@@ -1,9 +1,9 @@
-from Labyrinth.LS_CONSTS import *
-from Labyrinth.game import LabyrinthObject as LO
+from LabyirnthConsts.Basic.CONSTS import *
+from LabyrinthEngine.LTypes import Item
 
 
 # Item.
-class Treasure(LO):
+class Treasure(Item):
     def __init__(self, is_true):
         self.is_true = is_true
 
@@ -20,7 +20,7 @@ class Treasure(LO):
         if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
             self.set_parent(self.initial_location)
         else:
-            self.set_parent(player.get_parent)
+            self.set_parent(player.get_parent())
 
     def turn_take(self):
         self.take(self.labyrinth.get_active_player())
@@ -30,8 +30,8 @@ class Treasure(LO):
 
     def take_condition(self):
         active_player = self.labyrinth.get_active_player()
-        return active_player.get_parent_id() == self.get_parent_id()
+        return active_player.get_parent() == self.get_parent()
 
     def drop_condition(self):
-        active_player_id = self.labyrinth.get_active_player_id()
-        return CAN_PLAYER_DROP_TREASURE and self.get_parent_id() == active_player_id
+        active_player = self.labyrinth.get_active_player()
+        return CAN_PLAYER_DROP_TREASURE and self.get_parent() == active_player
