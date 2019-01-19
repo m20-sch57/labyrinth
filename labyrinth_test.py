@@ -72,8 +72,7 @@ def generate_labyrinth(users_list, filename):
     bear.set_parent(locations_list[4])
     NPCs_list = [bear]
     # -------------------------------------------------
-
-
+    
     players_list = []
     for username in users_list:
         players_list.append(Player(username))
