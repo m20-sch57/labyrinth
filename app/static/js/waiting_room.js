@@ -40,12 +40,12 @@ socket.on('update', function(msg) {
 			var player_list = document.getElementById('player_list');
 			player_list.innerHTML = '';
 			for (var i = 0; i < msg.players.split(',').length; i++) {
-				player_list.innerHTML += ("<p class='player'>" + msg.players.split(',')[i] + "</p><hr>")
+				player_list.innerHTML += ('<p class="player">' + msg.players.split(',')[i] + '</p><hr>')
 			};
 			break;
 		case 'change_description':
 			var description = document.getElementById('description');
-			description.innerHTML = ('Description: ' + msg.description);
+			description.innerHTML = ('Description:<br>' + msg.description.replace(/\n/g, '<br>'));
 			break;
 		case 'start_game':
 			document.location.href = document.getElementById('info').getAttribute('redirect');
@@ -64,3 +64,11 @@ changeDescriptionInput.onkeydown = changeDescription;
 
 var startButton = document.getElementById('start_button');
 startButton.onclick = startGame;
+
+var settingButton = document.getElementById('settings_button');
+var roomInfo = document.getElementById('room_info');
+var roomSettings = document.getElementById('room_settings');
+settingButton.onclick = function() {
+	toggle(roomInfo);
+	toggle(roomSettings);
+};

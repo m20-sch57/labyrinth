@@ -1,6 +1,14 @@
-﻿import json
+﻿from copy import copy
+from LabyirnthConsts.Basic.CONSTS import *
+import json
 import importlib
 
+
+def get_attr_safe(obj, attr, default_value):
+	if hasattr(obj, attr):
+		return obj.__dict__[attr]
+	else:
+		return default_value
 
 # TODO: issue #30
 def load_lrsave(filename):
@@ -43,29 +51,27 @@ class LabyrinthObject:
 		new available turn
 		'''
 
-		try:
-			if turn_name not in self.turn_set:
-				self.turn_set[turn_name] = {
-					'function': function, 'condition': condition_function}
-		except:
+		if hasattr(self, 'turn_set'):
+			self.turn_set[turn_name] = {
+				'function': function, 'condition': condition_function}
+		else:
 			self.turn_set = {turn_name: {
 				'function': function, 'condition': condition_function}}
 
 	def set_parent(self, parent):
-		if not issubclass(type(parent), LabyrinthObject):
+		if not isinstance(parent, LabyrinthObject):
 			raise ValueError(
 				'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
 		else:
 			self.parent = parent
 
 	def get_parent(self):
-		'''
-		Если parent определён для данного объекта, вернёт его, иначе вернёт None
-		'''
-		try:
-			return self.parent
-		except:
-			return None
+		return get_attr_safe(self, 'parent', None)
+
+	def get_children(self, labtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+		all_objs = self.labyrinth.get_all_objects()
+		return set(filter(lambda obj: obj.get_parent() == self and (obj.type in labtype and and_key(obj) or or_key(obj)),
+						all_objs))
 
 	def get_neighbour(self, direction):
 		if self.type != 'location':
@@ -81,17 +87,14 @@ class LabyrinthObject:
 		if self.type != 'location':
 			raise TypeError(
 				'You can\'t set neighbour for object with type ' + self.type)
-		elif not issubclass(type(neighbour), LabyrinthObject):
+		elif not isinstance(neighbour, LabyrinthObject):
 			raise ValueError(
 				'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
 		else:
 			self.directions[direction] = neighbour
 
 	def get_turn_set(self):
-		try:
-			return self.turn_set
-		except:
-			return {}
+		return get_attr_safe(self, 'turn_set', {})
 
 	@property
 	def type(self):
@@ -109,44 +112,39 @@ class LabyrinthObject:
 		'''
 		pass
 
+	def get_name(self):
+		return get_attr_safe(self, 'name', '')
 
-class Player(LabyrinthObject):
-	'''
-	Class of players of the game
-	'''
+	def __str__(self):
+		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
 
-	def __init__(self, username):
-		self.username = username
-		self.turn_set = {}
-
-	def get_username(self):
-		return self.username
+	def __repr__(self):
+		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
 
 
 class Labyrinth:
-	def __init__(self, locations, items, npcs, players, adjacence_list):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, filename, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
-			locations[i]._type = 'location'
-		for item in items:
-			item._type = 'item'
-		for npc in npcs:
-			npc._type = 'npc'
 		for player in players:
-			player._type = 'player'
-			player.set_parent(locations[1])
+			player.states = copy(INITIAL_STATES)
+		for player in dead_players:
+			player._type = 'dead_player'
 
-		for obj in locations + items + npcs + players:
+		for obj in locations + items + NPCs + players:
 			obj.labyrinth = self
 
 		self.locations = set(locations)
 		self.items = set(items)
-		self.npcs = set(npcs)
+		self.NPCs = set(NPCs)
 		self.players_list = players
+		self.dead_players = set(dead_players)
 
-		self.to_send = {player.get_username(): '' for player in self.players_list}
+		self.to_send = {player.get_username(): [] for player in self.players_list}
 		self.active_player_number = 0
+
+		self.filename = filename
 
 		'''
 		turns_log
@@ -161,8 +159,11 @@ class Labyrinth:
 		# Если True, то всё сохраняется
 		self.save_mode = True
 
+	def __str__(self):
+		return '<labyrinth: {}>'.format(self.filename)
+
 	def send_msg(self, msg, player):
-		self.to_send[player.get_username()] += (msg + ';')
+		self.to_send[player.get_username()].append(msg)
 
 	def make_turn(self, turn):
 		'''
@@ -173,19 +174,19 @@ class Labyrinth:
 		'''
 
 		# обнуляем to_send
-		self.to_send = {player.get_username(): '' for player in self.players_list}
+		self.to_send = {player.get_username(): [] for player in self.players_list}
 
 		# В списке возможных ходов локаций и предметов ищем ход с именем turn
 		# и запускаем действия найденных локаций и предметов
 		to_do = []
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.get_all_objects():
 			if turn in obj.get_turn_set() and obj.get_turn_set()[turn]['condition']():
 				to_do.append(obj.get_turn_set()[turn]['function'])
 		for function in to_do:
 			function()
 
 		# Запускаем для всех объектов main-функцию
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.get_all_objects():
 			obj.main()
 
 		# Делаем слудующего игрока активным
@@ -202,7 +203,7 @@ class Labyrinth:
 				self.msgs_log[username] = [self.player_to_send(username)]
 		# если save_mode == True, сохраняем всё в файл tmp\test.log
 		if self.save_mode == True:
-			self.save('test')
+			self.save(self.filename)
 
 		# возвращаем все сообщения, которые нужно отправить
 		return self.to_send
@@ -222,12 +223,18 @@ class Labyrinth:
 		'''
 
 		active_player_ats = []
-		for obj in self.locations | self.items | self.npcs | set(self.players_list):
+		for obj in self.get_all_objects():
 			for turn in obj.get_turn_set():
 				if obj.get_turn_set()[turn]['condition']():
 					active_player_ats.append(turn)
 
 		return active_player_ats
+
+	def get_all_objects(self):
+		return self.locations | self.items | self.NPCs | set(self.players_list)
+
+	def get_objects(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+		return list(filter(lambda obj: obj.type in types and and_key(obj) or or_key(obj), self.get_all_objects()))
 
 	def player_to_send(self, username):
 		return self.to_send[username]
@@ -249,8 +256,8 @@ class Labyrinth:
 
 	def get_turns(self, number = None, username = None):
 		'''
-		Возвращает все ходы сделанные игрокам
-		Возвращает ходы сделанные только указанным игрокам, если указан параметр username
+		Возвращает все ходы сделанные игроками
+		Возвращает ходы сделанные только указанным игроками, если указан параметр username
 		Возвращает ход под номером number с конца, если указан параметр number
 		Например get_turns(1, 'Вася') вернёт последний ход Васи
 		'''

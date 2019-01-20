@@ -1,0 +1,1 @@
+from LabyrinthObjects.Vanilla import *
