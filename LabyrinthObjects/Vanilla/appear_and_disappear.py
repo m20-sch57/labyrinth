@@ -16,6 +16,9 @@ class Hole(Location):
     def set_fall_to(self, fall_to):
         self.fall_to = fall_to
 
+    def set_settings(self, settings, locations, items, npcs, players):
+        self.set_fall_to(locations[settings['fall_to']])
+
     def main(self):
         for obj in self.labyrinth.get_all_objects():
             if obj in self.indulgence and obj.get_parent() != self.indulgence[obj]:

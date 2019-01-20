@@ -2,17 +2,17 @@
     "locations":
     [
         {
-            "module":"Labyrinth.LS_walk",
-            "class_name":"Wall",
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Outside",
             "settings":{}
         },
         {
-            "module":"Labyrinth.LS_walk",
+            "module":"LabyrinthObjects.Vanilla",
             "class_name":"EmptyLocation",
             "settings":{}       
         },
         {
-            "module":"Labyrinth.LS_hole",
+            "module":"LabyrinthObjects.Vanilla",
             "class_name":"Hole",
             "settings":
             {
@@ -23,7 +23,7 @@
     "items":
     [
         {
-            "module":"Labyrinth.LS_walk",
+            "module":"LabyrinthObjects.Vanilla",
             "class_name":"Legs",
             "settings":{}
         }

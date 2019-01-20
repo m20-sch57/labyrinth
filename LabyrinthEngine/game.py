@@ -14,11 +14,11 @@ def get_attr_safe(obj, attr, default_value):
 def load_lrsave(filename):
 	pass
 
-def load_lrmap(filename, users):
-	# from Labyrinth.Ltype import Player
-
-	with open('tmp\\' + filename + '.map.json', 'r', encoding='utf-8') as f:
+def load_lrmap(loadfile, savefile, users):
+	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
 		lrmap = json.load(f)
+
+	Player = importlib.import_module('LabyrinthEngine').__dict__['Player']
 
 	players = list(map(lambda username: Player(username), users))
 	adjacence_list = lrmap['adjacence_list']
@@ -39,7 +39,10 @@ def load_lrmap(filename, users):
 		for i in range(len(lrtypes[lrtype])):
 			lrtypes[lrtype][i].set_settings(lrmap[lrtype][i]['settings'], *lrlists, players)
 
-	return Labyrinth(*lrlists, players, adjacence_list)
+	for player in players:
+		player.set_parent(lrtypes['locations'][1])
+
+	return Labyrinth(*lrlists, players, adjacence_list, savefile)
 
 class LabyrinthObject:
 	'''
