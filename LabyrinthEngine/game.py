@@ -1,7 +1,21 @@
-﻿from copy import copy
-from LabyirnthConsts.Basic.CONSTS import *
+﻿from LabyirnthConsts.Basic.CONSTS import *
+from copy import copy
 import json
 import importlib
+import random
+
+class LabyrinthError(Exception):
+	pass
+
+class LabyrinthLoadError(LabyrinthError):
+	def __init__(self, msg, file):
+		self.msg = msg
+		self.file = file
+
+	def __str__(self):
+		return 'File "{}"\n{}'.format(self.file, self.msg)
+
+# TODO: understand errors. to continue the list of errors. Issue #44
 
 
 def get_attr_safe(obj, attr, default_value):
@@ -10,9 +24,17 @@ def get_attr_safe(obj, attr, default_value):
 	else:
 		return default_value
 
-# TODO: issue #30
-def load_lrsave(filename):
-	pass
+def load_lrsave(loadfile, savefile):
+	with open('tmp\\' + savefile + '.save.json', 'r', encoding='utf-8') as f:
+		lrsave = json.load(f)
+
+	users = lrsave['users']
+	labyrinth = load_lrmap(loadfile, savefile, users)
+
+	for turn in lrsave['turns']:
+		labyrinth.make_turn(turn['turn'])
+
+	return labyrinth
 
 def load_lrmap(loadfile, savefile, users):
 	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
@@ -22,27 +44,52 @@ def load_lrmap(loadfile, savefile, users):
 
 	players = list(map(lambda username: Player(username), users))
 	adjacence_list = lrmap['adjacence_list']
+	settings = lrmap['settings']
 
-	# Тут какой-то треш с именами. Я ничего лучше не придумал.
 	lrtypes = {
 		'locations': [],
 		'items': [],
 		'npcs': [],
 	}
 	lrlists = lrtypes['locations'], lrtypes['items'], lrtypes['npcs']
+	for lrtype in lrtypes:
+		if len(settings[lrtype]) != len(lrmap[lrtype]):
+			raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
+of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])), loadfile + '.map.json')
 
 	for lrtype in lrtypes:
 		for obj in lrmap[lrtype]:
 			lrtypes[lrtype].append(importlib.import_module(obj['module']).__dict__[obj['class_name']]())
 
-	for lrtype in lrtypes:
-		for i in range(len(lrtypes[lrtype])):
-			lrtypes[lrtype][i].set_settings(lrmap[lrtype][i]['settings'], *lrlists, players)
+	locs = lrmap['start_positions']['from']
+	if lrmap['start_positions']['distribution'] == 'random':
+		def get_start_position():
+			not_used = locs[:]
+			while True:
+				while len(not_used) != 0:
+					yield not_used.pop(random.randint(0, len(not_used) - 1))
+				not_used = locs[:]
+	elif lrmap['start_positions']['distribution'] == 'order':
+		def get_start_position():
+			index = 0
+			while True:
+				yield locs[index % len(locs)]
+				index += 1
+	elif lrmap['start_positions']['distribution'] == 'reverse_order':
+		def get_start_position():
+			index = -1
+			while True:
+				yield locs[index % len(locs)]
+				index -= 1
+	else:
+		raise LabyrinthLoadError('Unexpected "distribution" value: "{}"'.format( \
+			lrmap['start_positions']['distribution']), loadfile + '.map.json')
+	position = get_start_position()
 
 	for player in players:
-		player.set_parent(lrtypes['locations'][1])
+		player.set_parent(lrtypes['locations'][next(position)])
 
-	return Labyrinth(*lrlists, players, adjacence_list, savefile)
+	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile)
 
 class LabyrinthObject:
 	'''
@@ -82,7 +129,8 @@ class LabyrinthObject:
 				'You can\'t get neighbour for object with type ' + self.type)
 		elif direction not in self.directions:
 			raise ValueError(
-				'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
+				'Invalid "direction" argument for LabyrinthObject.get_neighbour: {}\n \
+Possible directions: {}'.format(str(direction), self.directions.keys))
 		else:
 			return self.directions[direction]
 
@@ -109,14 +157,14 @@ class LabyrinthObject:
 		'''
 		pass
 
-	def set_settings(self, *args):
-		'''
-		Функция настроек
-		'''
-		pass
+	def set_settings(self, settings, *args):
+		self.set_name(settings['name'])
 
 	def get_name(self):
 		return get_attr_safe(self, 'name', '')
+
+	def set_name(self, name):
+		self.name = name
 
 	def __str__(self):
 		return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
@@ -126,17 +174,27 @@ class LabyrinthObject:
 
 
 class Labyrinth:
-	def __init__(self, locations, items, NPCs, players, adjacence_list, filename, dead_players=[]):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[]):
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
 		for player in players:
 			player.states = copy(INITIAL_STATES)
+			player.labyrinth = self
 		for player in dead_players:
 			player._type = 'dead_player'
 
-		for obj in locations + items + NPCs + players:
-			obj.labyrinth = self
+		lrtypes = {
+			'location': locations,
+			'item': items,
+			'npc': NPCs}
+		lrlist = locations, items, NPCs, players
+
+		for lrtype in lrtypes:
+			for i in range(len(lrtypes[lrtype])):
+				obj = lrtypes[lrtype][i]
+				obj.labyrinth = self
+				obj.set_settings(settings[obj.type + 's'][i], *lrlist)
 
 		self.locations = set(locations)
 		self.items = set(items)
@@ -146,8 +204,6 @@ class Labyrinth:
 
 		self.to_send = {player.get_username(): [] for player in self.players_list}
 		self.active_player_number = 0
-
-		self.filename = filename
 
 		'''
 		turns_log
@@ -159,11 +215,12 @@ class Labyrinth:
 		self.msgs_log = {}
 
 		# Временное решение.
-		# Если True, то всё сохраняется
-		self.save_mode = True
+		# Если True, то всё сохраняется в файл self.savefile
+		self.save_mode = save_mode
+		self.savefile = savefile
 
 	def __str__(self):
-		return '<labyrinth: {}>'.format(self.filename)
+		return '<labyrinth: {}>'.format(self.savefile)
 
 	def send_msg(self, msg, player):
 		self.to_send[player.get_username()].append(msg)
@@ -206,7 +263,7 @@ class Labyrinth:
 				self.msgs_log[username] = [self.player_to_send(username)]
 		# если save_mode == True, сохраняем всё в файл tmp\test.log
 		if self.save_mode == True:
-			self.save(self.filename)
+			self.save(self.savefile)
 
 		# возвращаем все сообщения, которые нужно отправить
 		return self.to_send
@@ -236,16 +293,18 @@ class Labyrinth:
 	def get_all_objects(self):
 		return self.locations | self.items | self.NPCs | set(self.players_list)
 
-	def get_objects(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
-		return list(filter(lambda obj: obj.type in types and and_key(obj) or or_key(obj), self.get_all_objects()))
+	def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):
+		return list(filter(lambda obj: obj.type in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
 	def player_to_send(self, username):
 		return self.to_send[username]
 
-	def save(self, filename):
-		# TODO: issue #30
-		with open('tmp\\' + filename + '.save.json', 'w', encoding='utf-8') as f:
-			json.dump(self.turns_log, f, indent = 4, ensure_ascii=False)
+	def save(self, savefile):
+		save = {}
+		save['users'] = list(map(lambda user: user.get_username(), self.players_list))
+		save['turns'] = self.turns_log
+		with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
+			json.dump(save, f, indent = 4, ensure_ascii=False)
 
 	def get_msgs(self, username):
 		'''

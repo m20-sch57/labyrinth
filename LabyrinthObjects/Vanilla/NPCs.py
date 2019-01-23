@@ -1,5 +1,5 @@
 ﻿from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import NPC
+from LabyrinthEngine import NPC
 from LabyrinthObjects.Vanilla.move_and_bump import borders
 from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
 
@@ -13,6 +13,10 @@ class Bear(NPC):
         self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
         self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
+
+    def set_settings(self, settings, locations, *args):
+        self.set_parent(locations[settings['position']])
+        self.set_name(settings['name'])
 
     def turn_move(self, direction):
         def move():

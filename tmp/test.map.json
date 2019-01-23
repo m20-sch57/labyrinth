@@ -3,46 +3,184 @@
     [
         {
             "module":"LabyrinthObjects.Vanilla",
-            "class_name":"Outside",
-            "settings":{}
+            "class_name":"Outside"
         },
         {
             "module":"LabyrinthObjects.Vanilla",
-            "class_name":"EmptyLocation",
-            "settings":{}       
+            "class_name":"EmptyLocation"
         },
         {
             "module":"LabyrinthObjects.Vanilla",
-            "class_name":"Hole",
-            "settings":
-            {
-                "fall_to":1
-            }           
+            "class_name":"Hole"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"EmptyLocation"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Arsenal"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"EmptyLocation"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"EmptyLocation"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Hole"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"FirstAidPost"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Exit"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Wall"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Wall"
         }
     ],
     "items":
     [
         {
             "module":"LabyrinthObjects.Vanilla",
-            "class_name":"Legs",
-            "settings":{}
+            "class_name":"Legs"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Gun"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Bomb"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Treasure"
         }
     ],
-    "npcs":[],
+    "npcs":
+    [
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Bear"
+        }
+    ],
     "adjacence_list":
     [
         {},
         {
-            "up":2,
-            "down":0,
-            "right":0,
+            "up":0,
+            "down":5,
+            "right":10,
             "left":0
         },
         {
             "up":0,
-            "down":1,
+            "down":6,
+            "right":3,
+            "left":10
+        },
+        {
+            "up":0,
+            "down":7,
+            "right":4,
+            "left":2
+        },
+        {
+            "up":0,
+            "down":8,
+            "right":0,
+            "left":3
+        },
+        {
+            "up":1,
+            "down":0,
+            "right":6,
+            "left":0
+        },
+        {
+            "up":2,
+            "down":9,
+            "right":11,
+            "left":5
+        },
+        {
+            "up":3,
+            "down":0,
+            "right":8,
+            "left":11
+        },
+        {
+            "up":4,
+            "down":0,
+            "right":0,
+            "left":7
+        },
+        {
+            "up":6,
+            "down":0,
             "right":0,
             "left":0
-        }
-    ]
+        },
+        {}, 
+        {}
+    ],
+    "settings":
+    {
+        "locations": [{"name":"0"}, {"name":"1"}, 
+            {
+                "fall_to":7,
+                "name": "2"
+            },
+            {"name":"3"}, {"name":"4"}, {"name":"5"}, {"name":"6"}, 
+            {
+                "fall_to":2,
+                "name":"7"
+            }, 
+            {"name":"8"}, {"name":"9"}, {"name":"10"}, {"name":"11"}],
+        "items": [{"name":"0"}, {"name":"1"}, {"name":"2"},
+            {
+                "is_true": true,
+                "position":3,
+                "name":"3"
+            }
+        ],
+        "npcs": [
+            {
+                "position":4,
+                "name":"0"
+            }
+        ]
+    },
+    "start_positions":
+    {
+        "distribution": "random",
+        "from": [1, 3, 5]
+    }
 }
+
+//
+// OutSide = 0
+// Arsenal = 4
+// FirsAidPost = 8
+// Holes:  2↔7
+// Exit: 9
+// ┌───┬───────────┐
+// │ 1 │ 2   3   4 │
+// │               │
+// │ 5   6 │ 7   8 │
+// └───┐   ├───────┘
+//     │ 9 │
+//     └───┘
+//

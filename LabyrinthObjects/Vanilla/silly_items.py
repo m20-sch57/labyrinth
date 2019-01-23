@@ -1,14 +1,17 @@
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Item
+from LabyrinthEngine import Item
 
 
 # Item.
 class Treasure(Item):
-    def __init__(self, is_true):
-        self.is_true = is_true
-
+    def __init__(self):
         self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
         self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
+
+    def set_settings(self, settings, locations, *args):
+        self.is_true = settings['is_true']
+        self.set_parent(locations[settings['position']])
+        self.set_name(settings['name'])
 
     def take(self, player):
         if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:

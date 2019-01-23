@@ -24,4 +24,4 @@ class Player(LabObj):
 
 
 class NPC(LabObj):
-	_type = 'NPC'
+	_type = 'npc'

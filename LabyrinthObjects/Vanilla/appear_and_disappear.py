@@ -1,5 +1,5 @@
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Location
+from LabyrinthEngine import Location
 
 
 # Location.
@@ -18,6 +18,7 @@ class Hole(Location):
 
     def set_settings(self, settings, locations, items, npcs, players):
         self.set_fall_to(locations[settings['fall_to']])
+        self.set_name(settings['name'])
 
     def main(self):
         for obj in self.labyrinth.get_all_objects():

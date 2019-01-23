@@ -1,5 +1,5 @@
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Location, Item
+from LabyrinthEngine import Location, Item
 
 
 # Item.
