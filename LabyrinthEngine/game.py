@@ -29,8 +29,7 @@ def load_lrsave(loadfile, savefile):
 	with open('tmp\\' + savefile + '.save.json', 'r', encoding='utf-8') as f:
 		lrsave = json.load(f)
 
-	if lrsave.get('loadseed') is not None:
-		random.seed(lrsave['loadseed'])
+	random.seed(lrsave['loadseed'])
 	users = lrsave['users']
 	labyrinth = load_lrmap(loadfile, savefile, users, seed=lrsave['seed'])
 
@@ -40,6 +39,7 @@ def load_lrsave(loadfile, savefile):
 	return labyrinth
 
 def load_lrmap(loadfile, savefile, users):
+	seed = random.randrange(sys.maxsize)
 	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
 		lrmap = json.load(f)
 
@@ -92,7 +92,7 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 	for player in players:
 		player.set_parent(lrtypes['locations'][next(position)])
 
-	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile)
+	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, loadseed=seed)
 
 class LabyrinthObject:
 	'''
@@ -177,9 +177,10 @@ Possible directions: {}'.format(str(direction), self.directions.keys))
 
 
 class Labyrinth:
-	def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], seed=random.randrange(sys.maxsize)):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 		random.seed(seed)
 		self.seed = seed
+		self.loadseed= loadseed
 
 		for i in range(len(locations)):
 			locations[i].directions = {
@@ -308,6 +309,7 @@ class Labyrinth:
 	def save(self, savefile):
 		save = {}
 		save['seed'] = self.seed
+		save['loadseed'] = self.loadseed
 		save['users'] = list(map(lambda user: user.get_username(), self.players_list))
 		save['turns'] = self.turns_log
 		with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
