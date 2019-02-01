@@ -121,9 +121,9 @@ class LabyrinthObject:
 	def get_parent(self):
 		return get_attr_safe(self, 'parent', None)
 
-	def get_children(self, labtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+	def get_children(self, lrtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
 		all_objs = self.labyrinth.get_all_objects()
-		return set(filter(lambda obj: obj.get_parent() == self and (obj.type in labtype and and_key(obj) or or_key(obj)),
+		return set(filter(lambda obj: obj.get_parent() == self and (obj.type in lrtype and and_key(obj) or or_key(obj)),
 						all_objs))
 
 	def get_neighbour(self, direction):

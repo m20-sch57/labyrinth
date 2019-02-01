@@ -65,13 +65,13 @@ class Gun(Item):
             current_location = active_player.get_parent()
 
             if CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
-                kicked_characters |= current_location.get_children(labtype=['player', 'NPC'])
+                kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
                 kicked_characters.discard(active_player)
 
                 current_location = current_location.get_neighbour(direction)
             while current_location not in met_locations and type(current_location) not in borders:
                 met_locations.add(current_location)
-                kicked_characters |= current_location.get_children(labtype=['player', 'NPC'])
+                kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
                 current_location = current_location.get_neighbour(direction)
 
             if not CAN_PLAYER_HURT_HIMSELF:
@@ -117,12 +117,12 @@ class Bomb(Item):
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(BLOW_UP_PROHIBITION_MSG, active_player)
             else:
-                characters_in_direction = location_in_direction.get_children(labtype=['player', 'NPC'])
+                characters_in_direction = location_in_direction.get_children(lrtype=['player', 'NPC'])
                 if CAN_PLAYER_HURT_EVB_IN_DIRECTION and characters_in_direction:
                     for character in characters_in_direction:
                         character.hurt()
 
-                    players_in_direction = location_in_direction.get_children(labtype=['player'])
+                    players_in_direction = location_in_direction.get_children(lrtype=['player'])
                     if len(players_in_direction) == 0:
                         msg = BLOW_UP_NOT_PLAYERS_INJURING_MSG
                     elif len(players_in_direction) == 1:
@@ -145,7 +145,7 @@ class Bomb(Item):
 # Location.
 class Arsenal(Location):
     def main(self):
-        for player in self.get_children(labtype='player'):
+        for player in self.get_children(lrtype='player'):
             player.states['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
             player.states['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
@@ -153,5 +153,5 @@ class Arsenal(Location):
 # Location.
 class FirstAidPost(Location):
     def main(self):
-        for player in self.get_children(labtype='player'):
+        for player in self.get_children(lrtype='player'):
             player.heal()
