@@ -3,6 +3,7 @@ from copy import copy
 import json
 import importlib
 import random
+import sys
 
 class LabyrinthError(Exception):
 	pass
@@ -28,8 +29,10 @@ def load_lrsave(loadfile, savefile):
 	with open('tmp\\' + savefile + '.save.json', 'r', encoding='utf-8') as f:
 		lrsave = json.load(f)
 
+	if lrsave.get('loadseed') is not None:
+		random.seed(lrsave['loadseed'])
 	users = lrsave['users']
-	labyrinth = load_lrmap(loadfile, savefile, users)
+	labyrinth = load_lrmap(loadfile, savefile, users, seed=lrsave['seed'])
 
 	for turn in lrsave['turns']:
 		labyrinth.make_turn(turn['turn'])
@@ -174,7 +177,10 @@ Possible directions: {}'.format(str(direction), self.directions.keys))
 
 
 class Labyrinth:
-	def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[]):
+	def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], seed=random.randrange(sys.maxsize)):
+		random.seed(seed)
+		self.seed = seed
+
 		for i in range(len(locations)):
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
@@ -301,6 +307,7 @@ class Labyrinth:
 
 	def save(self, savefile):
 		save = {}
+		save['seed'] = self.seed
 		save['users'] = list(map(lambda user: user.get_username(), self.players_list))
 		save['turns'] = self.turns_log
 		with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
