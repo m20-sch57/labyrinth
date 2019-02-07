@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div id='info' post="{{ url_for('game_room', room_id=room['room_id']) }}"  room_id="{{ room['room_id'] }}"></div>
+  <div id='data' data-post="{{ url_for('game_room', room_id=room['room_id']) }}"  data-room_id="{{ room['room_id'] }}"></div>
 
   <header class="room-name" id="title">{{ room['name'] }}</header>
   <div id="log">
