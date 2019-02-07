@@ -94,7 +94,7 @@ if __name__ == '__main__':
         print('\n'.join('│{:<19}{}'.format(str(k)+':', str(v)) for k, v in MyLab.get_active_player().states.items()))
         print('└───────────────────')
         print(', '.join(MyLab.get_active_player_ats()))
-        print(MyLab.get_buttons())
+        MyLab.get_buttons()
         msgs = MyLab.make_turn(input('(' + MyLab.get_active_player().get_username() + ') '))
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))

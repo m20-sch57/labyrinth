@@ -1,5 +1,6 @@
 ﻿from copy import copy
 from LabyirnthConsts.Basic.CONSTS import *
+from LabyrinthEngine.user_interface import CommonButton, DirectionButton, ListButton
 import json
 
 
@@ -34,29 +35,23 @@ class LabyrinthObject:
             self.turn_set = {turn_name: {
                 'function': function, 'condition': condition_function}}
 
-    def new_button(self, turn, button_image):
+    def new_button(self, turn, image):
         if hasattr(self, 'button_set'):
-            self.button_set.append({
-                'turn': turn, 'type': 'button', 'button_image': button_image})
+            self.button_set.append(CommonButton([turn], image))
         else:
-            self.button_set = [{
-                'turn': turn, 'type': 'button', 'button_image': button_image}]
+            self.button_set = [CommonButton([turn], image)]
 
-    def new_dbutton(self, turns, button_image):
+    def new_dbutton(self, turns, image):
         if hasattr(self, 'button_set'):
-            self.button_set.append({
-                'turns': turns, 'type': 'dbutton', 'button_image': button_image})
+            self.button_set.append(DirectionButton(turns, image))
         else:
-            self.button_set = [{
-                'turns': turns, 'type': 'dbutton', 'button_image': button_image}]
+            self.button_set = [DirectionButton(turns, image)]
 
-    def new_lbutton(self, turns, button_image, turn_images):
+    def new_lbutton(self, turns, image, turn_images):
         if hasattr(self, 'button_set'):
-            self.button_set.append({'turns': turns, 'type': 'lbutton',
-                'button_image': button_image, 'turn_images': turn_images})
+            self.button_set.append(ListButton(turns, image, turn_images))
         else:
-            self.button_set = [{'turns': turns, 'type': 'lbutton',
-                'button_image': button_image, 'turn_images': turn_images}]
+            self.button_set = [ListButton(turns, image, turn_images)]
 
     def set_parent(self, parent):
         if not isinstance(parent, LabyrinthObject):
@@ -95,6 +90,9 @@ class LabyrinthObject:
 
     def get_turn_set(self):
         return get_attr_safe(self, 'turn_set', {})
+
+    def get_button_set(self):
+        return get_attr_safe(self, 'button_set', [])
 
     @property
     def type(self):
@@ -271,21 +269,9 @@ class Labyrinth:
         ats = self.get_active_player_ats()
         buttons = []
         for obj in self.get_all_objects():
-            for btn in get_attr_safe(obj, 'button_set', []):
-                if btn['type'] == 'button':
-                    if btn['turn'] in ats:
-                        buttons.append(btn)
-                elif btn['type'] == 'dbutton':
-                    if set(btn['turns']) & set(ats):
-                        buttons.append(btn)
-                elif btn['type'] == 'lbutton':
-                    turns = []
-                    imgs = []
-                    for i in range(len(btn['turns'])):
-                        if btn['turns'][i] in ats:
-                            turns.append(btn['turns'][i])
-                            imgs.append(btn['turn_images'][i])
-                    if turns:
-                        buttons.append({'turns': turns, 'button_image': btn['button_image'],
-                            'turn_images': imgs, 'type': 'list'})
+            for btn in obj.get_button_set():
+                btn_info = btn.get(ats)
+                if btn_info is not None:
+                    print(btn)
+                    buttons.append(btn_info)
         return buttons
