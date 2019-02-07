@@ -88,12 +88,13 @@ if __name__ == '__main__':
         print('┌───────────────────')
         if debug:
             print('│Player position:   {}'.format(MyLab.get_active_player().get_parent()))
-            print('│Bear position:     {}'.format(bear.get_parent()))
-            print('│Treasure position: {}'.format(tres.get_parent()))
+            # print('│Bear position:     {}'.format(bear.get_parent()))
+            # print('│Treasure position: {}'.format(tres.get_parent()))
             print('├───────────────────')
         print('\n'.join('│{:<19}{}'.format(str(k)+':', str(v)) for k, v in MyLab.get_active_player().states.items()))
         print('└───────────────────')
         print(', '.join(MyLab.get_active_player_ats()))
+        print(MyLab.get_buttons())
         msgs = MyLab.make_turn(input('(' + MyLab.get_active_player().get_username() + ') '))
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))

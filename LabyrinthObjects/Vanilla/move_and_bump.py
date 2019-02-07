@@ -10,6 +10,8 @@ class Legs(Item):
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
         self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
+        self.new_dbutton([UP_TURN, DOWN_TURN, RIGHT_TURN, LEFT_TURN], 'res\\pict.png')
+
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
