@@ -1,5 +1,9 @@
+import sys
+
+sys.path.append('LabyrinthObjects')
+
 from LabyrinthEngine import Labyrinth, Player
-from LabyrinthObjects.Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
+from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
     FirstAidPost, Bear, Treasure, Exit
 from LabyrinthEngine import load_lrmap, load_lrsave
 

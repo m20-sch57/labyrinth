@@ -138,28 +138,32 @@
     ],
     "settings":
     {
-        "locations": [{"name":"0"}, {"name":"1"}, 
+        "locations": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, 
             {
                 "fall_to":7,
-                "name": "2"
+                "name": "2",
+                "consts":{}
             },
-            {"name":"3"}, {"name":"4"}, {"name":"5"}, {"name":"6"}, 
+            {"name":"3", "consts":{}}, {"name":"4", "consts":{}}, {"name":"5", "consts":{}}, {"name":"6", "consts":{}}, 
             {
                 "fall_to":2,
-                "name":"7"
+                "name":"7",
+                "consts":{}
             }, 
-            {"name":"8"}, {"name":"9"}, {"name":"10"}, {"name":"11"}],
-        "items": [{"name":"0"}, {"name":"1"}, {"name":"2"},
+            {"name":"8", "consts":{}}, {"name":"9", "consts":{}}, {"name":"10", "consts":{}}, {"name":"11", "consts":{}}],
+        "items": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, {"name":"2", "consts":{}},
             {
                 "is_true": true,
                 "position":3,
-                "name":"3"
+                "name":"3",
+                "consts":{}
             }
         ],
         "npcs": [
             {
                 "position":4,
-                "name":"0"
+                "name":"0",
+                "consts":{}
             }
         ]
     },

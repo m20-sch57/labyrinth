@@ -1,10 +1,9 @@
-﻿from LabyirnthConsts.Basic.CONSTS import *
+﻿from Vanilla.consts import *
 from LabyrinthEngine import NPC
-from LabyrinthObjects.Vanilla.move_and_bump import borders
-from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
+from Vanilla.move_and_bump import borders
+from Vanilla.go_out_and_rest import Exit
 
 
-# NPC.
 class Bear(NPC):
     def __init__(self):
         self.states = INITIAL_STATES
@@ -17,6 +16,8 @@ class Bear(NPC):
     def set_settings(self, settings, locations, *args):
         self.set_parent(locations[settings['position']])
         self.set_name(settings['name'])
+
+        self.BEAR_MSG_ATTACK = settings['consts'].get('bear_msg_attack') or BEAR_MSG_ATTACK
 
     def turn_move(self, direction):
         def move():
@@ -33,4 +34,4 @@ class Bear(NPC):
     def main(self):
         for player in self.get_parent().get_children(lrtype='player'):
             player.hurt()
-            self.labyrinth.send_msg(BEAR_MSG_ATTACK, player)
+            self.labyrinth.send_msg(self.BEAR_MSG_ATTACK, player)

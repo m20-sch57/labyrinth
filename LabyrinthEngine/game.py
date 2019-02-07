@@ -1,5 +1,4 @@
-﻿from LabyirnthConsts.Basic.CONSTS import *
-from copy import copy
+﻿from copy import copy
 import json
 import importlib
 import random
@@ -186,7 +185,8 @@ class Labyrinth:
 			locations[i].directions = {
 				direction: locations[k] for direction, k in adjacence_list[i].items()}
 		for player in players:
-			player.states = copy(INITIAL_STATES)
+			# ОПА! костыль)
+			player.states = {'hurt': False, 'count_of_bullets': 3, 'count_of_bombs': 3}
 			player.labyrinth = self
 		for player in dead_players:
 			player._type = 'dead_player'
