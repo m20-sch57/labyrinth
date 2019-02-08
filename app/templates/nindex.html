@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="main">
+  {% if username == None %}
+  <form class="loginform" action="{{ url_for('login') }}" method="post">
+    Имя: <input type="text" minlength=4 required name="login"><br>
+    Пароль: <input type="password" name="password" minlength=8 required><br>
+    <input type="submit" value="Войти!">
+  </form>
+  {% endif %}
+  <div class="new-games">
+    {% for action in recent-actions %}
+    <div class="action">
+      {{ action }}
+      <form action="{{ url_for('room_list', page=0) }}" method="post" class="join_form">
+        <button value="{{ act_room }}" name="join_button">
+          Join!
+        </button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="description">
+  Добро пожаловать в Лабиринт! Это стратегическая игра, ...(придумать)
+</div>
+<div class="navbar">
+  
+</div>
+  
