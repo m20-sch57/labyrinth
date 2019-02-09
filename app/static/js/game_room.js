@@ -8,13 +8,9 @@ function xhrOpen(eventType) {
 	return xhr;
 };
 
-function makeTurn(event) {
-	if (event.keyCode == 13) {
-		var xhr = xhrOpen('turn');
-		var turn = document.getElementById('input').value;
-
-		xhr.send('turn=' + turn);
-	};
+function makeTurn(turn) {
+	var xhr = xhrOpen('turn');
+	xhr.send('turn=' + turn);
 };
 
 function getUpdate() {
@@ -28,8 +24,40 @@ function getUpdate() {
 	var turnState = document.getElementById('turn_state');
 	if (responseData.your_turn == 'yes') {
 		turnState.innerHTML = 'Твой ход (' + responseData.ats + ')';
+		removeAllButtons();
+		responseData.buttons.forEach(function(entry) {
+			switch(entry.type) {
+				case 'button':
+					addButton(entry.turn, entry.image)
+					break;
+			};
+		});
+
 	} else {
+		removeAllButtons();
 		turnState.innerHTML = 'Подожди';
+	};
+};
+
+// Interface
+
+// Buttons
+function addButton(turn, image) {
+	var buttonsBar = document.getElementById('buttons_bar');
+	var button = document.createElement('button');
+	button.innerHTML = '<img src="' + image + '">';
+	function mt() {
+		makeTurn(turn);
+	};
+	button.onclick = mt;
+	
+	buttonsBar.appendChild(button);
+};
+
+function removeAllButtons() {
+	var buttonsBar = document.getElementById('buttons_bar');
+	while (buttonsBar.firstChild) {
+	    buttonsBar.removeChild(buttonsBar.firstChild);
 	};
 };
 
@@ -47,7 +75,5 @@ function ready() {
 		socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
 	});
 };
-var turnInput = document.getElementById('input');
-turnInput.onkeydown = makeTurn;
 
 document.addEventListener("DOMContentLoaded", ready);

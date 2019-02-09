@@ -2,14 +2,14 @@
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
-from flask import render_template, request, session, redirect, url_for
-from hashlib import sha1
-import random
-import string
+from flask import render_template, request, session, redirect, url_for, send_file
 from functools import wraps
-import json
+from hashlib import sha1
+import random, string, json, io, sys
 
 from labyrinth_test import generate_labyrinth
+
+sys.path.append('..')
 
 
 def login_required(f):
@@ -148,10 +148,16 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
+
+            buttons = [
+                {'type': 'button', 'turn': 'Идти вверх', 'image': url_for('static', filename='res/button_images/up.png')},
+                {'type': 'button', 'turn': 'Идти вниз', 'image': url_for('static', filename='res/button_images/down.png')}
+            ]
+
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'buttons': buttons})
             else:
                 return json.dumps({'your_turn': 'no', 'msg': msg})
 
@@ -193,3 +199,4 @@ def wrws_pl():
          broadcast=True, room=room_id, namespace='/wrws')
 
     session.pop('room', None)
+
