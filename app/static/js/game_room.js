@@ -9,6 +9,7 @@ function xhrOpen(eventType) {
 };
 
 function makeTurn(turn) {
+	console.log(turn);
 	var xhr = xhrOpen('turn');
 	xhr.send('turn=' + turn);
 };
@@ -28,8 +29,10 @@ function getUpdate() {
 		responseData.buttons.forEach(function(entry) {
 			switch(entry.type) {
 				case 'button':
-					addButton(entry.turn, entry.image)
+					addCommonButton(entry.turn, entry.image)
 					break;
+				case 'lbutton':
+					addListButton(entry.turns, entry.image, entry.turn_images)
 			};
 		});
 
@@ -42,16 +45,59 @@ function getUpdate() {
 // Interface
 
 // Buttons
-function addButton(turn, image) {
-	var buttonsBar = document.getElementById('buttons_bar');
-	var button = document.createElement('button');
+function addCommonButton(turn, image) {
+	var button = document.createElement('div');
+
+	button.className = 'common-turn-button'
 	button.innerHTML = '<img src="' + image + '">';
 	function mt() {
 		makeTurn(turn);
 	};
 	button.onclick = mt;
-	
+
+	var buttonsBar = document.getElementById('buttons_bar');	
 	buttonsBar.appendChild(button);
+};
+
+function addListButton(turns, image, turn_images) {
+	var buttonsBar = document.getElementById('buttons_bar');
+
+	// var buttonContainer document.createElement('div');
+	var button = document.createElement('div');
+	var buttonImage = document.createElement('img');
+	var turnsContainer = document.createElement('div');
+	var buttonContainer = document.createElement('div');
+
+	button.className = 'list-game-button';
+	turnsContainer.className = 'list-turns-container';
+	buttonContainer.className = 'list-button-container';
+
+	buttonImage.setAttribute('src', image);
+	button.appendChild(buttonImage);
+
+	buttonContainer.appendChild(button);
+	buttonContainer.appendChild(turnsContainer);
+
+	for (var i = 0; i < turns.length; i++) {
+		var buttonTurn = document.createElement('div');
+
+		buttonTurn.className = 'list-turn-button';
+
+		var buttonTurnImage = document.createElement('img');
+		buttonTurnImage.setAttribute('src', turn_images[i]);
+
+		function mtg(k) {
+			function mt() {
+				makeTurn(turns[k])
+			}
+			return mt
+		};
+		buttonTurn.onclick = mtg(i);
+
+		buttonTurn.appendChild(buttonTurnImage);
+		turnsContainer.appendChild(buttonTurn);
+	}
+	buttonsBar.appendChild(buttonContainer);
 };
 
 function removeAllButtons() {
@@ -60,6 +106,9 @@ function removeAllButtons() {
 	    buttonsBar.removeChild(buttonsBar.firstChild);
 	};
 };
+
+
+// When the document is loaded 
 
 function ready() {
 	getUpdate();

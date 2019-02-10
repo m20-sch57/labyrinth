@@ -148,10 +148,12 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
-
+            prefix = '/static/res/button_images/'
             buttons = [
-                {'type': 'button', 'turn': 'Идти вверх', 'image': url_for('static', filename='res/button_images/up.png')},
-                {'type': 'button', 'turn': 'Идти вниз', 'image': url_for('static', filename='res/button_images/down.png')}
+                {'type': 'lbutton', 'turns': ['Идти вверх', 'Идти вниз', 'Идти вправо', 'Идти влево'], 
+                    'image': prefix + 'leg.png',
+                    'turn_images': [prefix + 'up.png',prefix + 'down.png',prefix + 'right.png',prefix + 'left.png']},
+                {'type': 'button', 'turn': 'Поднять клад', 'image': prefix + 'treasure_up.png'}
             ]
 
             msg = labyrinth.player_to_send(username)

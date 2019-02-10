@@ -1,0 +1,31 @@
+#buttons_bar {
+	display: flex;
+	align-items: center;
+	border: 1px solid black;
+	border-radius: 5px;
+	background: #aaaaaa;
+}
+
+[class$=turn-button],
+[class$=game-button] {
+	display: inline-block;
+	border: 1px solid black;
+	margin: 10px;
+	overflow: hidden;
+	/*background: #ffffff;*/
+}
+
+[class$=turn-button]:hover {
+	/*border-color: grey;*/
+	border-radius: 10px;
+}
+
+.list-turns-container{
+	display: none;
+}
+
+.list-button-container:hover .list-turns-container{
+	display: block;
+	position: absolute;
+}
+
