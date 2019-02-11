@@ -12,6 +12,4 @@ labyrinths_list = LabyrinthsList()
 
 from app import routes
 
-dbase.delete_all_rooms()
-
 socketio.run(app, host="0.0.0.0", port=3000,)
