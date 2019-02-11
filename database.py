@@ -15,6 +15,9 @@ def break_list(lst, cnt):
     for i in range(0, n, cnt):
         res.append(lst[i : min(n, i + cnt)])
 
+    if len(res) == 0:
+        res.append([])
+
     return res
 
 
@@ -134,6 +137,10 @@ class Database:
 
     def delete_room(self, room_id):
         self.cursor.execute('DELETE FROM rooms WHERE room_id=?', (room_id,))
+        self.conn.commit()
+
+    def delete_all_rooms(self):
+        self.cursor.execute('DELETE FROM rooms')
         self.conn.commit()
 
     def get_room_name(self, room_id):
