@@ -1,5 +1,5 @@
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Item
+from LabyrinthEngine import Item
 
 
 # Item.

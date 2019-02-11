@@ -1,6 +1,6 @@
 from random import choice
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Location
+from LabyrinthEngine import Location
 
 
 # Location.

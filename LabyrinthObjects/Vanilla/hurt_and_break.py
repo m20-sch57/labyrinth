@@ -1,6 +1,6 @@
 ﻿from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.game import get_attr_safe
-from LabyrinthEngine.LTypes import Location, Item, Player, NPC
+from LabyrinthEngine import get_attr_safe
+from LabyrinthEngine import Location, Item, Player, NPC
 from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
