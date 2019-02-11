@@ -56,8 +56,8 @@ class Labyrinth:
         # и запускаем действия найденных локаций и предметов
         to_do = []
         for obj in self.get_all_objects():
-            if turn in obj.get_turn_set() and obj.get_turn_set()[turn]['condition']():
-                to_do.append(obj.get_turn_set()[turn]['function'])
+            if turn in obj.get_turns() and obj.get_turns()[turn]['condition']():
+                to_do.append(obj.get_turns()[turn]['function'])
         for function in to_do:
             function()
 
@@ -100,8 +100,8 @@ class Labyrinth:
 
         active_player_ats = []
         for obj in self.get_all_objects():
-            for turn in obj.get_turn_set():
-                if obj.get_turn_set()[turn]['condition']():
+            for turn in obj.get_turns():
+                if obj.get_turns()[turn]['condition']():
                     active_player_ats.append(turn)
 
         return active_player_ats
