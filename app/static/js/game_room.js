@@ -1,7 +1,7 @@
 function xhrOpen(eventType) {
 	var xhr = new XMLHttpRequest();
 
-	xhr.open('POST', document.getElementById('info').getAttribute('post'), false);
+	xhr.open('POST', document.getElementById('data').dataset.post, false);
 	xhr.setRequestHeader('Event-Type', eventType);
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -44,7 +44,7 @@ function ready() {
 		};
 	});
 	socket.on('connect', function() {
-		socket.emit('player join', {'room_id': document.getElementById('info').getAttribute('room_id')});
+		socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
 	});
 };
 var turnInput = document.getElementById('input');
