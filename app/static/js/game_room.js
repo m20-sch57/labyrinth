@@ -29,10 +29,14 @@ function getUpdate() {
 		responseData.buttons.forEach(function(entry) {
 			switch(entry.type) {
 				case 'button':
-					addCommonButton(entry.turn, entry.image)
+					addCommonButton(entry.turn, entry.image);
 					break;
 				case 'lbutton':
-					addListButton(entry.turns, entry.image, entry.turn_images)
+					addListButton(entry.turns, entry.image, entry.turn_images);
+					break;
+				case 'dbutton':
+					addDirectionButton(entry.turns, entry.image, entry.turn_images);
+					break;
 			};
 		});
 
@@ -99,6 +103,10 @@ function addListButton(turns, image, turn_images) {
 	}
 	buttonsBar.appendChild(buttonContainer);
 };
+
+function addDirectionButton() {
+	var buttonsBar = document.getElementById('buttonsBar')
+}
 
 function removeAllButtons() {
 	var buttonsBar = document.getElementById('buttons_bar');
