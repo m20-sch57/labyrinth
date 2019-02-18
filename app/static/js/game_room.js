@@ -24,7 +24,7 @@ function getUpdate() {
 
 	var turnState = document.getElementById('turn_state');
 	if (responseData.your_turn == 'yes') {
-		turnState.innerHTML = 'Твой ход (' + responseData.ats + ')';
+		turnState.innerHTML = 'Твой ход';
 		removeAllButtons();
 		responseData.buttons.forEach(function(entry) {
 			switch(entry.type) {
@@ -110,6 +110,7 @@ function addDirectionButton() {
 
 function removeAllButtons() {
 	var buttonsBar = document.getElementById('buttons_bar');
+	console.log(buttonsBar);
 	while (buttonsBar.firstChild) {
 	    buttonsBar.removeChild(buttonsBar.firstChild);
 	};
