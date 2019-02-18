@@ -4,6 +4,23 @@
 import sqlite3
 
 
+'''
+help functions
+'''
+
+
+def break_list(lst, cnt):
+    n = len(lst)
+    res = []
+    for i in range(0, n, cnt):
+        res.append(lst[i : min(n, i + cnt)])
+
+    if len(res) == 0:
+        res.append([])
+
+    return res
+
+
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect('database.db', check_same_thread=False)
@@ -80,8 +97,8 @@ class Database:
 
     '''
     rooms functions
+    '''
 
-    ''' 
     def parse_room(self, room):
         self.cursor.execute('SELECT * FROM users WHERE room_id=?', (room[0],))
         players_set = set(map(lambda user: user[0], self.cursor.fetchall()))
@@ -114,15 +131,16 @@ class Database:
         return list(map(lambda room: self.get_room(room[0]), rooms))
 
     def get_rooms_page_by_page(self):
-        pages = []
         self.cursor.execute('SELECT * FROM rooms')
-        for i in range(3):
-            # взяли 6 комнат, распарсили, и добавили в pages как list
-            pages.append(list(map(lambda room_arr: self.parse_room(room_arr), self.cursor.fetchmany(size=6))))
-        return pages
+        rooms = list(map(self.parse_room, self.cursor.fetchall()))
+        return break_list(rooms, 6)
 
     def delete_room(self, room_id):
         self.cursor.execute('DELETE FROM rooms WHERE room_id=?', (room_id,))
+        self.conn.commit()
+
+    def delete_all_rooms(self):
+        self.cursor.execute('DELETE FROM rooms')
         self.conn.commit()
 
     def get_room_name(self, room_id):
@@ -163,6 +181,7 @@ class Database:
     '''
     maps functions
     '''
+
     def add_map(self, maplink, description):
         self.cursor.execute('INSERT INTO maps VALUES (?, ?)', (maplink, description))
         self.conn.commit()
@@ -174,6 +193,7 @@ class Database:
     '''
     another functions
     '''
+
     def drop(self):
         self.cursor.execute('DROP TABLE rooms')
         self.cursor.execute('DROP TABLE users')
@@ -181,4 +201,4 @@ class Database:
         self.conn.commit()
 
     def quit(self):
-        self.conn.close()       
+        self.conn.close()
