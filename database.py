@@ -75,15 +75,11 @@ class Database:
         return self.get_user(user_id)[1]  # password_hash
 
     def set_user_login(self, user_id, login):
-        if self.user_login_in_table(login):
-            return False
-        else:
-            self.cursor.execute('UPDATE users SET login=? WHERE login=?', (login, login))
-            self.conn.commit()    
-            return True
+        self.cursor.execute('UPDATE users SET login=? WHERE login=?', (login, user_id))
+        self.conn.commit()
 
     def set_user_password_hash(self, user_id, password_hash):
-        self.cursor.execute('UPDATE users SET password_hash=? WHERE login=?', (password_hash, str(user_id)))
+        self.cursor.execute('UPDATE users SET password_hash=? WHERE login=?', (password_hash, user_id))
         self.conn.commit()
 
     def set_user_room(self, user_id, room_id):

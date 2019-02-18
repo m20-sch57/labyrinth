@@ -11,6 +11,14 @@ import json
 
 from labyrinth_test import generate_labyrinth
 
+'''
+help functions
+'''
+
+
+def sha1_hash(s):
+    return sha1(s.encode('utf-8')).hexdigest()
+
 
 def login_required(f):
     @wraps(f)
@@ -19,6 +27,7 @@ def login_required(f):
             return redirect(url_for('index'))
         else:
             return f(*args, **kwargs)
+
     return wrapped
 
 
@@ -39,7 +48,7 @@ def login():
         password = request.form.get('password')
 
         if not dbase.user_login_in_table(username) or \
-                dbase.get_user_password_hash(username) != sha1(password.encode('utf-8')).hexdigest():
+                dbase.get_user_password_hash(username) != sha1_hash(password):
             return redirect(url_for('login_failed'))
 
         session['username'] = username
@@ -54,13 +63,48 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/change_login', methods=['POST', 'GET'])
+def change_login():
+    if request.method == 'POST':
+        username = session['username']
+        pass_hash = sha1_hash(request.form.get("password"))
+        new_login = request.form.get("new_login")
+
+        if pass_hash != dbase.get_user_password_hash(username):
+            return redirect(url_for('change_login_failed'))
+
+        dbase.set_user_login(username, new_login)
+        session['username'] = new_login
+
+        return redirect(url_for('profile'))
+
+    return render_template('login_register/change_login.html')
+
+
+@app.route('/change_password', methods=['POST', 'GET'])
+def change_password():
+    if request.method == 'POST':
+        username = session['username']
+        pass_hash = sha1_hash(request.form.get("password"))
+        new_pass_hash = sha1_hash(request.form.get("new_password"))
+
+        if pass_hash != dbase.get_user_password_hash(username):
+            return redirect(url_for('change_password_failed'))
+
+        dbase.set_user_password_hash(username, new_pass_hash)
+
+        return redirect(url_for('profile'))
+
+    return render_template('login_register/change_password.html')
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
         username = request.form.get('login')
         password = request.form.get('password')
 
-        if not dbase.add_user(username, sha1(password.encode('utf-8')).hexdigest()):
+        if not dbase.add_user(username, sha1_hash(password)):
             return redirect(url_for('register_failed'))
 
         session['username'] = username
@@ -73,6 +117,16 @@ def login_failed():
     return render_template('index.html', username=None, reg_error=True)
 
 
+@app.route('/change_login_failed')
+def change_login_failed():
+    return render_template('login_register/change_login.html', error=True)
+
+
+@app.route('/change_password_failed')
+def change_password_failed():
+    return render_template('login_register/change_password.html', error=True)
+
+
 @app.route('/register_failed')
 def register_failed():
     return render_template('login_register/register_failed.html')
@@ -81,7 +135,7 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    username = session.get('username')
+    #username = session.get('username')
     return simple_render_template('profile.html')
 
 
@@ -113,6 +167,7 @@ def rules():
 def create_room():
     def genereate_room_id(size):
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+
     room_id = genereate_room_id(8)
     dbase.add_room(room_id, session.get('username'))
     return redirect(url_for('waiting_room', room_id=room_id))
