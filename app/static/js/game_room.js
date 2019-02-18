@@ -27,7 +27,7 @@ function getUpdate() {
 
 	var turnState = document.getElementById('turn_state');
 	if (responseData.your_turn == 'yes') {
-		turnState.innerHTML = 'Твой ход (' + responseData.ats + ')';
+		turnState.innerHTML = 'Твой ход';
 	} else {
 		turnState.innerHTML = 'Подожди';
 	};
