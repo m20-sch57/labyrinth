@@ -1,4 +1,4 @@
-html, body {
+html, body{
 	background: rgb(249, 249, 249);
 	margin-left: 10%;
 	margin-right: 10%;
@@ -140,4 +140,105 @@ html, body {
   position: absolute;
   left: 67%;
   width: 33%;
+}
+
+/* Ниже - стили комнаты игры. Их надо будет перенести в новый дизайн целиком */
+
+.game-room-header {
+	margin-left: 0% !important;
+	margin-right: 0% !important;
+	background-color: rgb(138, 45, 242);
+	height: 54px;
+	font-family: Verdana;
+	text-align: center;
+	color: white;
+	font-size: 24pt;
+}
+
+.game-player-condition {
+	position: absolute;
+	top: 20%;
+	width: 15%;
+	height: 20%;
+	font-family: Georgia;
+	border: 1px solid #ba55d3;
+	text-align: center;
+	left: 10%;
+}
+
+
+
+.game-actions {
+	position: absolute;
+	bottom: 20%;
+	border: 1px solid #ba55d3;
+	height: 20%;
+	width: 15%;
+	left: 10%;
+}
+
+.game-button {
+	position: absolute;
+	left: 10%;
+	top: 10%;
+	background-color: rgb(138, 45, 242);
+	height: 33%;
+	border-radius: 10%;
+	-webkit-border-radius: 10%;
+	color: white;
+	width: 80%;
+	font-size: 16pt;
+}
+
+.game-main {
+	position: absolute;
+	top: 20%;
+	height: 60%;
+	border: 1px solid #ba55d3;
+	width: 40%;
+	left: 30%;
+}
+
+#log {
+	border-bottom: 1px solid #ba55d3;
+	position: relative;
+	height: 66%;
+	width: 100%;
+	overflow: auto;
+}
+
+.input-wrapper {
+	border-bottom: 1px solid #ba55d3;
+	height: 5%;
+}
+
+#input {
+	position: relative;
+	left: 15%;
+	top: 15%;
+}
+
+.location {
+	position: absolute;
+	top: 20%;
+	width: 15%;
+	height: 20%;
+	font-family: Georgia;
+	border: 1px solid #ba55d3;
+	text-align: center;
+	right: 10%;
+}
+
+.players {
+	position: absolute;
+	bottom: 20%;
+	border: 1px solid #ba55d3;
+	height: 20%;
+	width: 15%;
+	right: 10%;
+	overflow: auto;
+}
+
+.player {
+	border-bottom: 1px solid #ba55d3;
 }

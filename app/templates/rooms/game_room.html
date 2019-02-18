@@ -1,14 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div id='data' data-post="{{ url_for('game_room', room_id=room['room_id']) }}"  data-room_id="{{ room['room_id'] }}"></div>
+<div id='data' data-post="{{ url_for('game_room', room_id=room['room_id']) }}"  data-room_id="{{ room['room_id'] }}"></div>
 
+<<<<<<< HEAD
   <header class="room-name" id="title">{{ room['name'] }}</header>
   <div id="log">
   </div>
   <p id="turn_state"></p>
   <!--<input id="input">-->
   <div id="buttons_bar"></div>
+=======
+<div class="game-room-header">
+    {{ room['name'] }}
+</div>
+<div class="game-player-condition">
+    <p id="turn_state"></p>
+	<span class="resource">Бомбы:</span> 3
+	<span class="resource">Пули:</span> 3
+	<div class="binary-ps">
+	<span id="wounded"></span>    <span id="carrying"></span>
+ <!--Тут будет появляться "Ранен", если игрок ранен-->
+	</div>
+</div>
+<div class="game-actions">
+    <form>
+	    <button value={{ room['room_id'] }} name="leave_button" class="game-button">Покинуть игру</button>
+	</form>
+</div>
+<div id='info' post="{{ url_for('game_room', room_id=room['room_id']) }}"  room_id="{{ room['room_id'] }}"></div>
+<div class="game-main">
+	<div id="log">
+	</div>
+>>>>>>> master
 
-  <script src="{{ url_for('static', filename='js/game_room.js') }}"></script>
+	<div class="input-wrapper">
+		<input id="input" size=50>
+	</div>
+	<div class="reminder">
+		<ul>
+			<li>Идти вверх(вправо, вниз, влево) - ход в указанном направлении.
+			<li>Стрелять вверх(вправо, вниз, влево) - выстрел в указанном направлении.
+			<li>Подорвать вверх(вправо, вниз, влево) - взрыв в указанном направлении.
+		</ul>
+	</div>
+</div>
+<div class="players">
+	{% for player in room['player_set'] %}
+	<div class="player">
+		{{ player }}
+	</div>
+	{% endfor %}
+</div>
+{% if room['description'] != None %}
+	<div class="location">
+        Description: {% autoescape false %}{{ room['description'].split('\n') | join(' <br> ')}}{% endautoescape %}
+	</div>
+{% endif %}
+<script src="{{ url_for('static', filename='js/game_room.js') }}"></script>
 {% endblock %}

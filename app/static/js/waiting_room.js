@@ -25,7 +25,7 @@ function changeName(event) {
 };
 function startGame() {
 	var xhr = xhrOpen('start_game');
-
+	
 	xhr.send();
 };
 
