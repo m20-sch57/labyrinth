@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id='data' data-post="{{ url_for('game_room', room_id=room['room_id']) }}"  data-room_id="{{ room['room_id'] }}"></div>
 
 <div class="game-room-header">
     {{ room['name'] }}
@@ -40,6 +41,7 @@
 	<div class="player">
 		{{ player }}
 	</div>
+	{% endfor %}
 </div>
 {% if room['description'] != None %}
 	<div class="location">

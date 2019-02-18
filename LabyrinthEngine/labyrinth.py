@@ -1,3 +1,8 @@
+from copy import copy
+from LabyirnthConsts.Basic.CONSTS import *
+import json
+
+
 class Labyrinth:
     def __init__(self, locations, items, NPCs, players, adjacence_list, filename, dead_players=[]):
         for i in range(len(locations)):

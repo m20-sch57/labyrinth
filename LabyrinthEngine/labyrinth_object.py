@@ -88,10 +88,10 @@ class LabyrinthObject:
         else:
             self.directions[direction] = neighbour
 
-    def get_turn_set(self):
+    def get_turns(self):
         return get_attr_safe(self, 'turn_set', {})
 
-    def get_button_set(self):
+    def get_buttons(self):
         return get_attr_safe(self, 'button_set', [])
 
     @property
