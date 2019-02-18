@@ -1,5 +1,5 @@
 from LabyirnthConsts.Basic.CONSTS import *
-from LabyrinthEngine.LTypes import Item
+from LabyrinthEngine import Item
 
 
 # Item.
@@ -9,6 +9,8 @@ class Treasure(Item):
 
         self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
         self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
+
+        self.new_lbutton([TAKE_TREASURE, DROP_TREASURE], 'res\\image.png', ['res\\image1', 'res\\image2'])
 
     def take(self, player):
         if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:

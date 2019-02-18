@@ -1,15 +1,15 @@
-from LabyrinthEngine.game import LabyrinthObject as LabObj
+from LabyrinthEngine import LabyrinthObject as LO
 
 
-class Location(LabObj):
+class Location(LO):
 	_type = 'location'
 
 
-class Item(LabObj):
+class Item(LO):
 	_type = 'item'
 
 
-class Player(LabObj):
+class Player(LO):
 	'''
 	Class of players of the game
 	'''
@@ -23,5 +23,5 @@ class Player(LabObj):
 		return self.username
 
 
-class NPC(LabObj):
+class NPC(LO):
 	_type = 'NPC'

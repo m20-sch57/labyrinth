@@ -1,2 +1,3 @@
-from LabyrinthEngine.game import Labyrinth, get_attr_safe
-from LabyrinthEngine.LTypes import Player
+from LabyrinthEngine.labyrinth import Labyrinth
+from LabyrinthEngine.labyrinth_object import LabyrinthObject, get_attr_safe
+from LabyrinthEngine.lr_types import Location, Item, Player, NPC 
