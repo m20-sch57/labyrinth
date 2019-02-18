@@ -17,5 +17,13 @@
         </div>
       {% endfor %}
     </div>
+    <div class="paginator">
+      <form>
+        <button formaction="{{ url_for('room_list', page=first_page) }}"><<</button>
+        <button formaction="{{ url_for('room_list', page=prev_page) }}"><</button>
+        <button formaction="{{ url_for('room_list', page=next_page) }}">></button>
+        <button formaction="{{ url_for('room_list', page=last_page) }}">>></button>
+      </form>
+    </div>
   </div>
 {% endblock %}
