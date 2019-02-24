@@ -9,7 +9,6 @@ function xhrOpen(eventType) {
 };
 
 function makeTurn(turn) {
-	console.log(turn);
 	var xhr = xhrOpen('turn');
 	xhr.send('turn=' + turn);
 };
@@ -110,7 +109,6 @@ function addDirectionButton() {
 
 function removeAllButtons() {
 	var buttonsBar = document.getElementById('buttons_bar');
-	console.log(buttonsBar);
 	while (buttonsBar.firstChild) {
 	    buttonsBar.removeChild(buttonsBar.firstChild);
 	};
