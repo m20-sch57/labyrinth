@@ -10,7 +10,8 @@ class Treasure(Item):
         self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
         self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
 
-        self.new_lbutton([TAKE_TREASURE, DROP_TREASURE], 'res\\image.png', ['res\\image1', 'res\\image2'])
+        prefix = '\\static\\res\\button_images\\'
+        self.new_button(TAKE_TREASURE, prefix + 'treasure_up.png')
 
     def take(self, player):
         if WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:

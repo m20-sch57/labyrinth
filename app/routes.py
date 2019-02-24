@@ -214,18 +214,19 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
-            prefix = '/static/res/button_images/'
-            buttons = [
-                {'type': 'lbutton', 'turns': ['Идти вверх', 'Идти вниз', 'Идти вправо', 'Идти влево'], 
-                    'image': prefix + 'leg.png',
-                    'turn_images': [prefix + 'up.png',prefix + 'down.png',prefix + 'right.png',prefix + 'left.png']},
-                {'type': 'button', 'turn': 'Поднять клад', 'image': prefix + 'treasure_up.png'}
-            ]
+            # prefix = '/static/res/button_images/'
+            # buttons = [
+            #     {'type': 'lbutton', 'turns': ['Идти вверх', 'Идти вниз', 'Идти вправо', 'Идти влево'], 
+            #         'image': prefix + 'leg.png',
+            #         'turn_images': [prefix + 'up.png',prefix + 'down.png',prefix + 'right.png',prefix + 'left.png']},
+            #     {'type': 'button', 'turn': 'Поднять клад', 'image': prefix + 'treasure_up.png'}
+            # ]
 
+            btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'buttons': buttons})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'buttons': btn})
             else:
                 return json.dumps({'your_turn': 'no', 'msg': msg})
 

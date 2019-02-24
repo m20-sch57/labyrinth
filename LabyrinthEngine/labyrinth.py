@@ -158,9 +158,9 @@ class Labyrinth:
         ats = self.get_active_player_ats()
         buttons = []
         for obj in self.get_all_objects():
-            for btn in obj.get_button_set():
+            for btn in obj.get_buttons():
                 btn_info = btn.get(ats)
                 if btn_info is not None:
-                    print(btn)
+
                     buttons.append(btn_info)
         return buttons

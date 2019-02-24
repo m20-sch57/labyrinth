@@ -20,7 +20,7 @@ class CommonButton(Button):
         self.image = image
 
     def get(self, ats):
-        if self.turns in ats: 
+        if self.turns[0] in ats: 
             return {'type': self.btn_type,  'turns':self.turns, 'image': self.image}
 
 class DirectionButton(Button):

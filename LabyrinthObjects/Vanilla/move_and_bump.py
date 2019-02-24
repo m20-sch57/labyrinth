@@ -10,7 +10,9 @@ class Legs(Item):
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
         self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
-        self.new_dbutton([UP_TURN, DOWN_TURN, RIGHT_TURN, LEFT_TURN], 'res\\pict.png')
+        prefix = '\\static\\res\\button_images\\'
+        self.new_lbutton([UP_TURN, DOWN_TURN, RIGHT_TURN, LEFT_TURN], prefix + 'leg.png',
+            [prefix + 'up.png', prefix + 'down.png', prefix + 'right.png', prefix + 'left.png'])
 
     def turn_move(self, direction):
         def move():

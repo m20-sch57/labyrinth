@@ -28,7 +28,7 @@ function getUpdate() {
 		responseData.buttons.forEach(function(entry) {
 			switch(entry.type) {
 				case 'button':
-					addCommonButton(entry.turn, entry.image);
+					addCommonButton(entry.turns[0], entry.image);
 					break;
 				case 'lbutton':
 					addListButton(entry.turns, entry.image, entry.turn_images);
