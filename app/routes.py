@@ -197,10 +197,17 @@ def waiting_room(room_id):
             emit('update', {'event': 'start_game'},
                  broadcast=True, room=room_id, namespace='/wrws')
 
+        elif event_type == 'delete_room':
+            emit('update', {'event': 'delete_room'},
+                 broadcast=True, room=room_id, namespace='/wrws')
+            dbase.delete_room(room_id)
+
     username = session.get('username')
     labyrinth = labyrinths_list.get_labyrinth(room_id)
     if labyrinth is not None and username in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('game_room', room_id=room_id))
+    elif dbase.get_room(room_id) is None:
+        return redirect(url_for('room_list', page=0))
     else:
         return simple_render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), hide_header=True)
 
@@ -254,7 +261,8 @@ def wrws_pl():
 
     leave_room(room_id)
     dbase.remove_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
-         broadcast=True, room=room_id, namespace='/wrws')
+    if dbase.get_room(room_id) is not None:
+        emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
+             broadcast=True, room=room_id, namespace='/wrws')
 
     session.pop('room', None)
