@@ -9,7 +9,6 @@ import random, string, json, io, sys
 
 from labyrinth_test import generate_labyrinth
 
-sys.path.append('..')
 
 
 '''
