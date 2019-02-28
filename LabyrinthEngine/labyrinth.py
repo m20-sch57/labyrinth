@@ -17,8 +17,7 @@ class Labyrinth:
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
             player.states = {'hurt': False, 'count_of_bullets': 3, 'count_of_bombs': 3}
-        print('labyrinth.py:', dead_players)
-        print('labyrinth.py:', NPCs)
+            player.labyrinth = self
         for player in dead_players:
             player._lrtype = 'dead_player'
 

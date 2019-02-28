@@ -132,7 +132,7 @@ class Bomb(Item):
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(self.BLOW_UP_PROHIBITION_MSG, active_player)
             else:
-                characters_in_direction = location_in_direction.get_children(lrtype=['player', 'NPC'])
+                characters_in_direction = location_in_direction.get_children(lrtype=['player', 'npc'])
                 if self.CAN_PLAYER_HURT_EVB_IN_DIRECTION and characters_in_direction:
                     for character in characters_in_direction:
                         character.hurt()
