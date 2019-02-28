@@ -2,11 +2,11 @@ from LabyrinthEngine import LabyrinthObject as LO
 
 
 class Location(LO):
-	_type = 'location'
+	_lrtype = 'location'
 
 
 class Item(LO):
-	_type = 'item'
+	_lrtype = 'item'
 
 
 class Player(LO):
@@ -14,7 +14,7 @@ class Player(LO):
 	Class of players of the game
 	'''
 
-	_type = 'player'
+	_lrtype = 'player'
 
 	def __init__(self, username):
 		self.name = self.username = username
@@ -24,4 +24,4 @@ class Player(LO):
 
 
 class NPC(LO):
-	_type = 'npc'
+	_lrtype = 'npc'

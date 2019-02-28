@@ -27,6 +27,7 @@ class Legs(Item):
 class EmptyLocation(Location):
     def set_settings(self, settings, locations, items, npcs, players):
         self.ENTER_MSG = settings['consts'].get('enter_msg') or ENTER_MSG
+        self.set_name(settings['name'])
 
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()

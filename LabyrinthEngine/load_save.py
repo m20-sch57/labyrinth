@@ -1,8 +1,10 @@
-﻿from copy import copy
+﻿from LabyrinthEngine.labyrinth import Labyrinth
+from copy import copy
 import json
 import importlib
 import random
 import sys
+
 
 class LabyrinthError(Exception):
 	pass
@@ -91,4 +93,6 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 	for player in players:
 		player.set_parent(lrtypes['locations'][next(position)])
 
+
+	print('load_save.py:', players)
 	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, loadseed=seed)

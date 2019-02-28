@@ -11,6 +11,7 @@ class Exit(Location):
     def set_settings(self, settings, locations, items, npcs, players):
         self.EXIT_GREETING_MSG = settings['consts'].get('exit_greeting_msg') or EXIT_GREETING_MSG
         self.EXIT_PRESENCE_MSGS = settings['consts'].get('exit_presence_msgs') or EXIT_PRESENCE_MSGS
+        self.set_name(settings['name'])
 
     def main(self):
         now_here = self.get_children(['player'])

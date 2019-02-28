@@ -1,20 +1,38 @@
 from copy import copy
-from LabyirnthConsts.Basic.CONSTS import *
+import random
 import json
+import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, NPCs, players, adjacence_list, filename, dead_players=[]):
+    def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
+                 seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
+
+        random.seed(seed)
+        self.seed = seed
+        self.loadseed= loadseed
+
         for i in range(len(locations)):
             locations[i].directions = {
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
-            player.states = copy(INITIAL_STATES)
+            player.states = {'hurt': False, 'count_of_bullets': 3, 'count_of_bombs': 3}
+        print('labyrinth.py:', dead_players)
+        print('labyrinth.py:', NPCs)
         for player in dead_players:
-            player._type = 'dead_player'
+            player._lrtype = 'dead_player'
 
-        for obj in locations + items + NPCs + players:
-            obj.labyrinth = self
+        lrtypes = {
+            'location': locations,
+            'item': items,
+            'npc': NPCs}         
+        lrlist = locations, items, NPCs, players
+
+        for lrtype in lrtypes:
+            for i in range(len(lrtypes[lrtype])):
+                obj = lrtypes[lrtype][i]
+                obj.labyrinth = self
+                obj.set_settings(settings[obj.lrtype + 's'][i], *lrlist)
 
         self.locations = set(locations)
         self.items = set(items)
@@ -24,8 +42,6 @@ class Labyrinth:
 
         self.to_send = {player.get_username(): [] for player in self.players_list}
         self.active_player_number = 0
-
-        self.filename = filename
 
         '''
         turns_log
@@ -38,7 +54,8 @@ class Labyrinth:
 
         # Временное решение.
         # Если True, то всё сохраняется
-        self.save_mode = True
+        self.save_mode = save_mode
+        self.savefile = savefile
 
     def __str__(self):
         return '<labyrinth: {}>'.format(self.filename)
@@ -84,7 +101,7 @@ class Labyrinth:
                 self.msgs_log[username] = [self.player_to_send(username)]
         # если save_mode == True, сохраняем всё в файл tmp\test.log
         if self.save_mode == True:
-            self.save(self.filename)
+            self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
         return self.to_send
@@ -114,16 +131,20 @@ class Labyrinth:
     def get_all_objects(self):
         return self.locations | self.items | self.NPCs | set(self.players_list)
 
-    def get_objects(self, types=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
-        return list(filter(lambda obj: obj.type in types and and_key(obj) or or_key(obj), self.get_all_objects()))
+    def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):
+        return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def player_to_send(self, username):
         return self.to_send[username]
 
-    def save(self, filename):
-        # TODO: issue #30
-        with open('tmp\\' + filename + '.save.json', 'w', encoding='utf-8') as f:
-            json.dump(self.turns_log, f, indent = 4, ensure_ascii=False)
+    def save(self, savefile):
+        save = {}
+        save['seed'] = self.seed
+        save['loadseed'] = self.loadseed
+        save['users'] = list(map(lambda user: user.get_username(), self.players_list))
+        save['turns'] = self.turns_log
+        with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
+            json.dump(save, f, indent = 4, ensure_ascii=False)
 
     def get_msgs(self, username):
         '''
