@@ -128,8 +128,6 @@ class Wall(Location):
             d[block['dir']] = locations[block['to']]
             self.behind_the_wall[locations[block['from']]] = d
 
-        print('move and bump: ', self.behind_the_wall)
-
     def break_wall(self):
         for loc in self.behind_the_wall:
             for direction in self.behind_the_wall[loc]:

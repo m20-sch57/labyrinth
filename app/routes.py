@@ -9,7 +9,7 @@ import string
 from functools import wraps
 import json
 
-from labyrinth_test import generate_labyrinth
+from LabyrinthEngine import load_lrmapf
 
 '''
 help functions
@@ -192,7 +192,7 @@ def waiting_room(room_id):
                  broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'start_game':
-            labyrinth = generate_labyrinth(dbase.get_room_players(room_id), room_id)
+            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id))
             labyrinths_list.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, room=room_id, namespace='/wrws')

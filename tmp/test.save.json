@@ -1,0 +1,29 @@
+{
+    "turns": [
+        {
+            "username": "player #1",
+            "turn": "Подорвать сверху"
+        },
+        {
+            "username": "player #1",
+            "turn": "Подорвать справа"
+        },
+        {
+            "username": "player #1",
+            "turn": "Идти вправо"
+        },
+        {
+            "username": "player #1",
+            "turn": "Идти вверх"
+        },
+        {
+            "username": "player #1",
+            "turn": "Поднять клад"
+        }
+    ],
+    "users": [
+        "player #1"
+    ],
+    "loadseed": 373768091924925007,
+    "seed": 3079544143856127883
+}

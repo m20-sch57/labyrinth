@@ -1,11 +1,9 @@
 import sys
+from LabyrinthEngine import Labyrinth, Player, load_lrmap, load_lrsave
 
 sys.path.append('LabyrinthObjects')
-
-from LabyrinthEngine import Labyrinth, Player
 from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
     FirstAidPost, Bear, Treasure, Exit
-from LabyrinthEngine import load_lrmap, load_lrsave
 
 #
 # ┌───┬───────────┐
@@ -22,17 +20,9 @@ from LabyrinthEngine import load_lrmap, load_lrsave
 # EXIT: 9
 #
 
-
-def generate_labyrinth(users, savefile, loadfile='test'):
-    return load_lrmap(loadfile, savefile, users)
-
-def loadsave_labyrinth(savefile, loadfile='test'):
-    return load_lrsave(loadfile, savefile)
-
-
 debug = True
 if __name__ == '__main__':
-    TestLR = generate_labyrinth(['player #1'], 'test')   
+    TestLR = load_lrmap('example', 'example', ['player #1'])   
     print('All lrobjects: ', TestLR.get_objects())
     while True:
         print('\n')
