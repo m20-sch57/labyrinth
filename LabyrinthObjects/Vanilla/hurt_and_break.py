@@ -1,7 +1,7 @@
-﻿from Vanilla.consts import *
+﻿from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import get_attr_safe
 from LabyrinthEngine import Location, Item, Player, NPC
-from Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
+from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
 INITIAL_STATES['hurt'] = False

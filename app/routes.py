@@ -9,7 +9,7 @@ import string
 from functools import wraps
 import json
 
-from LabyrinthEngine import load_lrmapf
+from LabyrinthEngine import load_lrmap
 
 '''
 help functions

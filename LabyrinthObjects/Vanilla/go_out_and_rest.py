@@ -1,5 +1,5 @@
 from random import choice
-from Vanilla.consts import *
+from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Location
 
 
