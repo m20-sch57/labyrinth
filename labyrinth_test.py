@@ -33,7 +33,7 @@ def loadsave_labyrinth(savefile, loadfile='test'):
 debug = True
 if __name__ == '__main__':
     TestLR = generate_labyrinth(['player #1'], 'test')   
-    print(TestLR.get_objects())
+    print('All lrobjects: ', TestLR.get_objects())
     while True:
         print('\n')
         print('┌──────────────────────────────────────────────────────────┐')
