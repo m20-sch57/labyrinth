@@ -37,7 +37,7 @@ class Hole(Location):
             else:
                 self.indulgence[obj] = None
 
-            if obj.type == 'player':
+            if obj.lrtype == 'player':
                 self.labyrinth.send_msg(self.FALL_MSG, obj)
 
     def go_into_hole(self):

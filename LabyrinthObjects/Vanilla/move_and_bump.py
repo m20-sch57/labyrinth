@@ -100,23 +100,35 @@ class GlobalWall(Location):
 
 class Wall(Location):
     def __init__(self, *args):
+        pass
         # Every argument must be like: (from_loc_i, dir_i, to_loc_i).
 
-        self.behind_the_wall = {}
-        for i in range(len(args)):
-            tup = args[i]
-            if type(tup) is not tuple or len(tup) != 3:
-                raise TypeError('Every argument of Wall must be tuple with 3 items.')
-            if type(tup[1]) is not str:
-                raise TypeError('Every direction in arguments of Wall must be string.')
-            d = self.behind_the_wall.get(tup[0], {})
-            if tup[1] in d:
-                raise ValueError('There are two walls in same direction of some room.')
-            d[tup[1]] = tup[2]
-            self.behind_the_wall[tup[0]] = d
+        # self.behind_the_wall = {}
+        # for i in range(len(args)):
+        #     tup = args[i]
+        #     if type(tup) is not tuple or len(tup) != 3:
+        #         raise TypeError('Every argument of Wall must be tuple with 3 items.')
+        #     if type(tup[1]) is not str:
+        #         raise TypeError('Every direction in arguments of Wall must be string.')
+        #     d = self.behind_the_wall.get(tup[0], {})
+        #     if tup[1] in d:
+        #         raise ValueError('There are two walls in same direction of some room.')
+        #     d[tup[1]] = tup[2]
+        #     self.behind_the_wall[tup[0]] = d
+
         # behind_the_wall is dict of dicts. For location on i-th place will be dict like
         # {'direction1': location_in_direction1_behind_wall, ...}.
         # So all list looks like {loc1: {'dir1': loc_in_dir1, ...}, ...}.
+
+    def set_settings(self, settings, locations, *args):
+        self.behind_the_wall = {}
+
+        for block in settings['block']:
+            d = self.behind_the_wall.get(block['from'], {})
+            d[block['dir']] = locations[block['to']]
+            self.behind_the_wall[locations[block['from']]] = d
+
+        print('move and bump: ', self.behind_the_wall)
 
     def break_wall(self):
         for loc in self.behind_the_wall:

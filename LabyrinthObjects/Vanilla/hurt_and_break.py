@@ -4,9 +4,9 @@ from LabyrinthEngine import Location, Item, Player, NPC
 from Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
-# INITIAL_STATES['hurt'] = False
-# INITIAL_STATES['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
-# INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
+INITIAL_STATES['hurt'] = False
+INITIAL_STATES['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
+INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
 
 
 def hurt_player(self):
