@@ -1,8 +1,7 @@
-from LabyirnthConsts.Basic.CONSTS import *
+from Vanilla.consts import *
 from LabyrinthEngine import Location, Item
 
 
-# Item.
 class Legs(Item):
     def __init__(self):
         self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
@@ -10,36 +9,38 @@ class Legs(Item):
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
         self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
-        self.new_dbutton([UP_TURN, DOWN_TURN, RIGHT_TURN, LEFT_TURN], 'res\\pict.png')
+    def set_settings(self, settings, locations, items, npcs, players):
+        self.WALL_MSG = settings['consts'].get('wall_msg') or WALL_MSG
 
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
             if type(next_position) in borders:
-                self.labyrinth.send_msg(WALL_MSG, active_player)
+                self.labyrinth.send_msg(self.WALL_MSG, active_player)
             else:
                 active_player.set_parent(next_position)
 
         return move
 
 
-# Location.
 class EmptyLocation(Location):
+    def set_settings(self, settings, locations, items, npcs, players):
+        self.ENTER_MSG = settings['consts'].get('enter_msg') or ENTER_MSG
+        self.set_name(settings['name'])
+
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
         active_player = self.labyrinth.get_active_player()
 
         if next_active_player.get_parent() == self:
-            self.labyrinth.send_msg(ENTER_MSG, next_active_player)
+            self.labyrinth.send_msg(self.ENTER_MSG, next_active_player)
 
 
-# Location.
 class Outside(Location):
     pass
 
 
-# Location.
 # Just prototype. But it's more useful than new Wall sometimes...
 class GlobalWall(Location):
 
@@ -97,26 +98,35 @@ class GlobalWall(Location):
         object_2.set_neighbour(reverse_direction[direction], self)
 
 
-# Location.
 class Wall(Location):
     def __init__(self, *args):
+        pass
         # Every argument must be like: (from_loc_i, dir_i, to_loc_i).
 
-        self.behind_the_wall = {}
-        for i in range(len(args)):
-            tup = args[i]
-            if type(tup) is not tuple or len(tup) != 3:
-                raise TypeError('Every argument of Wall must be tuple with 3 items.')
-            if type(tup[1]) is not str:
-                raise TypeError('Every direction in arguments of Wall must be string.')
-            d = self.behind_the_wall.get(tup[0], {})
-            if tup[1] in d:
-                raise ValueError('There are two walls in same direction of some room.')
-            d[tup[1]] = tup[2]
-            self.behind_the_wall[tup[0]] = d
+        # self.behind_the_wall = {}
+        # for i in range(len(args)):
+        #     tup = args[i]
+        #     if type(tup) is not tuple or len(tup) != 3:
+        #         raise TypeError('Every argument of Wall must be tuple with 3 items.')
+        #     if type(tup[1]) is not str:
+        #         raise TypeError('Every direction in arguments of Wall must be string.')
+        #     d = self.behind_the_wall.get(tup[0], {})
+        #     if tup[1] in d:
+        #         raise ValueError('There are two walls in same direction of some room.')
+        #     d[tup[1]] = tup[2]
+        #     self.behind_the_wall[tup[0]] = d
+
         # behind_the_wall is dict of dicts. For location on i-th place will be dict like
         # {'direction1': location_in_direction1_behind_wall, ...}.
         # So all list looks like {loc1: {'dir1': loc_in_dir1, ...}, ...}.
+
+    def set_settings(self, settings, locations, *args):
+        self.behind_the_wall = {}
+
+        for block in settings['block']:
+            d = self.behind_the_wall.get(block['from'], {})
+            d[block['dir']] = locations[block['to']]
+            self.behind_the_wall[locations[block['from']]] = d
 
     def break_wall(self):
         for loc in self.behind_the_wall:
