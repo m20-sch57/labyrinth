@@ -7,6 +7,8 @@ function xhrOpen(eventType) {
 
 	return xhr;
 };
+
+//settings
 function changeDescription(event) {
 	if (event.keyCode == 13){
 		var xhr = xhrOpen('change_description');
@@ -15,6 +17,7 @@ function changeDescription(event) {
 		xhr.send("new_description=" + newDescription);	
 	};
 };
+
 function changeName(event) {
 	if (event.keyCode == 13){
 		var xhr = xhrOpen('change_name');
@@ -23,6 +26,13 @@ function changeName(event) {
 		xhr.send("new_name=" + newName);
 	};
 };
+
+function deleteRoom() {
+	var xhr = xhrOpen('delete_room');
+
+	xhr.send();
+};
+
 function startGame() {
 	var xhr = xhrOpen('start_game');
 	
@@ -34,8 +44,10 @@ socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'change_name':
 			var title = document.getElementById('title');
+
 			title.innerHTML = (msg.name);
 			break;
+
 		case 'player_enter_or_leave':
 			var player_list = document.getElementById('player_list');
 			player_list.innerHTML = '';
@@ -43,12 +55,20 @@ socket.on('update', function(msg) {
 				player_list.innerHTML += ('<p class="player">' + msg.players.split(',')[i] + '</p><hr>')
 			};
 			break;
+
 		case 'change_description':
 			var description = document.getElementById('description');
+
 			description.innerHTML = ('Description:<br>' + msg.description.replace(/\n/g, '<br>'));
 			break;
+
+		case 'delete_room':
+			alert('Oups. Room was deleted');
+			document.location.href = document.getElementById('data').dataset.delRedirect;
+			break;
+
 		case 'start_game':
-			document.location.href = document.getElementById('data').dataset.redirect;
+			document.location.href = document.getElementById('data').dataset.startRedirect;
 			break;
 	};
 });
@@ -64,6 +84,9 @@ changeDescriptionInput.onkeydown = changeDescription;
 
 var startButton = document.getElementById('start_button');
 startButton.onclick = startGame;
+
+var deleteRoomButton = document.getElementById('delete_room_button');
+deleteRoomButton.onclick = deleteRoom;
 
 var settingButton = document.getElementById('settings_button');
 var roomInfo = document.getElementById('room_info');

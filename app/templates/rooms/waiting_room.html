@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div id='data' data-room_id="{{ room['room_id'] }}" data-post="{{ url_for('waiting_room', room_id=room['room_id']) }}" data-redirect="{{ url_for('game_room', room_id=room['room_id']) }}"></div>
+  <div id='data' data-room_id="{{ room['room_id'] }}" data-post="{{ url_for('waiting_room', room_id=room['room_id']) }}" data-start-redirect="{{ url_for('game_room', room_id=room['room_id']) }}" data-del-redirecr="{{ url_for('room_list', page=0) }}"></div>
 
   <header class="room-name" id="title">{{ room['name'] }}</header>
   <div class="room-data-wrapper">
@@ -28,7 +28,7 @@
     <div class="room-actions">
       <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
       {% if room['creator']==username %}
-        <a class="action-link" href="">УДАЛИТЬ КОМНАТУ</a><br>
+        <a class="action-link" id="delete_room_button">УДАЛИТЬ КОМНАТУ</a><br>
         <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
         <a class="action-link" id="settings_button">НАСТРОЙКИ КОМНАТЫ</a><br>
       {% endif %}

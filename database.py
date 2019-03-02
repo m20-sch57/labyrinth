@@ -96,6 +96,8 @@ class Database:
     '''
 
     def parse_room(self, room):
+        if room is None:
+            return None
         self.cursor.execute('SELECT * FROM users WHERE room_id=?', (room[0],))
         players_set = set(map(lambda user: user[0], self.cursor.fetchall()))
         room_dir = {

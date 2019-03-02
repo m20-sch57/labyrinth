@@ -1,5 +1,4 @@
 ﻿from copy import copy
-from LabyirnthConsts.Basic.CONSTS import *
 from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
 import json
 
@@ -63,15 +62,15 @@ class LabyrinthObject:
     def get_parent(self):
         return get_attr_safe(self, 'parent', None)
 
-    def get_children(self, labtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_children(self, lrtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
         all_objs = self.labyrinth.get_all_objects()
-        return set(filter(lambda obj: obj.get_parent() == self and (obj.type in labtype and and_key(obj) or or_key(obj)),
+        return set(filter(lambda obj: obj.get_parent() == self and (obj.lrtype in lrtype and and_key(obj) or or_key(obj)),
                         all_objs))
 
     def get_neighbour(self, direction):
-        if self.type != 'location':
+        if self.lrtype != 'location':
             raise TypeError(
-                'You can\'t get neighbour for object with type ' + self.type)
+                'You can\'t get neighbour for object with lrtype ' + self.type)
         elif direction not in self.directions:
             raise ValueError(
                 'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
@@ -79,9 +78,9 @@ class LabyrinthObject:
             return self.directions[direction]
 
     def set_neighbour(self, direction, neighbour):
-        if self.type != 'location':
+        if self.lrtype != 'location':
             raise TypeError(
-                'You can\'t set neighbour for object with type ' + self.type)
+                'You can\'t set neighbour for object with lrtype ' + self.type)
         elif not isinstance(neighbour, LabyrinthObject):
             raise ValueError(
                 'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
@@ -95,8 +94,8 @@ class LabyrinthObject:
         return get_attr_safe(self, 'button_set', [])
 
     @property
-    def type(self):
-        return self._type
+    def lrtype(self):
+        return self._lrtype
 
     def main(self):
         '''
@@ -104,11 +103,17 @@ class LabyrinthObject:
         '''
         pass
 
+    def set_settings(self, settings, *args):
+        self.set_name(settings['name'])
+
     def get_name(self):
         return get_attr_safe(self, 'name', '')
 
+    def set_name(self, name):
+        self.name = name
+
     def __str__(self):
-        return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
+        return '<{}: {}: {}>'.format(self.lrtype, self.__class__.__name__, self.get_name())
 
     def __repr__(self):
-        return '<{}: {}: {}>'.format(self.type, self.__class__.__name__, self.get_name())
+        return '<{}: {}: {}>'.format(self.lrtype, self.__class__.__name__, self.get_name())

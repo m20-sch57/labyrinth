@@ -1,5 +1,5 @@
-from LabyirnthConsts.DevelopersBacklog.CONSTS import *
-from LabyrinthEngine.LTypes import Location, Item, Player, NPC
+from LabyirnthObjects.DevelopersBacklog.consts import *
+from LabyrinthEngine import Location, Item, Player, NPC
 
 
 # TODO: To code DivineLightning.
