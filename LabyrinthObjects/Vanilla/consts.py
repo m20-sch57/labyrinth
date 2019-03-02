@@ -35,7 +35,7 @@ OR_WHO_MUST_FALL_IN_IT = lambda obj: False
 #Health
 MAX_PLAYER_HEALTH = 3
 MAX_NPC_HEALTH = 3
-DEATH_MSG = '«Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.»'
+DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
 
 #Ammo
 MAX_BULLETS_COUNT = 3

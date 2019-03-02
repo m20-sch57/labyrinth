@@ -146,7 +146,7 @@ class Gun(Item):
                 kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
                 kicked_characters.discard(active_player)
 
-                current_location = current_location.get_neighbour(direction)
+            current_location = current_location.get_neighbour(direction)
             while current_location not in met_locations and type(current_location) not in borders:
                 met_locations.add(current_location)
                 kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
@@ -157,7 +157,7 @@ class Gun(Item):
             for character in kicked_characters:
                 health.hurt(character)
 
-            kicked_players = set(filter(lambda obj: obj.lrtype == 'player', kicked_characters))
+            kicked_players = set(filter(lambda obj: obj.lrtype in ['player', 'dead_player'], kicked_characters))
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
                                         + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
