@@ -67,6 +67,14 @@
         {
             "module":"LabyrinthObjects.Vanilla",
             "class_name":"Treasure"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Health"
+        },
+        {
+            "module":"LabyrinthObjects.Vanilla",
+            "class_name":"Ammo"
         }
     ],
     "npcs":
@@ -191,7 +199,7 @@
                 "position":3,
                 "name":"3",
                 "consts":{}
-            }
+            }, {"name": "4", "consts":{}}, {"name": "5", "consts":{}}
         ],
         "npcs": [
             {

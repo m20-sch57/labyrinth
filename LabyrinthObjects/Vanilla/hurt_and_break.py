@@ -4,47 +4,115 @@ from LabyrinthEngine import Location, Item, Player, NPC
 from LabyrinthObjects.Vanilla.move_and_bump import GlobalWall, Wall, Outside, borders
 
 
-INITIAL_STATES['hurt'] = False
-INITIAL_STATES['count_of_bullets'] = INITIAL_COUNT_OF_BULLETS
-INITIAL_STATES['count_of_bombs'] = INITIAL_COUNT_OF_BOMBS
+class Ammo(Item):
+    # def __init__(self):
+    #     def resetallself():
+    #         self.reset_all(self.labyrinth.get_active_player())
+    #     self.new_at(resetallself, lambda: True, 'Восстановить патроны')
+
+    def set_settings(self, settings, locations, items, npcs, players):
+        self.MAX_BULLETS_COUNT = settings.get('max_bullets_count') or MAX_BULLETS_COUNT
+        self.MAX_BOMBS_COUNT = settings.get('max_bombs_count') or MAX_BOMBS_COUNT
+
+        self.INIT_BULLETS_COUNT = settings.get('init_bullets_count') or self.MAX_BULLETS_COUNT
+        self.INIT_BOMBS_COUNT = settings.get('init_bombs_coount') or self.MAX_BOMBS_COUNT
+
+        self.bullets = {player: self.INIT_BULLETS_COUNT for player in players}
+        self.bombs = {player: self.INIT_BOMBS_COUNT for player in players}
+
+        self.labyrinth.set_unique_key(self, 'ammo')
+
+        self.set_name(settings['name'])
 
 
-def hurt_player(self):
-    active_player = self.labyrinth.get_active_player()
+    def spend(self, ammo_type, player):
+        if ammo_type == 'bullet':
+            self.bullets[player] -= 1
+            return self.bullets[player]
+        elif ammo_type == 'bomb':
+            self.bombs[player] -= 1
+            return self.bombs[player]
 
-    for item in self.get_children():
-        get_attr_safe(item, 'hurt_action', lambda: None)()
+    def have(self, ammo_type, player):
+        if ammo_type == 'bullet':
+            return self.bullets[player] > 0
+        elif ammo_type == 'bomb':
+            return self.bombs[player] > 0
 
-    if not self.states['hurt']:
-        self.states['hurt'] = True
-    else:
-        ind = self.labyrinth.players_list.index(self)
-        self._type = 'dead_player'
-        self.labyrinth.dead_players.add(self)
-        del self.labyrinth.players_list[ind]
-        del self.parent
-        self.labyrinth.send_msg(DEATH_MSG, self)
-        if self != active_player:
-            self.labyrinth.active_player_number = self.labyrinth.locations.index(active_player)
-        else:
-            self.labyrinth.active_player_number %= len(self.labyrinth.players_list)
+    def reset(self, ammo_type, player):
+        if ammo_type == 'bullet':
+            self.bullets[player] = self.MAX_BULLETS_COUNT
+        elif ammo_type == 'bomb':
+            self.bombs[player] = self.MAX_BOMBS_COUNT
 
-
-def hurt_NPC(self):
-    if not self.states['hurt']:
-        self.states['hurt'] = True
-    else:
-        self.labyrinth.NPCs.discard(self)
-        del self
+    def reset_all(self, player):
+        self.bullets[player] = self.MAX_BULLETS_COUNT
+        self.bombs[player] = self.MAX_BOMBS_COUNT
 
 
-def heal(self):
-    self.states['hurt'] = False
+class Health(Item):
+    # def __init__(self):
+    #     def hurtself():
+    #         self.hurt(self.labyrinth.get_active_player())
+    #     self.new_at(hurtself, lambda: True, 'Ранить себя')
+    #     def healself():
+    #         self.heal(self.labyrinth.get_active_player())
+    #     self.new_at(healself, lambda: True, 'Вылечиться')
+
+    def set_settings(self, settings, locations, items, npcs, players):
+        self.MAX_PLAYER_HEALTH = settings.get('max_player_health') or MAX_PLAYER_HEALTH
+        self.MAX_NPC_HEALTH = settings.get('max_npc_health') or MAX_NPC_HEALTH
+
+        self.hp = {player: self.MAX_NPC_HEALTH for player in players}
+        self.npc_hp = {npc: self.MAX_NPC_HEALTH for npc in npcs}
+
+        self.labyrinth.set_unique_key(self, 'health')
+
+        self.set_name(settings['name'])
+
+        self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
 
 
-Player.hurt = hurt_player
-NPC.hurt = hurt_NPC
-NPC.heal = Player.heal = heal
+    def hurt(self, body):
+        if body.lrtype == 'npc':
+            self.npc_hp[body] -= 1
+            self.labyrinth.NPCs.discard(body)
+
+        elif body.lrtype == 'player':
+            self.hp[body] -= 1
+
+            if self.hp[body] == 0:
+                index = self.labyrinth.players_list.index(body)
+                del self.labyrinth.players_list[index]
+
+                self.labyrinth.send_msg(self.DEATH_MSG, body)
+
+    def heal(self, body):
+        if body.lrtype == 'npc':
+            self.npc_hp[body] = self.MAX_NPC_HEALTH
+        elif body.lrtype == 'player':
+            self.hp[body] = self.MAX_PLAYER_HEALTH
+
+
+    # def hurt_player(self):
+    #     active_player = self.labyrinth.get_active_player()
+
+    #     for item in self.get_children():
+    #         get_attr_safe(item, 'hurt_action', lambda: None)()
+
+    #     if not self.states['hurt']:
+    #         self.states['hurt'] = True
+    #     else:
+    #         ind = self.labyrinth.players_list.index(self)
+    #         self._type = 'dead_player'
+    #         self.labyrinth.dead_players.add(self)
+    #         del self.labyrinth.players_list[ind]
+    #         del self.parent
+    #         self.labyrinth.send_msg(DEATH_MSG, self)
+    #         if self != active_player:
+    #             self.labyrinth.active_player_number = self.labyrinth.locations.index(active_player)
+    #         else:
+    #             self.labyrinth.active_player_number %= len(self.labyrinth.players_list)
 
 
 class Gun(Item):
@@ -64,11 +132,15 @@ class Gun(Item):
     def turn_fire(self, direction):
         def fire():
             active_player = self.labyrinth.get_active_player()
-            active_player.states['count_of_bullets'] -= 1
+
+            ammo = self.labyrinth.get_object('ammo')
+            ammo.spend('bullet', active_player)
 
             kicked_characters = set()
             met_locations = set()
             current_location = active_player.get_parent()
+
+            health = self.labyrinth.get_object('health')
 
             if self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
                 kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
@@ -83,9 +155,9 @@ class Gun(Item):
             if not self.CAN_PLAYER_HURT_HIMSELF:
                 kicked_characters.discard(active_player)
             for character in kicked_characters:
-                character.hurt()
+                health.hurt(character)
 
-            kicked_players = set(filter(lambda obj: obj.type == 'player', kicked_characters))
+            kicked_players = set(filter(lambda obj: obj.lrtype == 'player', kicked_characters))
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
                                         + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
@@ -96,10 +168,10 @@ class Gun(Item):
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()
-        return bool(active_player.states['count_of_bullets'])
+        ammo = self.labyrinth.get_object('ammo')
+        return ammo.have('bullet', active_player)
 
 
-# Item.
 class Bomb(Item):
     def __init__(self):
         self.new_at(self.turn_blow_up('up'), self.condition, BLOW_UP_UP)
@@ -119,10 +191,15 @@ class Bomb(Item):
     def turn_blow_up(self, direction):
         def blow_up():
             active_player = self.labyrinth.get_active_player()
-            active_player.states['count_of_bombs'] -= 1
+
+            ammo = self.labyrinth.get_object('ammo')
+            ammo.spend('bomb', active_player)
 
             current_location = active_player.get_parent()
             location_in_direction = current_location.get_neighbour(direction)
+            
+            health = self.labyrinth.get_object('health')
+
             if type(location_in_direction) is GlobalWall:
                 location_in_direction.break_wall(current_location, direction)
                 self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
@@ -135,7 +212,7 @@ class Bomb(Item):
                 characters_in_direction = location_in_direction.get_children(lrtype=['player', 'npc'])
                 if self.CAN_PLAYER_HURT_EVB_IN_DIRECTION and characters_in_direction:
                     for character in characters_in_direction:
-                        character.hurt()
+                        health.hurt(character)
 
                     players_in_direction = location_in_direction.get_children(lrtype=['player'])
                     if len(players_in_direction) == 0:
@@ -146,7 +223,7 @@ class Bomb(Item):
                         msg = self.BLOW_UP_MASSIVE_INJURING_MSG
                     self.labyrinth.send_msg(msg
                                             + ', '.join(list(map(lambda pl: pl.get_username(),
-                                                                 filter(lambda obj: obj.type == 'player', players_in_direction))))
+                                                                 filter(lambda obj: obj.lrtype == 'player', players_in_direction))))
                                             + '.', active_player)
                 else:
                     self.labyrinth.send_msg(self.BLOW_UP_FAILURE_MSG, active_player)
@@ -154,10 +231,10 @@ class Bomb(Item):
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()
-        return bool(active_player.states['count_of_bombs'])
+        ammo = self.labyrinth.get_object('ammo')
+        return ammo.have('bomb', active_player)
 
 
-# Location.
 class Arsenal(Location):
     def set_settings(self, settings, locations, items, npcs, players):
         self.INITIAL_COUNT_OF_BULLETS = settings['consts'].get('initial_count_of_bullets') or INITIAL_COUNT_OF_BULLETS
@@ -165,13 +242,13 @@ class Arsenal(Location):
         self.set_name(settings['name'])
 
     def main(self):
+        ammo = self.labyrinth.get_object('ammo')
         for player in self.get_children(lrtype='player'):
-            player.states['count_of_bullets'] = self.INITIAL_COUNT_OF_BULLETS
-            player.states['count_of_bombs'] = self.INITIAL_COUNT_OF_BOMBS
+            ammo.reset_all(player)
 
 
-# Location.
 class FirstAidPost(Location):
     def main(self):
+        health = self.labyrinth.get_object('health')
         for player in self.get_children(lrtype='player'):
-            player.heal()
+            health.heal(player)

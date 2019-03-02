@@ -32,6 +32,7 @@ class Bear(NPC):
             self.set_parent(next_position)
 
     def main(self):
+        health = self.labyrinth.get_object('health')
         for player in self.get_parent().get_children(lrtype='player'):
-            player.hurt()
+            health.hurt(player)
             self.labyrinth.send_msg(self.BEAR_MSG_ATTACK, player)

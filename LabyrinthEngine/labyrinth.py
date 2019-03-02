@@ -12,11 +12,12 @@ class Labyrinth:
         self.seed = seed
         self.loadseed= loadseed
 
+        self.unique_objects = {}
+
         for i in range(len(locations)):
             locations[i].directions = {
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
-            player.states = {'hurt': False, 'count_of_bullets': 3, 'count_of_bombs': 3}
             player.labyrinth = self
         for player in dead_players:
             player._lrtype = 'dead_player'
@@ -61,6 +62,13 @@ class Labyrinth:
 
     def send_msg(self, msg, player):
         self.to_send[player.get_username()].append(msg)
+
+    def set_unique_key(self, obj, key):
+        if key in self.unique_objects:
+            pass
+            # тут должен быть какой-то идейный warning
+        else:
+            self.unique_objects[key] = obj
 
     def make_turn(self, turn):
         '''
@@ -129,6 +137,9 @@ class Labyrinth:
 
     def get_all_objects(self):
         return self.locations | self.items | self.NPCs | set(self.players_list)
+
+    def get_object(self, key):
+        return self.unique_objects[key]
 
     def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
