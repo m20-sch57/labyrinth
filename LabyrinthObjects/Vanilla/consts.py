@@ -1,13 +1,8 @@
-# TODO: To put all consts here
-# For everything.
 reverse_direction = {'up': 'down', 'down': 'up',
                      'left': 'right', 'right': 'left',
                      'forward': 'backward', 'backward': 'forward',
                      'under': 'above', 'above': 'under'}
 basic_directions = ['up', 'down', 'left', 'right']
-
-# LabyrinthModule
-INITIAL_STATES = {}
 
 # Legs
 UP_TURN = 'Идти вверх'
@@ -16,9 +11,9 @@ RIGHT_TURN = 'Идти вправо'
 LEFT_TURN = 'Идти влево'
 WALL_MSG = 'Упсс. Стена'
 
-# GlobalWall's consts.
+# GlobalWall
 
-# Wall's const.
+# Wall
 
 # EmptyLocation
 ENTER_MSG = 'Ты в пустой комнате'
@@ -66,21 +61,21 @@ BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается был(а) '
 BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
 
-# Arsenal's consts.
+# Arsenal
 
-# FirstAidPost's consts.
+# FirstAidPost
 
-# Bear's consts.
+# Bear
 BEAR_MSG_ATTACK = 'Вас укусил медведь'
 
-# Treasure's consts.
+# Treasure
 TAKE_TREASURE = 'Поднять клад'
 DROP_TREASURE = 'Бросить клад'
 CAN_PLAYER_DROP_TREASURE = True
 WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = False
 SHOULD_HURT_PLAYER_DROP_TREASURE = True
 
-# Exit's consts.
+# Exit
 EXIT_GREETING_MSG = 'Ты вышел из Лабиринта. В этой комнате ты можешь передохнуть.'
 EXIT_PRESENCE_MSGS = ['Как дела? Ты нашёл клад?',
                       'Как думаешь, почему медведи такие агрессивные?',
