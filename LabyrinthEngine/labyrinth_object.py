@@ -9,13 +9,6 @@ def get_attr_safe(obj, attr, default_value):
     else:
         return default_value
 
-# TODO: issue #30
-def load_lrsave(filename):
-    pass
-
-def load_lrmap(filename, users):
-    pass
-
 
 class LabyrinthObject:
     '''
