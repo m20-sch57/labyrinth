@@ -1,5 +1,4 @@
 ﻿from LabyrinthEngine.labyrinth import Labyrinth
-from copy import copy
 import json
 import importlib
 import random

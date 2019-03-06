@@ -1,4 +1,3 @@
-from copy import copy
 import random
 import json
 import sys

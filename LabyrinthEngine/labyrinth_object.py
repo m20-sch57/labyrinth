@@ -1,5 +1,4 @@
-﻿from copy import copy
-from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
+﻿from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
 import json
 
 
