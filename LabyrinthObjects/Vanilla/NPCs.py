@@ -6,8 +6,6 @@ from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
 
 class Bear(NPC):
     def __init__(self):
-        self.states = INITIAL_STATES
-
         self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
         self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
