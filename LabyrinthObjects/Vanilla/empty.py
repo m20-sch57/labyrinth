@@ -3,7 +3,7 @@ from LabyrinthEngine import Location
 
 
 class EmptyLocation(Location):
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.ENTER_MSG = settings['consts'].get('enter_msg') or ENTER_MSG
         self.set_name(settings['name'])
 

@@ -10,7 +10,7 @@ class Bomb(Item):
         self.new_at(self.turn_blow_up('left'), self.condition, BLOW_UP_LEFT)
         self.new_at(self.turn_blow_up('right'), self.condition, BLOW_UP_RIGHT)
 
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.BLOW_UP_SUCCESS_MSG = settings['consts'].get('blow_up_success_msg') or BLOW_UP_SUCCESS_MSG
         self.BLOW_UP_FAILURE_MSG = settings['consts'].get('blow_up_failure_msg') or BLOW_UP_FAILURE_MSG
         self.BLOW_UP_PROHIBITION_MSG = settings['consts'].get('blow_up_prohibition_msg') or BLOW_UP_PROHIBITION_MSG
@@ -40,7 +40,7 @@ class Bomb(Item):
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(self.BLOW_UP_PROHIBITION_MSG, active_player)
             else:
-                characters_in_direction = location_in_direction.get_children(lrtype=['player', 'npc'])
+                characters_in_direction = location_in_direction.get_children(lrtype=['player', 'creature'])
                 if self.CAN_PLAYER_HURT_EVB_IN_DIRECTION and characters_in_direction:
                     for character in characters_in_direction:
                         health.hurt(character)

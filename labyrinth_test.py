@@ -22,7 +22,7 @@ from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1', 'player #2'])   
+    TestLR = load_lrmap('example', 'example', ['player #1'])   
     print('All lrobjects: ', TestLR.get_objects())
     while True:
         print('\n')
@@ -30,6 +30,7 @@ if __name__ == '__main__':
         print('┌──────────────────────────────────────────────────────────┐')
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
+            print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
             print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key = lambda x: isinstance(x, Bear))[0].get_parent())))
             print('│Treasure position  :  {:<36}│'.format(str(TestLR.get_objects(and_key = lambda x: isinstance(x, Treasure))[0].get_parent())))
             print('├──────────────────────────────────────────────────────────┤')

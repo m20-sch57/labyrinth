@@ -10,7 +10,7 @@ class Gun(Item):
         self.new_at(self.turn_fire('left'), self.condition, FIRE_LEFT)
         self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
 
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurn_evb_in_same_loc') or CAN_PLAYER_HURT_EVB_IN_SAME_LOC
         self.CAN_PLAYER_HURT_HIMSELF = settings['consts'].get('can_player_hurt_himself') or CAN_PLAYER_HURT_HIMSELF
         self.FIRE_SUCCESS_MSG = settings['consts'].get('fire_success_msg') or FIRE_SUCCESS_MSG
@@ -31,13 +31,13 @@ class Gun(Item):
             health = self.labyrinth.get_unique('health')
 
             if self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
-                kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
+                kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
                 kicked_characters.discard(active_player)
 
             current_location = current_location.get_neighbour(direction)
             while current_location not in met_locations and type(current_location) not in borders:
                 met_locations.add(current_location)
-                kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
+                kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
                 current_location = current_location.get_neighbour(direction)
 
             if not self.CAN_PLAYER_HURT_HIMSELF:

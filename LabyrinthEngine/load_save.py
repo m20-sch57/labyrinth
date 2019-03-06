@@ -53,10 +53,11 @@ def load_lrmap(loadfile, savefile, users):
 	lrtypes = {
 		'locations': [],
 		'items': [],
-		'npcs': [],
+		'creatures': [],
 	}
-	lrlists = lrtypes['locations'], lrtypes['items'], lrtypes['npcs']
+	lrlists = lrtypes['locations'], lrtypes['items'], lrtypes['creatures']
 	for lrtype in lrtypes:
+		print(settings)
 		if len(settings[lrtype]) != len(lrmap[lrtype]):
 			raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
 of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])), loadfile + '.map.json')

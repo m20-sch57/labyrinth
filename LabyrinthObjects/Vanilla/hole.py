@@ -14,7 +14,7 @@ class Hole(Location):
     def set_fall_to(self, fall_to):
         self.fall_to = fall_to
 
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.set_fall_to(locations[settings['fall_to']])
         self.set_name(settings['name'])
 

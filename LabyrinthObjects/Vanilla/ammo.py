@@ -8,7 +8,7 @@ class Ammo(Item):
     #         self.reset_all(self.labyrinth.get_active_player())
     #     self.new_at(resetallself, lambda: True, 'Восстановить патроны')
 
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.MAX_BULLETS_COUNT = settings.get('max_bullets_count') or MAX_BULLETS_COUNT
         self.MAX_BOMBS_COUNT = settings.get('max_bombs_count') or MAX_BOMBS_COUNT
 

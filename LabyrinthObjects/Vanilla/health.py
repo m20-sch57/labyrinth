@@ -11,12 +11,12 @@ class Health(Item):
     #         self.heal(self.labyrinth.get_active_player())
     #     self.new_at(healself, lambda: True, 'Вылечиться')
 
-    def set_settings(self, settings, locations, items, npcs, players):
+    def set_settings(self, settings, locations, items, creatures, players):
         self.MAX_PLAYER_HEALTH = settings.get('max_player_health') or MAX_PLAYER_HEALTH
-        self.MAX_NPC_HEALTH = settings.get('max_npc_health') or MAX_NPC_HEALTH
+        self.MAX_CREATURE_HEALTH = settings.get('max_creature_health') or MAX_CREATURE_HEALTH
 
-        self.hp = {player: self.MAX_NPC_HEALTH for player in players}
-        self.npc_hp = {npc: self.MAX_NPC_HEALTH for npc in npcs}
+        self.hp = {player: self.MAX_CREATURE_HEALTH for player in players}
+        self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
 
         self.labyrinth.set_unique_key(self, 'health')
 
@@ -26,9 +26,10 @@ class Health(Item):
 
 
     def hurt(self, body):
-        if body.lrtype == 'npc':
-            self.npc_hp[body] -= 1
-            self.labyrinth.NPCs.discard(body)
+        if body.lrtype == 'creature':
+            self.creature_hp[body] -= 1
+            if self.creature_hp[body] == 0:
+                self.labyrinth.creatures.discard(body)
 
         elif body.lrtype == 'player':
             self.hp[body] -= 1
@@ -40,7 +41,7 @@ class Health(Item):
                 self.labyrinth.send_msg(self.DEATH_MSG, body)
 
     def heal(self, body):
-        if body.lrtype == 'npc':
-            self.npc_hp[body] = self.MAX_NPC_HEALTH
+        if body.lrtype == 'creature':
+            self.creature_hp[body] = self.MAX_CREATURE_HEALTH
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
