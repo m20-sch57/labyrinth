@@ -138,7 +138,7 @@ class Labyrinth:
     def get_all_objects(self):
         return self.locations | self.items | self.NPCs | set(self.players_list)
 
-    def get_object(self, key):
+    def get_unique(self, key):
         return self.unique_objects[key]
 
     def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):

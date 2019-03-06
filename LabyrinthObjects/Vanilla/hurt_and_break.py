@@ -133,14 +133,14 @@ class Gun(Item):
         def fire():
             active_player = self.labyrinth.get_active_player()
 
-            ammo = self.labyrinth.get_object('ammo')
+            ammo = self.labyrinth.get_unique('ammo')
             ammo.spend('bullet', active_player)
 
             kicked_characters = set()
             met_locations = set()
             current_location = active_player.get_parent()
 
-            health = self.labyrinth.get_object('health')
+            health = self.labyrinth.get_unique('health')
 
             if self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
                 kicked_characters |= current_location.get_children(lrtype=['player', 'NPC'])
@@ -168,7 +168,7 @@ class Gun(Item):
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()
-        ammo = self.labyrinth.get_object('ammo')
+        ammo = self.labyrinth.get_unique('ammo')
         return ammo.have('bullet', active_player)
 
 
@@ -192,13 +192,13 @@ class Bomb(Item):
         def blow_up():
             active_player = self.labyrinth.get_active_player()
 
-            ammo = self.labyrinth.get_object('ammo')
+            ammo = self.labyrinth.get_unique('ammo')
             ammo.spend('bomb', active_player)
 
             current_location = active_player.get_parent()
             location_in_direction = current_location.get_neighbour(direction)
             
-            health = self.labyrinth.get_object('health')
+            health = self.labyrinth.get_unique('health')
 
             if type(location_in_direction) is GlobalWall:
                 location_in_direction.break_wall(current_location, direction)
@@ -231,7 +231,7 @@ class Bomb(Item):
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()
-        ammo = self.labyrinth.get_object('ammo')
+        ammo = self.labyrinth.get_unique('ammo')
         return ammo.have('bomb', active_player)
 
 
@@ -242,13 +242,13 @@ class Arsenal(Location):
         self.set_name(settings['name'])
 
     def main(self):
-        ammo = self.labyrinth.get_object('ammo')
+        ammo = self.labyrinth.get_unique('ammo')
         for player in self.get_children(lrtype='player'):
             ammo.reset_all(player)
 
 
 class FirstAidPost(Location):
     def main(self):
-        health = self.labyrinth.get_object('health')
+        health = self.labyrinth.get_unique('health')
         for player in self.get_children(lrtype='player'):
             health.heal(player)
