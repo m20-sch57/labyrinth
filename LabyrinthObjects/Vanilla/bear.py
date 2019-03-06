@@ -1,7 +1,6 @@
 ﻿from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import NPC
-from LabyrinthObjects.Vanilla.move_and_bump import borders
-from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
+from LabyrinthObjects.Vanilla.exit import Exit
 
 
 class Bear(NPC):

@@ -3,7 +3,6 @@ from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Location
 
 
-# Location.
 class Exit(Location):
     def __init__(self):
         self.must_be_here = set()
