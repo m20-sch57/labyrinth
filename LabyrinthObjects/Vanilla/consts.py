@@ -1,32 +1,24 @@
-# TODO: To put all consts here
-# For everything.
 reverse_direction = {'up': 'down', 'down': 'up',
                      'left': 'right', 'right': 'left',
                      'forward': 'backward', 'backward': 'forward',
                      'under': 'above', 'above': 'under'}
 basic_directions = ['up', 'down', 'left', 'right']
 
-# LabyrinthModule's consts.
-INITIAL_STATES = {}
-
-# Player's consts.
-DEATH_MSG = '«Умирать — скучное и безотрадное дело. Мой вам совет — никогда этим не занимайтесь.»'
-
-# Legs' consts.
+# Legs
 UP_TURN = 'Идти вверх'
 DOWN_TURN = 'Идти вниз'
 RIGHT_TURN = 'Идти вправо'
 LEFT_TURN = 'Идти влево'
 WALL_MSG = 'Упсс. Стена'
 
-# GlobalWall's consts.
+# GlobalWall
 
-# Wall's const.
+# Wall
 
-# EmptyLocation's consts.
+# EmptyLocation
 ENTER_MSG = 'Ты в пустой комнате'
 
-# Hole's consts.
+# Hole
 FALL_MSG = 'И в ямку бух!'
 ENTER_HOLE_MSG = 'Ты в комнате с дырой'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
@@ -35,7 +27,16 @@ TYPES_WHO_MUST_FALL_IN_IT = ['player', 'NPC']
 AND_WHO_MUST_FALL_IN_IT = lambda obj: True
 OR_WHO_MUST_FALL_IN_IT = lambda obj: False
 
-# Gun's consts.
+#Health
+MAX_PLAYER_HEALTH = 3
+MAX_NPC_HEALTH = 3
+DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
+
+#Ammo
+MAX_BULLETS_COUNT = 3
+MAX_BOMBS_COUNT = 3
+
+# Gun
 INITIAL_COUNT_OF_BULLETS = 3
 CAN_PLAYER_HURT_HIMSELF = False
 CAN_PLAYER_HURT_EVB_IN_SAME_LOC = True
@@ -46,7 +47,7 @@ FIRE_RIGHT = 'Стрелять вправо'
 FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
 FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
 
-# Bomb's consts.
+# Bomb
 INITIAL_COUNT_OF_BOMBS = 3
 BLOW_UP_UP = 'Подорвать сверху'
 BLOW_UP_DOWN = 'Подорвать снизу'
@@ -60,21 +61,21 @@ BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается был(а) '
 BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
 
-# Arsenal's consts.
+# Arsenal
 
-# FirstAidPost's consts.
+# FirstAidPost
 
-# Bear's consts.
+# Bear
 BEAR_MSG_ATTACK = 'Вас укусил медведь'
 
-# Treasure's consts.
+# Treasure
 TAKE_TREASURE = 'Поднять клад'
 DROP_TREASURE = 'Бросить клад'
 CAN_PLAYER_DROP_TREASURE = True
 WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = False
 SHOULD_HURT_PLAYER_DROP_TREASURE = True
 
-# Exit's consts.
+# Exit
 EXIT_GREETING_MSG = 'Ты вышел из Лабиринта. В этой комнате ты можешь передохнуть.'
 EXIT_PRESENCE_MSGS = ['Как дела? Ты нашёл клад?',
                       'Как думаешь, почему медведи такие агрессивные?',
