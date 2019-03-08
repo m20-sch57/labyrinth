@@ -22,7 +22,8 @@ from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1', 'player #2'])   
+    # TestLR = load_lrmap('example', 'example', ['player #1'])  
+    TestLR = load_lrsave('example', 'example') 
     print('All lrobjects: ', TestLR.get_objects())
     while True:
         print('\n')
