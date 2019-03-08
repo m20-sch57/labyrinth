@@ -29,17 +29,17 @@ def load_lrsave(loadfile, savefile):
 	with open('tmp\\' + savefile + '.save.json', 'r', encoding='utf-8') as f:
 		lrsave = json.load(f)
 
-	random.seed(lrsave['loadseed'])
 	users = lrsave['users']
-	labyrinth = load_lrmap(loadfile, savefile, users, seed=lrsave['seed'])
+	labyrinth = load_lrmap(loadfile, savefile, users, lrseed=lrsave['seed'], loadseed=lrsave['loadseed'])
 
 	for turn in lrsave['turns']:
 		labyrinth.make_turn(turn['turn'])
 
 	return labyrinth
 
-def load_lrmap(loadfile, savefile, users):
-	seed = random.randrange(sys.maxsize)
+def load_lrmap(loadfile, savefile, users, lrseed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
+	random.seed(loadseed)
+
 	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
 		lrmap = json.load(f)
 
@@ -94,4 +94,4 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 		player.set_parent(lrtypes['locations'][next(position)])
 
 
-	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, loadseed=seed)
+	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, loadseed=loadseed, seed=lrseed)

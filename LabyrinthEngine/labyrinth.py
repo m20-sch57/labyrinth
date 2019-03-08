@@ -9,7 +9,7 @@ class Labyrinth:
 
         random.seed(seed)
         self.seed = seed
-        self.loadseed= loadseed
+        self.loadseed = loadseed
 
         self.unique_objects = {}
 

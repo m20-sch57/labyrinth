@@ -211,7 +211,7 @@
     },
     "start_positions":
     {
-        "distribution": "order",
+        "distribution": "random",
         "from": [1, 3, 5]
     }
 }
