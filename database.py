@@ -29,6 +29,7 @@ class Database:
             login VARCHAR(32) PRIMARY KEY, 
             password_hash VARCHAR(40),
             room_id CHAR(8),
+            avatar TEXT,
             FOREIGN KEY (room_id) REFERENCES rooms (room_id)
             )''')
 
@@ -63,7 +64,7 @@ class Database:
         if self.user_login_in_table(login):
             return False
         else:
-            self.cursor.execute("INSERT INTO users (login, password_hash, room_id) VALUES (?, ?, NULL)", (login, password_hash))
+            self.cursor.execute("INSERT INTO users (login, password_hash, room_id, avatar) VALUES (?, ?, NULL, 'default.jpg')", (login, password_hash))
             self.conn.commit()
             return True
 
@@ -90,6 +91,12 @@ class Database:
         # return True if login in table and False in other cases
         self.cursor.execute('SELECT * FROM users WHERE login=?', (user_login,))
         return not self.cursor.fetchone() is None
+
+    def change_avatar(self, user_login, ava):
+        self.cursor.execute('UPDATE users SET avatar=? WHERE login=?', (ava, user_login))
+
+    def get_avatar(self, user_login):
+        return self.get_user(user_login)[3]
 
     '''
     rooms functions

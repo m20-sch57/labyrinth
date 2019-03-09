@@ -8,6 +8,7 @@ import random
 import string
 from functools import wraps
 import json
+import os
 
 from LabyrinthEngine import load_lrmap
 
@@ -98,6 +99,25 @@ def change_password():
     return render_template('login_register/change_password.html')
 
 
+def gen_ava_name(path):
+    name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
+    while name in list(map(lambda x: ''.join(x.split('.')[::-1]), os.listdir(path))):
+        name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
+    return name
+
+@app.route('/change_avatar', methods=['POST', 'GET'])
+def change_avatar():
+    if request.method == 'POST':
+        username = session['username']
+        path = 'app/static/images/avatars'
+        ava = request.files.get('avatar')
+        extension = ava.filename.split('.')[-1]
+        name = gen_ava_name(path)
+        ava.save(path+'/'+name+'.'+extension)
+        dbase.change_avatar(username, name+'.'+extension)
+        return redirect(url_for('profile'))
+    return render_template('login_register/change_avatar.html')
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
@@ -135,8 +155,8 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    #username = session.get('username')
-    return simple_render_template('profile.html')
+    username = session.get('username')
+    return simple_render_template('profile.html', ava='/static/images/avatars/'+dbase.get_avatar(username))
 
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
