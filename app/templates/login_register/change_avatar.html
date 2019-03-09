@@ -1,31 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2> Изменить аватарку </h2>
-  <img id="avatar-preview" width='128' height='128'>
-  <form action="{{ url_for('change_avatar') }}" method="post" enctype="multipart/form-data">
-    <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
-    <button type="submit"> "Подтрвердить" </button>
-  </form>
-  <script type="text/javascript">
-    function handleFileSelect(e) {
-      var file = e.target.files[0];
+    <h2> Изменить аватарку </h2>
+    <img id="avatar-preview" width='128' height='128'>
+    <!-- <form action="{{ url_for('change_avatar') }}" method="post" enctype="multipart/form-data"> -->
+    <div>
+        <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
+        <button type="submit" id="accept-image"> "Подтрвердить" </button>
+    </div>
+    <!-- </form> -->
+    <canvas id='canvas'></canvas>
+    <script type="text/javascript">
+        var img = document.getElementById('avatar-preview');
 
-      if (!file.type.match('image.*')) {
-        alert('Автатарка - это картинка. Загрузите картинку.');
-      }
+        function handleFileSelect(e) {
+            var file = e.target.files[0];
 
-      var reader = new FileReader();
+            if (!file.type.match('image.*')) {
+                alert('Автатарка - это картинка. Загрузите картинку.');
+            }
 
-      reader.onload = (function(theFile) {
-        return function(e) {
-          var img = document.getElementById('avatar-preview');
-          img.setAttribute('src', e.target.result);
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                img.setAttribute('src', e.target.result)
+            }
+            reader.readAsDataURL(file); 
+
         }
-      })(file);
-      reader.readAsDataURL(file);
-    }
 
-    document.getElementById('load-avatar').addEventListener('change', handleFileSelect)
-  </script>
+        function sendAvatar(e) {
+            var canvas = document.getElementById('canvas')
+            var MAX_WIDTH = 128;
+            var MAX_HEIGHT = 128;
+            var width = img.width;
+            var height = img.height;
+             
+            if (width > height) {
+              if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+              }
+            } else {
+              if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+              }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            var imageFile = canvas.toDataURL("iamge/png");
+            console.log(imageFile);
+
+            var fd = new FormData();
+            fd.append('avatar', imageFile);
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "{{ url_for('change_avatar') }}");
+            xhr.send(fd);
+        }
+
+
+        document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
+        document.getElementById('accept-image').onclick = sendAvatar;
+
+
+    </script>
 {% endblock %}

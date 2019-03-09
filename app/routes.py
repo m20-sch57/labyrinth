@@ -9,6 +9,7 @@ import string
 from functools import wraps
 import json
 import os
+import base64
 
 from LabyrinthEngine import load_lrmap
 
@@ -105,16 +106,20 @@ def gen_ava_name(path):
         name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
     return name
 
+
 @app.route('/change_avatar', methods=['POST', 'GET'])
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
+        image_b64 = request.form['avatar'][len('data:image/png;base64,'):]
+        image = base64.decodestring(image_b64.encode('utf-8'))
+
         path = 'app/static/images/avatars'
-        ava = request.files.get('avatar')
-        extension = ava.filename.split('.')[-1]
-        name = gen_ava_name(path)
-        ava.save(path+'/'+name+'.'+extension)
-        dbase.change_avatar(username, name+'.'+extension)
+        filename = gen_ava_name(path)
+
+        with open(path+'/'+filename+'.png', 'wb') as f:
+            f.write(image)
+
         return redirect(url_for('profile'))
     return render_template('login_register/change_avatar.html')
 
