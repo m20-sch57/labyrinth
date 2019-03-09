@@ -64,7 +64,7 @@ class Database:
         if self.user_login_in_table(login):
             return False
         else:
-            self.cursor.execute("INSERT INTO users (login, password_hash, room_id, avatar) VALUES (?, ?, NULL, 'default.jpg')", (login, password_hash))
+            self.cursor.execute("INSERT INTO users (login, password_hash, room_id, avatar) VALUES (?, ?, NULL, 'default.png')", (login, password_hash))
             self.conn.commit()
             return True
 

@@ -120,7 +120,7 @@ def change_avatar():
         with open(path+'/'+filename+'.png', 'wb') as f:
             f.write(image)
 
-        return redirect(url_for('profile'))
+        dbase.change_avatar(username, filename+'.png')
     return render_template('login_register/change_avatar.html')
 
 @app.route('/register', methods=['POST', 'GET'])
