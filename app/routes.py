@@ -9,7 +9,6 @@ import string
 from functools import wraps
 import json
 import os
-import base64
 
 from LabyrinthEngine import load_lrmap
 
@@ -111,16 +110,9 @@ def gen_ava_name(path):
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
-        image_b64 = request.form['avatar'][len('data:image/png;base64,'):]
-        image = base64.decodestring(image_b64.encode('utf-8'))
+        avatar = request.form['avatar']
 
-        path = 'app/static/images/avatars'
-        filename = gen_ava_name(path)
-
-        with open(path+'/'+filename+'.png', 'wb') as f:
-            f.write(image)
-
-        dbase.change_avatar(username, filename+'.png')
+        dbase.change_avatar(username, request.form['avatar'])
     return render_template('login_register/change_avatar.html')
 
 @app.route('/register', methods=['POST', 'GET'])

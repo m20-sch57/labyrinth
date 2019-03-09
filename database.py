@@ -2,6 +2,10 @@
 
 
 import sqlite3
+import os
+import base64
+import random
+import string
 
 
 '''
@@ -19,6 +23,12 @@ def break_list(lst, cnt):
         res.append([])
 
     return res
+
+def gen_file_name(path, size):
+    name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    while name in list(map(lambda x: ''.join(x.split('.')[::-1]), os.listdir(path))):
+        name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    return name
 
 
 class Database:
@@ -92,8 +102,18 @@ class Database:
         self.cursor.execute('SELECT * FROM users WHERE login=?', (user_login,))
         return not self.cursor.fetchone() is None
 
-    def change_avatar(self, user_login, ava):
-        self.cursor.execute('UPDATE users SET avatar=? WHERE login=?', (ava, user_login))
+    def change_avatar(self, user_login, avatar_b64):
+        path = 'app/static/images/avatars/'
+        if not self.get_avatar(user_login) == 'default.png':
+            os.remove(path+self.get_avatar(user_login))
+        avatar = base64.decodestring(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
+
+        filename = gen_file_name(path, 10)+'.png'
+
+        with open(path+filename, 'wb') as f:
+            f.write(avatar)
+
+        self.cursor.execute('UPDATE users SET avatar=? WHERE login=?', (filename, user_login))
 
     def get_avatar(self, user_login):
         return self.get_user(user_login)[3]
