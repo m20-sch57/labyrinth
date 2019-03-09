@@ -103,10 +103,18 @@ class Database:
         return not self.cursor.fetchone() is None
 
     def change_avatar(self, user_login, avatar_b64):
+        startstring = 'data:image/png;base64,'
         path = 'app/static/images/avatars/'
+
+        if not avatar_b64.startswith(startstring):
+            return {'ok': 0, 'error': 'incorrect format of avatar string'}
         if not self.get_avatar(user_login) == 'default.png':
             os.remove(path+self.get_avatar(user_login))
-        avatar = base64.decodestring(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
+
+        try:
+            avatar = base64.decodestring(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
+        except:
+            return {'ok': 0, 'error': 'incorrect format of avatar string'}
 
         filename = gen_file_name(path, 10)+'.png'
 
@@ -114,6 +122,8 @@ class Database:
             f.write(avatar)
 
         self.cursor.execute('UPDATE users SET avatar=? WHERE login=?', (filename, user_login))
+
+        return {'ok': 1}
 
     def get_avatar(self, user_login):
         return self.get_user(user_login)[3]

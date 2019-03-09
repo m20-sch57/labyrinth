@@ -112,7 +112,9 @@ def change_avatar():
         username = session['username']
         avatar = request.form['avatar']
 
-        dbase.change_avatar(username, request.form['avatar'])
+        answer = dbase.change_avatar(username, request.form['avatar'])
+        if not answer['ok']:
+            flash(answer['error'])
     return render_template('login_register/change_avatar.html')
 
 @app.route('/register', methods=['POST', 'GET'])
