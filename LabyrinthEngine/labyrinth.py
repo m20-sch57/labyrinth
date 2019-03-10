@@ -1,11 +1,10 @@
-from copy import copy
 import random
 import json
 import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
@@ -25,8 +24,8 @@ class Labyrinth:
         lrtypes = {
             'location': locations,
             'item': items,
-            'npc': NPCs}         
-        lrlist = locations, items, NPCs, players
+            'creature': creatures}         
+        lrlist = locations, items, creatures, players
 
         for lrtype in lrtypes:
             for i in range(len(lrtypes[lrtype])):
@@ -36,7 +35,7 @@ class Labyrinth:
 
         self.locations = set(locations)
         self.items = set(items)
-        self.NPCs = set(NPCs)
+        self.creatures = set(creatures)
         self.players_list = players
         self.dead_players = set(dead_players)
 
@@ -151,12 +150,12 @@ class Labyrinth:
         return active_player_ats
 
     def get_all_objects(self):
-        return self.locations | self.items | self.NPCs | set(self.players_list)
+        return self.locations | self.items | self.creatures | set(self.players_list)
 
     def get_unique(self, key):
         return self.unique_objects[key]
 
-    def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def player_to_send(self, username):
