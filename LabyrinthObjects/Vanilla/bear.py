@@ -1,10 +1,10 @@
 ﻿from LabyrinthObjects.Vanilla.consts import *
-from LabyrinthEngine import NPC
-from LabyrinthObjects.Vanilla.move_and_bump import borders
-from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
+from LabyrinthEngine import Creature
+from LabyrinthObjects.Vanilla.exit import Exit
+from LabyrinthObjects.Vanilla.walls import borders
 
 
-class Bear(NPC):
+class Bear(Creature):
     def __init__(self):
         self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
         self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)

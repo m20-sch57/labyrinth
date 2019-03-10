@@ -77,7 +77,7 @@
             "class_name":"Ammo"
         }
     ],
-    "npcs":
+    "creatures":
     [
         {
             "module":"LabyrinthObjects.Vanilla",
@@ -201,7 +201,7 @@
                 "consts":{}
             }, {"name": "4", "consts":{}}, {"name": "5", "consts":{}}
         ],
-        "npcs": [
+        "creatures": [
             {
                 "position":4,
                 "name":"0",

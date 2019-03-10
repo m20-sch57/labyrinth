@@ -23,5 +23,5 @@ class Player(LO):
 		return self.username
 
 
-class NPC(LO):
-	_lrtype = 'npc'
+class Creature(LO):
+	_lrtype = 'creature'

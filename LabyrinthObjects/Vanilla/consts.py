@@ -23,13 +23,13 @@ FALL_MSG = 'И в ямку бух!'
 ENTER_HOLE_MSG = 'Ты в комнате с дырой'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
 INTO_TURN = 'В дыру'
-TYPES_WHO_MUST_FALL_IN_IT = ['player', 'NPC']
+TYPES_WHO_MUST_FALL_IN_IT = ['player', 'creature']
 AND_WHO_MUST_FALL_IN_IT = lambda obj: True
 OR_WHO_MUST_FALL_IN_IT = lambda obj: False
 
 #Health
 MAX_PLAYER_HEALTH = 3
-MAX_NPC_HEALTH = 3
+MAX_CREATURE_HEALTH = 3
 DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
 
 #Ammo

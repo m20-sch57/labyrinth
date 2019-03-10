@@ -1,6 +1,13 @@
-from LabyrinthObjects.Vanilla.move_and_bump import Legs, EmptyLocation, Outside, Wall
-from LabyrinthObjects.Vanilla.appear_and_disappear import Hole
-from LabyrinthObjects.Vanilla.hurt_and_break import Gun, Bomb, Arsenal, FirstAidPost, Health, Ammo
-from LabyrinthObjects.Vanilla.NPCs import Bear
-from LabyrinthObjects.Vanilla.silly_items import Treasure
-from LabyrinthObjects.Vanilla.go_out_and_rest import Exit
+from LabyrinthObjects.Vanilla.ammo import Ammo
+from LabyrinthObjects.Vanilla.arsenal import Arsenal
+from LabyrinthObjects.Vanilla.bear import Bear
+from LabyrinthObjects.Vanilla.bomb import Bomb
+from LabyrinthObjects.Vanilla.empty import EmptyLocation
+from LabyrinthObjects.Vanilla.exit import Exit
+from LabyrinthObjects.Vanilla.first_aid_post import FirstAidPost
+from LabyrinthObjects.Vanilla.gun import Gun
+from LabyrinthObjects.Vanilla.health import Health
+from LabyrinthObjects.Vanilla.hole import Hole
+from LabyrinthObjects.Vanilla.legs import Legs
+from LabyrinthObjects.Vanilla.treasure import Treasure
+from LabyrinthObjects.Vanilla.walls import Wall, Outside
