@@ -1,6 +1,7 @@
 from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Location
 
+
 class Outside(Location):
     pass
 

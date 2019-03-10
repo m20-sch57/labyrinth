@@ -49,9 +49,9 @@ class Gun(Item):
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
                                         + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
-                                        + '.', active_player)
+                                        + '.', active_player, 1)
             else:
-                self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player)
+                self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player, 1)
         return fire
 
     def condition(self):

@@ -18,7 +18,7 @@ class Legs(Item):
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
             if type(next_position) in borders:
-                self.labyrinth.send_msg(self.WALL_MSG, active_player)
+                self.labyrinth.send_msg(self.WALL_MSG, active_player, 1)
             else:
                 active_player.set_parent(next_position)
 
