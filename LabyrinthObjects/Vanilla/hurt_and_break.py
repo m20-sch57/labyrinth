@@ -202,10 +202,10 @@ class Bomb(Item):
 
             if type(location_in_direction) is GlobalWall:
                 location_in_direction.break_wall(current_location, direction)
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
+                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player, 1)
             elif type(location_in_direction) is Wall:
                 location_in_direction.break_wall()
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
+                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player, 1)
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(self.BLOW_UP_PROHIBITION_MSG, active_player)
             else:

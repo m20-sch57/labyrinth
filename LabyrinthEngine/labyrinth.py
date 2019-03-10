@@ -40,7 +40,7 @@ class Labyrinth:
         self.players_list = players
         self.dead_players = set(dead_players)
 
-        self.to_send = {player.get_username(): [] for player in self.players_list}
+        self.to_send = {}
         self.active_player_number = 0
 
         '''
@@ -60,8 +60,23 @@ class Labyrinth:
     def __str__(self):
         return '<labyrinth: {}>'.format(self.filename)
 
-    def send_msg(self, msg, player):
-        self.to_send[player.get_username()].append(msg)
+    def send_msg(self, msg, player, priority=0):
+        clear_list = {player.get_username(): [] for player in self.players_list}
+        if priority not in self.to_send:
+            self.to_send[priority] = clear_list
+        self.to_send[priority][player.get_username()].append(msg)
+
+    def clear_to_send(self):
+        self.to_send = {}
+
+    def regularize_to_send(self):
+        answer = {player.get_username(): [] for player in self.players_list}
+        for key in sorted(self.to_send, reverse=True):
+            for player, msg_list in self.to_send[key].items():
+                answer[player] += msg_list
+
+        return answer
+
 
     def set_unique_key(self, obj, key):
         if key in self.unique_objects:
@@ -79,7 +94,7 @@ class Labyrinth:
         '''
 
         # обнуляем to_send
-        self.to_send = {player.get_username(): [] for player in self.players_list}
+        self.clear_to_send()
 
         # В списке возможных ходов локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов
@@ -111,7 +126,7 @@ class Labyrinth:
             self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
-        return self.to_send
+        return self.regularize_to_send()
 
     def get_next_active_player(self):
         return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
