@@ -99,13 +99,6 @@ def change_password():
     return render_template('login_register/change_password.html')
 
 
-def gen_ava_name(path):
-    name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
-    while name in list(map(lambda x: ''.join(x.split('.')[::-1]), os.listdir(path))):
-        name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
-    return name
-
-
 @app.route('/change_avatar', methods=['POST', 'GET'])
 def change_avatar():
     if request.method == 'POST':
