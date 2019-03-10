@@ -192,6 +192,13 @@ class Labyrinth:
             for btn in obj.get_buttons():
                 btn_info = btn.get(ats)
                 if btn_info is not None:
-                    print(btn)
                     buttons.append(btn_info)
         return buttons
+
+    def get_bars(self, player):
+        bars = []
+        for obj in self.get_all_objects():
+            for bar in obj.get_bars():
+                bar_info = bar.get(player)
+                bars.append(bar_info)
+        return bars

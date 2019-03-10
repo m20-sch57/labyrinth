@@ -51,13 +51,18 @@ class Ammo(Item):
 
 
 class Health(Item):
-    # def __init__(self):
+    def __init__(self):
     #     def hurtself():
     #         self.hurt(self.labyrinth.get_active_player())
     #     self.new_at(hurtself, lambda: True, 'Ранить себя')
     #     def healself():
     #         self.heal(self.labyrinth.get_active_player())
     #     self.new_at(healself, lambda: True, 'Вылечиться')
+
+        self.health_bar = self.new_status_bar('Здоровье', None)
+
+    def update_health_bar(self):
+         self.health_bar.set_all_values(self.hp)
 
     def set_settings(self, settings, locations, items, npcs, players):
         self.MAX_PLAYER_HEALTH = settings.get('max_player_health') or MAX_PLAYER_HEALTH
@@ -72,6 +77,8 @@ class Health(Item):
 
         self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
 
+        self.update_health_bar()
+
 
     def hurt(self, body):
         if body.lrtype == 'npc':
@@ -80,6 +87,7 @@ class Health(Item):
 
         elif body.lrtype == 'player':
             self.hp[body] -= 1
+            self.update_health_bar()
 
             if self.hp[body] == 0:
                 index = self.labyrinth.players_list.index(body)
@@ -92,6 +100,7 @@ class Health(Item):
             self.npc_hp[body] = self.MAX_NPC_HEALTH
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
+            self.update_health_bar()
 
 
     # def hurt_player(self):
