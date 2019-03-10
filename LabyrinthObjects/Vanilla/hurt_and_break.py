@@ -161,9 +161,9 @@ class Gun(Item):
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
                                         + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
-                                        + '.', active_player)
+                                        + '.', active_player, 1)
             else:
-                self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player)
+                self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player, 1)
         return fire
 
     def condition(self):
@@ -202,10 +202,10 @@ class Bomb(Item):
 
             if type(location_in_direction) is GlobalWall:
                 location_in_direction.break_wall(current_location, direction)
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
+                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player, 1)
             elif type(location_in_direction) is Wall:
                 location_in_direction.break_wall()
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
+                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player, 1)
             elif type(location_in_direction) is Outside:
                 self.labyrinth.send_msg(self.BLOW_UP_PROHIBITION_MSG, active_player)
             else:
