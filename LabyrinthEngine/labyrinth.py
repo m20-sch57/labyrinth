@@ -115,7 +115,8 @@ class Labyrinth:
         # обновляем лог ходов
         self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
         # обновляем лог сообщений
-        for username in self.to_send:
+        for player in self.get_objects(lrtype='player'):
+            username = player.get_username()
             if username in self.msgs_log:
                 self.msgs_log[username].append(self.player_to_send(username))
             else:
@@ -159,7 +160,7 @@ class Labyrinth:
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def player_to_send(self, username):
-        return self.to_send[username]
+        return self.regularize_to_send()[username]
 
     def save(self, savefile):
         save = {}
