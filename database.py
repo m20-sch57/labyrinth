@@ -112,7 +112,7 @@ class Database:
             os.remove(path+self.get_avatar(user_login))
 
         try:
-            avatar = base64.decodestring(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
+            avatar = base64.decodebytes(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
         except:
             return {'ok': 0, 'error': 'incorrect format of avatar string'}
 

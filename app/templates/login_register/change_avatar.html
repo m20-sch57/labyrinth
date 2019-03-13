@@ -34,19 +34,21 @@
 
             canvas.width = 128;
             canvas.height = 128;
-            var ctx = canvas.getContext("2d");
+            var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, 128, 128);
 
-            var imageFile = canvas.toDataURL("iamge/png");
+            var imageFile = canvas.toDataURL('iamge/png');
             console.log(imageFile);
 
             var fd = new FormData();
             fd.append('avatar', imageFile);
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "{{ url_for('change_avatar') }}");
+            xhr.open('POST', '{{ url_for("change_avatar") }}');
             xhr.send(fd);
 
-            document.location = "{{ url_for('profile') }}"
+            xhr.onreadystatechange = function() {
+                document.location = "{{ url_for('profile') }}";
+            }
         }
 
 
