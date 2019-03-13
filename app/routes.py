@@ -108,7 +108,6 @@ def change_avatar():
         answer = dbase.change_avatar(username, request.form['avatar'])
         if not answer['ok']:
             flash(answer['error'])
-        return redirect(url_for('profile'))
     return render_template('login_register/change_avatar.html')
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -121,6 +120,7 @@ def register():
             return redirect(url_for('register_failed'))
 
         session['username'] = username
+        return redirect(url_for('index'))
     return render_template('login_register/register.html')
 
 
