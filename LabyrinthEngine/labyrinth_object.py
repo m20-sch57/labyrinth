@@ -1,25 +1,7 @@
 from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
 from LabyrinthEngine.ui_status_bars import StringBar
+from LabyrinthEngine.common_functions import get_attr_safe, append_safe
 import json
-
-
-def get_attr_safe(obj, attr, default_value):
-    if hasattr(obj, attr):
-        return obj.__dict__[attr]
-    else:
-        return default_value
-
-def append_safe(obj, attr, key, value=None):
-    if not hasattr(obj, attr):
-        if value is None:
-            obj.__dict__[attr] = [key]
-        else:
-            obj.__dict__[attr] = {key: value}
-    else:
-        if value is None:
-            obj.__dict__[attr].append(key)
-        else:
-            obj.__dict__[attr][key] = value
 
 
 class LabyrinthObject:
