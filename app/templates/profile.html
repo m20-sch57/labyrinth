@@ -3,13 +3,16 @@
 {% block content %}
 <div id="main">
   <div class="profile">
-    <h3> Профиль </h3>
-    <p> Логин: {{ username }}</p>
+    <h3> Профиль {{ username }}</h3>
+    <img src="{{ ava }}" width='128' height='128' alt='{{ username }}'>
     <form action="{{ url_for('change_login') }}">
       <button>Изменить логин</button>
     </form>
     <form action="{{ url_for('change_password') }}">
       <button>Изменить пароль</button>
+    </form>
+    <form action="{{ url_for('change_avatar') }}">
+      <button>Изменить аватарку</button>
     </form>
   </div>
   <aside class="navbar-sidebar">
