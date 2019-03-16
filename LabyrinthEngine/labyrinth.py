@@ -1,22 +1,22 @@
-from copy import copy
 import random
 import json
 import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, NPCs, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
         self.seed = seed
-        self.loadseed= loadseed
+        self.loadseed = loadseed
+
+        self.unique_objects = {}
 
         for i in range(len(locations)):
             locations[i].directions = {
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
-            player.states = {'hurt': False, 'count_of_bullets': 3, 'count_of_bombs': 3}
             player.labyrinth = self
         for player in dead_players:
             player._lrtype = 'dead_player'
@@ -24,8 +24,8 @@ class Labyrinth:
         lrtypes = {
             'location': locations,
             'item': items,
-            'npc': NPCs}         
-        lrlist = locations, items, NPCs, players
+            'creature': creatures}         
+        lrlist = locations, items, creatures, players
 
         for lrtype in lrtypes:
             for i in range(len(lrtypes[lrtype])):
@@ -35,11 +35,11 @@ class Labyrinth:
 
         self.locations = set(locations)
         self.items = set(items)
-        self.NPCs = set(NPCs)
+        self.creatures = set(creatures)
         self.players_list = players
         self.dead_players = set(dead_players)
 
-        self.to_send = {player.get_username(): [] for player in self.players_list}
+        self.to_send = {}
         self.active_player_number = 0
 
         '''
@@ -59,8 +59,30 @@ class Labyrinth:
     def __str__(self):
         return '<labyrinth: {}>'.format(self.filename)
 
-    def send_msg(self, msg, player):
-        self.to_send[player.get_username()].append(msg)
+    def send_msg(self, msg, player, priority=0):
+        clear_list = {player.get_username(): [] for player in self.players_list}
+        if priority not in self.to_send:
+            self.to_send[priority] = clear_list
+        self.to_send[priority][player.get_username()].append(msg)
+
+    def clear_to_send(self):
+        self.to_send = {}
+
+    def regularize_to_send(self):
+        answer = {player.get_username(): [] for player in self.players_list}
+        for key in sorted(self.to_send, reverse=True):
+            for player, msg_list in self.to_send[key].items():
+                answer[player] += msg_list
+
+        return answer
+
+
+    def set_unique_key(self, obj, key):
+        if key in self.unique_objects:
+            pass
+            # тут должен быть какой-то идейный warning
+        else:
+            self.unique_objects[key] = obj
 
     def make_turn(self, turn):
         '''
@@ -71,7 +93,7 @@ class Labyrinth:
         '''
 
         # обнуляем to_send
-        self.to_send = {player.get_username(): [] for player in self.players_list}
+        self.clear_to_send()
 
         # В списке возможных ходов локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов
@@ -93,7 +115,8 @@ class Labyrinth:
         # обновляем лог ходов
         self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
         # обновляем лог сообщений
-        for username in self.to_send:
+        for player in self.get_objects(lrtype='player'):
+            username = player.get_username()
             if username in self.msgs_log:
                 self.msgs_log[username].append(self.player_to_send(username))
             else:
@@ -103,7 +126,7 @@ class Labyrinth:
             self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
-        return self.to_send
+        return self.regularize_to_send()
 
     def get_next_active_player(self):
         return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
@@ -128,13 +151,16 @@ class Labyrinth:
         return active_player_ats
 
     def get_all_objects(self):
-        return self.locations | self.items | self.NPCs | set(self.players_list)
+        return self.locations | self.items | self.creatures | set(self.players_list)
 
-    def get_objects(self, lrtype=['location', 'item', 'player', 'npc'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_unique(self, key):
+        return self.unique_objects[key]
+
+    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def player_to_send(self, username):
-        return self.to_send[username]
+        return self.regularize_to_send()[username]
 
     def save(self, savefile):
         save = {}

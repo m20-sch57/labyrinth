@@ -1,7 +1,7 @@
-# DivineLightning's consts.
+# DivineLightning
 DL_LAUNCH_MSG = 'Запустить божественную молнию'
 
-# FlashLight's consts.
+# FlashLight
 
-# FlyingIsland's consts.
+# FlyingIsland
 DEFAULT_PERIOD_OF_MOVING = 3

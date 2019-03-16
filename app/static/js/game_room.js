@@ -19,7 +19,7 @@ function getUpdate() {
 	responseData = JSON.parse(xhr.responseText);
 
 	var log = document.getElementById('log');
-	log.innerHTML += ('<p>'+ responseData.msg +'</p>');
+	log.innerHTML += ('<p>'+ responseData.msg.join('<br>') +'</p>');
 
 	var turnState = document.getElementById('turn_state');
 	if (responseData.your_turn == 'yes') {

@@ -1,5 +1,4 @@
-﻿from copy import copy
-from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
+﻿from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
 import json
 
 
@@ -8,13 +7,6 @@ def get_attr_safe(obj, attr, default_value):
         return obj.__dict__[attr]
     else:
         return default_value
-
-# TODO: issue #30
-def load_lrsave(filename):
-    pass
-
-def load_lrmap(filename, users):
-    pass
 
 
 class LabyrinthObject:
@@ -62,7 +54,7 @@ class LabyrinthObject:
     def get_parent(self):
         return get_attr_safe(self, 'parent', None)
 
-    def get_children(self, lrtype=['location', 'item', 'player', 'NPC'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_children(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
         all_objs = self.labyrinth.get_all_objects()
         return set(filter(lambda obj: obj.get_parent() == self and (obj.lrtype in lrtype and and_key(obj) or or_key(obj)),
                         all_objs))
