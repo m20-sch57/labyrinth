@@ -95,6 +95,9 @@ class Labyrinth:
         # обнуляем to_send
         self.clear_to_send()
 
+        # обновляем лог ходов
+        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
+
         # В списке возможных ходов локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов
         to_do = []
@@ -112,8 +115,6 @@ class Labyrinth:
         self.active_player_number += 1
         self.active_player_number %= len(self.players_list)
 
-        # обновляем лог ходов
-        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
         # обновляем лог сообщений
         for player in self.get_objects(lrtype='player'):
             username = player.get_username()
