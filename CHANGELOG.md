@@ -59,3 +59,4 @@
 
 - **Added** ability to change and set avatars.
 - **Added** status bar api. method `get_bars`.
+- **Added** buttons to the game room.
