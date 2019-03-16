@@ -39,6 +39,8 @@ if __name__ == '__main__':
         print('│bullets            :  {:<36}│'.format(TestLR.get_unique('ammo').bullets[ap]))
         print('└──────────────────────────────────────────────────────────┘')
 
+        print(TestLR.get_bars(ap))
+
         ats = TestLR.get_active_player_ats()
         ats[0:-1:4] = list(map(lambda x: '\n'+x, ats[0:-1:4]))
         print('; '.join(ats), end = '\n\n')
