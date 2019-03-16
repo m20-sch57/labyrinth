@@ -19,9 +19,9 @@ class CommonButton(Button):
         self.turns = turns
         self.image = image
 
-    def get(self, ats):
+    def get(self, ats, imagepath):
         if self.turns[0] in ats: 
-            return {'type': self.btn_type,  'turns':self.turns, 'image': self.image}
+            return {'type': self.btn_type,  'turns':self.turns, 'image': imagepath + self.image}
 
 class DirectionButton(Button):
     '''
@@ -39,9 +39,9 @@ class DirectionButton(Button):
         self.turns = turns
         self.image = image
 
-    def get(self, ats):
+    def get(self, ats, imagepath):
         if set(self.turns) & set(ats):
-            return {'type': self.btn_type, 'turns': self.turns, 'image': self.image}
+            return {'type': self.btn_type, 'turns': self.turns, 'image': imagepath + self.image}
 
 class ListButton(Button):
     '''
@@ -60,12 +60,12 @@ class ListButton(Button):
         self.image = image
         self.turn_images = turn_images
 
-    def get(self, ats):
+    def get(self, ats, imagepath):
         turns = []
         turn_images = []
         for i in range(len(self.turns)):
             if self.turns[i] in ats:
                 turns.append(self.turns[i])
-                turn_images.append(self.turn_images[i])
+                turn_images.append(imagepath + self.turn_images[i])
         if turns:
-            return {'type': self.btn_type, 'turns': turns, 'image': self.image, 'turn_images': turn_images}
+            return {'type': self.btn_type, 'turns': turns, 'image': imagepath + self.image, 'turn_images': turn_images}

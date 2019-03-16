@@ -192,7 +192,8 @@ def waiting_room(room_id):
                  broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'start_game':
-            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id))
+            imagepath='/static/images/button_images/'
+            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id), imagepath)
             labyrinths_list.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, room=room_id, namespace='/wrws')

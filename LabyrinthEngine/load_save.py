@@ -37,7 +37,7 @@ def load_lrsave(loadfile, savefile):
 
 	return labyrinth
 
-def load_lrmap(loadfile, savefile, users, lrseed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
+def load_lrmap(loadfile, savefile, users, imagepath, lrseed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 	random.seed(loadseed)
 
 	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
@@ -56,7 +56,6 @@ def load_lrmap(loadfile, savefile, users, lrseed=random.randrange(sys.maxsize), 
 	}
 	lrlists = lrtypes['locations'], lrtypes['items'], lrtypes['creatures']
 	for lrtype in lrtypes:
-		print(settings)
 		if len(settings[lrtype]) != len(lrmap[lrtype]):
 			raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
 of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])), loadfile + '.map.json')
@@ -94,4 +93,4 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 		player.set_parent(lrtypes['locations'][next(position)])
 
 
-	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, loadseed=loadseed, seed=lrseed)
+	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, imagepath, loadseed=loadseed, seed=lrseed)

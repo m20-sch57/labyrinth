@@ -8,6 +8,15 @@ function xhrOpen(eventType) {
 	return xhr;
 };
 
+function makeTurnFromInput(event) {
+	if (event.keyCode == 13) {
+		var xhr = xhrOpen('turn');
+		var turn = document.getElementById('input').value;
+
+		xhr.send('turn=' + turn);
+	};
+}
+
 function makeTurn(turn) {
 	var xhr = xhrOpen('turn');
 	xhr.send('turn=' + turn);
@@ -131,5 +140,8 @@ function ready() {
 		socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
 	});
 };
+
+var turnInput = document.getElementById('input');
+turnInput.onkeydown = makeTurnFromInput;
 
 document.addEventListener("DOMContentLoaded", ready);
