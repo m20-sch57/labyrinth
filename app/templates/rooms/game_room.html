@@ -17,7 +17,7 @@
 </div>
 <div class="game-actions">
     <form>
-	    <button value={{ room['room_id'] }} name="leave_button" class="game-button">Покинуть игру</button>
+	    <button value="{{ room['room_id'] }}" name="leave_button" class="game-button">Покинуть игру</button>
 	</form>
 </div>
 <div id='info' post="{{ url_for('game_room', room_id=room['room_id']) }}"  room_id="{{ room['room_id'] }}"></div>
@@ -35,6 +35,7 @@
 			<li>Подорвать вверх(вправо, вниз, влево) - взрыв в указанном направлении.
 		</ul>
 	</div>
+  <div id="buttons_bar"></div>
 </div>
 <div class="players">
 	{% for player in room['player_set'] %}

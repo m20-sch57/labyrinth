@@ -9,8 +9,12 @@ import string
 from functools import wraps
 import json
 import os
+import io
+import sys
 
 from LabyrinthEngine import load_lrmap
+
+
 
 '''
 help functions
@@ -204,7 +208,8 @@ def waiting_room(room_id):
                  broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'start_game':
-            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id))
+            imagepath='/static/images/button_images/'
+            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id), imagepath)
             labyrinths_list.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, room=room_id, namespace='/wrws')
@@ -232,10 +237,19 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
+            # prefix = '/static/res/button_images/'
+            # buttons = [
+            #     {'type': 'lbutton', 'turns': ['Идти вверх', 'Идти вниз', 'Идти вправо', 'Идти влево'], 
+            #         'image': prefix + 'leg.png',
+            #         'turn_images': [prefix + 'up.png',prefix + 'down.png',prefix + 'right.png',prefix + 'left.png']},
+            #     {'type': 'button', 'turn': 'Поднять клад', 'image': prefix + 'treasure_up.png'}
+            # ]
+
+            btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'buttons': btn})
             else:
                 return json.dumps({'your_turn': 'no', 'msg': msg})
 
@@ -278,3 +292,4 @@ def wrws_pl():
              broadcast=True, room=room_id, namespace='/wrws')
 
     session.pop('room', None)
+

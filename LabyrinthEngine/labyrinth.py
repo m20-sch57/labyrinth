@@ -4,12 +4,13 @@ import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, imagepath, save_mode=True, dead_players=[], \
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
         self.seed = seed
         self.loadseed = loadseed
+        self.imagepath = imagepath
 
         self.unique_objects = {}
 
@@ -205,7 +206,7 @@ class Labyrinth:
         buttons = []
         for obj in self.get_all_objects():
             for btn in obj.get_buttons():
-                btn_info = btn.get(ats)
+                btn_info = btn.get(ats, self.imagepath)
                 if btn_info is not None:
                     buttons.append(btn_info)
         return buttons

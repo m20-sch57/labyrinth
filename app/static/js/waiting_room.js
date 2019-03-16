@@ -35,7 +35,7 @@ function deleteRoom() {
 
 function startGame() {
 	var xhr = xhrOpen('start_game');
-
+	
 	xhr.send();
 };
 
