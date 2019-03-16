@@ -1,7 +1,7 @@
 function xhrOpen(eventType) {
 	var xhr = new XMLHttpRequest();
 
-	xhr.open('POST', document.getElementById('data').dataset.post);
+	xhr.open('POST', document.getElementById('data').dataset.post, false);
 	xhr.setRequestHeader('Event-Type', eventType);
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
@@ -20,6 +20,7 @@ function makeTurn(event) {
 function getUpdate() {
 	var xhr = xhrOpen('update');
 	xhr.send();
+
 	responseData = JSON.parse(xhr.responseText);
 
 	var log = document.getElementById('log');
@@ -30,7 +31,7 @@ function getUpdate() {
 		turnState.innerHTML = 'Твой ход';
 	} else {
 		turnState.innerHTML = 'Подожди';
-	};
+	}
 };
 
 function ready() {
