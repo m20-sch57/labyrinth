@@ -10,6 +10,9 @@ class Bomb(Item):
         self.new_at(self.turn_blow_up('left'), self.condition, BLOW_UP_LEFT)
         self.new_at(self.turn_blow_up('right'), self.condition, BLOW_UP_RIGHT)
 
+        self.new_lbutton([BLOW_UP_UP, BLOW_UP_DOWN, BLOW_UP_LEFT, BLOW_UP_RIGHT], 
+            'bomb.png', ['up.png', 'right.png', 'down.png', 'left.png'])
+
     def set_settings(self, settings, locations, items, creatures, players):
         self.BLOW_UP_SUCCESS_MSG = settings['consts'].get('blow_up_success_msg') or BLOW_UP_SUCCESS_MSG
         self.BLOW_UP_FAILURE_MSG = settings['consts'].get('blow_up_failure_msg') or BLOW_UP_FAILURE_MSG
