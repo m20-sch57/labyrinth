@@ -51,5 +51,11 @@
 - **Changed** database.. (see more in [#40](https://github.com/m20-sch57/labyrinth/pull/40))
 
 #### Design
+
 - **Added** template for waiting room.
 - **Added** template for game room.
+
+#### Not in master
+
+- **Added** ability to change and set avatars.
+- **Added** status bar api. method `get_bars`.
