@@ -11,7 +11,7 @@ class Gun(Item):
         self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
 
         self.new_lbutton([FIRE_UP, FIRE_DOWN, FIRE_LEFT, FIRE_RIGHT], 
-            'gun.png', ['up.png', 'right.png', 'down.png', 'left.png'])
+            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 
 
     def set_settings(self, settings, locations, items, creatures, players):
