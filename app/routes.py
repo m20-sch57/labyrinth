@@ -135,7 +135,7 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    #username = session.get('username')
+    # username = session.get('username')
     return simple_render_template('profile.html')
 
 

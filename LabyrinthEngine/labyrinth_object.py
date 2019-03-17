@@ -1,5 +1,4 @@
 ﻿from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
-import json
 
 
 def get_attr_safe(obj, attr, default_value):
@@ -10,14 +9,14 @@ def get_attr_safe(obj, attr, default_value):
 
 
 class LabyrinthObject:
-    '''
+    """
     LabyrinthObject is class of objects that can be used by players at their turns
-    '''
+    """
 
     def new_at(self, function, condition_function, turn_name):
-        '''
+        """
         new available turn
-        '''
+        """
 
         if hasattr(self, 'turn_set'):
             self.turn_set[turn_name] = {
@@ -90,9 +89,9 @@ class LabyrinthObject:
         return self._lrtype
 
     def main(self):
-        '''
+        """
         Основная функция объекта. Определяется здесь, чтобы потом не было ошибки при её вызове.
-        '''
+        """
         pass
 
     def set_settings(self, settings, *args):

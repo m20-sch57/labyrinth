@@ -24,7 +24,6 @@ class Health(Item):
 
         self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
 
-
     def hurt(self, body):
         if body.lrtype == 'creature':
             self.creature_hp[body] -= 1

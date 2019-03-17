@@ -19,7 +19,7 @@ class Hole(Location):
         self.set_name(settings['name'])
 
         self.types_who_must_fall = settings['consts'].get('type_who_must_fall_in_it') or TYPES_WHO_MUST_FALL_IN_IT
-        self.TROUGH_HOLE_MSG = settings['consts'].get('trought_hole_msg') or TROUGH_HOLE_MSG
+        self.TROUGH_HOLE_MSG = settings['consts'].get('trough_hole_msg') or TROUGH_HOLE_MSG
         self.FALL_MSG = settings['consts'].get('fall_msg') or FALL_MSG
 
     def main(self):

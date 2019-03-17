@@ -4,8 +4,8 @@ import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, save_mode=True, dead_players=[], \
-                 seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, save_mode=True,
+                 dead_players=[], seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
         self.seed = seed
@@ -42,12 +42,12 @@ class Labyrinth:
         self.to_send = {}
         self.active_player_number = 0
 
-        '''
+        """
         turns_log
         [{'player': first_player_name, 'turn': his_turn}, {'player': second_player_name, 'turn': his_turn}, ...]
         msgs_log
         {player_name: [first_msg, second_msg, ...]}
-        '''
+        """
         self.turns_log = []
         self.msgs_log = {}
 
@@ -76,7 +76,6 @@ class Labyrinth:
 
         return answer
 
-
     def set_unique_key(self, obj, key):
         if key in self.unique_objects:
             pass
@@ -85,12 +84,12 @@ class Labyrinth:
             self.unique_objects[key] = obj
 
     def make_turn(self, turn):
-        '''
+        """
         Вызвать эту функцию, если активный игрок сделал ход turn
 
         to_send: словарь сообщения для отправки.
         {username1: msg1, ... , username_n: msg_n}
-        '''
+        """
 
         # обнуляем to_send
         self.clear_to_send()
@@ -123,7 +122,7 @@ class Labyrinth:
             else:
                 self.msgs_log[username] = [self.player_to_send(username)]
         # если save_mode == True, сохраняем всё в файл tmp\test.log
-        if self.save_mode == True:
+        if self.save_mode:
             self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
@@ -139,9 +138,9 @@ class Labyrinth:
         return self.get_active_player().get_username()
 
     def get_active_player_ats(self):
-        '''
+        """
         Возвращает возможные для активного игрока ходы
-        '''
+        """
 
         active_player_ats = []
         for obj in self.get_all_objects():
@@ -170,25 +169,25 @@ class Labyrinth:
         save['users'] = list(map(lambda user: user.get_username(), self.players_list))
         save['turns'] = self.turns_log
         with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
-            json.dump(save, f, indent = 4, ensure_ascii=False)
+            json.dump(save, f, indent=4, ensure_ascii=False)
 
     def get_msgs(self, username):
-        '''
+        """
         Возвращает все сообщения отосланные игроку username
-        '''
+        """
 
         if username in self.msgs_log:
             return self.msgs_log[username]
         else:
             return [] 
 
-    def get_turns(self, number = None, username = None):
-        '''
+    def get_turns(self, number=None, username=None):
+        """
         Возвращает все ходы сделанные игроками
         Возвращает ходы сделанные только указанным игроками, если указан параметр username
         Возвращает ход под номером number с конца, если указан параметр number
         Например get_turns(1, 'Вася') вернёт последний ход Васи
-        '''
+        """
 
         if username is None:
             if number is None:

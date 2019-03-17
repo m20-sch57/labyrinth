@@ -13,7 +13,7 @@ class Ammo(Item):
         self.MAX_BOMBS_COUNT = settings.get('max_bombs_count') or MAX_BOMBS_COUNT
 
         self.INIT_BULLETS_COUNT = settings.get('init_bullets_count') or self.MAX_BULLETS_COUNT
-        self.INIT_BOMBS_COUNT = settings.get('init_bombs_coount') or self.MAX_BOMBS_COUNT
+        self.INIT_BOMBS_COUNT = settings.get('init_bombs_count') or self.MAX_BOMBS_COUNT
 
         self.bullets = {player: self.INIT_BULLETS_COUNT for player in players}
         self.bombs = {player: self.INIT_BOMBS_COUNT for player in players}
@@ -21,7 +21,6 @@ class Ammo(Item):
         self.labyrinth.set_unique_key(self, 'ammo')
 
         self.set_name(settings['name'])
-
 
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':
