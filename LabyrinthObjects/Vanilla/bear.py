@@ -28,6 +28,6 @@ class Bear(Creature):
             RIGHT_TURN: 'right',
             LEFT_TURN: 'left'
         }
-        if self.labyrinth.get_turns(1)['turn'] in list(directions.keys()) and \
+        if self.labyrinth.get_turns(1)['turn'] in directions and \
                 self.labyrinth.get_active_player_username() == self.labyrinth.get_turns(1)['username']:
             self.move(directions[self.labyrinth.get_turns(1)['turn']])
