@@ -95,6 +95,9 @@ class Labyrinth:
         # обнуляем to_send
         self.clear_to_send()
 
+        # обновляем лог ходов
+        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
+
         # В списке возможных ходов локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов
         to_do = []
@@ -112,10 +115,9 @@ class Labyrinth:
         self.active_player_number += 1
         self.active_player_number %= len(self.players_list)
 
-        # обновляем лог ходов
-        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
         # обновляем лог сообщений
-        for username in self.to_send:
+        for player in self.get_objects(lrtype='player'):
+            username = player.get_username()
             if username in self.msgs_log:
                 self.msgs_log[username].append(self.player_to_send(username))
             else:
@@ -159,7 +161,7 @@ class Labyrinth:
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def player_to_send(self, username):
-        return self.to_send[username]
+        return self.regularize_to_send()[username]
 
     def save(self, savefile):
         save = {}
@@ -206,6 +208,13 @@ class Labyrinth:
             for btn in obj.get_buttons():
                 btn_info = btn.get(ats)
                 if btn_info is not None:
-                    print(btn)
                     buttons.append(btn_info)
         return buttons
+
+    def get_bars(self, player):
+        bars = []
+        for obj in self.get_all_objects():
+            for bar in obj.get_bars():
+                bar_info = bar.get(player)
+                bars.append(bar_info)
+        return bars
