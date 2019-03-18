@@ -2,6 +2,10 @@
 
 
 import sqlite3
+import os
+import base64
+import random
+import string
 
 
 '''
@@ -20,6 +24,12 @@ def break_list(lst, cnt):
 
     return res
 
+def gen_file_name(path, size):
+    name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    while name in list(map(lambda x: ''.join(x.split('.')[::-1]), os.listdir(path))):
+        name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
+    return name
+
 
 class Database:
     def __init__(self):
@@ -29,6 +39,7 @@ class Database:
             login VARCHAR(32) PRIMARY KEY, 
             password_hash VARCHAR(40),
             room_id CHAR(8),
+            avatar TEXT,
             FOREIGN KEY (room_id) REFERENCES rooms (room_id)
             )''')
 
@@ -63,7 +74,7 @@ class Database:
         if self.user_login_in_table(login):
             return False
         else:
-            self.cursor.execute("INSERT INTO users (login, password_hash, room_id) VALUES (?, ?, NULL)", (login, password_hash))
+            self.cursor.execute("INSERT INTO users (login, password_hash, room_id, avatar) VALUES (?, ?, NULL, 'default.png')", (login, password_hash))
             self.conn.commit()
             return True
 
@@ -90,6 +101,32 @@ class Database:
         # return True if login in table and False in other cases
         self.cursor.execute('SELECT * FROM users WHERE login=?', (user_login,))
         return not self.cursor.fetchone() is None
+
+    def change_avatar(self, user_login, avatar_b64):
+        startstring = 'data:image/png;base64,'
+        path = 'app/static/images/avatars/'
+
+        if not avatar_b64.startswith(startstring):
+            return {'ok': 0, 'error': 'incorrect format of avatar string'}
+        if not self.get_avatar(user_login) == 'default.png':
+            os.remove(path+self.get_avatar(user_login))
+
+        try:
+            avatar = base64.decodebytes(avatar_b64[len('data:image/png;base64,'):].encode('utf-8'))
+        except:
+            return {'ok': 0, 'error': 'incorrect format of avatar string'}
+
+        filename = gen_file_name(path, 10)+'.png'
+
+        with open(path+filename, 'wb') as f:
+            f.write(avatar)
+
+        self.cursor.execute('UPDATE users SET avatar=? WHERE login=?', (filename, user_login))
+
+        return {'ok': 1}
+
+    def get_avatar(self, user_login):
+        return self.get_user(user_login)[3]
 
     '''
     rooms functions
