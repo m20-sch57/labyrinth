@@ -11,9 +11,9 @@ class StringBar(Bar):
     values - словарь со значениями строки состояния
     для каждого игрока
     '''
-    def __init__(self, key, init_values):
+    def __init__(self, name, init_values):
         self.bar_type = 'common'
-        self.key = key
+        self.name = name
         self.values = init_values
 
     def set_value(self, new_value, player):

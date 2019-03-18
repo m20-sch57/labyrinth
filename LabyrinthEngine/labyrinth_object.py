@@ -24,8 +24,8 @@ class LabyrinthObject:
     def new_lbutton(self, turns, image, turn_images):
         append_safe(self, 'button_set', ListButton(turns, image, turn_images))
 
-    def new_status_bar(self, key, init_value):
-        bar = StringBar(key, init_value)
+    def new_status_bar(self, name, init_value):
+        bar = StringBar(name, init_value)
         append_safe(self, 'bar_set', bar)
         return bar
 
