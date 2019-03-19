@@ -26,8 +26,6 @@ class Health(Item):
 
         self.set_name(settings['name'])
 
-        self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
-
         self.update_health_bar()
 
 
@@ -35,16 +33,13 @@ class Health(Item):
         if body.lrtype == 'creature':
             self.creature_hp[body] -= 1
             if self.creature_hp[body] == 0:
-                self.labyrinth.creatures.discard(body)
+                self.labyrinth.get_unique('death').kill(body)
 
         elif body.lrtype == 'player':
             self.hp[body] -= 1
 
             if self.hp[body] == 0:
-                index = self.labyrinth.players_list.index(body)
-                del self.labyrinth.players_list[index]
-
-                self.labyrinth.send_msg(self.DEATH_MSG, body)
+                self.labyrinth.get_unique('death').kill(body)
             self.update_health_bar()
 
     def heal(self, body):
