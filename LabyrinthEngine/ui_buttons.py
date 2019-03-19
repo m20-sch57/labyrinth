@@ -2,8 +2,9 @@ class Button:
     def __str__(self):
         return '<UI.button: {}: {}>'.format(self.btn_type, ', '.join(self.turns))
 
+
 class CommonButton(Button):
-    '''
+    """
     Обычная кнопка. 
 
     Активация равносильна
@@ -13,7 +14,7 @@ class CommonButton(Button):
 
     image - путь до изображения, которое
     должно быть отображено на кнопке.
-    '''
+    """
     def __init__(self, turns, image):
         self.btn_type = 'button'
         self.turns = turns
@@ -21,10 +22,11 @@ class CommonButton(Button):
 
     def get(self, ats):
         if self.turns in ats: 
-            return {'type': self.btn_type,  'turns':self.turns, 'image': self.image}
+            return {'type': self.btn_type, 'turns': self.turns, 'image': self.image}
+
 
 class DirectionButton(Button):
-    '''
+    """
     Кнопка с направлением
 
     Обычная кнопка, но с доп. возможность
@@ -33,7 +35,7 @@ class DirectionButton(Button):
 
     turns - список из четырёх ходов.
     порядок: вверх, вниз, вправо, влево.
-    '''
+    """
     def __init__(self, turns, image):
         self.btn_type = 'dbutton'
         self.turns = turns
@@ -43,8 +45,9 @@ class DirectionButton(Button):
         if set(self.turns) & set(ats):
             return {'type': self.btn_type, 'turns': self.turns, 'image': self.image}
 
+
 class ListButton(Button):
-    '''
+    """
     Кнопка-список
 
     Позволяет объединить любое кол-во
@@ -53,7 +56,7 @@ class ListButton(Button):
     turn_images - список картинок для
     каждого хода, который можно сделать,
     использую эту кнопку.
-    '''
+    """
     def __init__(self, turns, image, turn_images):
         self.btn_type = 'lbutton'
         self.turns = turns

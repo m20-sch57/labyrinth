@@ -27,12 +27,12 @@ TYPES_WHO_MUST_FALL_IN_IT = ['player', 'creature']
 AND_WHO_MUST_FALL_IN_IT = lambda obj: True
 OR_WHO_MUST_FALL_IN_IT = lambda obj: False
 
-#Health
+# Health
 MAX_PLAYER_HEALTH = 3
 MAX_CREATURE_HEALTH = 3
 DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
 
-#Ammo
+# Ammo
 MAX_BULLETS_COUNT = 3
 MAX_BOMBS_COUNT = 3
 

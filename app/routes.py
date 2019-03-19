@@ -1,13 +1,14 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
-from flask import render_template, request, session, redirect, url_for
+from flask import render_template, request, session, redirect, url_for, flash
 from hashlib import sha1
 import random
 import string
 from functools import wraps
 import json
+import os
 
 from LabyrinthEngine import load_lrmap
 
@@ -98,6 +99,18 @@ def change_password():
     return render_template('login_register/change_password.html')
 
 
+@app.route('/change_avatar', methods=['POST', 'GET'])
+def change_avatar():
+    if request.method == 'POST':
+        username = session['username']
+        avatar = request.form['avatar']
+
+        answer = dbase.change_avatar(username, request.form['avatar'])
+        if not answer['ok']:
+            flash(answer['error'])
+    return render_template('login_register/change_avatar.html')
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
@@ -135,8 +148,8 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    #username = session.get('username')
-    return simple_render_template('profile.html')
+    username = session.get('username')
+    return simple_render_template('profile.html', ava='/static/images/avatars/'+dbase.get_avatar(username))
 
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])

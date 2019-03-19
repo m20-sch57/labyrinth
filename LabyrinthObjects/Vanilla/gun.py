@@ -11,11 +11,11 @@ class Gun(Item):
         self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurn_evb_in_same_loc') or CAN_PLAYER_HURT_EVB_IN_SAME_LOC
+        self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurt_evb_in_same_loc') or\
+                                               CAN_PLAYER_HURT_EVB_IN_SAME_LOC
         self.CAN_PLAYER_HURT_HIMSELF = settings['consts'].get('can_player_hurt_himself') or CAN_PLAYER_HURT_HIMSELF
         self.FIRE_SUCCESS_MSG = settings['consts'].get('fire_success_msg') or FIRE_SUCCESS_MSG
         self.FIRE_FAILURE_MSG = settings['consts'].get('fire_failure_msg') or FIRE_FAILURE_MSG
-
 
     def turn_fire(self, direction):
         def fire():

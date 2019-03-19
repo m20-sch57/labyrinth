@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2> Изменить аватарку </h2>
+    <img id="avatar-preview" width='128' height='128'>
+    <!-- <form action="{{ url_for('change_avatar') }}" method="post" enctype="multipart/form-data"> -->
+    <div>
+        <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
+        <button type="submit" id="accept-image"> "Подтрвердить" </button>
+    </div>
+    <!-- </form> -->
+    <canvas id='canvas' style='display: none;'></canvas>
+    <script type="text/javascript">
+        var img = document.getElementById('avatar-preview');
+
+        function handleFileSelect(e) {
+            var file = e.target.files[0];
+
+            if (!file.type.match('image.*')) {
+                alert('Автатарка - это картинка. Загрузите картинку.');
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                img.setAttribute('src', e.target.result)
+            }
+            reader.readAsDataURL(file); 
+
+        }
+
+        function sendAvatar(e) {
+            var canvas = document.getElementById('canvas')
+
+            canvas.width = 128;
+            canvas.height = 128;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 128, 128);
+
+            var imageFile = canvas.toDataURL('iamge/png');
+            console.log(imageFile);
+
+            var fd = new FormData();
+            fd.append('avatar', imageFile);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ url_for("change_avatar") }}');
+            xhr.send(fd);
+
+            xhr.onreadystatechange = function() {
+                document.location = "{{ url_for('profile') }}";
+            }
+        }
+
+
+        document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
+        document.getElementById('accept-image').onclick = sendAvatar;
+
+
+    </script>
+{% endblock %}
