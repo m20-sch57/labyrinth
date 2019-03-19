@@ -110,6 +110,7 @@ def change_avatar():
             flash(answer['error'])
     return render_template('login_register/change_avatar.html')
 
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':

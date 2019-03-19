@@ -4,12 +4,12 @@ from LabyrinthEngine import Item
 
 class Health(Item):
     def __init__(self):
-    #     def hurtself():
-    #         self.hurt(self.labyrinth.get_active_player())
-    #     self.new_at(hurtself, lambda: True, 'Ранить себя')
-    #     def healself():
-    #         self.heal(self.labyrinth.get_active_player())
-    #     self.new_at(healself, lambda: True, 'Вылечиться')
+        # def hurtself():
+        #     self.hurt(self.labyrinth.get_active_player())
+        # self.new_at(hurtself, lambda: True, 'Ранить себя')
+        # def healself():
+        #     self.heal(self.labyrinth.get_active_player())
+        # self.new_at(healself, lambda: True, 'Вылечиться')
         self.health_bar = self.new_status_bar('Здоровье', None)
 
     def update_health_bar(self):
@@ -52,4 +52,3 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
             self.update_health_bar()
-
