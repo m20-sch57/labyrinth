@@ -94,19 +94,19 @@ turn должным быть элементом множества доступ�
 
 ```python
 class Legs(LabyrinthObject):
-	def __init__(self):
-		self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
+    def __init__(self):
+        self.new_at(self.turn_move('up'), condition_function=self.condition, turn_name=UP_TURN)
 
-	def turn_move(self):
-		active_player = self.labyrinth.get_active_player()
-		next_position = active_player.get_parent().get_neighbour('up')
-		if type(next_position) is Wall:
-			self.labyrinth.send_msg(WALL_MSG, active_player)
-		else:
-			active_player.set_parent(next_position)
+    def turn_move(self):
+        active_player = self.labyrinth.get_active_player()
+        next_position = active_player.get_parent().get_neighbour('up')
+        if type(next_position) is Wall:
+            self.labyrinth.send_msg(WALL_MSG, active_player)
+        else:
+            active_player.set_parent(next_position)
 
-	def condition(self):
-		return True
+    def condition(self):
+        return True
 ```
 
 ### Сохранение игры

@@ -30,7 +30,6 @@ class Health(Item):
 
         self.update_health_bar()
 
-
     def hurt(self, body):
         if body.lrtype == 'creature':
             self.creature_hp[body] -= 1
@@ -53,3 +52,4 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
             self.update_health_bar()
+

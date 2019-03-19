@@ -17,5 +17,6 @@ class FlyingIsland(Location):
             self.move_trigger = 0
             self.move()
 
+
 class FIBottom(Location):
     pass

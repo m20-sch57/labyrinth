@@ -9,7 +9,6 @@ class EmptyLocation(Location):
 
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
-        active_player = self.labyrinth.get_active_player()
 
         if next_active_player.get_parent() == self:
             self.labyrinth.send_msg(self.ENTER_MSG, next_active_player)

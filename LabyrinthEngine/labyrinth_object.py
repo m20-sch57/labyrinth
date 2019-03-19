@@ -5,14 +5,14 @@ import json
 
 
 class LabyrinthObject:
-    '''
+    """
     LabyrinthObject is class of objects that can be used by players at their turns
-    '''
+    """
 
     def new_at(self, function, condition_function, turn_name):
-        '''
+        """
         new available turn
-        '''
+        """
         append_safe(self, 'turn_set', turn_name, {'function': function, 'condition': condition_function})
 
     def new_button(self, turn, image):
@@ -78,9 +78,9 @@ class LabyrinthObject:
         return self._lrtype
 
     def main(self):
-        '''
+        """
         Основная функция объекта. Определяется здесь, чтобы потом не было ошибки при её вызове.
-        '''
+        """
         pass
 
     def set_settings(self, settings, *args):
