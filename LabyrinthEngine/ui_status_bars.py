@@ -1,6 +1,6 @@
 class Bar:
     def __str__(self):
-        return '<UI.bar: {}: {}>'.format(self.bar_type, self.key)
+        return '<UI.bar: {}: {}>'.format(self.bar_type, self.name)
 
 
 class StringBar(Bar):
@@ -23,4 +23,4 @@ class StringBar(Bar):
         self.values = new_values
 
     def get(self, player):
-        return {'type': self.bar_type, 'key': self.key, 'value': self.values[player]}
+        return {'type': self.bar_type, 'name': self.name, 'value': self.values[player]}

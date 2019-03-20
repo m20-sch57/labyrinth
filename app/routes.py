@@ -232,12 +232,13 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
+            bar = labyrinth.get_bars(username)
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar})
             else:
-                return json.dumps({'your_turn': 'no', 'msg': msg})
+                return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_username() == username:
