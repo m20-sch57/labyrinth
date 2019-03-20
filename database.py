@@ -1,4 +1,4 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 
 
 import sqlite3
@@ -8,21 +8,22 @@ import random
 import string
 
 
-'''
+"""
 help functions
-'''
+"""
 
 
 def break_list(lst, cnt):
     n = len(lst)
     res = []
     for i in range(0, n, cnt):
-        res.append(lst[i : min(n, i + cnt)])
+        res.append(lst[i: min(n, i + cnt)])
 
     if len(res) == 0:
         res.append([])
 
     return res
+
 
 def gen_file_name(path, size):
     name = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
@@ -35,20 +36,20 @@ class Database:
     def __init__(self):
         self.conn = sqlite3.connect('database.db', check_same_thread=False)
         self.cursor = self.conn.cursor()
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS users (
             login VARCHAR(32) PRIMARY KEY, 
             password_hash VARCHAR(40),
             room_id CHAR(8),
             avatar TEXT,
             FOREIGN KEY (room_id) REFERENCES rooms (room_id)
-            )''')
+            )""")
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS maps (
             maplink VARCHAR(128) PRIMARY KEY, 
             description TEXT
-            )''')
+            )""")
 
-        self.cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS rooms (
             room_id CHAR(8) PRIMARY KEY, 
             name VARCHAR(128),
             players_in_game TEXT,
@@ -57,20 +58,20 @@ class Database:
             description TEXT, 
             create_date DATETIME,
             FOREIGN KEY (creator) REFERENCES users (login)
-            )''')
+            )""")
 
         self.conn.commit()
 
-    '''
+    """
     users functions
-    '''
+    """
 
     def add_user(self, login, password_hash):
-        '''
+        """
         Return False if user with such login alredy employed
 
         Adds the user in db and return True if login is free
-        '''
+        """
         if self.user_login_in_table(login):
             return False
         else:
@@ -128,9 +129,9 @@ class Database:
     def get_avatar(self, user_login):
         return self.get_user(user_login)[3]
 
-    '''
+    """
     rooms functions
-    '''
+    """
 
     def parse_room(self, room):
         if room is None:
@@ -151,8 +152,8 @@ class Database:
 
     def add_room(self, room_id, creator_id):
         crid = creator_id
-        self.cursor.execute('''INSERT INTO rooms (room_id, players_in_game, name, creator, create_date) 
-            VALUES (?, NULL, ?, ?, CURRENT_TIMESTAMP)''', (room_id, ('Room by '+crid), crid))
+        self.cursor.execute("""INSERT INTO rooms (room_id, players_in_game, name, creator, create_date) 
+            VALUES (?, NULL, ?, ?, CURRENT_TIMESTAMP)""", (room_id, ('Room by '+crid), crid))
         self.conn.commit()
 
     def get_room(self, room_id):
@@ -213,9 +214,9 @@ class Database:
     def end_game(self, room_id):
         self.cursor.execute('UPDATE rooms SET players_in_game=NULL WHERE room_id=?', (room_id,))
 
-    '''
+    """
     maps functions
-    '''
+    """
 
     def add_map(self, maplink, description):
         self.cursor.execute('INSERT INTO maps VALUES (?, ?)', (maplink, description))
@@ -225,9 +226,9 @@ class Database:
         self.cursor.execute('SELECT * FROM maps WHERE maplink=?', [maplink])
         return self.cursor.fetchone()
 
-    '''
+    """
     another functions
-    '''
+    """
 
     def drop(self):
         self.cursor.execute('DROP TABLE rooms')

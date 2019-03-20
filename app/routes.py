@@ -1,4 +1,4 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
@@ -109,6 +109,7 @@ def change_avatar():
         if not answer['ok']:
             flash(answer['error'])
     return render_template('login_register/change_avatar.html')
+
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():

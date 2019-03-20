@@ -4,13 +4,13 @@ class Bar:
 
 
 class StringBar(Bar):
-    '''
+    """
     Текстовая строка состояния.
     Т.е значения предстовляется в текстовом виде
 
     values - словарь со значениями строки состояния
     для каждого игрока
-    '''
+    """
     def __init__(self, name, init_values):
         self.bar_type = 'common'
         self.name = name
