@@ -4,48 +4,14 @@ reverse_direction = {'up': 'down', 'down': 'up',
                      'under': 'above', 'above': 'under'}
 basic_directions = ['up', 'down', 'left', 'right']
 
-# Legs
-UP_TURN = 'Идти вверх'
-DOWN_TURN = 'Идти вниз'
-RIGHT_TURN = 'Идти вправо'
-LEFT_TURN = 'Идти влево'
-WALL_MSG = 'Упсс. Стена'
-
-# GlobalWall
-
-# Wall
-
-# EmptyLocation
-ENTER_MSG = 'Ты в пустой комнате'
-
-# Hole
-FALL_MSG = 'И в ямку бух!'
-ENTER_HOLE_MSG = 'Ты в комнате с дырой'
-TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
-INTO_TURN = 'В дыру'
-TYPES_WHO_MUST_FALL_IN_IT = ['player', 'creature']
-AND_WHO_MUST_FALL_IN_IT = lambda obj: True
-OR_WHO_MUST_FALL_IN_IT = lambda obj: False
-
-# Health
-MAX_PLAYER_HEALTH = 3
-MAX_CREATURE_HEALTH = 3
-DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
-
 # Ammo
 MAX_BULLETS_COUNT = 3
 MAX_BOMBS_COUNT = 3
 
-# Gun
-INITIAL_COUNT_OF_BULLETS = 3
-CAN_PLAYER_HURT_HIMSELF = False
-CAN_PLAYER_HURT_EVB_IN_SAME_LOC = True
-FIRE_UP = 'Стрелять вверх'
-FIRE_DOWN = 'Стрелять вниз'
-FIRE_LEFT = 'Стрелять влево'
-FIRE_RIGHT = 'Стрелять вправо'
-FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
-FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
+# Arsenal
+
+# Bear
+BEAR_MSG_ATTACK = 'Вас укусил медведь'
 
 # Bomb
 INITIAL_COUNT_OF_BOMBS = 3
@@ -61,12 +27,53 @@ BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается был(а) '
 BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
 
-# Arsenal
+# Death
+DEATH_MSG = 'Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь.'
+REVIVAL_MSG = 'Добро пожаловать обратно! Тебе выпал ещё один шанс победить.'
+
+# EmptyLocation
+ENTER_MSG = 'Ты в пустой комнате'
+
+# Exit
+EXIT_GREETING_MSG = 'Ты вышел из Лабиринта. В этой комнате ты можешь передохнуть.'
+EXIT_PRESENCE_MSGS = ['Как дела? Ты нашёл клад?',
+                      'Как думаешь, почему медведи такие агрессивные?',
+                      'Давай, быстрее! А то клад раньше тебя заберут!']
 
 # FirstAidPost
 
-# Bear
-BEAR_MSG_ATTACK = 'Вас укусил медведь'
+# Gun
+INITIAL_COUNT_OF_BULLETS = 3
+CAN_PLAYER_HURT_HIMSELF = False
+CAN_PLAYER_HURT_EVB_IN_SAME_LOC = True
+FIRE_UP = 'Стрелять вверх'
+FIRE_DOWN = 'Стрелять вниз'
+FIRE_LEFT = 'Стрелять влево'
+FIRE_RIGHT = 'Стрелять вправо'
+FIRE_SUCCESS_MSG = 'Пиф-паф, ой-ой-ой. Снаряд попал в '
+FIRE_FAILURE_MSG = 'Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал.'
+
+# GlobalWall
+
+# Health
+MAX_PLAYER_HEALTH = 3
+MAX_CREATURE_HEALTH = 3
+
+# Hole
+FALL_MSG = 'И в ямку бух!'
+ENTER_HOLE_MSG = 'Ты в комнате с дырой'
+TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
+INTO_TURN = 'В дыру'
+TYPES_WHO_MUST_FALL_IN_IT = ['player', 'creature']
+AND_WHO_MUST_FALL_IN_IT = lambda obj: True
+OR_WHO_MUST_FALL_IN_IT = lambda obj: False
+
+# Legs
+UP_TURN = 'Идти вверх'
+DOWN_TURN = 'Идти вниз'
+RIGHT_TURN = 'Идти вправо'
+LEFT_TURN = 'Идти влево'
+WALL_MSG = 'Упсс. Стена'
 
 # Treasure
 TAKE_TREASURE = 'Поднять клад'
@@ -75,8 +82,4 @@ CAN_PLAYER_DROP_TREASURE = True
 WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = False
 SHOULD_HURT_PLAYER_DROP_TREASURE = True
 
-# Exit
-EXIT_GREETING_MSG = 'Ты вышел из Лабиринта. В этой комнате ты можешь передохнуть.'
-EXIT_PRESENCE_MSGS = ['Как дела? Ты нашёл клад?',
-                      'Как думаешь, почему медведи такие агрессивные?',
-                      'Давай, быстрее! А то клад раньше тебя заберут!']
+# Wall

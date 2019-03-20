@@ -28,7 +28,7 @@ class Health(Item):
 
         self.update_health_bar()
 
-    def hurt(self, body):
+    def hurt(self, body, death_msg=None):
         if body.lrtype == 'creature':
             self.creature_hp[body] -= 1
             if self.creature_hp[body] == 0:
@@ -38,7 +38,7 @@ class Health(Item):
             self.hp[body] -= 1
 
             if self.hp[body] == 0:
-                self.labyrinth.get_unique('death').kill(body)
+                self.labyrinth.get_unique('death').kill(body, death_msg)
             self.update_health_bar()
 
     def heal(self, body):
