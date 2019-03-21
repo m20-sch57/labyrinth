@@ -207,7 +207,10 @@
                 "name":"0",
                 "consts":{}
             }
-        ]
+        ],
+        "player": {
+            "flags":["drop_items_at_wound"]
+        }
     },
     "start_positions":
     {

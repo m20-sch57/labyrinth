@@ -15,6 +15,15 @@ class LabyrinthObject:
         """
         append_safe(self, 'turn_set', turn_name, {'function': function, 'condition': condition_function})
 
+    def add_flag(self, flag_name):
+        append_safe(self, 'flags', flag_name)
+
+    def remove_flag(self, flag_name):
+        remove_safe(self, 'flags', flag_name)
+
+    def have_flag(self, flag_name):
+        return flag_name in get_attr_safe(self, 'flags', set())
+
     def new_button(self, turn, image):
         append_safe(self, 'button_set', CommonButton([turn], image))
 
