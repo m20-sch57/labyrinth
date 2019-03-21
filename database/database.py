@@ -5,8 +5,36 @@ from enum import IntEnum
 import json
 
 
+def connection():
+    connect = sqlite3.connect('database.db', check_same_thread = False)
+    cursor = connect.cursor
+    return connect, cursor
+
+def init_db():
+    connect, cursor = connection()
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+                      id TEXT PRIMARY KEY,
+                      username TEXT, 
+                      password_hash TEXT,
+                      avatar TEXT
+                      )''')
+
+    cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
+                      id TEXT PRIMARY KEY,
+                      name TEXT,
+                      description TEXT, 
+                      users TEXT,
+                      playing_users TEXT,
+                      creator TEXT,
+                      create_date TEXT,
+                      FOREIGN KEY (creator) REFERENCES users (username)
+                      )''')
+
+
 class Database:
     def __init__(self):
+        init_db()
         self.users = UsersTable()
         self.rooms = RoomsTable()
 
@@ -40,15 +68,7 @@ class User:
 
 class UsersTable:
     def __init__(self):
-        self.connect = sqlite3.connect('database.db', check_same_thread=False)
-        self.cursor = self.connect.cursor()
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            username TEXT, 
-            password_hash TEXT,
-            avatar TEXT
-            )''')
+        self.connect, self.cursor = connection()
 
     def get_by_name(self, username):
         self.cursor.execute('SELECT * FROM users WHERE username=?', [username])
@@ -185,20 +205,9 @@ class Room:
 
 
 class RoomsTable:
-    def __init__(self):
-        self.connect = sqlite3.connect('database.db', check_same_thread=False)
-        self.cursor = self.connect.cursor()
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS rooms (
-            id TEXT PRIMARY KEY,
-            name TEXT,
-            description TEXT, 
-            users TEXT,
-            playing_users TEXT,
-            creator TEXT,
-            create_date TEXT,
-            FOREIGN KEY (creator) REFERENCES users (username)
-            )''')
+    def __init__(self, db):
+        self.connect, self.cursor = connection()
+        self.db = db
 
     def add(self, ID, creator):
         name = 'Room by ' + creator
