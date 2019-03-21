@@ -209,7 +209,7 @@
             }
         ],
         "player": {
-            "flags":["drop_items_at_wound"]
+            "flags":["drop_items_when_injured"]
         }
     },
     "start_positions":
