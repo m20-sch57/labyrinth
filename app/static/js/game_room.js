@@ -1,7 +1,7 @@
 function xhrOpen(eventType) {
 	var xhr = new XMLHttpRequest();
 
-	xhr.open('POST', document.getElementById('data').dataset.post);
+	xhr.open('POST', document.getElementById('data').dataset.post, false);
 	xhr.setRequestHeader('Event-Type', eventType);
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
