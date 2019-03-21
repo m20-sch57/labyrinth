@@ -187,7 +187,10 @@
                 "name":"0",
                 "consts":{}
             }
-        ]
+        ],
+        "player": {
+            "flags":["drop_items_when_injured"]
+        }
     },
     "start_positions":
     {
