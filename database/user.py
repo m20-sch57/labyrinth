@@ -1,6 +1,7 @@
 from db_answer import DBAnswer, DBError, OK
 from common_functions import *
 
+
 class User:
     def __init__(self, ID, username, password_hash, avatar):
         self.id = ID
@@ -11,6 +12,7 @@ class User:
     def __str__(self):
         return 'id: {}; username: {}; password_hash: {};'.format(
                self.id, self.username, self.password_hash)
+
 
 class UsersTable:
     def __init__(self):
@@ -131,3 +133,9 @@ class UsersTable:
                                                           (filename, username))
 
         return DBAnswer(True, OK, 'Avatar successfully changed')
+
+    def get_avatar(self, username = None):
+        if username is None:
+            return self.get_avatar(self.current_username())
+
+        return self.get_by_name(username).avatar

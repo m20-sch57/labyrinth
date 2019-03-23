@@ -1,6 +1,7 @@
 from db_answer import DBAnswer, DBError, OK
 from common_functions import *
 
+
 class Room:
     def __init__(self, ID, name, description, creator, users, playing_users, date):
         self.id = ID
@@ -10,10 +11,8 @@ class Room:
         self.users = users
         self.date = date
 
-    def print(self):
-        print('id:', self.id)
-        print('name', self.name)
-        print('date', self.date)
+    def __str__(self):
+        return 'id: {}; name: {}; date: {}'.format(self.id, self.name, self.date)
 
 
 class RoomsTable:
@@ -50,14 +49,18 @@ class RoomsTable:
         self.connect.commit()
 
     def set_name(self, ID, name):
+        # TODO
         pass
 
     def set_description(self, ID, descriptio):
+        # TODO
         pass
 
     def add_player(self, ID, username = None):
+        # TODO
         pass
 
     def remove_player(self, ID, username = None):
+        # TODO
         pass
 

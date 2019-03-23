@@ -1,6 +1,10 @@
 from flask import session
 import sqlite3
 
+from room import RoomsTable
+from user import UsersTable
+from lr_manager import LRManager
+
 
 def connection():
     connect = sqlite3.connect('database.db', check_same_thread = False)
@@ -40,3 +44,4 @@ class Database:
         init_db()
         self.users = UsersTable(self)
         self.rooms = RoomsTable(self)
+        self.lrm = LRManager(self)
