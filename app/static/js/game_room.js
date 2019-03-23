@@ -23,15 +23,48 @@ function getUpdate() {
 	responseData = JSON.parse(xhr.responseText);
 
 	var log = document.getElementById('log');
-	log.innerHTML += ('<p>'+ responseData.msg.join('<br>') +'</p>');
+	msg = document.createElement('p');
+	msg.innerHTML = responseData.msg.join('<br>');
+	log.appendChild(msg);
 
-	var turnState = document.getElementById('turn_state');
+	clearBars();
+	responseData.bars.forEach(function(entry) {
+		switch(entry.type) {
+			case 'common':
+				addCommonBar(entry.name, entry.value);
+		};
+	});
+
+	var turnState = document.getElementById('your-turn');
 	if (responseData.your_turn == 'yes') {
 		turnState.innerHTML = 'Твой ход';
 	} else {
 		turnState.innerHTML = 'Подожди';
 	};
 };
+
+function addCommonBar(name, value) {
+	// <span class="resource-name">Бомбы: </span><span class="resource-value">3</span><br>
+	resourceName = document.createElement('span');
+	resourceName.classsName = 'resource-name';
+	resourceName.innerHTML = name + ': ';
+
+	resourceValue = document.createElement('span');
+	resourceValue.className = 'resource-value';
+	resourceValue.innerHTML = value;
+	
+	br = document.createElement('br');
+
+	var turnState = document.getElementById('turn-state');
+	turnState.appendChild(resourceName);
+	turnState.appendChild(resourceValue);
+	turnState.appendChild(br);
+}
+
+function clearBars() {
+	var turnState = document.getElementById('turn-state');
+	turnState.innerHTML = '';
+}
 
 function ready() {
 	getUpdate();
