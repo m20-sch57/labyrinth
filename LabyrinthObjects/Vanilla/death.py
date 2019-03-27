@@ -14,16 +14,17 @@ class Death(Item):
 
         self.set_name(settings['name'])
 
-    def revive(self, body, revival_msg):
+    def revive(self, body, revival_msg=None):
         if body.lrtype == 'player':
             self.death[body] = False
             self.labyrinth.send_msg(revival_msg or self.REVIVAL_MSG)
         elif body.lrtype == 'creature':
             self.crt_death[body] = False
 
-    def revive_all(self):
+    def revive_all(self, revival_msg=None):
         for player in self.death:
             self.death[player] = False
+            self.labyrinth.send_msg(revival_msg or self.REVIVAL_MSG, player)
         for creature in self.crt_death:
             self.crt_death[creature] = False
 
