@@ -4,7 +4,7 @@ import json
 
 
 class Room:
-    def __init__(self, ID, name, description, creator, users, date):
+    def __init__(self, ID, name, creator, description, users, date):
         self.id = ID
         self.name = name
         self.description = description

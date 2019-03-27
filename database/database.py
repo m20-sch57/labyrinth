@@ -15,25 +15,26 @@ def init_db():
     connect, cursor = connection()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
-                      id TEXT PRIMARY KEY,
- username TEXT, 
-                      password_hash TEXT,
-                      avatar TEXT
-                      )''')
+                    id TEXT PRIMARY KEY,
+                    username TEXT, 
+                    password_hash TEXT,
+                    avatar TEXT
+                    )''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
-                      id TEXT PRIMARY KEY,
-                      name TEXT,
-                      creator TEXT,
-                      description TEXT, 
-                      users TEXT,
-                      create_date TEXT,
-                      FOREIGN KEY (creator) REFERENCES users (username)
-                      )''')
+                    id TEXT PRIMARY KEY,
+                    name TEXT,
+                    creator TEXT,
+                    description TEXT, 
+                    users TEXT,
+                    create_date TEXT,
+                    FOREIGN KEY (creator) REFERENCES users (username)
+                    )''')
 
 def drop_db():
-    connect, cursor = connection()
+    cursor, connect = connection()
 
+    init_db()
     cursor.execute('DROP TABLE rooms')
     cursor.execute('DROP TABLE users')
     connect.commit()

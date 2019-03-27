@@ -89,6 +89,8 @@ class UsersTable:
         if username is None:
             return self.check_password(password, self.current_username())
 
+        # TODO check, that user in db
+
         return self.get_by_name(username).password_hash == sha1_hash(password)
 
     # username
