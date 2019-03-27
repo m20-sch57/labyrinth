@@ -1,9 +1,10 @@
-from db_answer import DBAnswer, DBError, OK
-from common_functions import *
+from database.db_answer import DBAnswer, DBError, OK
+from database.common_functions import *
 
-class LRManger:
-    def __init__(self):
+class LRManager:
+    def __init__(self, db):
         self.list = {}
+        self.db = db
 
     def get_labyrinth(self, room_id):
         return self.list.get(room_id)

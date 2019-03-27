@@ -1,22 +1,22 @@
 from flask import session
 import sqlite3
 
-from room import RoomsTable
-from user import UsersTable
-from lr_manager import LRManager
+from database.room import RoomsTable
+from database.user import UsersTable
+from database.lr_manager import LRManager
 
 
 def connection():
     connect = sqlite3.connect('database.db', check_same_thread = False)
-    cursor = connect.cursor
-    return connect, cursor
+    cursor = connect.cursor()
+    return cursor, connect
 
 def init_db():
     connect, cursor = connection()
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                       id TEXT PRIMARY KEY,
-                      username TEXT, 
+ username TEXT, 
                       password_hash TEXT,
                       avatar TEXT
                       )''')
@@ -42,6 +42,7 @@ def drop_db():
 class Database:
     def __init__(self):
         init_db()
+        self.cursor, self.connect = connection()
         self.users = UsersTable(self)
         self.rooms = RoomsTable(self)
         self.lrm = LRManager(self)
