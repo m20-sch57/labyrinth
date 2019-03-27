@@ -1,6 +1,6 @@
 from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
-from LabyrinthObjects.Vanilla.walls import GlobalWall, Wall, Outside
+from LabyrinthObjects.Vanilla.walls import Wall, Outside
 
 
 class Bomb(Item):
@@ -35,10 +35,7 @@ class Bomb(Item):
 
             health = self.labyrinth.get_unique('health')
 
-            if type(location_in_direction) is GlobalWall:
-                location_in_direction.break_wall(current_location, direction)
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
-            elif type(location_in_direction) is Wall:
+            if type(location_in_direction) is Wall:
                 location_in_direction.break_wall()
                 self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
             elif type(location_in_direction) is Outside:

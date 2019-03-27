@@ -16,3 +16,15 @@ def append_safe(obj, attr, key, value=None):
             obj.__dict__[attr].append(key)
         else:
             obj.__dict__[attr][key] = value
+
+
+def add_safe(obj, attr, value):
+    if hasattr(obj, attr):
+        obj.__dict__[attr].add(value)
+    else:
+        obj = set([value])
+
+
+def remove_safe(obj, attr, value):
+    if hasattr(obj, attr):
+        obj.__dct__[attr].discard(value)

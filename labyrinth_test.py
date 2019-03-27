@@ -1,9 +1,5 @@
-import sys
-from LabyrinthEngine import Labyrinth, Player, load_lrmap, load_lrsave
-
-sys.path.append('LabyrinthObjects')
-from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal,\
-    FirstAidPost, Bear, Treasure, Exit
+from LabyrinthEngine import load_lrmap, load_lrsave
+from LabyrinthObjects.Vanilla import Bear, Treasure
 
 #
 # ┌───┬───────────┐
@@ -22,11 +18,12 @@ from Vanilla import Legs, EmptyLocation, Outside, Wall, Hole, Gun, Bomb, Arsenal
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1'])   
-    print('All lrobjects: ', TestLR.get_objects())
+    TestLR = load_lrmap('example', 'example', ['player #1'])
     while True:
+
         print('\n')
         ap = TestLR.get_active_player()
+
         print('┌──────────────────────────────────────────────────────────┐')
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
@@ -39,12 +36,11 @@ if __name__ == '__main__':
         print('│bullets            :  {:<36}│'.format(TestLR.get_unique('ammo').bullets[ap]))
         print('└──────────────────────────────────────────────────────────┘')
 
-        print(TestLR.get_bars(ap))
-
         ats = TestLR.get_active_player_ats()
         ats[0:-1:4] = list(map(lambda x: '\n'+x, ats[0:-1:4]))
-        print('; '.join(ats), end='\n\n')
+        print('; '.join(ats), end = '\n\n')
+
         msgs = TestLR.make_turn(input('(' + TestLR.get_active_player().get_username() + ') '))
+
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))
-

@@ -18,6 +18,8 @@ class Labyrinth:
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
             player.labyrinth = self
+            for flag in settings['player'].get('flags', []):
+                player.add_flag(flag)
         for player in dead_players:
             player._lrtype = 'dead_player'
 
@@ -31,6 +33,8 @@ class Labyrinth:
             for i in range(len(lrtypes[lrtype])):
                 obj = lrtypes[lrtype][i]
                 obj.labyrinth = self
+                for flag in settings[obj.lrtype + 's'][i].get('flags', []):
+                    obj.add_flag(flag)
                 obj.set_settings(settings[obj.lrtype + 's'][i], *lrlist)
 
         self.locations = set(locations)
@@ -210,8 +214,9 @@ class Labyrinth:
                     buttons.append(btn_info)
         return buttons
 
-    def get_bars(self, player):
+    def get_bars(self, username):
         bars = []
+        player = self.get_objects('player', lambda p: p.username == username)[0]
         for obj in self.get_all_objects():
             for bar in obj.get_bars():
                 bar_info = bar.get(player)

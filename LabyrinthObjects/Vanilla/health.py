@@ -37,6 +37,11 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] -= 1
 
+            if body.have_flag('drop_items_when_injured'):
+                location = body.get_parent()
+                for item in body.get_children('item'):
+                    item.set_parent(location)
+
             if self.hp[body] == 0:
                 self.labyrinth.get_unique('death').kill(body, death_msg)
             self.update_health_bar()

@@ -7,17 +7,16 @@
     {{ room['name'] }}
 </div>
 <div class="game-player-condition">
-    <p id="turn_state"></p>
-	<span class="resource">Бомбы:</span> 3
-	<span class="resource">Пули:</span> 3
+	<p id='your-turn'></p>
+	<p id="turn-state"></p>
 	<div class="binary-ps">
-	<span id="wounded"></span>    <span id="carrying"></span>
- <!--Тут будет появляться "Ранен", если игрок ранен-->
+		<span id="wounded"></span>    
+		<span id="carrying"></span>
 	</div>
 </div>
 <div class="game-actions">
     <form>
-	    <button value={{ room['room_id'] }} name="leave_button" class="game-button">Покинуть игру</button>
+	    <button name="leave_button" class="game-button">Покинуть игру</button>
 	</form>
 </div>
 <div id='info' post="{{ url_for('game_room', room_id=room['room_id']) }}"  room_id="{{ room['room_id'] }}"></div>
