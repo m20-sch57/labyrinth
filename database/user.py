@@ -1,3 +1,6 @@
+from flask import session
+import base64
+
 from database.db_answer import DBAnswer, DBError, OK
 from database.common_functions import *
 
@@ -82,6 +85,7 @@ class UsersTable:
         password_hash = sha1_hash(password)
         self.cursor.execute('''UPDATE users SET password_hash=? WHERE username=?''', 
                                [password_hash, username])
+        self.connect.commit()
         return DBAnswer(True, OK, 'Password successfully changed')
 
 
@@ -90,7 +94,6 @@ class UsersTable:
             return self.check_password(password, self.current_username())
 
         # TODO check, that user in db
-
         return self.get_by_name(username).password_hash == sha1_hash(password)
 
     # username
@@ -110,6 +113,7 @@ class UsersTable:
 
         self.cursor.execute('''UPDATE users SET username=? WHERE username=?''', 
                                [new_username, username])
+        self.connect.commit()
         return DBAnswer(True, OK, 'Username successfully changed')
 
     # avatar
@@ -140,6 +144,7 @@ class UsersTable:
 
         self.cursor.execute('UPDATE users SET avatar=? WHERE username=?', 
                                                           (filename, username))
+        self.connect.commit()
 
         return DBAnswer(True, OK, 'Avatar successfully changed')
 

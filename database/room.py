@@ -82,6 +82,7 @@ class RoomsTable:
         users.append(username)
         users_string = users_to_string(users) 
         self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
+        self.connect.commit()
 
         return DBAnswer(True, OK, 'User successfully added')
 
@@ -98,6 +99,7 @@ class RoomsTable:
         users.remove(username)
         users_string = users_to_string(users)
         self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
+        self.connect.commit()
 
         return DBAnswer(True, OK, 'User successfully removed')
 

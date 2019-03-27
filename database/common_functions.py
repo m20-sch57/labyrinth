@@ -1,4 +1,7 @@
 from hashlib import sha1
+import random
+import string
+import os
 
 def sha1_hash(s):
     return sha1(s.encode('utf-8')).hexdigest()

@@ -1,4 +1,3 @@
-from flask import session
 import sqlite3
 
 from database.room import RoomsTable
