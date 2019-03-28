@@ -9,7 +9,7 @@ class Outside(Location):
 
 
 class Wall(Location):
-    def set_settings(self, *args):
+    def __init__(self):
         self.add_flag('border')
 
     def break_wall(self):
