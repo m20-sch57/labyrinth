@@ -18,7 +18,7 @@ from LabyrinthObjects.Vanilla import Bear, Treasure
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1'])
+    TestLR = load_lrmap('example', 'example', ['player #1'], 'imagepath')
     while True:
 
         print('\n')

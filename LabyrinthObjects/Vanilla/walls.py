@@ -4,10 +4,14 @@ from LabyrinthEngine import Location
 
 class Outside(Location):
     def set_settings(self, *args):
+        self.add_flag('border')
         self.labyrinth.set_unique_key(self, 'outside')
 
 
 class Wall(Location):
+    def set_settings(self, *args):
+        self.add_flag('border')
+
     def break_wall(self):
         for loc in self.labyrinth.get_objects('location'):
             for direction in loc.directions:
@@ -17,6 +21,3 @@ class Wall(Location):
                     else:
                         outside = self.labyrinth.get_unique('outside')
                         loc.set_neighbour(direction, outside)
-
-
-borders = [Outside, Wall]
