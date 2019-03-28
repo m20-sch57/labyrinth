@@ -1,48 +1,42 @@
-﻿from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
+from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
+from LabyrinthEngine.ui_status_bars import StringBar
+from LabyrinthEngine.common_functions import get_attr_safe, append_safe
 import json
 
 
-def get_attr_safe(obj, attr, default_value):
-    if hasattr(obj, attr):
-        return obj.__dict__[attr]
-    else:
-        return default_value
-
-
 class LabyrinthObject:
-    '''
+    """
     LabyrinthObject is class of objects that can be used by players at their turns
-    '''
+    """
 
     def new_at(self, function, condition_function, turn_name):
-        '''
+        """
         new available turn
-        '''
+        """
+        append_safe(self, 'turn_set', turn_name, {'function': function, 'condition': condition_function})
 
-        if hasattr(self, 'turn_set'):
-            self.turn_set[turn_name] = {
-                'function': function, 'condition': condition_function}
-        else:
-            self.turn_set = {turn_name: {
-                'function': function, 'condition': condition_function}}
+    def add_flag(self, flag_name):
+        append_safe(self, 'flags', flag_name)
+
+    def remove_flag(self, flag_name):
+        remove_safe(self, 'flags', flag_name)
+
+    def have_flag(self, flag_name):
+        return flag_name in get_attr_safe(self, 'flags', set())
 
     def new_button(self, turn, image):
-        if hasattr(self, 'button_set'):
-            self.button_set.append(CommonButton([turn], image))
-        else:
-            self.button_set = [CommonButton([turn], image)]
+        append_safe(self, 'button_set', CommonButton([turn], image))
 
     def new_dbutton(self, turns, image):
-        if hasattr(self, 'button_set'):
-            self.button_set.append(DirectionButton(turns, image))
-        else:
-            self.button_set = [DirectionButton(turns, image)]
+        append_safe(self, 'button_set', DirectionButton(turns, image))
 
     def new_lbutton(self, turns, image, turn_images):
-        if hasattr(self, 'button_set'):
-            self.button_set.append(ListButton(turns, image, turn_images))
-        else:
-            self.button_set = [ListButton(turns, image, turn_images)]
+        append_safe(self, 'button_set', ListButton(turns, image, turn_images))
+
+    def new_status_bar(self, name, init_value):
+        bar = StringBar(name, init_value)
+        append_safe(self, 'bar_set', bar)
+        return bar
 
     def set_parent(self, parent):
         if not isinstance(parent, LabyrinthObject):
@@ -85,14 +79,17 @@ class LabyrinthObject:
     def get_buttons(self):
         return get_attr_safe(self, 'button_set', [])
 
+    def get_bars(self):
+        return get_attr_safe(self, 'bar_set', [])
+
     @property
     def lrtype(self):
         return self._lrtype
 
     def main(self):
-        '''
+        """
         Основная функция объекта. Определяется здесь, чтобы потом не было ошибки при её вызове.
-        '''
+        """
         pass
 
     def set_settings(self, settings, *args):

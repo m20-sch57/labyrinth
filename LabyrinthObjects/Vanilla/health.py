@@ -3,13 +3,17 @@ from LabyrinthEngine import Item
 
 
 class Health(Item):
-    # def __init__(self):
-    #     def hurtself():
-    #         self.hurt(self.labyrinth.get_active_player())
-    #     self.new_at(hurtself, lambda: True, 'Ранить себя')
-    #     def healself():
-    #         self.heal(self.labyrinth.get_active_player())
-    #     self.new_at(healself, lambda: True, 'Вылечиться')
+    def __init__(self):
+        # def hurtself():
+        #     self.hurt(self.labyrinth.get_active_player())
+        # self.new_at(hurtself, lambda: True, 'Ранить себя')
+        # def healself():
+        #     self.heal(self.labyrinth.get_active_player())
+        # self.new_at(healself, lambda: True, 'Вылечиться')
+        self.health_bar = self.new_status_bar('Здоровье', None)
+
+    def update_health_bar(self):
+        self.health_bar.set_all_values(self.hp)
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.MAX_PLAYER_HEALTH = settings.get('max_player_health') or MAX_PLAYER_HEALTH
@@ -24,6 +28,7 @@ class Health(Item):
 
         self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
 
+        self.update_health_bar()
 
     def hurt(self, body):
         if body.lrtype == 'creature':
@@ -34,14 +39,21 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] -= 1
 
+            if body.have_flag('drop_items_when_injured'):
+                location = body.get_parent()
+                for item in body.get_children('item'):
+                    item.set_parent(location)
+
             if self.hp[body] == 0:
                 index = self.labyrinth.players_list.index(body)
                 del self.labyrinth.players_list[index]
 
                 self.labyrinth.send_msg(self.DEATH_MSG, body)
+            self.update_health_bar()
 
     def heal(self, body):
         if body.lrtype == 'creature':
             self.creature_hp[body] = self.MAX_CREATURE_HEALTH
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
+            self.update_health_bar()

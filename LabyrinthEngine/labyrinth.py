@@ -19,6 +19,8 @@ class Labyrinth:
                 direction: locations[k] for direction, k in adjacence_list[i].items()}
         for player in players:
             player.labyrinth = self
+            for flag in settings['player'].get('flags', []):
+                player.add_flag(flag)
         for player in dead_players:
             player._lrtype = 'dead_player'
 
@@ -32,6 +34,8 @@ class Labyrinth:
             for i in range(len(lrtypes[lrtype])):
                 obj = lrtypes[lrtype][i]
                 obj.labyrinth = self
+                for flag in settings[obj.lrtype + 's'][i].get('flags', []):
+                    obj.add_flag(flag)
                 obj.set_settings(settings[obj.lrtype + 's'][i], *lrlist)
 
         self.locations = set(locations)
@@ -43,12 +47,12 @@ class Labyrinth:
         self.to_send = {}
         self.active_player_number = 0
 
-        '''
+        """
         turns_log
         [{'player': first_player_name, 'turn': his_turn}, {'player': second_player_name, 'turn': his_turn}, ...]
         msgs_log
         {player_name: [first_msg, second_msg, ...]}
-        '''
+        """
         self.turns_log = []
         self.msgs_log = {}
 
@@ -77,7 +81,6 @@ class Labyrinth:
 
         return answer
 
-
     def set_unique_key(self, obj, key):
         if key in self.unique_objects:
             pass
@@ -86,15 +89,18 @@ class Labyrinth:
             self.unique_objects[key] = obj
 
     def make_turn(self, turn):
-        '''
+        """
         Вызвать эту функцию, если активный игрок сделал ход turn
 
         to_send: словарь сообщения для отправки.
         {username1: msg1, ... , username_n: msg_n}
-        '''
+        """
 
         # обнуляем to_send
         self.clear_to_send()
+
+        # обновляем лог ходов
+        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
 
         # В списке возможных ходов локаций и предметов ищем ход с именем turn
         # и запускаем действия найденных локаций и предметов
@@ -113,8 +119,6 @@ class Labyrinth:
         self.active_player_number += 1
         self.active_player_number %= len(self.players_list)
 
-        # обновляем лог ходов
-        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
         # обновляем лог сообщений
         for player in self.get_objects(lrtype='player'):
             username = player.get_username()
@@ -123,7 +127,7 @@ class Labyrinth:
             else:
                 self.msgs_log[username] = [self.player_to_send(username)]
         # если save_mode == True, сохраняем всё в файл tmp\test.log
-        if self.save_mode == True:
+        if self.save_mode:
             self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
@@ -139,9 +143,9 @@ class Labyrinth:
         return self.get_active_player().get_username()
 
     def get_active_player_ats(self):
-        '''
+        """
         Возвращает возможные для активного игрока ходы
-        '''
+        """
 
         active_player_ats = []
         for obj in self.get_all_objects():
@@ -170,25 +174,25 @@ class Labyrinth:
         save['users'] = list(map(lambda user: user.get_username(), self.players_list))
         save['turns'] = self.turns_log
         with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
-            json.dump(save, f, indent = 4, ensure_ascii=False)
+            json.dump(save, f, indent=4, ensure_ascii=False)
 
     def get_msgs(self, username):
-        '''
+        """
         Возвращает все сообщения отосланные игроку username
-        '''
+        """
 
         if username in self.msgs_log:
             return self.msgs_log[username]
         else:
             return [] 
 
-    def get_turns(self, number = None, username = None):
-        '''
+    def get_turns(self, number=None, username=None):
+        """
         Возвращает все ходы сделанные игроками
         Возвращает ходы сделанные только указанным игроками, если указан параметр username
         Возвращает ход под номером number с конца, если указан параметр number
         Например get_turns(1, 'Вася') вернёт последний ход Васи
-        '''
+        """
 
         if username is None:
             if number is None:
@@ -210,3 +214,12 @@ class Labyrinth:
                 if btn_info is not None:
                     buttons.append(btn_info)
         return buttons
+
+    def get_bars(self, username):
+        bars = []
+        player = self.get_objects('player', lambda p: p.username == username)[0]
+        for obj in self.get_all_objects():
+            for bar in obj.get_bars():
+                bar_info = bar.get(player)
+                bars.append(bar_info)
+        return bars

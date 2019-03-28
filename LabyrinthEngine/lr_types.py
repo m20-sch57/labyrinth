@@ -10,9 +10,9 @@ class Item(LO):
 
 
 class Player(LO):
-	'''
+	"""
 	Class of players of the game
-	'''
+	"""
 
 	_lrtype = 'player'
 

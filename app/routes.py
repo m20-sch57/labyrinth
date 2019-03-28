@@ -1,11 +1,16 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
-from flask import render_template, request, session, redirect, url_for, send_file
-from functools import wraps
+from flask import render_template, request, session, redirect, url_for, flash, send_file
 from hashlib import sha1
-import random, string, json, io, sys
+import random
+import string
+from functools import wraps
+import json
+import os
+import sys
+import io
 
 from LabyrinthEngine import load_lrmap
 
@@ -98,6 +103,18 @@ def change_password():
     return render_template('login_register/change_password.html')
 
 
+@app.route('/change_avatar', methods=['POST', 'GET'])
+def change_avatar():
+    if request.method == 'POST':
+        username = session['username']
+        avatar = request.form['avatar']
+
+        answer = dbase.change_avatar(username, request.form['avatar'])
+        if not answer['ok']:
+            flash(answer['error'])
+    return render_template('login_register/change_avatar.html')
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
@@ -135,8 +152,8 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    #username = session.get('username')
-    return simple_render_template('profile.html')
+    username = session.get('username')
+    return simple_render_template('profile.html', ava='/static/images/avatars/'+dbase.get_avatar(username))
 
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
@@ -221,21 +238,14 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
-            # prefix = '/static/res/button_images/'
-            # buttons = [
-            #     {'type': 'lbutton', 'turns': ['Идти вверх', 'Идти вниз', 'Идти вправо', 'Идти влево'], 
-            #         'image': prefix + 'leg.png',
-            #         'turn_images': [prefix + 'up.png',prefix + 'down.png',prefix + 'right.png',prefix + 'left.png']},
-            #     {'type': 'button', 'turn': 'Поднять клад', 'image': prefix + 'treasure_up.png'}
-            # ]
-
+            bar = labyrinth.get_bars(username)
             btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'buttons': btn})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
             else:
-                return json.dumps({'your_turn': 'no', 'msg': msg})
+                return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_username() == username:

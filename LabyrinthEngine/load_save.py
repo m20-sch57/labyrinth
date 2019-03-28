@@ -8,6 +8,7 @@ import sys
 class LabyrinthError(Exception):
 	pass
 
+
 class LabyrinthLoadError(LabyrinthError):
 	def __init__(self, msg, file):
 		self.msg = msg
@@ -24,6 +25,7 @@ def get_attr_safe(obj, attr, default_value):
 		return obj.__dict__[attr]
 	else:
 		return default_value
+
 
 def load_lrsave(loadfile, savefile):
 	with open('tmp\\' + savefile + '.save.json', 'r', encoding='utf-8') as f:
@@ -85,12 +87,11 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 				yield locs[index % len(locs)]
 				index -= 1
 	else:
-		raise LabyrinthLoadError('Unexpected "distribution" value: "{}"'.format( \
+		raise LabyrinthLoadError('Unexpected "distribution" value: "{}"'.format(
 			lrmap['start_positions']['distribution']), loadfile + '.map.json')
 	position = get_start_position()
 
 	for player in players:
 		player.set_parent(lrtypes['locations'][next(position)])
-
 
 	return Labyrinth(*lrlists, players, adjacence_list, settings, savefile, imagepath, loadseed=loadseed, seed=lrseed)

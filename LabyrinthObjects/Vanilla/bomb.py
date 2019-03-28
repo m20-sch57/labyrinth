@@ -1,6 +1,6 @@
 from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
-from LabyrinthObjects.Vanilla.walls import GlobalWall, Wall, Outside, borders
+from LabyrinthObjects.Vanilla.walls import Wall, Outside
 
 
 class Bomb(Item):
@@ -17,10 +17,14 @@ class Bomb(Item):
         self.BLOW_UP_SUCCESS_MSG = settings['consts'].get('blow_up_success_msg') or BLOW_UP_SUCCESS_MSG
         self.BLOW_UP_FAILURE_MSG = settings['consts'].get('blow_up_failure_msg') or BLOW_UP_FAILURE_MSG
         self.BLOW_UP_PROHIBITION_MSG = settings['consts'].get('blow_up_prohibition_msg') or BLOW_UP_PROHIBITION_MSG
-        self.CAN_PLAYER_HURT_EVB_IN_DIRECTION = settings['consts'].get('can_player_hurn_evb_in_derection') or CAN_PLAYER_HURT_EVB_IN_DIRECTION
-        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings['consts'].get('blow_up_not_players_injuring_msg') or BLOW_UP_NOT_PLAYERS_INJURING_MSG
-        self.BLOW_UP_SINGLE_INJURING_MSG = settings['consts'].get('blow_up_single_injuring_msg') or BLOW_UP_SINGLE_INJURING_MSG
-        self.BLOW_UP_MASSIVE_INJURING_MSG = settings['consts'].get('blow_up_massive_injuring_msg') or BLOW_UP_MASSIVE_INJURING_MSG
+        self.CAN_PLAYER_HURT_EVB_IN_DIRECTION = settings['consts'].get('can_player_hurt_evb_in_direction') or \
+                                                CAN_PLAYER_HURT_EVB_IN_DIRECTION
+        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings['consts'].get('blow_up_not_players_injuring_msg') or \
+                                                BLOW_UP_NOT_PLAYERS_INJURING_MSG
+        self.BLOW_UP_SINGLE_INJURING_MSG = settings['consts'].get('blow_up_single_injuring_msg') or \
+                                           BLOW_UP_SINGLE_INJURING_MSG
+        self.BLOW_UP_MASSIVE_INJURING_MSG = settings['consts'].get('blow_up_massive_injuring_msg') or \
+                                            BLOW_UP_MASSIVE_INJURING_MSG
 
     def turn_blow_up(self, direction):
         def blow_up():
@@ -31,13 +35,10 @@ class Bomb(Item):
 
             current_location = active_player.get_parent()
             location_in_direction = current_location.get_neighbour(direction)
-            
+
             health = self.labyrinth.get_unique('health')
 
-            if type(location_in_direction) is GlobalWall:
-                location_in_direction.break_wall(current_location, direction)
-                self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
-            elif type(location_in_direction) is Wall:
+            if type(location_in_direction) is Wall:
                 location_in_direction.break_wall()
                 self.labyrinth.send_msg(self.BLOW_UP_SUCCESS_MSG, active_player)
             elif type(location_in_direction) is Outside:
@@ -57,10 +58,12 @@ class Bomb(Item):
                         msg = self.BLOW_UP_MASSIVE_INJURING_MSG
                     self.labyrinth.send_msg(msg
                                             + ', '.join(list(map(lambda pl: pl.get_username(),
-                                                                 filter(lambda obj: obj.lrtype == 'player', players_in_direction))))
+                                                                 filter(lambda obj: obj.lrtype == 'player',
+                                                                        players_in_direction))))
                                             + '.', active_player)
                 else:
                     self.labyrinth.send_msg(self.BLOW_UP_FAILURE_MSG, active_player)
+
         return blow_up
 
     def condition(self):
