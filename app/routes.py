@@ -2,15 +2,19 @@
 
 from app import app, dbase, socketio, labyrinths_list
 from flask_socketio import emit, join_room, leave_room
-from flask import render_template, request, session, redirect, url_for, flash
+from flask import render_template, request, session, redirect, url_for, flash, send_file
 from hashlib import sha1
 import random
 import string
 from functools import wraps
 import json
 import os
+import sys
+import io
 
 from LabyrinthEngine import load_lrmap
+
+
 
 '''
 help functions
@@ -205,7 +209,8 @@ def waiting_room(room_id):
                  broadcast=True, room=room_id, namespace='/wrws')
 
         elif event_type == 'start_game':
-            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id))
+            imagepath='/static/images/button_images/'
+            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id), imagepath)
             labyrinths_list.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, room=room_id, namespace='/wrws')
@@ -234,10 +239,11 @@ def game_room(room_id):
 
         if event_type == 'update':
             bar = labyrinth.get_bars(username)
+            btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
             else:
                 return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
 
@@ -280,3 +286,4 @@ def wrws_pl():
              broadcast=True, room=room_id, namespace='/wrws')
 
     session.pop('room', None)
+

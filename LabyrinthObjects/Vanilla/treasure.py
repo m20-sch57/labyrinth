@@ -7,6 +7,8 @@ class Treasure(Item):
         self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
         self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
 
+        self.new_button(TAKE_TREASURE, 'treasure_up.png')
+
     def set_settings(self, settings, locations, *args):
         self.is_true = settings['is_true']
         self.set_parent(locations[settings['position']])

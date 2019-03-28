@@ -10,6 +10,10 @@ class Gun(Item):
         self.new_at(self.turn_fire('left'), self.condition, FIRE_LEFT)
         self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
 
+        self.new_lbutton([FIRE_UP, FIRE_DOWN, FIRE_LEFT, FIRE_RIGHT], 
+            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
+
+
     def set_settings(self, settings, locations, items, creatures, players):
         self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurt_evb_in_same_loc') or\
                                                CAN_PLAYER_HURT_EVB_IN_SAME_LOC

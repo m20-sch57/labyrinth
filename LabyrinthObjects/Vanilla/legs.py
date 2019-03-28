@@ -10,6 +10,8 @@ class Legs(Item):
         self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
         self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
 
+        self.new_lbutton([UP_TURN, RIGHT_TURN, DOWN_TURN, LEFT_TURN], 'leg.png', ['up.png', 'right.png', 'down.png', 'left.png'])
+
     def set_settings(self, settings, locations, items, creatures, players):
         self.WALL_MSG = settings['consts'].get('wall_msg') or WALL_MSG
 
