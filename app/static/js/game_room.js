@@ -21,6 +21,7 @@ function getUpdate() {
 	var xhr = xhrOpen('update');
 	xhr.send();
 	responseData = JSON.parse(xhr.responseText);
+	console.log(responseData);
 
 	var log = document.getElementById('log');
 	log.innerHTML += ('<p>'+ responseData.msg.join('<br>') +'</p>');
@@ -35,7 +36,7 @@ function getUpdate() {
 
 function ready() {
 	getUpdate();
-	var socket = io.connect('http://' + document.domain + ':' + location.port + '/grws');
+	var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 	socket.on('update', function(msg) {
 		switch (msg.event) {
 			case 'player_make_turn':

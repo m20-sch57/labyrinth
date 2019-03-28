@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id='data' data-post="{{ url_for('game_room', room_id=room['room_id']) }}"  data-room_id="{{ room['room_id'] }}"></div>
+<div id='data' data-post="{{ url_for('game_room', room_id=room.id) }}"  data-room_id="{{ room.id }}"></div>
 
 <div class="game-room-header">
     {{ room['name'] }}
@@ -17,10 +17,10 @@
 </div>
 <div class="game-actions">
     <form>
-	    <button value={{ room['room_id'] }} name="leave_button" class="game-button">Покинуть игру</button>
+	    <button value="{{ room.id }}" name="leave_button" class="game-button">Покинуть игру</button>
 	</form>
 </div>
-<div id='info' post="{{ url_for('game_room', room_id=room['room_id']) }}"  room_id="{{ room['room_id'] }}"></div>
+<div id='info' post="{{ url_for('game_room', room_id=room.id) }}"  room_id="{{ room.id }}"></div>
 <div class="game-main">
 	<div id="log">
 	</div>
@@ -37,15 +37,15 @@
 	</div>
 </div>
 <div class="players">
-	{% for player in room['player_set'] %}
+	{% for player in room.users %}
 	<div class="player">
 		{{ player }}
 	</div>
 	{% endfor %}
 </div>
-{% if room['description'] != None %}
+{% if room.description != None %}
 	<div class="location">
-        Description: {% autoescape false %}{{ room['description'].split('\n') | join(' <br> ')}}{% endautoescape %}
+        Description: {% autoescape false %}{{ room.description.split('\n') | join(' <br> ')}}{% endautoescape %}
 	</div>
 {% endif %}
 <script src="{{ url_for('static', filename='js/game_room.js') }}"></script>

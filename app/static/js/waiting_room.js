@@ -39,7 +39,8 @@ function startGame() {
 	xhr.send();
 };
 
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
+console.log('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'change_name':
@@ -75,6 +76,11 @@ socket.on('update', function(msg) {
 socket.on('connect', function() {
 	socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
 });
+socket.on('disconnect', function(reason) {
+	console.log(reason);
+	socket.emit('exit', {'lol': 'kek'});
+	console.log('kek');
+})
 
 var changeNameInput = document.getElementById('room_name');
 changeNameInput.onkeydown = changeName;

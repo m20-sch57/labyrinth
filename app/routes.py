@@ -1,7 +1,8 @@
 ﻿# encoding: utf-8
 
 from app import app, db, socketio
-from flask_socketio import emit, join_room, leave_room
+from flask_socketio import emit
+from app.room_namespace import RoomNamespace
 from flask import render_template, request, session, redirect, url_for, flash
 from hashlib import sha1
 import random
@@ -182,6 +183,8 @@ def create_room():
 
     room_id = genereate_room_id(8)
     db.rooms.add(room_id, session.get('username'))
+    socketio.on_namespace(RoomNamespace('/' + room_id))
+
     return redirect(url_for('waiting_room', room_id=room_id))
 
 
@@ -195,23 +198,23 @@ def waiting_room(room_id):
             name = request.form.get('new_name')
             db.rooms.set_name(room_id, name)
             emit('update', {'event': 'change_name', 'name': name},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'change_description':
             description = request.form.get('new_description')
             db.rooms.set_description(room_id, description)
             emit('update', {'event': 'change_description', 'description': description},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':
             labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users)
             db.lrm.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'delete_room':
             emit('update', {'event': 'delete_room'},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
             db.rooms.delete(room_id)
 
     username = session.get('username')
@@ -244,37 +247,8 @@ def game_room(room_id):
                 turn = request.form.get('turn')
                 labyrinth.make_turn(turn)
                 emit('update', {'event': 'player_make_turn'},
-                     broadcast=True, room=room_id, namespace='/grws')
+                     broadcast=True, namespace='/'+room_id)
     if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
         return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id), hide_header=True)
-
-
-@socketio.on('player join', namespace='/grws')
-@socketio.on('player join', namespace='/wrws')
-def wrws_pj(msg):
-    room_id = msg['room_id']
-    username = session.get('username')
-
-    join_room(room_id)
-    db.rooms.add_user(room_id)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(db.rooms.get(room_id).users)},
-         broadcast=True, room=room_id, namespace='/wrws')
-
-    session['room'] = room_id
-
-
-@socketio.on('disconnect', namespace='/grws')
-@socketio.on('disconnect', namespace='/wrws')
-def wrws_pl():
-    room_id = session.get('room')
-    username = session.get('username')
-
-    leave_room(room_id)
-    db.rooms.remove_user(room_id)
-    if db.rooms.get(room_id) is not None:
-        emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(db.rooms.get(room_id).users)},
-             broadcast=True, room=room_id, namespace='/wrws')
-
-    session.pop('room', None)

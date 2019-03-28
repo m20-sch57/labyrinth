@@ -9,7 +9,7 @@ class Room:
         self.name = name
         self.description = description
         self.creator = creator
-        self.users = users
+        self.users = users_from_string(users)
         self.date = date
 
     def __str__(self):
@@ -69,10 +69,9 @@ class RoomsTable:
 
     def add_user(self, ID, username = None):
         if username is None:
-            return self.add_user(ID, self.db.users.current())
+            return self.add_user(ID, self.db.users.current_username())
 
-        users_string = self.get(ID).users
-        users = users_from_string(users_string)
+        users = self.get(ID).users
 
         # TODO check, that user in db
 
@@ -88,10 +87,9 @@ class RoomsTable:
 
     def remove_user(self, ID, username = None):
         if username is None:
-            return self.add_user(ID, self.db.users.current())
+            return self.remove_user(ID, self.db.users.current_username())
 
-        users_string = self.get(ID).users
-        users = users_from_string(users_string) 
+        users = self.get(ID).users
 
         if username not in users:
             return DBAnswer(False, DBError.IncorrectUser, 'This user not in this room')
@@ -105,7 +103,5 @@ class RoomsTable:
 
     def page_by_page(self, rooms_on_page):
         self.cursor.execute('SELECT id FROM rooms')
-        # print(self.cursor.fetchall())
         rooms = [self.get(ID[0]) for ID in self.cursor.fetchall()]
         return break_list(rooms, rooms_on_page)
-
