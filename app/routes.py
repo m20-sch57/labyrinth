@@ -1,26 +1,18 @@
-﻿# encoding: utf-8
-
+﻿from flask import render_template, request, session, redirect, url_for
+from app.room_namespace import RoomNamespace
+from LabyrinthEngine import load_lrmap
 from app import app, db, socketio
 from flask_socketio import emit
-from app.room_namespace import RoomNamespace
-from flask import render_template, request, session, redirect, url_for, flash
-from hashlib import sha1
+from functools import wraps
 import random
 import string
-from functools import wraps
 import json
-import os
 
-from LabyrinthEngine import load_lrmap
+
 
 '''
 help functions
 '''
-
-
-def sha1_hash(s):
-    return sha1(s.encode('utf-8')).hexdigest()
-
 
 def login_required(f):
     @wraps(f)
@@ -148,7 +140,6 @@ def register_failed():
 @login_required
 def profile():
     username = session.get('username')
-    print(db.users.current().avatar)
     return simple_render_template('profile.html', ava='/static/images/avatars/'+db.users.get_avatar(username))
 
 
