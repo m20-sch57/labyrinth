@@ -1,6 +1,5 @@
 from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
-from LabyrinthObjects.Vanilla.walls import borders
 
 
 class Legs(Item):
@@ -19,7 +18,7 @@ class Legs(Item):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
-            if type(next_position) in borders:
+            if next_position.have_flag('border'):
                 self.labyrinth.send_msg(self.WALL_MSG, active_player, 1)
             else:
                 active_player.set_parent(next_position)

@@ -1,7 +1,6 @@
 ﻿from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Creature
 from LabyrinthObjects.Vanilla.exit import Exit
-from LabyrinthObjects.Vanilla.walls import borders
 
 
 class Bear(Creature):
@@ -13,7 +12,7 @@ class Bear(Creature):
 
     def move(self, direction):
         next_position = self.get_parent().get_neighbour(direction)
-        if type(next_position) not in borders + [Exit]:
+        if not (next_position.have_flag('border') or next_position.have_flag('safe_zone')):
             self.set_parent(next_position)
 
     def main(self):
