@@ -19,7 +19,10 @@ class DBError(IntEnum):
     IncorrectPassword = 11
     IncorrectAvatar = 12
     IncorrectUser = 20
-    LabyrinthAlreadyExist = 30
-    LabyrinthNotExist = 31
+    RoomAlreadyExist = 30
+    RoomNotExist = 31
+    IncorrectRoomName = 32
+    LabyrinthAlreadyExist = 40
+    LabyrinthNotExist = 41
 
 OK = DBError.AlwaysOk

@@ -52,15 +52,25 @@ class RoomsTable:
         return Room(*room)
 
     def delete(self, ID):
-        # TODO Answer
+        if self.get(ID) is None:
+            return DBAnswer(False, DBError.RoomNotExist, 
+                'Can\'t delete nonexistent room')
 
         self.cursor.execute('DELETE FROM rooms WHERE id=?', [ID])
         self.connect.commit()
+        return DBAnswer(True, OK, 'Room successfully deleted')
 
     def set_name(self, ID, name):
-        # TODO Answer
+        if self.get(ID) is None:
+            return DBAnswer(False, DBError.RoomNotExist, 
+                'Can\'t set name for nonexistent room')
+        if False: # TODO check, that name is correct
+            return DBAnswer(False, DBError.IncorrectRoomName, 
+                'Name contains invalid characters')
+
         self.cursor.execute('UPDATE rooms SET name=? WHERE id=?', [name, ID])
         self.connect.commit()
+        return DBAnswer(True, OK, '')
 
     def set_description(self, ID, description):
         # TODO Answer
@@ -71,9 +81,14 @@ class RoomsTable:
         if username is None:
             return self.add_user(ID, self.db.users.current_username())
 
-        users = self.get(ID).users
+        if self.get(ID) is None:
+            return DBAnswer(False, DBError.RoomNotExist,
+                'Can\'t add user into nonexistent room')
+        if not self.db.users.have_user(username):
+            return DBAnswer(False, DBError.IncorrectUser, 
+                'Can\'t add nonexistent user into room')
 
-        # TODO check, that user in db
+        users = self.get(ID).users
 
         if username in users:
             return DBAnswer(False, DBError.IncorrectUser, 'This user already in this room')
@@ -88,6 +103,10 @@ class RoomsTable:
     def remove_user(self, ID, username = None):
         if username is None:
             return self.remove_user(ID, self.db.users.current_username())
+
+        if self.get(ID) is None:
+            return DBAnswer(False, DBError.RoomNotExist,
+                'Can\'t remove user from nonexistent room')  
 
         users = self.get(ID).users
 

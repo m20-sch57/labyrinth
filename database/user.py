@@ -80,7 +80,9 @@ class UsersTable:
             return DBAnswer(False, DBError.IncorrectPassword,
                 'Password contains invalid characters or too short')
 
-        # TODO check, that user in db
+        if not self.have_user(username):
+            return DBAnswer(False, DBError.IncorrectUser, 
+                'Can\'t set password for nonexistent user.')
 
         password_hash = sha1_hash(password)
         self.cursor.execute('''UPDATE users SET password_hash=? WHERE username=?''', 
@@ -93,7 +95,9 @@ class UsersTable:
         if username is None:
             return self.check_password(password, self.current_username())
 
-        # TODO check, that user in db
+        if not self.have_user(username):
+            return False
+
         return self.get_by_name(username).password_hash == sha1_hash(password)
 
     # username
@@ -102,14 +106,15 @@ class UsersTable:
         if username is None:
             return self.set_username(new_username, self.current_username())
 
-        # TODO check, that user in db
-
         if self.have_user(new_username):
             return DBAnswer(False, DBError.IncorrectUsername, 
                 'User with same username already exist')
         if False: # TODO check username for length and invalid characters
             return DBAnswer(False, DBError.IncorrectUsername,
                 'Username contains invalid characters or too short/long')
+        if not self.have_user(username):
+            return DBAnswer(False, DBError.IncorrectUser, 
+                'Can\'t set username for nonexistent user.')
 
         self.cursor.execute('''UPDATE users SET username=? WHERE username=?''', 
                                [new_username, username])
@@ -122,7 +127,9 @@ class UsersTable:
         if username is None:
             return self.set_avatar(avatar, self.current_username())
 
-        # TODO check, that user in db
+        if not self.have_user(username):
+            return DBAnswer(False, DBError.IncorrectUser, 
+                'Can\'t set avatar for nonexistent user.')
 
         startstring = 'data:image/png;base64,'
         path = 'app/static/images/avatars/'
@@ -152,6 +159,7 @@ class UsersTable:
         if username is None:
             return self.get_avatar(self.current_username())
 
-        # TODO check, that user in db
+        if not self.have_user(username):
+            return None
 
         return self.get_by_name(username).avatar
