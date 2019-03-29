@@ -85,11 +85,13 @@ html, body{
 .action-link { 
   display: block;
   text-decoration: None;
+  color: #ff7b7b;
 }
 
 .action-link:hover {
-  background: rgb(128, 128, 255);
+  background: rgb(174, 15, 255);
   color: rgb(230, 230, 230);
+  cursor: pointer;
 }
 
 .room-name { 
@@ -107,7 +109,6 @@ html, body{
   top: 0%;
   left: 0%;
   overflow: auto;
-  border: 1px solid rgb(200, 200, 200);
 }
 
 .room-info {
@@ -115,6 +116,8 @@ html, body{
   position: absolute;
   top: 0%;
   left: 33.5%;
+  color: #000000;
+  text-align: center;
 }
 
 .room-settings {
@@ -240,5 +243,10 @@ html, body{
 }
 
 .player {
-	border-bottom: 1px solid #ba55d3;
+	text-align: center;
+	margin-bottom: 7px;
+	color: #ff7e7e;
+	background: #efefef;
+	border: 1px solid #ba55d3;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
 }
