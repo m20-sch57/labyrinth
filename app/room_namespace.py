@@ -1,5 +1,9 @@
 from flask_socketio import Namespace, emit
-from app import db
+from app import db, socketio
+
+def init_room_namespaces():
+    for room in db.rooms.page_by_page(1):
+        socketio.on_namespace(RoomNamespace('/' + room[0].id))
 
 class RoomNamespace(Namespace):
     def on_connect(self):
