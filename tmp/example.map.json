@@ -152,13 +152,28 @@
     ],
     "settings":
     {
-        "locations": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, 
+        "locations": [{"name":"0", "consts":{}}, 
+            {
+                "name":"1", 
+                "consts":
+                {
+                    "enter_msg": "Вы находитесь в тёмной комнате. Тут холодно и сыро."
+                }
+            }, 
             {
                 "fall_to":7,
                 "name": "2",
                 "consts":{}
             },
-            {"name":"3", "consts":{}}, {"name":"4", "consts":{}}, {"name":"5", "consts":{}}, {"name":"6", "consts":{}}, 
+            {
+                "name":"3", 
+                "consts":
+                {
+                    "enter_msg": "В комнате лежит скелет. Вы его уже видели.\nСкелет по прежнему выглядит угрожающи.",
+                    "first_enter_msg": "В находитесь в очередной комнате.\nЗдесь вас пробирает дрожь. Скелет у стенки выглядит угрожающи."
+                }
+            }, 
+            {"name":"4", "consts":{}}, {"name":"5", "consts":{}}, {"name":"6", "consts":{}}, 
             {
                 "fall_to":2,
                 "name":"7",
@@ -184,7 +199,7 @@
         "creatures": [
             {
                 "position":4,
-                "name":"0",
+                "name":"Медведь",
                 "consts":{}
             }
         ],

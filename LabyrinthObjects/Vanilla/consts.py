@@ -1,26 +1,21 @@
-reverse_direction = {'up': 'down', 'down': 'up',
-                     'left': 'right', 'right': 'left',
-                     'forward': 'backward', 'backward': 'forward',
-                     'under': 'above', 'above': 'under'}
-basic_directions = ['up', 'down', 'left', 'right']
-
 # Legs
 UP_TURN = 'Идти вверх'
 DOWN_TURN = 'Идти вниз'
 RIGHT_TURN = 'Идти вправо'
 LEFT_TURN = 'Идти влево'
-WALL_MSG = 'Упсс. Стена'
+
+WALL_MSG = 'В этой стороне оказалась стена.'
 
 # GlobalWall
 
 # Wall
 
 # EmptyLocation
-ENTER_MSG = 'Ты в пустой комнате'
+ENTER_MSG = 'Вы находитесь в комнате. Ничего особенного.'
 
 # Hole
 FALL_MSG = 'И в ямку бух!'
-ENTER_HOLE_MSG = 'Ты в комнате с дырой'
+ENTER_HOLE_MSG = 'Ты в комнате с дырой.'
 TROUGH_HOLE_MSG = 'Вперёд, и только вперёд!'
 INTO_TURN = 'В дыру'
 TYPES_WHO_MUST_FALL_IN_IT = ['player', 'creature']
@@ -53,10 +48,10 @@ BLOW_UP_UP = 'Подорвать сверху'
 BLOW_UP_DOWN = 'Подорвать снизу'
 BLOW_UP_LEFT = 'Подорвать слева'
 BLOW_UP_RIGHT = 'Подорвать справа'
-BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite'
+BLOW_UP_SUCCESS_MSG = 'Blowing shit up with homemade d-d-dynamite.'
 BLOW_UP_PROHIBITION_MSG = 'О, нет! Это же "ничего"! Увы, вы не можете сломать "ничего".'
 BLOW_UP_FAILURE_MSG = 'Взорвать - взорвали, но толку-то?!'
-BLOW_UP_NOT_PLAYERS_INJURING_MSG = 'О! Там были кто-то был, но не игроки'
+BLOW_UP_NOT_PLAYERS_INJURING_MSG = 'О! Там были кто-то был, но не игроки.'
 BLOW_UP_SINGLE_INJURING_MSG = 'О! А там оказывается был(а) '
 BLOW_UP_MASSIVE_INJURING_MSG = 'О! А там оказывается были '
 CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
@@ -64,6 +59,8 @@ CAN_PLAYER_HURT_EVB_IN_DIRECTION = True
 # Arsenal
 
 # FirstAidPost
+FAP_ENTER_MSG = 'Вы находитесь в медецинском пункте. Успокойтесь, вас уже вылечили.'
+FAP_STAY_MSG = 'Вы здоровы, можете уже уходить отсюда.'
 
 # Bear
 BEAR_MSG_ATTACK = 'Вас укусил медведь'

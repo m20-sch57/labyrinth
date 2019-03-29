@@ -51,7 +51,7 @@ class Gun(Item):
             kicked_players = set(filter(lambda obj: obj.lrtype in ['player', 'dead_player'], kicked_characters))
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
-                                        + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
+                                        + ', '.join(list(map(lambda pl: pl.get_name(), kicked_characters)))
                                         + '.', active_player, 1)
             else:
                 self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player, 1)
