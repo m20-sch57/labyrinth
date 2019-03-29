@@ -73,14 +73,6 @@ socket.on('update', function(msg) {
 			break;
 	};
 });
-socket.on('connect', function() {
-	socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
-});
-socket.on('disconnect', function(reason) {
-	console.log(reason);
-	socket.emit('exit', {'lol': 'kek'});
-	console.log('kek');
-})
 
 var changeNameInput = document.getElementById('room_name');
 changeNameInput.onkeydown = changeName;
