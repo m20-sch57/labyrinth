@@ -110,7 +110,7 @@ def register():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        if not db.users.add(username, password):
+        if not db.users.add(username, password).ok:
             return redirect(url_for('register_failed'))
 
         session['username'] = username
