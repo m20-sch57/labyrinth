@@ -6,6 +6,7 @@ from LabyrinthEngine import Location
 class Exit(Location):
     def __init__(self):
         self.must_be_here = set()
+        self.add_flag('safe_zone')
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.EXIT_GREETING_MSG = settings['consts'].get('exit_greeting_msg') or EXIT_GREETING_MSG

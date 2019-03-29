@@ -10,6 +10,8 @@ import json
 
 
 
+
+
 '''
 help functions
 '''
@@ -198,7 +200,8 @@ def waiting_room(room_id):
                  broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':
-            labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users)
+            imagepath='/static/images/button_images/'
+            labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users, imagepath)
             db.lrm.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, namespace='/'+room_id)
@@ -226,12 +229,14 @@ def game_room(room_id):
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
+            bar = labyrinth.get_bars(username)
+            btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats})
+                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
             else:
-                return json.dumps({'your_turn': 'no', 'msg': msg})
+                return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_username() == username:

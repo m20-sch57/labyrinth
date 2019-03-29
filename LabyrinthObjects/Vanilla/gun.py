@@ -1,6 +1,5 @@
 from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
-from LabyrinthObjects.Vanilla.walls import borders
 
 
 class Gun(Item):
@@ -9,6 +8,10 @@ class Gun(Item):
         self.new_at(self.turn_fire('down'), self.condition, FIRE_DOWN)
         self.new_at(self.turn_fire('left'), self.condition, FIRE_LEFT)
         self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
+
+        self.new_lbutton([FIRE_UP, FIRE_DOWN, FIRE_LEFT, FIRE_RIGHT], 
+            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
+
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurt_evb_in_same_loc') or\
@@ -35,7 +38,7 @@ class Gun(Item):
                 kicked_characters.discard(active_player)
 
             current_location = current_location.get_neighbour(direction)
-            while current_location not in met_locations and type(current_location) not in borders:
+            while current_location not in met_locations and not current_location.have_flag('border'):
                 met_locations.add(current_location)
                 kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
                 current_location = current_location.get_neighbour(direction)

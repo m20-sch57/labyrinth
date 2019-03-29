@@ -141,8 +141,14 @@
             "right":0,
             "left":0
         },
-        {}, 
-        {}
+        {
+            "right":2,
+            "left":1
+        }, 
+        {
+            "right":7,
+            "left":6
+        }
     ],
     "settings":
     {
@@ -161,37 +167,11 @@
             {"name":"8", "consts":{}}, {"name":"9", "consts":{}}, 
             {
                 "name":"10", 
-                "consts":{},
-                "block":
-                [
-                    {
-                        "from": 1,
-                        "to": 2,
-                        "dir": "right"
-                    },
-                    {
-                        "from": 2,
-                        "to": 1,
-                        "dir": "left"
-                    }
-                ]
+                "consts":{}
             }, 
             {
                 "name":"11", 
-                "consts":{},
-                "block":
-                [
-                    {
-                        "from": 6,
-                        "to": 7,
-                        "dir": "right"
-                    },
-                    {
-                        "from": 7,
-                        "to": 6,
-                        "dir": "left"
-                    }
-                ]
+                "consts":{}
             }],
         "items": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, {"name":"2", "consts":{}},
             {
@@ -207,7 +187,10 @@
                 "name":"0",
                 "consts":{}
             }
-        ]
+        ],
+        "player": {
+            "flags":["drop_items_when_injured"]
+        }
     },
     "start_positions":
     {

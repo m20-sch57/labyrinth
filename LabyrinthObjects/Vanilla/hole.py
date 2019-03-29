@@ -8,6 +8,12 @@ class Hole(Location):
     def __init__(self):
         self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
 
+        # TODO: solve this problem (two buttins "fall into hole")
+        if 'kek' in self.__class__.__dict__:
+            self.new_button(INTO_TURN, 'into_hole.png')
+        else:
+            self.__class__.kek = 'kek'
+
         self.and_who_must_fall = AND_WHO_MUST_FALL_IN_IT
         self.or_who_must_fall = OR_WHO_MUST_FALL_IN_IT
 
