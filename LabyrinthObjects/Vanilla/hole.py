@@ -23,9 +23,9 @@ class Hole(Location):
     def set_settings(self, settings, locations, items, creatures, players):
         self.set_fall_to(locations[settings['fall_to']])
 
-        self.types_who_must_fall = settings.get('who_fall_in_it') or TYPES_WHO_MUST_FALL_IN_IT
-        self.TROUGH_HOLE_MSG = settings.get('go_trough_msg') or TROUGH_HOLE_MSG
-        self.FALL_MSG = settings.get('fall_msg') or FALL_MSG
+        self.types_who_must_fall = settings['who_fall_in_it']
+        self.TROUGH_HOLE_MSG = settings['go_throught_msg']['ru']
+        self.FALL_MSG = settings['fall_msg']['ru']
 
     def main(self):
         for obj in self.labyrinth.get_all_objects():

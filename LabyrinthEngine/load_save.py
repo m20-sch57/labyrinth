@@ -20,11 +20,8 @@ class LabyrinthLoadError(LabyrinthError):
 # TODO: understand errors. to continue the list of errors. Issue #44
 
 
-def get_attr_safe(obj, attr, default_value):
-	if hasattr(obj, attr):
-		return obj.__dict__[attr]
-	else:
-		return default_value
+def from_module_to_path(module):
+	return module.replace('.', '\\')
 
 
 def load_lrsave(loadfile, savefile):
@@ -61,6 +58,13 @@ def load_lrmap(loadfile, savefile, users, imagepath, lrseed=random.randrange(sys
 		if len(settings[lrtype]) != len(lrmap[lrtype]):
 			raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
 of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])), loadfile + '.map.json')
+		for i in range(len(lrmap[lrtype])):
+			obj = lrmap[lrtype][i]
+			obj_dir = from_module_to_path(obj['module'])
+			with open(obj_dir+'\\default_settings.json', 'r', encoding='utf-8') as f:
+				ds = json.load(f).get(obj['class_name'], {})
+				ds.update(settings[lrtype][i])
+				settings[lrtype][i] = ds
 
 	for lrtype in lrtypes:
 		for obj in lrmap[lrtype]:

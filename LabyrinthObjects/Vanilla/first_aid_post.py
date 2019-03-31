@@ -7,8 +7,8 @@ class FirstAidPost(Location):
         self.stayed = set()
 
     def set_settings(self, settings, *args):
-        self.FAP_ENTER_MSG = settings.get('fap_enter_msg') or FAP_ENTER_MSG
-        self.FAP_STAY_MSG = settings.get('fap_stay_msg') or FAP_STAY_MSG
+        self.FAP_ENTER_MSG = settings['enter_msg']['ru']
+        self.FAP_STAY_MSG = settings['stay_msg']['ru']
 
     def main(self):
         health = self.labyrinth.get_unique('health')

@@ -14,17 +14,13 @@ class Bomb(Item):
             'bomb.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.BLOW_UP_SUCCESS_MSG = settings.get('blowup_success_msg') or BLOW_UP_SUCCESS_MSG
-        self.BLOW_UP_FAILURE_MSG = settings.get('blowup_failure_msg') or BLOW_UP_FAILURE_MSG
-        self.BLOW_UP_PROHIBITION_MSG = settings.get('blowup_prohibition_msg') or BLOW_UP_PROHIBITION_MSG
-        self.CAN_PLAYER_HURT_EVB_IN_DIRECTION = settings.get('can_hurt_smb') or \
-                                                CAN_PLAYER_HURT_EVB_IN_DIRECTION
-        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings.get('blowup_nobody_msg') or \
-                                                BLOW_UP_NOT_PLAYERS_INJURING_MSG
-        self.BLOW_UP_SINGLE_INJURING_MSG = settings.get('blowup_onebody_msg') or \
-                                           BLOW_UP_SINGLE_INJURING_MSG
-        self.BLOW_UP_MASSIVE_INJURING_MSG = settings.get('blowup_manybody_msg') or \
-                                            BLOW_UP_MASSIVE_INJURING_MSG
+        self.BLOW_UP_SUCCESS_MSG = settings['blowup_success_msg']['ru']
+        self.BLOW_UP_FAILURE_MSG = settings['blowup_failure_msg']['ru']
+        self.BLOW_UP_PROHIBITION_MSG = settings['blowup_prohibition_msg']['ru']
+        self.CAN_PLAYER_HURT_EVB_IN_DIRECTION = settings['can_hurt_smb']
+        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings['blowup_nobody_msg']['ru']
+        self.BLOW_UP_SINGLE_INJURING_MSG = settings['blowup_onebody_msg']['ru']
+        self.BLOW_UP_MASSIVE_INJURING_MSG = settings['blowup_manybody_msg']['ru']
 
     def turn_blow_up(self, direction):
         def blow_up():

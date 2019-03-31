@@ -7,7 +7,7 @@ class Bear(Creature):
     def set_settings(self, settings, locations, *args):
         self.set_parent(locations[settings['position']])
 
-        self.BEAR_MSG_ATTACK = settings.get('attack_msg') or BEAR_MSG_ATTACK
+        self.BEAR_MSG_ATTACK = settings['attack_msg']['ru']
 
     def move(self, direction):
         next_position = self.get_parent().get_neighbour(direction)

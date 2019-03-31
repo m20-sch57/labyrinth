@@ -7,8 +7,8 @@ class EmptyLocation(Location):
         self.used = set()
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.ENTER_MSG = settings.get('enter_msg') or ENTER_MSG
-        self.FIRST_ENTER_MSG = settings.get('first_enter_msg') or self.ENTER_MSG
+        self.ENTER_MSG = settings['enter_msg']['ru']
+        self.FIRST_ENTER_MSG = settings.get('first_enter_msg', {}).get('ru') or self.ENTER_MSG
 
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()

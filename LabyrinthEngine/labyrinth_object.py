@@ -93,7 +93,7 @@ class LabyrinthObject:
         pass
 
     def set_settings(self, settings, *args):
-        self.set_name(settings['name'])
+        pass
 
     def get_name(self):
         return get_attr_safe(self, 'name', '')

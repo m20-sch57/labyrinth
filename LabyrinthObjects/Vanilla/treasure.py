@@ -13,10 +13,8 @@ class Treasure(Item):
         self.is_true = settings['is_true']
         self.set_parent(locations[settings['position']])
 
-        self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = settings.get(
-            'returns_back_when_is_dropped') or WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED
-        self.CAN_PLAYER_DROP_TREASURE = settings.get(
-            'can_player_drop_treasure') or CAN_PLAYER_DROP_TREASURE
+        self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = settings['returns_back_when_is_dropped']
+        self.CAN_PLAYER_DROP_TREASURE = settings['can_player_drop_treasure']
 
     def take(self, player):
         if self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
