@@ -1,29 +1,27 @@
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
 
 
 class Treasure(Item):
-    def __init__(self):
-        self.new_at(self.turn_take, self.take_condition, TAKE_TREASURE)
-        self.new_at(self.turn_drop, self.drop_condition, DROP_TREASURE)
-
-        self.new_button(TAKE_TREASURE, 'treasure_up.png')
-
     def set_settings(self, settings, locations, *args):
         self.is_true = settings['is_true']
         self.set_parent(locations[settings['position']])
 
-        self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = settings['returns_back_when_is_dropped']
+        self.RETURNS_BACK_WHEN_IS_DROPPED = settings['returns_back_when_is_dropped']
         self.CAN_PLAYER_DROP_TREASURE = settings['can_player_drop_treasure']
 
+        self.new_at(self.turn_take, self.take_condition, settings['take_turn']['ru'])
+        self.new_at(self.turn_drop, self.drop_condition, settings['drop_turn']['ru'])
+
+        self.new_button(settings['take_turn']['ru'], 'treasure_up.png')
+
     def take(self, player):
-        if self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+        if self.RETURNS_BACK_WHEN_IS_DROPPED:
             self.initial_location = self.get_parent()
         self.set_parent(player)
 
     def drop(self):
         player = self.get_parent()
-        if self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED:
+        if self.RETURNS_BACK_WHEN_IS_DROPPED:
             self.set_parent(self.initial_location)
         else:
             self.set_parent(player.get_parent())

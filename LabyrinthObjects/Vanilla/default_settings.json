@@ -77,6 +77,9 @@
 	"Treasure":
 	{
 		"returns_back_when_is_dropped": false,
-		"can_player_drop_treasure": true
+		"can_player_drop_treasure": true,
+
+		"take_turn": {"ru":"Поднять клад"},
+		"drop_turn": {"ru":"Бросить клад"}
 	}
 }
