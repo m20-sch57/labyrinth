@@ -1,0 +1,82 @@
+{
+	"Ammo":
+	{
+		"max_bullets_count": 3,
+		"max_bombs_count": 3
+	},
+	"Bear":
+	{
+		"atack_msg": {"ru":"Вас укусил медведь"}
+	},
+	"Bomb":
+	{
+		"can_hurt_smb": true,
+		"blowup_success_msg": {"ru":"БАБАХ!", "en":"Blowing shit up with homemade d-d-dynamite."},
+		"blowup_failure_msg": {"ru":"Взорвать - взорвали, но толку-то?!"},
+		"blowup_prohibition_msg": {"ru":"О, нет! Это же \"ничего\"! Увы, вы не можете сломать \"ничего\"."},
+		"blowup_nobody_msg": {"ru":"О! Там были кто-то был, но не игроки."},
+		"blowup_onebody_msg": {"ru":"О! А там оказывается был(а) "},
+		"blowup_manybody_msg": {"ru":"О! А там оказывается были "},
+
+		"blow_up_north":{"ru":"Подорвать сверху"},
+		"blow_up_south":{"ru":"Подорвать снизу"},
+		"blow_up_west":{"ru":"Подорвать слева"},
+		"blow_up_east":{"ru":"Подорвать справа"}
+	},
+	"EmptyLocation":
+	{
+		"enter_msg":{"ru":"Вы находитесь в комнате. Ничего особенного."}
+	},
+	"Exit":
+	{
+		"enter_msg":{"ru":"Ты вышел из Лабиринта. В этой комнате ты можешь передохнуть."},
+		"stay_msg":{"ru":["Как дела? Ты нашёл клад?",
+						  "Как думаешь, почему медведи такие агрессивные?",
+                          "Давай, быстрее! А то клад раньше тебя заберут!"]}
+	},
+	"FirstAidPost":
+	{
+		"enter_msg":{"ru":"Вы находитесь в медецинском пункте. Успокойтесь, вас уже вылечили."},
+		"stay_msg":{"ru":"Вы здоровы, можете уже уходить отсюда."}
+	},
+	"Gun":
+	{
+		"can_hurt_in_same_location": true,
+		"can_hurt_himself": false,
+		"fire_success_msg": {"ru":"Пиф-паф, ой-ой-ой. Снаряд попал в "},
+		"fire_failure_msg": {"ru":"Пиф-паф, ой-ой-ой. Снаряд ни в кого не попал."},
+
+		"fire_north":{"ru":"Стрелять вверх"},
+		"fire_south":{"ru":"Стрелять вниз"},
+		"fire_west":{"ru":"Стрелять влево"},
+		"fire_east":{"ru":"Стрелять вправо"}
+	},
+	"Health":
+	{
+		"max_player_health": 3,
+		"max_creature_health": 3,
+		"death_msg": {"ru":"Умирать - скучное и безотрадное дело. Мой вам совет - никогда этим не занимайтесь."}
+	},
+	"Hole":
+	{
+		"who_fall_in_it": ["player, creature"],
+		"go_throught_msg": {"ru":"Вперёд, и только вперёд!"},
+		"fall_msg": {"ru":"И в ямку бух!"},
+
+		"go_throught_turn": {"ru":"Пойти в яму"}
+	},
+	"Legs":
+	{
+		"border_msg": {"ru":"В этой стороне оказалась стена."},
+
+		"go_north":{"ru":"Идти вверх"},
+		"go_south":{"ru":"Идти вниз"},
+		"go_west":{"ru":"Идти влево"},
+		"go_east":{"ru":"Идти вправо"}
+	},
+	"Treasure":
+	{
+		"returns_back_when_is_dropped": false,
+		"can_player_drop_treasure": true
+	}
+}

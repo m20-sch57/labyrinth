@@ -21,9 +21,9 @@
 - `blowup_failure_msg`
 - `blowup_prohibition_msg`
 - `can_hurt_smb`
-- `blowup_nobody_injuring_msg`
-- `blowup_onebody_injuring_msg`
-- `blowup_manybody_injuring_msg`
+- `blowup_nobody_msg`
+- `blowup_onebody_msg`
+- `blowup_manybody_msg`
 
 #### EmptyLocation
 

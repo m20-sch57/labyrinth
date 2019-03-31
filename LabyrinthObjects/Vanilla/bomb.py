@@ -19,11 +19,11 @@ class Bomb(Item):
         self.BLOW_UP_PROHIBITION_MSG = settings.get('blowup_prohibition_msg') or BLOW_UP_PROHIBITION_MSG
         self.CAN_PLAYER_HURT_EVB_IN_DIRECTION = settings.get('can_hurt_smb') or \
                                                 CAN_PLAYER_HURT_EVB_IN_DIRECTION
-        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings.get('blowup_nobody_injuring_msg') or \
+        self.BLOW_UP_NOT_PLAYERS_INJURING_MSG = settings.get('blowup_nobody_msg') or \
                                                 BLOW_UP_NOT_PLAYERS_INJURING_MSG
-        self.BLOW_UP_SINGLE_INJURING_MSG = settings.get('blowup_onebody_injuring_msg') or \
+        self.BLOW_UP_SINGLE_INJURING_MSG = settings.get('blowup_onebody_msg') or \
                                            BLOW_UP_SINGLE_INJURING_MSG
-        self.BLOW_UP_MASSIVE_INJURING_MSG = settings.get('blowup_manybody_injuring_msg') or \
+        self.BLOW_UP_MASSIVE_INJURING_MSG = settings.get('blowup_manybody_msg') or \
                                             BLOW_UP_MASSIVE_INJURING_MSG
 
     def turn_blow_up(self, direction):
