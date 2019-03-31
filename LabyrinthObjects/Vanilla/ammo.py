@@ -28,8 +28,6 @@ class Ammo(Item):
 
         self.labyrinth.set_unique_key(self, 'ammo')
 
-        self.set_name(settings['name'])
-
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':
             self.bullets[player] -= 1

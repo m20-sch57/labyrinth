@@ -24,9 +24,7 @@ class Health(Item):
 
         self.labyrinth.set_unique_key(self, 'health')
 
-        self.set_name(settings['name'])
-
-        self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
+        self.DEATH_MSG = settings.get('death_msg') or DEATH_MSG
 
         self.update_health_bar()
 

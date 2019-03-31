@@ -6,9 +6,8 @@ from LabyrinthObjects.Vanilla.exit import Exit
 class Bear(Creature):
     def set_settings(self, settings, locations, *args):
         self.set_parent(locations[settings['position']])
-        self.set_name(settings['name'])
 
-        self.BEAR_MSG_ATTACK = settings['consts'].get('bear_msg_attack') or BEAR_MSG_ATTACK
+        self.BEAR_MSG_ATTACK = settings.get('attack_msg') or BEAR_MSG_ATTACK
 
     def move(self, direction):
         next_position = self.get_parent().get_neighbour(direction)

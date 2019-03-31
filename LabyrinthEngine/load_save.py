@@ -66,21 +66,22 @@ of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])),
 		for obj in lrmap[lrtype]:
 			lrtypes[lrtype].append(importlib.import_module(obj['module']).__dict__[obj['class_name']]())
 
-	locs = lrmap['start_positions']['from']
-	if lrmap['start_positions']['distribution'] == 'random':
+	locs = lrmap['settings']['player']['start_positions']['from']
+	distribution = lrmap['settings']['player']['start_positions']['distribution']
+	if distribution == 'random':
 		def get_start_position():
 			not_used = locs[:]
 			while True:
 				while len(not_used) != 0:
 					yield not_used.pop(random.randint(0, len(not_used) - 1))
 				not_used = locs[:]
-	elif lrmap['start_positions']['distribution'] == 'order':
+	elif distribution == 'order':
 		def get_start_position():
 			index = 0
 			while True:
 				yield locs[index % len(locs)]
 				index += 1
-	elif lrmap['start_positions']['distribution'] == 'reverse_order':
+	elif distribution == 'reverse_order':
 		def get_start_position():
 			index = -1
 			while True:

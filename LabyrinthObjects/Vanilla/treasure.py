@@ -12,11 +12,10 @@ class Treasure(Item):
     def set_settings(self, settings, locations, *args):
         self.is_true = settings['is_true']
         self.set_parent(locations[settings['position']])
-        self.set_name(settings['name'])
 
-        self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = settings['consts'].get(
-            'will_treasure_returns_back_when_is_dropped') or WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED
-        self.CAN_PLAYER_DROP_TREASURE = settings['consts'].get(
+        self.WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED = settings.get(
+            'returns_back_when_is_dropped') or WILL_TREASURE_RETURNS_BACK_WHEN_IS_DROPPED
+        self.CAN_PLAYER_DROP_TREASURE = settings.get(
             'can_player_drop_treasure') or CAN_PLAYER_DROP_TREASURE
 
     def take(self, player):
