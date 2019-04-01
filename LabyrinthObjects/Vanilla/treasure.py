@@ -8,6 +8,7 @@ class Treasure(Item):
 
         self.RETURNS_BACK_WHEN_IS_DROPPED = settings['returns_back_when_is_dropped']
         self.CAN_PLAYER_DROP_TREASURE = settings['can_player_drop_treasure']
+        self.UNDERFOOT_MSG = settings['underfoot_msg']['ru']
 
         self.new_at(self.turn_take, self.take_condition, settings['take_turn']['ru'])
         self.new_at(self.turn_drop, self.drop_condition, settings['drop_turn']['ru'])
@@ -39,3 +40,8 @@ class Treasure(Item):
     def drop_condition(self):
         active_player = self.labyrinth.get_active_player()
         return self.CAN_PLAYER_DROP_TREASURE and self.get_parent() == active_player
+
+    def main(self):
+        if self.parent.lrtype == 'location':
+            for player in self.parent.get_children('player'):
+                self.labyrinth.send_msg(self.UNDERFOOT_MSG, player)

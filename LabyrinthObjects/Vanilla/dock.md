@@ -82,6 +82,7 @@
 ###### not obligatory
 - `returns_back_when_is_dropped`
 - `can_player_drop_treasure`
+- `underfoot_msg`
 
 #### Outside
 

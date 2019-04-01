@@ -78,6 +78,7 @@
 	{
 		"returns_back_when_is_dropped": false,
 		"can_player_drop_treasure": true,
+		"underfoot_msg": {"ru":"Под ногами что-то блестит."},
 
 		"take_turn": {"ru":"Поднять клад"},
 		"drop_turn": {"ru":"Бросить клад"}
