@@ -88,3 +88,7 @@
 #### Wall
 
 #### Arsenal
+
+###### not obligatory
+- `enter_msg`
+- `stay_msg`

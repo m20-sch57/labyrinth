@@ -11,12 +11,10 @@ class FirstAidPost(Location):
 
     def main(self):
         health = self.labyrinth.get_unique('health')
-        new_stayed = set()
         for player in self.get_children(lrtype='player'):
             health.heal(player)
             if player in self.stayed:
                 self.labyrinth.send_msg(self.STAY_MSG, player)
             else:
                 self.labyrinth.send_msg(self.ENTER_MSG, player)
-            new_stayed.add(player)
-        self.stayed = new_stayed
+        self.stayed = set(self.get_children(lrtype='player'))
