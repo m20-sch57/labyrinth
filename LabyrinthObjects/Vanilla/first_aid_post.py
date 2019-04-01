@@ -14,7 +14,7 @@ class FirstAidPost(Location):
         for player in self.get_children(lrtype='player'):
             health.heal(player)
             if player in self.stayed:
-                self.labyrinth.send_msg(self.STAY_MSG, player)
+                self.labyrinth.send_msg(self.STAY_MSG, player, 5)
             else:
-                self.labyrinth.send_msg(self.ENTER_MSG, player)
+                self.labyrinth.send_msg(self.ENTER_MSG, player, 5)
         self.stayed = set(self.get_children(lrtype='player'))

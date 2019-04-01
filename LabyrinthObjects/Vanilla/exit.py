@@ -14,7 +14,7 @@ class Exit(Location):
     def main(self):
         now_here = self.get_children(['player'])
         for player in now_here - self.must_be_here:
-            self.labyrinth.send_msg(self.ENTER_MSG, player)
+            self.labyrinth.send_msg(self.ENTER_MSG, player, 5)
         for player in now_here & self.must_be_here:
-            self.labyrinth.send_msg(choice(self.STAY_MSGS), player)
+            self.labyrinth.send_msg(choice(self.STAY_MSGS), player, 5)
         self.must_be_here = now_here
