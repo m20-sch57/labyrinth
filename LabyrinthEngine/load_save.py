@@ -20,7 +20,7 @@ class LabyrinthLoadError(LabyrinthError):
 # TODO: understand errors. to continue the list of errors. Issue #44
 
 
-def from_module_to_path(module):
+def from_module_name_to_path(module):
 	return module.replace('.', '\\')
 
 
@@ -60,7 +60,7 @@ def load_lrmap(loadfile, savefile, users, imagepath, lrseed=random.randrange(sys
 of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), len(lrmap[lrtype])), loadfile + '.map.json')
 		for i in range(len(lrmap[lrtype])):
 			obj = lrmap[lrtype][i]
-			obj_dir = from_module_to_path(obj['module'])
+			obj_dir = from_module_name_to_path(obj['module'])
 			with open(obj_dir+'\\default_settings.json', 'r', encoding='utf-8') as f:
 				ds = json.load(f).get(obj['class_name'], {})
 				ds.update(settings[lrtype][i])
