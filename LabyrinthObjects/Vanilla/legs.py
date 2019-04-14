@@ -1,25 +1,26 @@
-from LabyrinthObjects.Vanilla.consts import *
+
 from LabyrinthEngine import Item
 
 
 class Legs(Item):
-    def __init__(self):
-        self.new_at(self.turn_move('up'), condition_function=lambda: True, turn_name=UP_TURN)
-        self.new_at(self.turn_move('down'), condition_function=lambda: True, turn_name=DOWN_TURN)
-        self.new_at(self.turn_move('right'), condition_function=lambda: True, turn_name=RIGHT_TURN)
-        self.new_at(self.turn_move('left'), condition_function=lambda: True, turn_name=LEFT_TURN)
-
-        self.new_lbutton([UP_TURN, RIGHT_TURN, DOWN_TURN, LEFT_TURN], 'leg.png', ['up.png', 'right.png', 'down.png', 'left.png'])
-
     def set_settings(self, settings, locations, items, creatures, players):
-        self.WALL_MSG = settings['consts'].get('wall_msg') or WALL_MSG
+        self.BORDER_MSG = settings['border_msg']['ru']
+
+        self.new_at(self.turn_move('up'), lambda: True, settings['go_north']['ru'])
+        self.new_at(self.turn_move('down'), lambda: True, settings['go_south']['ru'])
+        self.new_at(self.turn_move('left'), lambda: True, settings['go_west']['ru'])
+        self.new_at(self.turn_move('right'), lambda: True, settings['go_east']['ru'])
+
+        self.new_lbutton([settings['go_north']['ru'], settings['go_south']['ru'], 
+            settings['go_west']['ru'], settings['go_east']['ru']], 'leg.png', 
+            ['up.png', 'right.png', 'down.png', 'left.png'])
 
     def turn_move(self, direction):
         def move():
             active_player = self.labyrinth.get_active_player()
             next_position = active_player.get_parent().get_neighbour(direction)
             if next_position.have_flag('border'):
-                self.labyrinth.send_msg(self.WALL_MSG, active_player, 1)
+                self.labyrinth.send_msg(self.BORDER_MSG, active_player, 1)
             else:
                 active_player.set_parent(next_position)
 

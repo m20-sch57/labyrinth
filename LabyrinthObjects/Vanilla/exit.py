@@ -1,5 +1,4 @@
 from random import choice
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Location
 
 
@@ -9,14 +8,13 @@ class Exit(Location):
         self.add_flag('safe_zone')
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.EXIT_GREETING_MSG = settings['consts'].get('exit_greeting_msg') or EXIT_GREETING_MSG
-        self.EXIT_PRESENCE_MSGS = settings['consts'].get('exit_presence_msgs') or EXIT_PRESENCE_MSGS
-        self.set_name(settings['name'])
+        self.ENTER_MSG = settings['enter_msg']['ru']
+        self.STAY_MSGS = settings['stay_msgs']['ru']
 
     def main(self):
         now_here = self.get_children(['player'])
         for player in now_here - self.must_be_here:
-            self.labyrinth.send_msg(self.EXIT_GREETING_MSG, player)
+            self.labyrinth.send_msg(self.ENTER_MSG, player, 5)
         for player in now_here & self.must_be_here:
-            self.labyrinth.send_msg(choice(self.EXIT_PRESENCE_MSGS), player)
+            self.labyrinth.send_msg(choice(self.STAY_MSGS), player, 5)
         self.must_be_here = now_here

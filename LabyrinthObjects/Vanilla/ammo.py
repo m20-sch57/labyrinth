@@ -1,4 +1,3 @@
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
 
 
@@ -16,8 +15,8 @@ class Ammo(Item):
         self.bomb_counter_bar.set_all_values(self.bombs)
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.MAX_BULLETS_COUNT = settings.get('max_bullets_count') or MAX_BULLETS_COUNT
-        self.MAX_BOMBS_COUNT = settings.get('max_bombs_count') or MAX_BOMBS_COUNT
+        self.MAX_BULLETS_COUNT = settings['max_bullets_count']
+        self.MAX_BOMBS_COUNT = settings['max_bombs_count']
 
         self.INIT_BULLETS_COUNT = settings.get('init_bullets_count') or self.MAX_BULLETS_COUNT
         self.INIT_BOMBS_COUNT = settings.get('init_bombs_count') or self.MAX_BOMBS_COUNT
@@ -27,8 +26,6 @@ class Ammo(Item):
         self.update_bars()
 
         self.labyrinth.set_unique_key(self, 'ammo')
-
-        self.set_name(settings['name'])
 
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':

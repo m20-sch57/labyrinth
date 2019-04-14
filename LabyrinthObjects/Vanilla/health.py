@@ -1,4 +1,3 @@
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
 
 
@@ -16,17 +15,15 @@ class Health(Item):
         self.health_bar.set_all_values(self.hp)
 
     def set_settings(self, settings, locations, items, creatures, players):
-        self.MAX_PLAYER_HEALTH = settings.get('max_player_health') or MAX_PLAYER_HEALTH
-        self.MAX_CREATURE_HEALTH = settings.get('max_creature_health') or MAX_CREATURE_HEALTH
+        self.MAX_PLAYER_HEALTH = settings['max_player_health']
+        self.MAX_CREATURE_HEALTH = settings['max_creature_health']
 
         self.hp = {player: self.MAX_CREATURE_HEALTH for player in players}
         self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
 
         self.labyrinth.set_unique_key(self, 'health')
 
-        self.set_name(settings['name'])
-
-        self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
+        self.DEATH_MSG = settings['death_msg']['ru']
 
         self.update_health_bar()
 

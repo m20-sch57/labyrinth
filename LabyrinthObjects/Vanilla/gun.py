@@ -1,24 +1,21 @@
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Item
 
 
 class Gun(Item):
-    def __init__(self):
-        self.new_at(self.turn_fire('up'), self.condition, FIRE_UP)
-        self.new_at(self.turn_fire('down'), self.condition, FIRE_DOWN)
-        self.new_at(self.turn_fire('left'), self.condition, FIRE_LEFT)
-        self.new_at(self.turn_fire('right'), self.condition, FIRE_RIGHT)
-
-        self.new_lbutton([FIRE_UP, FIRE_DOWN, FIRE_LEFT, FIRE_RIGHT], 
-            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
-
-
     def set_settings(self, settings, locations, items, creatures, players):
-        self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC = settings['consts'].get('can_player_hurt_evb_in_same_loc') or\
-                                               CAN_PLAYER_HURT_EVB_IN_SAME_LOC
-        self.CAN_PLAYER_HURT_HIMSELF = settings['consts'].get('can_player_hurt_himself') or CAN_PLAYER_HURT_HIMSELF
-        self.FIRE_SUCCESS_MSG = settings['consts'].get('fire_success_msg') or FIRE_SUCCESS_MSG
-        self.FIRE_FAILURE_MSG = settings['consts'].get('fire_failure_msg') or FIRE_FAILURE_MSG
+        self.CAN_HURT_IN_SAME_LOCATION = settings['can_hurt_in_same_location']
+        self.CAN_HURT_HIMSELF = settings['can_hurt_himself']
+        self.FIRE_SUCCESS_MSG = settings['fire_success_msg']['ru']
+        self.FIRE_FAILURE_MSG = settings['fire_failure_msg']['ru']
+
+        self.new_at(self.turn_fire('up'), self.condition, settings['fire_north']['ru'])
+        self.new_at(self.turn_fire('down'), self.condition, settings['fire_south']['ru'])
+        self.new_at(self.turn_fire('left'), self.condition, settings['fire_west']['ru'])
+        self.new_at(self.turn_fire('right'), self.condition, settings['fire_east']['ru'])
+
+        self.new_lbutton([settings['fire_north']['ru'], settings['fire_south']['ru'], 
+            settings['fire_west']['ru'], settings['fire_east']['ru']], 
+            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 
     def turn_fire(self, direction):
         def fire():
@@ -33,7 +30,7 @@ class Gun(Item):
 
             health = self.labyrinth.get_unique('health')
 
-            if self.CAN_PLAYER_HURT_EVB_IN_SAME_LOC:
+            if self.CAN_HURT_IN_SAME_LOCATION:
                 kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
                 kicked_characters.discard(active_player)
 
@@ -43,7 +40,7 @@ class Gun(Item):
                 kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
                 current_location = current_location.get_neighbour(direction)
 
-            if not self.CAN_PLAYER_HURT_HIMSELF:
+            if not self.CAN_HURT_HIMSELF:
                 kicked_characters.discard(active_player)
             for character in kicked_characters:
                 health.hurt(character)
@@ -51,7 +48,7 @@ class Gun(Item):
             kicked_players = set(filter(lambda obj: obj.lrtype in ['player', 'dead_player'], kicked_characters))
             if kicked_characters:
                 self.labyrinth.send_msg(self.FIRE_SUCCESS_MSG
-                                        + ', '.join(list(map(lambda pl: pl.get_username(), kicked_players)))
+                                        + ', '.join(list(map(lambda pl: pl.get_name(), kicked_characters)))
                                         + '.', active_player, 1)
             else:
                 self.labyrinth.send_msg(self.FIRE_FAILURE_MSG, active_player, 1)

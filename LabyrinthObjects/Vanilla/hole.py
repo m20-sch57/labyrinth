@@ -1,32 +1,26 @@
-from LabyrinthObjects.Vanilla.consts import *
 from LabyrinthEngine import Location
 
 
 class Hole(Location):
     indulgence = {}
 
-    def __init__(self):
-        self.new_at(function=self.go_into_hole, condition_function=self.condition, turn_name=INTO_TURN)
-
-        # TODO: solve this problem (two buttins "fall into hole")
-        if 'kek' in self.__class__.__dict__:
-            self.new_button(INTO_TURN, 'into_hole.png')
-        else:
-            self.__class__.kek = 'kek'
-
-        self.and_who_must_fall = AND_WHO_MUST_FALL_IN_IT
-        self.or_who_must_fall = OR_WHO_MUST_FALL_IN_IT
-
     def set_fall_to(self, fall_to):
         self.fall_to = fall_to
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.set_fall_to(locations[settings['fall_to']])
-        self.set_name(settings['name'])
 
-        self.types_who_must_fall = settings['consts'].get('type_who_must_fall_in_it') or TYPES_WHO_MUST_FALL_IN_IT
-        self.TROUGH_HOLE_MSG = settings['consts'].get('trough_hole_msg') or TROUGH_HOLE_MSG
-        self.FALL_MSG = settings['consts'].get('fall_msg') or FALL_MSG
+        self.types_who_must_fall = settings['who_fall_in_it']
+        self.GO_TROUGH_MSG = settings['go_throught_msg']['ru']
+        self.FALL_MSG = settings['fall_msg']['ru']
+
+        self.new_at(self.go_into_hole, self.condition, settings['go_throught_turn']['ru'])
+
+        # TODO: solve this problem (two buttins "fall into hole")
+        if 'kek' in self.__class__.__dict__:
+            self.new_button(settings['go_throught_turn']['ru'], 'into_hole.png')
+        else:
+            self.__class__.kek = 'kek'
 
     def main(self):
         for obj in self.labyrinth.get_all_objects():
@@ -34,9 +28,7 @@ class Hole(Location):
                 self.indulgence[obj] = None
 
         for obj in self.get_children(lrtype=self.types_who_must_fall,
-                                     and_key=lambda obj: self.and_who_must_fall(obj) and
-                                                         self.indulgence.get(obj, None) is None,
-                                     or_key=self.or_who_must_fall):
+                                     and_key=lambda obj: self.indulgence.get(obj, None) is None):
             obj.set_parent(self.fall_to)
             if type(self.fall_to) is Hole:
                 self.indulgence[obj] = self.fall_to
@@ -51,7 +43,7 @@ class Hole(Location):
         active_player.set_parent(self.fall_to)
         if type(self.fall_to) is Hole:
             self.indulgence[active_player] = self.fall_to
-        self.labyrinth.send_msg(self.TROUGH_HOLE_MSG, active_player)
+        self.labyrinth.send_msg(self.GO_TROUGH_MSG, active_player)
 
     def condition(self):
         active_player = self.labyrinth.get_active_player()

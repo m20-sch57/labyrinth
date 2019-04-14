@@ -36,6 +36,7 @@ class Labyrinth:
                 obj.labyrinth = self
                 for flag in settings[obj.lrtype + 's'][i].get('flags', []):
                     obj.add_flag(flag)
+                obj.set_name(settings[obj.lrtype + 's'][i].get('name', ''))
                 obj.set_settings(settings[obj.lrtype + 's'][i], *lrlist)
 
         self.locations = set(locations)
