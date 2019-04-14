@@ -39,7 +39,8 @@ function startGame() {
 	xhr.send();
 };
 
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
+console.log('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'change_name':
@@ -71,9 +72,6 @@ socket.on('update', function(msg) {
 			document.location.href = document.getElementById('data').dataset.startRedirect;
 			break;
 	};
-});
-socket.on('connect', function() {
-	socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
 });
 
 var changeNameInput = document.getElementById('room_name');

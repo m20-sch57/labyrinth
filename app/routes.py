@@ -1,29 +1,20 @@
-﻿# encoding: utf-8
-
-from app import app, dbase, socketio, labyrinths_list
-from flask_socketio import emit, join_room, leave_room
-from flask import render_template, request, session, redirect, url_for, flash, send_file
-from hashlib import sha1
+﻿from flask import render_template, request, session, redirect, url_for
+from app.room_namespace import RoomNamespace
+from LabyrinthEngine import load_lrmap
+from app import app, db, socketio
+from flask_socketio import emit
+from functools import wraps
 import random
 import string
-from functools import wraps
 import json
-import os
-import sys
-import io
 
-from LabyrinthEngine import load_lrmap
+
 
 
 
 '''
 help functions
 '''
-
-
-def sha1_hash(s):
-    return sha1(s.encode('utf-8')).hexdigest()
-
 
 def login_required(f):
     @wraps(f)
@@ -52,8 +43,8 @@ def login():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        if not dbase.user_login_in_table(username) or \
-                dbase.get_user_password_hash(username) != sha1_hash(password):
+        if not db.users.have_user(username) or \
+                not db.users.check_password(password, username):
             return redirect(url_for('login_failed'))
 
         session['username'] = username
@@ -71,14 +62,13 @@ def logout():
 @app.route('/change_login', methods=['POST', 'GET'])
 def change_login():
     if request.method == 'POST':
-        username = session['username']
-        pass_hash = sha1_hash(request.form.get("password"))
+        password = request.form.get("password")
         new_login = request.form.get("new_login")
 
-        if pass_hash != dbase.get_user_password_hash(username):
+        if not db.users.check_password(password):
             return redirect(url_for('change_login_failed'))
 
-        dbase.set_user_login(username, new_login)
+        db.users.set_username(new_login)
         session['username'] = new_login
 
         return redirect(url_for('profile'))
@@ -90,13 +80,13 @@ def change_login():
 def change_password():
     if request.method == 'POST':
         username = session['username']
-        pass_hash = sha1_hash(request.form.get("password"))
-        new_pass_hash = sha1_hash(request.form.get("new_password"))
+        password = request.form.get('password')
+        new_password = request.form.get('new_password')
 
-        if pass_hash != dbase.get_user_password_hash(username):
+        if not db.users.check_password(password):
             return redirect(url_for('change_password_failed'))
 
-        dbase.set_user_password_hash(username, new_pass_hash)
+        db.users.set_password(new_password)
 
         return redirect(url_for('profile'))
 
@@ -109,9 +99,8 @@ def change_avatar():
         username = session['username']
         avatar = request.form['avatar']
 
-        answer = dbase.change_avatar(username, request.form['avatar'])
-        if not answer['ok']:
-            flash(answer['error'])
+        answer = db.users.set_avatar(request.form['avatar'], username)
+
     return render_template('login_register/change_avatar.html')
 
 
@@ -121,7 +110,7 @@ def register():
         username = request.form.get('login')
         password = request.form.get('password')
 
-        if not dbase.add_user(username, sha1_hash(password)):
+        if not db.users.add(username, password).ok:
             return redirect(url_for('register_failed'))
 
         session['username'] = username
@@ -153,7 +142,7 @@ def register_failed():
 @login_required
 def profile():
     username = session.get('username')
-    return simple_render_template('profile.html', ava='/static/images/avatars/'+dbase.get_avatar(username))
+    return simple_render_template('profile.html', ava='/static/images/avatars/'+db.users.get_avatar(username))
 
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
@@ -162,7 +151,7 @@ def room_list(page):
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
 
-    pages = dbase.get_rooms_page_by_page()
+    pages = db.rooms.page_by_page(6)
     pages_number = len(pages)
     page = int(page)
 
@@ -186,7 +175,9 @@ def create_room():
         return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(size))
 
     room_id = genereate_room_id(8)
-    dbase.add_room(room_id, session.get('username'))
+    db.rooms.add(room_id, session.get('username'))
+    socketio.on_namespace(RoomNamespace('/' + room_id))
+
     return redirect(url_for('waiting_room', room_id=room_id))
 
 
@@ -198,42 +189,42 @@ def waiting_room(room_id):
 
         if event_type == 'change_name':
             name = request.form.get('new_name')
-            dbase.set_room_name(room_id, name)
+            db.rooms.set_name(room_id, name)
             emit('update', {'event': 'change_name', 'name': name},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'change_description':
             description = request.form.get('new_description')
-            dbase.set_description(room_id, description)
+            db.rooms.set_description(room_id, description)
             emit('update', {'event': 'change_description', 'description': description},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
-            labyrinth = load_lrmap('example', room_id, dbase.get_room_players(room_id), imagepath)
-            labyrinths_list.add_labyrinth(room_id, labyrinth)
+            labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users, imagepath)
+            db.lrm.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
-                 broadcast=True, room=room_id, namespace='/wrws')
+                 broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'delete_room':
             emit('update', {'event': 'delete_room'},
-                 broadcast=True, room=room_id, namespace='/wrws')
-            dbase.delete_room(room_id)
+                 broadcast=True, namespace='/'+room_id)
+            db.rooms.delete(room_id)
 
     username = session.get('username')
-    labyrinth = labyrinths_list.get_labyrinth(room_id)
+    labyrinth = db.lrm.get_labyrinth(room_id)
     if labyrinth is not None and username in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('game_room', room_id=room_id))
-    elif dbase.get_room(room_id) is None:
+    elif db.rooms.get(room_id) is None:
         return redirect(url_for('room_list', page=0))
     else:
-        return simple_render_template('rooms/waiting_room.html', room=dbase.get_room(room_id), hide_header=True)
+        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True)
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
 def game_room(room_id):
     username = session.get('username')
-    labyrinth = labyrinths_list.get_labyrinth(room_id)
+    labyrinth = db.lrm.get_labyrinth(room_id)
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
 
@@ -252,38 +243,8 @@ def game_room(room_id):
                 turn = request.form.get('turn')
                 labyrinth.make_turn(turn)
                 emit('update', {'event': 'player_make_turn'},
-                     broadcast=True, room=room_id, namespace='/grws')
+                     broadcast=True, namespace='/'+room_id)
     if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
-        return simple_render_template('rooms/game_room.html', room=dbase.get_room(room_id), hide_header=True)
-
-
-@socketio.on('player join', namespace='/grws')
-@socketio.on('player join', namespace='/wrws')
-def wrws_pj(msg):
-    room_id = msg['room_id']
-    username = session.get('username')
-
-    join_room(room_id)
-    dbase.add_player(room_id, username)
-    emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
-         broadcast=True, room=room_id, namespace='/wrws')
-
-    session['room'] = room_id
-
-
-@socketio.on('disconnect', namespace='/grws')
-@socketio.on('disconnect', namespace='/wrws')
-def wrws_pl():
-    room_id = session.get('room')
-    username = session.get('username')
-
-    leave_room(room_id)
-    dbase.remove_player(room_id, username)
-    if dbase.get_room(room_id) is not None:
-        emit('update', {'event': 'player_enter_or_leave', 'players': ','.join(dbase.get_room_players(room_id))},
-             broadcast=True, room=room_id, namespace='/wrws')
-
-    session.pop('room', None)
-
+        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id), hide_header=True)
