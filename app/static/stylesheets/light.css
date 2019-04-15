@@ -1,18 +1,26 @@
 html, body{
 	background: rgb(249, 249, 249);
+	margin: 0;
+}
+
+.content {
 	margin-left: 10%;
 	margin-right: 10%;
 }
 
 [class^='navbar'] {
 	font-family: Verdana;
-	color: rgb(128, 128, 255);
+	color: #ff9898;
 }
 
 #logo {
 	position: relative;
 	float: left;
-	font-size: 24pt;
+	font-size: 30pt;
+	margin-left: 100px;
+	text-decoration: none;
+	color: #ff6d6d;
+	text-shadow: 0px 2px 0px #00000024;
 }
 
 .navbar-sidebar {
@@ -26,9 +34,21 @@ html, body{
 }
 
 .navbar-upper {
-	height: 40px;
-	text-align: right;
-	background: rgb(220, 220, 220);
+	display: flexbox;	
+	height: 50px;
+	background: #8080ff;
+}
+
+.navbar-upper > a {
+	float: right;
+	margin: 10px;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 14pt;
+}
+
+.navbar-upper > a:hover {
+	color: #ffdb4d;
 }
 
 

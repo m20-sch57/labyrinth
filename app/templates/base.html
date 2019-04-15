@@ -12,14 +12,16 @@
 </head>
 <body>
 {% if not hide_header %}
-<div class="navbar-upper">
-    <span id="logo">Лабиринт</span>
-    {% if username == None %}
-    <a href="{{ url_for('register') }}">Регистрация</a>
-    {% endif %}
-    <a href="{{ url_for('index') }}">На главную</a>
-</div>
+    <div class="navbar-upper">
+        <span><a id="logo" href="{{ url_for('index') }}">Лабиринт</a></span>
+        <a href="{{ url_for('index') }}">На главную</a>
+        {% if username == None %}
+            <a href="{{ url_for('register') }}">Регистрация</a>
+        {% endif %}
+    </div>
 {% endif %}
-{% block content %}{% endblock %}
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
 </body>
 </html>
