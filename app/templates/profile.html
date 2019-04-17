@@ -3,7 +3,7 @@
 {% block content %}
 <div id="main">
   <div class="profile">
-    <h3> Профиль {{ username }}</h3>
+    <h2> Профиль {{ username }}</h2>
     <img src="{{ ava }}" width='128' height='128' alt='{{ username }}'>
     <form action="{{ url_for('change_login') }}">
       <button>Изменить логин</button>

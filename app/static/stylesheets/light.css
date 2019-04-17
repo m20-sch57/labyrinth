@@ -3,10 +3,15 @@ html, body{
 	margin: 0;
 }
 
-.content {
-	margin-left: 10%;
-	margin-right: 10%;
+.text {
+	font-family: 'Marmelad', sans-serif;
 }
+
+.content {
+	margin-left: 180px;
+	margin-right: 180px;
+}
+
 
 [class^='navbar'] {
 	font-family: Verdana;
@@ -17,7 +22,7 @@ html, body{
 	position: relative;
 	float: left;
 	font-size: 30pt;
-	margin-left: 100px;
+	margin-left: 50px;
 	text-decoration: none;
 	color: #ff6d6d;
 	text-shadow: 0px 2px 0px #00000024;
@@ -45,10 +50,15 @@ html, body{
 	color: #ffffff;
 	text-decoration: none;
 	font-size: 14pt;
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .navbar-upper > a:hover {
 	color: #ffdb4d;
+	background: #ffffff24;
+	border-radius: 50px 50px 50px 50px;
 }
 
 
@@ -56,6 +66,9 @@ html, body{
 .news {
 	position: absolute;
 	width: 50%;
+	font-size: 20pt;
+	margin-top: 100px;
+	text-align: justify;
 }
 
 .header {
