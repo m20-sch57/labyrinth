@@ -2,7 +2,9 @@ import sqlite3
 
 from database.room import RoomsTable
 from database.user import UsersTable
+from database.map import MapsTable
 from database.lr_manager import LRManager
+
 
 
 def connection():
@@ -30,6 +32,13 @@ def init_db():
                     FOREIGN KEY (creator) REFERENCES users (username)
                     )''')
 
+    cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
+                    id TEXT PRIMARY KEY,
+                    name TEXT,
+                    creator TEXT,
+                    description TEXT,
+                    map TEXT''')
+
 def drop_db():
     cursor, connect = connection()
 
@@ -45,4 +54,5 @@ class Database:
         self.cursor, self.connect = connection()
         self.users = UsersTable(self)
         self.rooms = RoomsTable(self)
+        self.maps = MapsTable(self)
         self.lrm = LRManager(self)
