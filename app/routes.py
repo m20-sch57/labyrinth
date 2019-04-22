@@ -34,7 +34,7 @@ def simple_render_template(url, **kwargs):
 @app.route('/')
 @app.route('/index')
 def index():
-    return simple_render_template('index.html', reg_error=False)
+    return simple_render_template('index.html', reg_error=False, homepage=True)
 
 
 @app.route('/login', methods=['POST', 'GET'])

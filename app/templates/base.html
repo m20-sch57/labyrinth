@@ -16,10 +16,15 @@
 {% if not hide_header %}
     <div class="header logo-font">
         <a id="logo" href="{{ url_for('index') }}">ЛАБИРИНТ</a>
-        <a class="header-a" href="{{ url_for('index') }}">На главную</a>
         {% if username == None %}
-            <a class="header-a" href="{{ url_for('register') }}">Регистрация</a>
+            <a href="{{ url_for('register') }}">Регистрация</a>
+        {% else %}
+            <a href="{{ url_for('logout') }}">Выход</a>
+        {% endif %} 
+        {% if not homepage %}
+            <a href="{{ url_for('index') }}">На главную</a>
         {% endif %}
+        <a href="{{ url_for('rules') }}">Помощь</a>   
     </div>
 {% endif %}
 <div class="content">
