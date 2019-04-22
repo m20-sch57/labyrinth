@@ -1,3 +1,7 @@
+:root {
+	--clr-m1: #ae0fff;
+}
+
 html, body{
 	background: rgb(249, 249, 249);
 	margin: 0;
@@ -16,12 +20,6 @@ html, body{
 	margin-right: 180px;
 }
 
-
-/*[class^='navbar'] {
-	font-family: Verdana;
-	color: #ff9898;
-}*/
-
 #logo {
 	position: relative;
 	float: left;
@@ -29,15 +27,10 @@ html, body{
 	padding-left: 20px;
 	padding-right: 20px;
 	text-decoration: none;
-	color: #ff6d6d;
+	color: #ffffff;
 	text-shadow: 0px 2px 0px #00000024;
-	/*background: #ae0fff;*/
-	background: #8080ff;
+	background: var(--clr-m1);
 	height: inherit;
-}
-
-.logo-bg {
-	background: #000000;
 }
 
 .navbar-sidebar {
@@ -53,8 +46,7 @@ html, body{
 .header {
 	display: flexbox;	
 	height: 50px;
-	/*background: #8080ff;*/
-	background: #ae0fff;
+	background: var(--clr-m1);
 }
 
 .header a:not(#logo) {
@@ -195,7 +187,7 @@ html, body{
 .game-room-header {
 	margin-left: 0% !important;
 	margin-right: 0% !important;
-	background-color: rgb(138, 45, 242);
+	background-color: var(--clr-m1);
 	height: 54px;
 	font-family: Verdana;
 	text-align: center;
@@ -229,7 +221,7 @@ html, body{
 	position: absolute;
 	left: 10%;
 	top: 10%;
-	background-color: rgb(138, 45, 242);
+	background-color: var(--clr-m1);
 	height: 33%;
 	border-radius: 10%;
 	-webkit-border-radius: 10%;
