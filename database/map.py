@@ -3,12 +3,12 @@ from database.common_functions import *
 import json
 
 class Map:
-    def __init__(self, ID, name, creator, description, map_json):
+    def __init__(self, ID, name, creator, description, map_file):
         self.id = ID
         self.name = name
         self.creator = creator
         self.description = description
-        self.map = map_json
+        self.map = map_file
 
     def to_dict(self):
         return {'id': self.id, 'name': self.name, 'creator': self.creator, 'description': self.description}
@@ -25,8 +25,12 @@ class MapsTable:
 
     def add(self, name, creator, description, map_json):
         self.cursor.execute('''INSERT INTO maps (name, creator, description, map)
-                               VALUES (?, ?, ?, ?)''', [name, creator, description, map_json])
+                               VALUES (?, ?, ?, ?)''', [name, creator, description, filename])
         self.connect.commit()
+
+        with open('tmp/'+name+'.map.json', 'w') as f:
+            print(map_json, file = f)
+
         return DBAnswer(True, OK, 'Map successfully added')
 
     def get(self, ID):
