@@ -28,13 +28,19 @@ def login_required(f):
 
 
 def simple_render_template(url, **kwargs):
-    return render_template(url, username=session.get('username'), **kwargs)
+    username = session.get('username')
+    ava_prefix = '/static/images/avatars/'
+    if username is not None:
+        user_ava = ava_prefix + db.users.get_avatar(username)
+    else:
+        user_ava = None
+    return render_template(url, username=username, user_ava=user_ava, **kwargs)
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return simple_render_template('index.html', reg_error=False, homepage=True)
+    return simple_render_template('index.html', homepage=True, show_sidebar_r=True)
 
 
 @app.route('/login', methods=['POST', 'GET'])
