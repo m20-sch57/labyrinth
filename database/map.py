@@ -14,6 +14,7 @@ class Map:
         return 'id: {}, name: {}, creator: {}'.format(self.id, self.name, self.creator)
 
 
+# TODO add checks
 class MapTable:
     def __init__(self, db):
         self.db = db
