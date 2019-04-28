@@ -126,7 +126,7 @@ def register():
 
 @app.route('/login_failed')
 def login_failed():
-    return render_template('index.html', username=None, reg_error=True)
+    return render_template('index.html', username=None, reg_error=True, homepage=True, show_sidebar_r=True)
 
 
 @app.route('/change_login_failed')
