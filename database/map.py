@@ -15,7 +15,7 @@ class Map:
 
 
 # TODO add checks
-class MapTable:
+class MapsTable:
     def __init__(self, db):
         self.db = db
         self.connect, self.cursor = self.db.connect, self.db.cursor
@@ -28,7 +28,10 @@ class MapTable:
 
     def get(self, ID):
         self.cursor.execute('''SELECT * FROM maps WHERE id=?''', [ID])
-        return Map(self.cursor.fetchone())
+        map_data = self.cursor.fetchone()
+        if map_data is None:
+            return None
+        return Map(*map_data)
 
     def change_map(self, ID, new_map):
         self.cursor.execute('''UPDATE maps SET map=? WHERE id=?''', [new_map, ID])

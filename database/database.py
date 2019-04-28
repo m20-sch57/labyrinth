@@ -33,11 +33,11 @@ def init_db():
                     )''')
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
-                    id TEXT PRIMARY KEY,
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
                     creator TEXT,
                     description TEXT,
-                    map TEXT''')
+                    map TEXT)''')
 
 def drop_db():
     cursor, connect = connection()
@@ -45,6 +45,7 @@ def drop_db():
     init_db()
     cursor.execute('DROP TABLE rooms')
     cursor.execute('DROP TABLE users')
+    cursor.execute('DROP TABLE maps')
     connect.commit()
 
 
