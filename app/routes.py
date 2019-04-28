@@ -187,16 +187,18 @@ def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
 
-        if event_type == 'change_name':
-            name = request.form.get('new_name')
-            db.rooms.set_name(room_id, name)
-            emit('update', {'event': 'change_name', 'name': name},
-                 broadcast=True, namespace='/'+room_id)
-
-        elif event_type == 'change_description':
-            description = request.form.get('new_description')
-            db.rooms.set_description(room_id, description)
-            emit('update', {'event': 'change_description', 'description': description},
+        if event_type == 'change_settings':
+            name = request.form.get('name')
+            description = request.form.get('description')
+            map_id = request.form.get('map_id')
+            if name:
+                db.rooms.set_name(room_id, name)
+            if description:
+                db.rooms.set_description(room_id, description)
+            db.rooms.set_map(room_id, map_id)
+            room = db.rooms.get(room_id)
+            emit('update', {'event': 'change_settings', 'description': room.description, 
+                 'name': room.name, 'map': db.maps.get(map_id).to_dict()},
                  broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':
@@ -218,7 +220,7 @@ def waiting_room(room_id):
     elif db.rooms.get(room_id) is None:
         return redirect(url_for('room_list', page=0))
     else:
-        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True)
+        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True, maps=db.maps.get_all())
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])

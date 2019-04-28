@@ -29,6 +29,7 @@ def init_db():
                     description TEXT, 
                     users TEXT,
                     create_date TEXT,
+                    map_id INTEGER,
                     FOREIGN KEY (creator) REFERENCES users (username)
                     )''')
 

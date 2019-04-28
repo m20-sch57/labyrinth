@@ -10,6 +10,9 @@ class Map:
         self.description = description
         self.map = map_json
 
+    def to_dict(self):
+        return {'id': self.id, 'name': self.name, 'creator': self.creator, 'description': self.description}
+
     def __str__(self):
         return 'id: {}, name: {}, creator: {}'.format(self.id, self.name, self.creator)
 
@@ -32,6 +35,10 @@ class MapsTable:
         if map_data is None:
             return None
         return Map(*map_data)
+
+    def get_all(self):
+        self.cursor.execute('''SELECT * FROM maps''')
+        return list(map(lambda x: Map(*x), self.cursor.fetchall()))
 
     def change_map(self, ID, new_map):
         self.cursor.execute('''UPDATE maps SET map=? WHERE id=?''', [new_map, ID])
