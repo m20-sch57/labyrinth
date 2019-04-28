@@ -253,4 +253,4 @@ def game_room(room_id):
     if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
-        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id), hide_header=True)
+        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id))
