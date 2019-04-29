@@ -70,16 +70,17 @@ def logout():
 @app.route('/change_login', methods=['POST', 'GET'])
 def change_login():
     if request.method == 'POST':
-        password = request.form.get("password")
+        # password = request.form.get("password")
         new_login = request.form.get("new_login")
+        print(new_login)
 
-        if not db.users.check_password(password):
-            return redirect(url_for('change_login_failed'))
+        # if not db.users.check_password(password):
+        #     return redirect(url_for('change_login_failed'))
 
         db.users.set_username(new_login)
         session['username'] = new_login
 
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile') + '?form=username&result=true')
 
     return render_template('login_register/change_login.html')
 
@@ -88,15 +89,15 @@ def change_login():
 def change_password():
     if request.method == 'POST':
         username = session['username']
-        password = request.form.get('password')
+        password = request.form.get('old_password')
         new_password = request.form.get('new_password')
 
         if not db.users.check_password(password):
-            return redirect(url_for('change_password_failed'))
+            return redirect(url_for('profile') + '?form=password&result=false')
 
         db.users.set_password(new_password)
 
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile') + '?form=password&result=true')
 
     return render_template('login_register/change_password.html')
 
@@ -149,8 +150,7 @@ def register_failed():
 @app.route('/profile')
 @login_required
 def profile():
-    username = session.get('username')
-    return simple_render_template('profile.html', ava='/static/images/avatars/'+db.users.get_avatar(username))
+    return simple_render_template('profile.html', form = request.args.get('form'), result = request.args.get('result'))
 
 @app.route('/add_map', methods=['POST', 'GET'])
 def add_map():

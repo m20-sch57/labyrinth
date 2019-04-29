@@ -5,21 +5,54 @@
     <div class="profile">
         <div>
             <h2>Профиль:</h2><br>
-            <form action="{{ url_for('profile') }}" method="post">
+            <form action="{{ url_for('change_login') }}" method="post">
                 <span class="text-font">Имя:</span><br>
-                <input type="text" name="username" value="{{ user.username }}" placeholder="username"><br>
-                <input class="btn" type="submit" value="Сохранить"><br>
+                <input type="text" name="new_login" value="{{ user.username }}" placeholder="username"><br>
+                <input class="btn" type="submit" value="Сохранить">
+                {% if form == 'username' %}
+                    {% if result == 'false' %}
+                        <div class="failed-info-block">
+                            <span>Имя занято или некорректно.</span>
+                        </div>
+                    {% else %}
+                        <div class="succes-info-block">
+                            <span>Имя успешно изменено.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </form>
             <form action="{{ url_for('profile') }}" method="post">
                 <span class="text-font">Статус:</span><br>
                 <input type="text" name="status" value="{{ user.status }}" placeholder="status"><br>
-                <input class="btn" type="submit" value="Cохранить"><br>
+                <input class="btn" type="submit" value="Cохранить">
+                {% if form == 'status' %}
+                    {% if result == 'false' %}
+                        <div class="failed-info-block">
+                            <span>Некорректный статус</span>
+                        </div>
+                    {% else %}
+                        <div class="succes-info-block">
+                            <span>Статус успешно изменён.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </form>
-            <form action="{{ url_for('profile') }}" method="post">
+            <form action="{{ url_for('change_password') }}" method="post">
                 <span class="text-font">Пароль:</span><br>
-                <input type="password" name="password" placeholder="new password"><br>
+                <input type="password" name="new_password" placeholder="new password"><br>
                 <input type="password" name="old_password" placeholder="old password"><br>
                 <input class="btn" type="submit" value="Сохранить">
+                {% if form == 'password' %}
+                    {% if result == 'false' %}
+                        <div class="failed-info-block">
+                            <span>Неправильный старый пароль, или некорректный новый.</span>
+                        </div>
+                    {% else %}
+                        <div class="succes-info-block">
+                            <span>Пароль успешно изменён.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </form>
         </div>
         <div class="profile-avatar">
@@ -35,11 +68,33 @@
                     <div class="text-font" id="choose-avatar">Обзор</div>
                     <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
                 </div>
-                <input class="btn" type="submit" value="Сохранить">
+                <input class="btn" type="submit" value="Сохранить" id="save-avatar">
+                {% if form == 'change_avatar' %}
+                    {% if result == 'false' %}
+                        <div class="failed-info-block">
+                            <span>Не получилось изменить аватар. Попробуйте ещё раз.</span>
+                        </div>
+                    {% else %}
+                        <div class="succes-info-block">
+                            <span>Аватар успешно изменён.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </form>
             <form>
                 <span class="text-font">Сбросить аватар:</span><br>
                 <input class="btn" type="submit" value="Сбросить">
+                {% if form == 'reset_avatar' %}
+                    {% if result == 'false' %}
+                        <div class="failed-info-block">
+                            <span>Не получилось сбросить аватар. Попробуйте ещё раз.</span>
+                        </div>
+                    {% else %}
+                        <div class="succes-info-block">
+                            <span>Аватар успешно сброшен.</span>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </form>
         </div>
         <div>
@@ -64,8 +119,7 @@
             var uploaded = document.getElementById("avatar-filename");
             uploaded.innerHTML = filename;
         }
-    </script>
-    <script type="text/javascript">
+
         var img = document.getElementById('avatar-preview');
 
         function handleFileSelect(e) {
@@ -74,19 +128,15 @@
             if (!file.type.match('image.*')) {
                 alert('Автатарка - это картинка. Загрузите картинку.');
             } else {
-
                 var reader = new FileReader();
-
                 reader.onload = function(e) {
                     img.setAttribute('src', e.target.result)
                 }
                 reader.readAsDataURL(file); 
-
             }
-
         }
 
-        function sendAvatar(e) {
+        function changeAvatar(e) {
             var canvas = document.getElementById('canvas')
 
             canvas.width = 128;
@@ -102,13 +152,9 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '{{ url_for("change_avatar") }}');
             xhr.send(fd);
-
-            xhr.onreadystatechange = function() {
-                document.location = "{{ url_for('profile') }}";
-            }
         }
 
         document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
-        document.getElementById('accept-image').onclick = sendAvatar;
+        document.getElementById('save-avatar').onclick = changeAvatar;
     </script>
 {% endblock %}

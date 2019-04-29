@@ -1,0 +1,19 @@
+.succes-info-block {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	width: 100%;
+	border: 1px solid green;
+	background: #62ff00d9;
+	color: green;
+}
+
+.failed-info-block {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	width: 100%;
+	border: 1px solid red;
+	background: #ffb1b1;
+	color: red;
+}
