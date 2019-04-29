@@ -23,7 +23,7 @@ class MapsTable:
         self.db = db
         self.connect, self.cursor = self.db.connect, self.db.cursor
 
-    def add(self, name, creator, description, map_json):
+    def add(self, name, creator, description, filename, map_json):
         self.cursor.execute('''INSERT INTO maps (name, creator, description, map)
                                VALUES (?, ?, ?, ?)''', [name, creator, description, filename])
         self.connect.commit()
