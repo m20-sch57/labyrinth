@@ -9,23 +9,17 @@ function xhrOpen(eventType) {
 };
 
 //settings
-function changeDescription(event) {
-	if (event.keyCode == 13){
-		var xhr = xhrOpen('change_description');
-		var newDescription = document.getElementById('room_description').value;
+function saveSettings() {
+	var xhr = xhrOpen('change_settings');
 
-		xhr.send("new_description=" + newDescription);	
-	};
-};
+	var description = document.getElementById('room_description').value;
+	var name = document.getElementById('room_name').value;
+	var mapId = document.getElementById('room_map').value;
 
-function changeName(event) {
-	if (event.keyCode == 13){
-		var xhr = xhrOpen('change_name');
-		var newName = document.getElementById('room_name').value;
+	console.log(description, name, mapId);
 
-		xhr.send("new_name=" + newName);
-	};
-};
+	xhr.send('description='+description+'&name='+name+'&map_id='+mapId)
+}
 
 function deleteRoom() {
 	var xhr = xhrOpen('delete_room');
@@ -43,10 +37,17 @@ console.log('http://' + document.domain + ':' + location.port + '/' + document.g
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 socket.on('update', function(msg) {
 	switch (msg.event) {
-		case 'change_name':
+		case 'change_settings':
+			console.log(msg.map);
 			var title = document.getElementById('title');
+			var description = document.getElementById('description');
+			var mapName = document.getElementById('map_name');
+			var mapDescription = document.getElementById('map_description');
 
 			title.innerHTML = (msg.name);
+			description.innerHTML = ('Описание:<br>' + msg.description.replace(/\n/g, '<br>'));
+			mapName.innerHTML = ('Карта:' + msg.map.name)
+			mapDescription.innerHTML = ('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>') )
 			break;
 
 		case 'player_enter_or_leave':
@@ -74,11 +75,14 @@ socket.on('update', function(msg) {
 	};
 });
 
-var changeNameInput = document.getElementById('room_name');
-changeNameInput.onkeydown = changeName;
+// var changeNameInput = document.getElementById('room_name');
+// changeNameInput.onkeydown = changeName;
 
-var changeDescriptionInput = document.getElementById('room_description');
-changeDescriptionInput.onkeydown = changeDescription;
+// var changeDescriptionInput = document.getElementById('room_description');
+// changeDescriptionInput.onkeydown = changeDescription;
+
+var saveSettingsButton = document.getElementById('save_settings_btn');
+saveSettingsButton.onclick = saveSettings;
 
 var startButton = document.getElementById('start_button');
 startButton.onclick = startGame;

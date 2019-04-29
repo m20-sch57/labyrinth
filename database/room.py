@@ -4,13 +4,15 @@ import json
 
 
 class Room:
-    def __init__(self, ID, name, creator, description, users, date):
+    def __init__(self, ID, name, creator, description, users, date, map_id):
         self.id = ID
         self.name = name
         self.description = description
         self.creator = creator
         self.users = users_from_string(users)
         self.date = date
+        self.map_id = map_id
+
 
     def __str__(self):
         return 'id: {}; name: {}; date: {}'.format(self.id, self.name, self.date)
@@ -124,3 +126,8 @@ class RoomsTable:
         self.cursor.execute('SELECT id FROM rooms')
         rooms = [self.get(ID[0]) for ID in self.cursor.fetchall()]
         return break_list(rooms, rooms_on_page)
+
+    def set_map(self, ID, map_id):
+        # TODO Answer
+        self.cursor.execute('UPDATE rooms SET map_id=? WHERE id=?', [map_id, ID])
+        self.connect.commit()
