@@ -2,8 +2,8 @@
 
 {% block content %}
 	<form action="{{ url_for('add_map') }}" method="post">
-	Название:<br><input type="text" name="name"></input><br>
+	Название:<br><input type="text" name="name"><br>
 	Описание:<br><textarea name="description"></textarea><br>
 	Карта:<br><textarea name="map_json"></textarea><br>
-	<input type="submit" value="Создать"></input>
+	<input type="submit" value="Создать">
 {% endblock %}

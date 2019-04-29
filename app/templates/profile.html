@@ -1,33 +1,112 @@
 {% extends "base.html" %}
 
+{% set show_sidebar_r = true %}
 {% block content %}
-<div id="main">
-  <div class="profile">
-    <h2> Профиль {{ username }}</h2>
-    <img src="{{ ava }}" width='128' height='128' alt='{{ username }}'>
-    <form action="{{ url_for('change_login') }}">
-      <button>Изменить логин</button>
-    </form>
-    <form action="{{ url_for('change_password') }}">
-      <button>Изменить пароль</button>
-    </form>
-    <form action="{{ url_for('change_avatar') }}">
-      <button>Изменить аватарку</button>
-    </form>
-  </div>
-  <aside class="navbar-sidebar">
-    {% if username == None %}
-    <form class="loginform" action="{{ url_for('login') }}" method="post">
-      Имя: <input type="text" name="login" minlength=4 required><br>
-      Пароль: <input type="password" name="password" minlength=8 required><br>
-      <input type="submit" value="Войти">
-    </form>
-    {% else %}
-    <a href="{{ url_for('profile') }}">Профиль</a><br>
-    <a href="{{ url_for('room_list', page=0) }}">Комнаты</a><br>
-    <a href="{{ url_for('logout') }}">Выход</a><br>
-    {% endif %}
-    <a href="{{ url_for('rules') }}">Правила</a>
-  </aside>
-</div>
+    <div class="profile">
+        <div>
+            <h2>Профиль:</h2><br>
+            <form action="{{ url_for('profile') }}" method="post">
+                <span class="text-font">Имя:</span><br>
+                <input type="text" name="username" value="{{ user.username }}" placeholder="username"><br>
+                <input class="btn" type="submit" value="Сохранить"><br>
+            </form>
+            <form action="{{ url_for('profile') }}" method="post">
+                <span class="text-font">Статус:</span><br>
+                <input type="text" name="status" value="{{ user.status }}" placeholder="status"><br>
+                <input class="btn" type="submit" value="Cохранить"><br>
+            </form>
+            <form action="{{ url_for('profile') }}" method="post">
+                <span class="text-font">Пароль:</span><br>
+                <input type="password" name="password" placeholder="new password"><br>
+                <input type="password" name="old_password" placeholder="old password"><br>
+                <input class="btn" type="submit" value="Сохранить">
+            </form>
+        </div>
+        <div class="profile-avatar">
+            <h2>Аватар:</h2><br>
+            <form>
+                <span class="text-font">Предпросмотр:</span><br>
+                <img class="user-ava-large" src="{{ user_ava }}" id="avatar-preview">
+            </form>
+            <form>
+                <span class="text-font">Изменить аватар:</span><br>
+                <div class="fileform">
+                    <span class="text-font" id="avatar-filename"></span>   
+                    <div class="text-font" id="choose-avatar">Обзор</div>
+                    <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
+                </div>
+                <input class="btn" type="submit" value="Сохранить">
+            </form>
+            <form>
+                <span class="text-font">Сбросить аватар:</span><br>
+                <input class="btn" type="submit" value="Сбросить">
+            </form>
+        </div>
+        <div>
+            <h2>Что-то:</h2><br>
+        </div>
+    </div>
+    <canvas id='canvas' style='display: none;'></canvas>
+    <script type="text/javascript">
+        loadAvatar = document.getElementById('load-avatar')
+        document.getElementById('choose-avatar').onclick = function () {
+            loadAvatar.click();
+        }
+        loadAvatar.onchange = function () {
+            str = loadAvatar.value
+            if (str.lastIndexOf('\\')){
+                var i = str.lastIndexOf('\\')+1;
+            }
+            else{
+                var i = str.lastIndexOf('/')+1;
+            }                       
+            var filename = str.slice(i);            
+            var uploaded = document.getElementById("avatar-filename");
+            uploaded.innerHTML = filename;
+        }
+    </script>
+    <script type="text/javascript">
+        var img = document.getElementById('avatar-preview');
+
+        function handleFileSelect(e) {
+            var file = e.target.files[0];
+
+            if (!file.type.match('image.*')) {
+                alert('Автатарка - это картинка. Загрузите картинку.');
+            }
+
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                img.setAttribute('src', e.target.result)
+            }
+            reader.readAsDataURL(file); 
+
+        }
+
+        function sendAvatar(e) {
+            var canvas = document.getElementById('canvas')
+
+            canvas.width = 128;
+            canvas.height = 128;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 128, 128);
+
+            var imageFile = canvas.toDataURL('iamge/png');
+            console.log(imageFile);
+
+            var fd = new FormData();
+            fd.append('avatar', imageFile);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ url_for("change_avatar") }}');
+            xhr.send(fd);
+
+            xhr.onreadystatechange = function() {
+                document.location = "{{ url_for('profile') }}";
+            }
+        }
+
+        document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
+        document.getElementById('accept-image').onclick = sendAvatar;
+    </script>
 {% endblock %}

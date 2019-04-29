@@ -1,0 +1,36 @@
+.profile > div {
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 70px;
+	width: 270px;
+}
+
+.profile form {
+	margin-bottom: 30px;
+}
+
+.profile img {
+	margin-top: 10px;
+}
+
+.profile input {
+	margin-top: 10px;
+	border: 1px solid grey;
+}
+
+.profile input[type="submit"] {
+	width: 150px;
+}
+
+.profile input[type="text"],
+.profile input[type="password"] {
+	padding-left: 10px;
+	height: 20px;
+	width: 100%;
+	font-size: 12pt;
+}
+
+.profile input[type="text"]:focus,
+.profile input[type="password"]:focus {
+	background: #ffeb99;
+}

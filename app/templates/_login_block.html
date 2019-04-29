@@ -1,4 +1,4 @@
-<div class="register-block">
+<div class="login-block">
         <h2> Войти </h2>
         <form action="{{ url_for('login') }}" method="post">
         <p>
@@ -14,7 +14,4 @@
                 <p>Неверный логин или пароль!</p>
             </div>
         {% endif %}
-<form action="{{ url_for('room_list', page=0) }}">
-    <button class="start-game-btn">Играть!</button>
-</form>
 </div>

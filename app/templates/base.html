@@ -19,9 +19,10 @@
         {% if show_sidebar_r %}
             <div class="sidebar-r">
                 {% if username %}
-                    {% include "sidebar_r_user_block.html" %}
+                    {% set ub_show_play_button = true %}
+                    {% include "_user_block.html" %}
                 {% else %}
-                    {% include "sidebar_r_register.html" %}
+                    {% include "_login_block.html" %}
                 {% endif %}
             </div>
         {% endif %}

@@ -31,10 +31,12 @@ def simple_render_template(url, **kwargs):
     username = session.get('username')
     ava_prefix = '/static/images/avatars/'
     if username is not None:
+        user = db.users.get_by_name(username)
         user_ava = ava_prefix + db.users.get_avatar(username)
     else:
+        user = None
         user_ava = None
-    return render_template(url, username=username, user_ava=user_ava, **kwargs)
+    return render_template(url, username=username, user_ava=user_ava, user=user, **kwargs)
 
 
 @app.route('/')
