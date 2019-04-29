@@ -13,7 +13,7 @@ class Legs(Item):
 
         self.new_lbutton([settings['go_north']['ru'], settings['go_south']['ru'], 
             settings['go_west']['ru'], settings['go_east']['ru']], 'leg.png', 
-            ['up.png', 'right.png', 'down.png', 'left.png'])
+            ['up.png', 'down.png', 'right.png', 'left.png'])
 
     def turn_move(self, direction):
         def move():
