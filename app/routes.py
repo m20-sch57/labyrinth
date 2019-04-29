@@ -150,6 +150,21 @@ def profile():
     username = session.get('username')
     return simple_render_template('profile.html', ava='/static/images/avatars/'+db.users.get_avatar(username))
 
+@app.route('/add_map', methods=['POST', 'GET'])
+def add_map():
+    print('LOOL', request.method)
+    if request.method == 'POST':
+        print('KEEEK')
+        name = request.form.get('name')
+        description = request.form.get('description')
+        creator = session.get('username')
+        map_json = request.form.get('map_json')
+
+        db.maps.add(name, creator, description, name, map_json)
+
+        return redirect(url_for('index'))
+    return simple_render_template('add_map.html')
+
 
 @app.route('/room_list/<page>', methods=['POST', 'GET'])
 def room_list(page):
