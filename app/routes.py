@@ -28,13 +28,19 @@ def login_required(f):
 
 
 def simple_render_template(url, **kwargs):
-    return render_template(url, username=session.get('username'), **kwargs)
+    username = session.get('username')
+    ava_prefix = '/static/images/avatars/'
+    if username is not None:
+        user_ava = ava_prefix + db.users.get_avatar(username)
+    else:
+        user_ava = None
+    return render_template(url, username=username, user_ava=user_ava, **kwargs)
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return simple_render_template('index.html', reg_error=False)
+    return simple_render_template('index.html', homepage=True, show_sidebar_r=True)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -120,7 +126,7 @@ def register():
 
 @app.route('/login_failed')
 def login_failed():
-    return render_template('index.html', username=None, reg_error=True)
+    return render_template('index.html', username=None, reg_error=True, homepage=True, show_sidebar_r=True)
 
 
 @app.route('/change_login_failed')
@@ -247,4 +253,4 @@ def game_room(room_id):
     if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
-        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id), hide_header=True)
+        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id))

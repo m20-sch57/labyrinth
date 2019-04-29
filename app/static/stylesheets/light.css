@@ -1,18 +1,114 @@
+:root {
+	--clr-m1: #ae0fff;
+}
+
 html, body{
 	background: rgb(249, 249, 249);
-	margin-left: 10%;
-	margin-right: 10%;
+	margin: 0;
+	height: 100%;
 }
 
-[class^='navbar'] {
-	font-family: Verdana;
-	color: rgb(128, 128, 255);
+.text-font {
+	font-family: 'Marmelad', sans-serif;
 }
 
+.logo-font {
+	font-family: 'Roboto Slab', serif;
+}
+
+.content {
+	height: auto;
+	margin-top: 100px;
+}
+
+.content > div {
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+.content-main {
+	height: 100%;
+	display: table;
+}
+
+/* HEADER */
 #logo {
 	position: relative;
 	float: left;
-	font-size: 24pt;
+	font-size: 30pt;
+	padding-left: 20px;
+	padding-right: 20px;
+	text-decoration: none;
+	color: #ffffff;
+	text-shadow: 0px 2px 0px #00000024;
+	background: var(--clr-m1);
+	height: inherit;
+}
+
+.header {
+	display: flexbox;	
+	height: 50px;
+	background: var(--clr-m1);
+}
+
+.header a:not(#logo) {
+	float: right;
+	margin: 10px;
+	color: #ffffff;
+	text-decoration: none;
+	font-size: 14pt;
+	padding: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.header a:hover:not(#logo) {
+	background: #ffffff24;
+	border-radius: 50px 50px 50px 50px;
+}
+
+.sidebar-r {
+	display: table;
+	float: right;
+	width: 300px;
+	height: 100%;
+	border-top-width: 0;
+}
+
+.user-block {
+	border-left: 5px solid var(--clr-m1);
+	padding-left: 10px;
+}
+
+.user-block > div {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.user-block-ava {
+	border: 1px solid black;
+	width: 100px;
+	height: 100px;
+}
+
+.user-block-info {
+	margin-left: 10px;
+}
+
+.user-block-info-username {
+	margin-top: 10px;
+}
+
+.username-large {
+	font-family: 'Roboto Slab', serif;
+	font-size: 20pt;
+	font-family: 
+}
+
+.user-ava-large {
+	width: 100px;
+	height: 100px;
+	vertical-align:bottom;
 }
 
 .navbar-sidebar {
@@ -25,17 +121,10 @@ html, body{
 	padding: 2%;
 }
 
-.navbar-upper {
-	height: 40px;
-	text-align: right;
-	background: rgb(220, 220, 220);
-}
-
-
 
 .news {
-	position: absolute;
-	width: 50%;
+	font-size: 20pt;
+	text-align: justify;
 }
 
 .header {
@@ -83,24 +172,24 @@ html, body{
 }
 
 .action-link { 
-  display: block;
-  text-decoration: None;
-  color: #ff7b7b;
+	display: block;
+	text-decoration: None;
+	color: #ff7b7b;
 }
 
 .action-link:hover {
-  background: rgb(174, 15, 255);
-  color: rgb(230, 230, 230);
-  cursor: pointer;
+	background: rgb(174, 15, 255);
+	color: rgb(230, 230, 230);
+	cursor: pointer;
 }
 
 .room-name { 
-  width: 20%;
-  background: rgb(230, 230, 230);
-  position: absolute;
-  top: 0%;
-  left: 40%;
-  text-align: center;
+	width: 20%;
+	background: rgb(230, 230, 230);
+	position: absolute;
+	top: 0%;
+	left: 40%;
+	text-align: center;
 }
 
 .player-list {
@@ -112,37 +201,37 @@ html, body{
 }
 
 .room-info {
-  width: 33%;
-  position: absolute;
-  top: 0%;
-  left: 33.5%;
-  color: #000000;
-  text-align: center;
+	width: 33%;
+	position: absolute;
+	top: 0%;
+	left: 33.5%;
+	color: #000000;
+	text-align: center;
 }
 
 .room-settings {
 	display: none;
 	width: 33%;
-  position: absolute;
-  top: 0%;
-  left: 33.5%;
+	position: absolute;
+	top: 0%;
+	left: 33.5%;
 }
 
 .room-data-wrapper {
-  background: rgb(230, 230, 230);
-  color: rgb(128, 128, 255);
-  position: absolute;
-  top: 20%;
-  height: 50%;
-  width: 60%;
-  left: 20%;
-  font-family: Verdana;
+	background: rgb(230, 230, 230);
+	color: rgb(128, 128, 255);
+	position: absolute;
+	top: 20%;
+	height: 50%;
+	width: 60%;
+	left: 20%;
+	font-family: Verdana;
 }
 
 .room-actions {
-  position: absolute;
-  left: 67%;
-  width: 33%;
+	position: absolute;
+	left: 67%;
+	width: 33%;
 }
 
 /* Ниже - стили комнаты игры. Их надо будет перенести в новый дизайн целиком */
@@ -150,7 +239,7 @@ html, body{
 .game-room-header {
 	margin-left: 0% !important;
 	margin-right: 0% !important;
-	background-color: rgb(138, 45, 242);
+	background-color: var(--clr-m1);
 	height: 54px;
 	font-family: Verdana;
 	text-align: center;
@@ -184,7 +273,7 @@ html, body{
 	position: absolute;
 	left: 10%;
 	top: 10%;
-	background-color: rgb(138, 45, 242);
+	background-color: var(--clr-m1);
 	height: 33%;
 	border-radius: 10%;
 	-webkit-border-radius: 10%;
@@ -249,4 +338,24 @@ html, body{
 	background: #efefef;
 	border: 1px solid #ba55d3;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
+}
+
+.undone {
+	color: grey;
+	font-style: italic;
+}
+
+.start-game-btn {
+	display: block;
+	margin-top: 10px;
+	width: 100%;
+	display: block;
+	border: 1px solid black;
+	background: #ffffff;
+	font-size: 15pt;
+}
+
+.start-game-btn:hover {
+	background: var(--clr-m1);
+	color: white;
 }

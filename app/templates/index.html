@@ -1,33 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="main">
-  <div class="news">
-    <h2 class="header">Лабиринт</h2>
-    <p>Тут будут новости.</p>
-  </div>
-  <aside class="navbar-sidebar">
-    {% if username == None %}
-    <form class="loginform" action="{{ url_for('login') }}" method="post">
-      <p>
-        Имя: <input type="text" name="login" minlength=4 required><br>
-      </p>
-      <p>
-        Пароль: <input type="password" name="password" minlength=8 required><br>
-      </p>
-      <input type="submit" value="Войти">
-    </form>
-    {% if reg_error %}
-    <div class="error">
-      <p>Неверный логин или пароль!</p>
-    </div>
-    {% endif %}
-    {% else %}
-    <a href="{{ url_for('profile') }}">Профиль</a><br>
-    <a href="{{ url_for('room_list', page=0) }}">Комнаты</a><br>
-    <a href="{{ url_for('logout') }}">Выход</a><br>
-    {% endif %}
-    <a href="{{ url_for('rules') }}">Правила</a>
-  </aside>
+<div class="news text">
+    <p>
+        Привет!
+    </p>
+    <p>
+        Лабиринт - это игра на несколько человек, среди которых есть ведущий.
+        Мы решили эту проблему, и теперь вы можете играть в лабиринт без
+        без необходимости просить кого-то придумать вам карту.
+    </p>
+    <p>
+        Чтобы сыграть в лабиринт вам необходимо <span class="undone" title="Не готово!">пройти обучение</span>, прочитать 
+        <a href="{{ url_for('rules') }}">правила</a>
+        {% if username == None %}
+            и <a href="{{ url_for('register') }}">зарегестрироваться</a>. <br>
+            <span class="undone" title="Не готово!">Также вы можете начать играть с временным ником, чтобы
+            зарегестрироваться позже</span>
+        {% endif %}.
+    </p>
 </div>
 {% endblock %}
