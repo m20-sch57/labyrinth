@@ -73,14 +73,16 @@
 
             if (!file.type.match('image.*')) {
                 alert('Автатарка - это картинка. Загрузите картинку.');
-            }
+            } else {
 
-            var reader = new FileReader();
+                var reader = new FileReader();
 
-            reader.onload = function(e) {
-                img.setAttribute('src', e.target.result)
+                reader.onload = function(e) {
+                    img.setAttribute('src', e.target.result)
+                }
+                reader.readAsDataURL(file); 
+
             }
-            reader.readAsDataURL(file); 
 
         }
 
