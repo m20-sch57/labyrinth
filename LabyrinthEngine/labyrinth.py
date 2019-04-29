@@ -47,6 +47,7 @@ class Labyrinth:
 
         self.to_send = {}
         self.active_player_number = 0
+        self.is_game_ended = False
 
         """
         turns_log
@@ -100,6 +101,9 @@ class Labyrinth:
         # обнуляем to_send
         self.clear_to_send()
 
+        if self.is_game_ended:
+            return self.regularize_to_send()
+
         # обновляем лог ходов
         self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
 
@@ -133,6 +137,9 @@ class Labyrinth:
 
         # возвращаем все сообщения, которые нужно отправить
         return self.regularize_to_send()
+
+    def end_game(self):
+        self.is_game_ended = True
 
     def get_next_active_player(self):
         return self.players_list[(self.active_player_number + 1) % len(self.players_list)]

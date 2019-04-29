@@ -15,6 +15,9 @@ class Treasure(Item):
 
         self.new_button(settings['take_turn']['ru'], 'treasure_up.png')
 
+        if self.is_true:
+            self.labyrinth.set_unique_key(self, 'treasure')
+
     def take(self, player):
         if self.RETURNS_BACK_WHEN_IS_DROPPED:
             self.initial_location = self.get_parent()
