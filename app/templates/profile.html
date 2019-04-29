@@ -61,13 +61,15 @@
                 <span class="text-font">Предпросмотр:</span><br>
                 <img class="user-ava-large" src="{{ user_ava }}" id="avatar-preview">
             </form>
-            <form>
+            <form id="change_avatar_form" action="{{ url_for('change_avatar') }}" method="post">
                 <span class="text-font">Изменить аватар:</span><br>
                 <div class="fileform">
                     <span class="text-font" id="avatar-filename"></span>   
                     <div class="text-font" id="choose-avatar">Обзор</div>
                     <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
                 </div>
+                <canvas id='canvas' style='display: none;'></canvas>
+                <input id="new_avatar" name="new_avatar" style="display: none;">
                 <input class="btn" type="submit" value="Сохранить" id="save-avatar">
                 {% if form == 'change_avatar' %}
                     {% if result == 'false' %}
@@ -101,7 +103,6 @@
             <h2>Что-то:</h2><br>
         </div>
     </div>
-    <canvas id='canvas' style='display: none;'></canvas>
     <script type="text/javascript">
         loadAvatar = document.getElementById('load-avatar')
         document.getElementById('choose-avatar').onclick = function () {
@@ -134,6 +135,7 @@
                 }
                 reader.readAsDataURL(file); 
             }
+
         }
 
         function changeAvatar(e) {
@@ -143,18 +145,12 @@
             canvas.height = 128;
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, 128, 128);
-
             var imageFile = canvas.toDataURL('iamge/png');
-            console.log(imageFile);
 
-            var fd = new FormData();
-            fd.append('avatar', imageFile);
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ url_for("change_avatar") }}');
-            xhr.send(fd);
+            document.getElementById('new_avatar').setAttribute('value', imageFile);
         }
 
         document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
-        document.getElementById('save-avatar').onclick = changeAvatar;
+        document.getElementById('change_avatar_form').onsubmit = changeAvatar;
     </script>
 {% endblock %}

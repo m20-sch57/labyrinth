@@ -106,10 +106,12 @@ def change_password():
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
-        avatar = request.form['avatar']
-
-        answer = db.users.set_avatar(request.form['avatar'], username)
-
+        avatar = request.form['new_avatar']
+        answer = db.users.set_avatar(avatar, username)
+        if answer.ok:
+            return redirect(url_for('profile') + '?form=change_avatar&result=true')
+        else:
+            return redirect(url_for('profile') + '?form=change_avatar&result=false')
     return render_template('login_register/change_avatar.html')
 
 

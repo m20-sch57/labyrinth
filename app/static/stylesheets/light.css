@@ -348,6 +348,7 @@ html, body{
 	border: 1px solid black;
 	background: #ffffff;
 	font-size: 15pt;
+	cursor: pointer;
 }
 
 .btn:hover {
