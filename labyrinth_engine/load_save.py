@@ -1,4 +1,4 @@
-﻿from LabyrinthEngine.labyrinth import Labyrinth
+﻿from labyrinth_engine.labyrinth import Labyrinth
 import json
 import importlib
 import random
@@ -42,7 +42,7 @@ def load_lrmap(loadfile, savefile, users, imagepath, lrseed=random.randrange(sys
 	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
 		lrmap = json.load(f)
 
-	Player = importlib.import_module('LabyrinthEngine').__dict__['Player']
+	Player = importlib.import_module('labyrinth_engine').__dict__['Player']
 
 	players = list(map(lambda username: Player(username), users))
 	adjacence_list = lrmap['adjacence_list']

@@ -1,4 +1,4 @@
-from LabyrinthEngine import Location
+from labyrinth_engine import Location
 
 
 class FirstAidPost(Location):

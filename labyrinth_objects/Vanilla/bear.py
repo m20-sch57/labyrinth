@@ -1,5 +1,5 @@
-﻿from LabyrinthEngine import Creature
-from LabyrinthObjects.Vanilla.exit import Exit
+﻿from labyrinth_engine import Creature
+from labyrinth_objects.Vanilla.exit import Exit
 
 
 class Bear(Creature):

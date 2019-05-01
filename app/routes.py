@@ -1,6 +1,6 @@
 ﻿from flask import render_template, request, session, redirect, url_for
 from app.room_namespace import RoomNamespace
-from LabyrinthEngine import load_lrmap
+from labyrinth_engine import load_lrmap
 from app import app, db, socketio
 from flask_socketio import emit
 from functools import wraps
