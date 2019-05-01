@@ -12,7 +12,8 @@ form input {
 	border: 1px solid grey;
 }
 
-form input[type="submit"] {
+form input[type="submit"],
+form input[type="button"] {
 	width: 150px;
 }
 
@@ -37,7 +38,7 @@ form input[type="password"]:focus {
     overflow: hidden;
     padding: 1px;
     margin-top: 10px;
-    width: 100%;
+    width: calc(100% - 2px- 2px);
 }
 
 .fileform > div { 
