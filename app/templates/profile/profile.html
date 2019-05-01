@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% set show_sidebar_r = true %}
+{% block content %}
+    <div class="profile">
+        <div class="profile-clmn">
+            <h2>Профиль:</h2>
+            {% include 'profile/_change_login.html' %}
+            {% include 'profile/_change_status.html' %}
+            {% include 'profile/_change_password.html' %}
+        </div>
+        <div class="profile-clmn">
+            <h2>Аватар:</h2>
+            {% include 'profile/_change_avatar.html' %}
+        </div>
+        <div class="profile-clmn">
+            <h2>Что-то:</h2>
+        </div>
+    </div>
+{% endblock %}

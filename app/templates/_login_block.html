@@ -1,17 +1,13 @@
 <div class="login-block">
         <h2> Войти </h2>
         <form action="{{ url_for('login') }}" method="post">
-        <p>
-            Имя : <input type="text" name="login" minlength=4 required><br>
-        </p>
-        <p>
-            Пароль : <input type="password" name="password" minlength=8 required><br>
-        </p>
-        <input type="submit" value="Войти">
+            <input type="text" name="login" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <input class="btn" type="submit" value="Войти">
         </form>
-        {% if reg_error %}
-            <div class="error">
-                <p>Неверный логин или пароль!</p>
+        {% if args.form == 'login' and args.result == 'false' %}
+            <div class="failed-info-block">
+                <span>Неверный логин или пароль!</span>
             </div>
         {% endif %}
 </div>

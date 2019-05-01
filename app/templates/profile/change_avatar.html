@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% set show_sidebar_r = true %}
+{% block content %}
+    <h2> Изменить аватарку </h2>
+    <div class="profile">
+        {% include 'profile/_change_avatar.html' %}
+    </div>
+{% endblock %}

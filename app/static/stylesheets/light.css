@@ -356,42 +356,9 @@ html, body{
 	color: white;
 }
 
-
-/* FILEFORM */
-
-.fileform { 
-    background-color: #ffffff;
-    border: 1px solid grey;
-    height: 20px;
-    overflow: hidden;
-    padding: 1px;
-    margin-top: 10px;
-    width: 100%;
-}
-
-.fileform > div { 
-    background-color: #ffdc4b;
-    border: 1px solid grey;
-    border-radius: 2px;
-    color: #000000;
-    float: right;
-    font-size: 12pt;
-    height: 14px;
-    overflow: hidden;
-    padding: 2px 6px 2px;
-    line-height: 13px;
-    cursor: pointer;
-}
-
-.fileform > div:hover {
-	border-color: black;
-}
-
-.fileform > span {
-	font-size: 12pt;
-	padding-left: 10px;
-}
-
-.fileform #load-avatar{
-    display: none;
+.profile-clmn {
+	display: inline-block;
+	vertical-align: top;
+	padding-right: 70px;
+	width: 270px;
 }

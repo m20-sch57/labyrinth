@@ -1,0 +1,16 @@
+<form action="{{ url_for('profile') }}" method="post">
+    <span class="text-font">Статус:</span>
+    <input type="text" name="status" value="{{ user.status }}" placeholder="status">
+    <input class="btn" type="submit" value="Cохранить">
+    {% if form == 'status' %}
+        {% if result == 'false' %}
+            <div class="failed-info-block">
+                <span>Некорректный статус</span>
+            </div>
+        {% else %}
+            <div class="succes-info-block">
+                <span>Статус успешно изменён.</span>
+            </div>
+        {% endif %}
+    {% endif %}
+</form>

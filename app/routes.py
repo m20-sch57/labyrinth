@@ -36,13 +36,18 @@ def simple_render_template(url, **kwargs):
     else:
         user = None
         user_ava = None
-    return render_template(url, username=username, user_ava=user_ava, user=user, **kwargs)
+    return render_template(url, username=username, user_ava=user_ava, user=user, args = request.args, **kwargs)
+
+def redirect_with_args(url = None, **kwargs):
+    if url is None:
+        url = request.referrer.split('?')[0]
+    return redirect(url+'?'+ '&'.join([str(k)+'='+str(v) for k, v in kwargs.items()]))
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return simple_render_template('index.html', homepage=True, show_sidebar_r=True)
+    return simple_render_template('index.html', homepage=True)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -53,11 +58,11 @@ def login():
 
         if not db.users.have_user(username) or \
                 not db.users.check_password(password, username):
-            return redirect(url_for('login_failed'))
+            return redirect_with_args(form = 'login', result = 'false')
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login_register/login.html')
+    return simple_render_template('login_register/login.html')
 
 
 @app.route('/logout')
@@ -67,25 +72,25 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/change_login', methods=['POST', 'GET'])
+@app.route('/profile')
+@login_required
+def profile():
+    return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'))
+
+
+@app.route('/profile/change_login', methods=['POST', 'GET'])
 def change_login():
     if request.method == 'POST':
-        # password = request.form.get("password")
         new_login = request.form.get("new_login")
-        print(new_login)
-
-        # if not db.users.check_password(password):
-        #     return redirect(url_for('change_login_failed'))
-
         db.users.set_username(new_login)
         session['username'] = new_login
 
-        return redirect(url_for('profile') + '?form=username&result=true')
+        return redirect_with_args(form='login', result='true')
 
-    return render_template('login_register/change_login.html')
+    return simple_render_template('profile/change_login.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
-@app.route('/change_password', methods=['POST', 'GET'])
+@app.route('/profile/change_password', methods=['POST', 'GET'])
 def change_password():
     if request.method == 'POST':
         username = session['username']
@@ -93,26 +98,25 @@ def change_password():
         new_password = request.form.get('new_password')
 
         if not db.users.check_password(password):
-            return redirect(url_for('profile') + '?form=password&result=false')
+            return redirect_with_args(form='password', result='false')
 
         db.users.set_password(new_password)
+        return redirect_with_args(form='password', result='true')
 
-        return redirect(url_for('profile') + '?form=password&result=true')
-
-    return render_template('login_register/change_password.html')
+    return simple_render_template('profile/change_password.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
-@app.route('/change_avatar', methods=['POST', 'GET'])
+@app.route('/profile/change_avatar', methods=['POST', 'GET'])
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
         avatar = request.form['new_avatar']
         answer = db.users.set_avatar(avatar, username)
         if answer.ok:
-            return redirect(url_for('profile') + '?form=change_avatar&result=true')
+            return redirect_with_args(form='change_avatar', result='true')
         else:
-            return redirect(url_for('profile') + '?form=change_avatar&result=false')
-    return render_template('login_register/change_avatar.html')
+            return redirect_with_args(form='change_avatar', result='false')
+    return simple_render_template('profile/change_avatar.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -122,37 +126,12 @@ def register():
         password = request.form.get('password')
 
         if not db.users.add(username, password).ok:
-            return redirect(url_for('register_failed'))
+            return redirect_with_args(form='register', result='false')
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login_register/register.html')
+    return simple_render_template('login_register/register.html')
 
-
-@app.route('/login_failed')
-def login_failed():
-    return render_template('index.html', username=None, reg_error=True, homepage=True, show_sidebar_r=True)
-
-
-@app.route('/change_login_failed')
-def change_login_failed():
-    return render_template('login_register/change_login.html', error=True)
-
-
-@app.route('/change_password_failed')
-def change_password_failed():
-    return render_template('login_register/change_password.html', error=True)
-
-
-@app.route('/register_failed')
-def register_failed():
-    return render_template('login_register/register_failed.html')
-
-
-@app.route('/profile')
-@login_required
-def profile():
-    return simple_render_template('profile.html', form = request.args.get('form'), result = request.args.get('result'))
 
 @app.route('/add_map', methods=['POST', 'GET'])
 def add_map():
