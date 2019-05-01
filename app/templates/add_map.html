@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% set title = 'Добавить карту' %}
 {% block content %}
 	<form action="{{ url_for('add_map') }}" method="post">
     	<span class="text-font">Название:</span>
