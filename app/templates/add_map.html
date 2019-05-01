@@ -2,8 +2,11 @@
 
 {% block content %}
 	<form action="{{ url_for('add_map') }}" method="post">
-	Название:<br><input type="text" name="name"><br>
-	Описание:<br><textarea name="description"></textarea><br>
-	Карта:<br><textarea name="map_json"></textarea><br>
+    	<span class="text-font">Название:</span>
+        <input type="text" name="name"><br><br>
+    	<span>Описание:</span><br>
+        <textarea name="description" style="width: 500px; height: 50px;"></textarea><br><br>
+    	<span>Карта:</span><br>
+        <textarea name="map_json" style="width: 500px; height: 300px"></textarea><br><br>
 	<input type="submit" value="Создать">
 {% endblock %}

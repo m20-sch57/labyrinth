@@ -1,3 +1,10 @@
+:root {
+    --clr-m1: #ae0fff;
+
+    --font-text: 'Marmelad', sans-serif;
+    --font-logo: 'Roboto Slab', serif;
+}
+
 form {
 	margin-top: 30px;
 	width: 270px;
@@ -7,23 +14,44 @@ form img {
 	margin-top: 10px;
 }
 
-form input {
+form input,
+form textarea {
 	margin-top: 10px;
 	border: 1px solid grey;
+    font-size: 12pt;
+}
+
+form span {
+    font-family: var(--font-text);
 }
 
 form input[type="submit"],
 form input[type="button"] {
 	width: 150px;
+
+    /* from btn class */
+    display: block;
+    margin-top: 10px;
+    display: block;
+    border: 1px solid black;
+    background: #ffffff;
+    font-size: 15pt;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover,
+form input[type="button"]:hover {
+    background: var(--clr-m1);
+    color: white;
 }
 
 form input[type="text"],
 form input[type="password"] {
 	padding-left: 10px;
-	height: 20px;
-	width: calc(100% - 10px - 2px); 
-	/*Учитываем паддинг и бордер*/
-	font-size: 12pt;
+	height: 20px; 
+
+    /*Учитываем паддинг и бордер*/
+	width: calc(100% - 10px - 2px);
 }
 
 form input[type="text"]:focus,

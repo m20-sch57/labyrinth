@@ -1,5 +1,8 @@
 :root {
 	--clr-m1: #ae0fff;
+
+	--font-text: 'Marmelad', sans-serif;
+	--font-logo: 'Roboto Slab', serif;
 }
 
 html, body{
@@ -9,11 +12,11 @@ html, body{
 }
 
 .text-font {
-	font-family: 'Marmelad', sans-serif;
+	font-family: var(--font-text);
 }
 
 .logo-font {
-	font-family: 'Roboto Slab', serif;
+	font-family: var(--font-logo);
 }
 
 .content {
