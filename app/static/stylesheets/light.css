@@ -21,7 +21,7 @@ h2:first-child {
 }
 
 h1, h2 {
-	font-family: var(--font-text);
+	font-family: var(--font-head);
 }
 
 .text-font {
