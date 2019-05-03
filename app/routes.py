@@ -155,7 +155,7 @@ def room_list(page):
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
 
-    pages = db.rooms.page_by_page(6)
+    pages = db.rooms.page_by_page(100)
     pages_number = len(pages)
     page = int(page)
 

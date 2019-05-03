@@ -1,6 +1,8 @@
 :root {
-	/*--clr-m1: #3bb34a;*//* green*/
-	--clr-m1: #ae0fff; /*purple*/
+	/* green*/
+	/*--clr-m1: #3bb34a;*/
+	/*purple*/
+	--clr-m1: #ae0fff;
 	--clr-c1: #ffdc4b;
 
 	--font-text: 'Marmelad', sans-serif;
