@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Slab|Ubuntu|Marmelad');
+
 :root {
 	/* green*/
 	/*--clr-m1: #3bb34a;*/
 	/*purple*/
-	--clr-m1: #ae0fff;
+	/*--clr-m1: #ae0fff;*/
+	/*orange*/
+	/*--clr-m1: #e65124;*/
+	/*greyblue*/
+	--clr-m1: #4a94ab;
+
+	/*yellow*/
 	--clr-c1: #ffdc4b;
 
 	--font-text: 'Marmelad', sans-serif ;
