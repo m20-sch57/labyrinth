@@ -2,8 +2,8 @@
     <span class="text-font">Имя:</span>
     <input type="text" name="new_login" value="{{ user.username }}" placeholder="username">
     <input class="btn" type="submit" value="Сохранить">
-    {% if form == 'username' %}
-        {% if result == 'false' %}
+    {% if args.form == 'login' %}
+        {% if args.result == 'false' %}
             <div class="failed-info-block">
                 <span>Имя занято или некорректно.</span>
             </div>

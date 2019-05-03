@@ -27,8 +27,8 @@
 <form>
     <span class="text-font">Сбросить аватар:</span><br>
     <input class="btn" type="submit" value="Сбросить">
-    {% if form == 'reset_avatar' %}
-        {% if result == 'false' %}
+    {% if args.form == 'reset_avatar' %}
+        {% if args.result == 'false' %}
             <div class="failed-info-block">
                 <span>Не получилось сбросить аватар. Попробуйте ещё раз.</span>
             </div>

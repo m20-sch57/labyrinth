@@ -36,7 +36,7 @@ def simple_render_template(url, **kwargs):
     else:
         user = None
         user_ava = None
-    return render_template(url, username=username, user_ava=user_ava, user=user, args = request.args, **kwargs)
+    return render_template(url, username=username, user_ava=user_ava, user=user, args=request.args, **kwargs)
 
 def redirect_with_args(url = None, **kwargs):
     if url is None:
