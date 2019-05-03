@@ -1,0 +1,19 @@
+.svg-fill-m1 {
+	fill: var(--clr-m1);
+}
+
+.svg-fill-c1 {
+	fill: var(--clr-c1);
+}
+
+.svg-fill-white {
+	fill: white;
+}
+
+.svg-fill-hover-c1:hover {
+	fill: var(--clr-c1) !important;
+}
+
+.svg-fill-hover-m1:hover {
+	fill: var(--clr-m1) !important;
+}

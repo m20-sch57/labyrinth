@@ -34,7 +34,7 @@ class RoomsTable:
             return DBAnswer(False, DBError.IncorrectUser, 
                    'Can\'t create a room with creator, which are not user.')
 
-        name = 'Room by ' + creator
+        name = 'Комната ' + ID
         description = 'This room has no description'
 
         # TODO: check ID or gen it here.

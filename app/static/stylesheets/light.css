@@ -1,14 +1,21 @@
-:root {
-	--clr-m1: #ae0fff;
-
-	--font-text: 'Marmelad', sans-serif;
-	--font-logo: 'Roboto Slab', serif;
-}
+@import url('buttons.css');
+@import url('form.css');
+@import url('info_block.css');
+@import url('vars.css');
+@import url('svg.css');
 
 html, body{
 	background: rgb(249, 249, 249);
 	margin: 0;
 	height: 100%;
+}
+
+body {
+	min-width: 1500px;
+}
+
+h2:first-child {
+	margin-top: 0;
 }
 
 .text-font {
@@ -20,19 +27,25 @@ html, body{
 }
 
 .content {
-	height: auto;
+	width: calc(100% - 150px);
 	margin-top: 100px;
+	margin-right: 75px;
+	margin-left: 75px;
+	/*table-layout: fixed;*/
 }
 
-.content > div {
-	margin-left: 100px;
-	margin-right: 100px;
+.content td {
+	vertical-align: top;
+}
+
+.content td:not(:last-child) {
+	padding-right: 100px;
 }
 
 .content-main {
-	height: 100%;
-	display: table;
+	padding: 0;
 }
+
 
 /* HEADER */
 #logo {
@@ -71,15 +84,17 @@ html, body{
 }
 
 .sidebar-r {
-	display: table;
-	float: right;
+	/*display: table;*/
+	/*float: right;*/
 	width: 300px;
 	height: 100%;
+	padding-top: 0;
 	border-top-width: 0;
 }
 
 .user-block {
 	border-left: 5px solid var(--clr-m1);
+	padding-top:0;
 	padding-left: 10px;
 }
 
@@ -96,7 +111,7 @@ html, body{
 	margin-top: 10px;
 }
 
-.username-large {
+.name-large {
 	font-family: 'Roboto Slab', serif;
 	font-size: 20pt;
 	font-family: 
@@ -141,32 +156,11 @@ html, body{
 	padding-left: 1%;
 	padding-right: 1%;	
 }
-
-.rooms {
-	position: absolute;
-	top: 20%;
-	height: 60%;
-	width: 770px;
-	background: rgb(230, 230, 230);
-}
-
-.room {
-	width: 770px;
-	border-bottom: 1px solid rgb(200, 200, 200);
-}
 		
 .join_form {
 	position: relative;
 	float: right; 
 	bottom: 20px;
-}
-
-.error {
-	background: rgb(255, 200, 200);
-	margin-top: 50px;
-	padding: 1%;
-	border: solid 1px rgb(255, 100, 100);
-	color: rgb(255, 10, 10);
 }
 
 .action-link { 
@@ -365,4 +359,42 @@ html, body{
 	margin-left: 40px;
 	margin-bottom: 60px;
 	width: 270px;
+}
+
+
+
+
+
+
+
+
+
+.room-block-list {
+	overflow-y: auto;
+	height: 600px;
+}
+
+.room-block {
+	border: 1px solid grey;
+	padding-left: 5px;
+	margin-bottom: 20px;
+	overflow: hidden;
+	height: 60px;
+}
+
+.room-block-info {
+	display: inline-block;
+	width: calc(100% - 90px);
+	vertical-align: top;
+	height: 100%;
+}
+
+.room-block-enter {
+	display: inline-block;
+	width: 86px;
+	height: 100%;
+}
+
+.room-list-enter-btn:hover {
+	border-left-color: #ffdc4b;
 }

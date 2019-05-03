@@ -1,29 +1,40 @@
 {% extends "base.html" %}
 
+{% set show_sidebar_r = true %}
 {% block content %}
-  <div id="main">
     <div>
-      <form action="{{ url_for('create_room') }}">
-        <button class="enter_button">Create room!</button>
-      </form>
+        <form action="{{ url_for('create_room') }}">
+            <button class="btn">Создать комнату</button>
+        </form>
     </div>
-    <div class="rooms">
-      {% for room in pager %}
-        <div class="room">
-          <h3>Комната {{ room.name }}</h3>
-          <form action="{{ url_for('room_list', page=0) }}" method="post" class="join_form">
-            <button value="{{ room.id }}" name="join_button">Join!</button>
-          </form>
-        </div>
-      {% endfor %}
+    <div>
+        <form>
+            <button formaction="{{ url_for('room_list', page=first_page) }}"><<</button>
+            <button formaction="{{ url_for('room_list', page=prev_page) }}"><</button>
+            <button formaction="{{ url_for('room_list', page=next_page) }}">></button>
+            <button formaction="{{ url_for('room_list', page=last_page) }}">>></button>
+        </form>
     </div>
-    <div class="paginator">
-      <form>
-        <button formaction="{{ url_for('room_list', page=first_page) }}"><<</button>
-        <button formaction="{{ url_for('room_list', page=prev_page) }}"><</button>
-        <button formaction="{{ url_for('room_list', page=next_page) }}">></button>
-        <button formaction="{{ url_for('room_list', page=last_page) }}">>></button>
-      </form>
+    <div class="room-block-list">
+        {% for room in pager %}
+            <div class="room-block">
+                <div class="room-block-info">
+                    <span class="name-large">{{ room.name }}</span>
+                </div>
+                <div class="room-block-enter">
+                    <svg style="height: 100%; width: 100%;">
+                        <polygon class="svg-fill-m1" points="0,0 100,0 100,200 0,0"/>
+                        <g onmousedown="enterRoom('{{ room.id }}')">
+                            <polygon class="svg-fill-hover-c1 svg-fill-white" style="fill: white;" points="43,8 68,28 43,48"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        {% endfor %}
+        <script type="text/javascript">
+            function enterRoom(roomId) {
+                location.href = ('http://'+document.domain +':'+location.port +'/game_room/'+roomId)
+            }
+        </script>
     </div>
-  </div>
 {% endblock %}

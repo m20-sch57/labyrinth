@@ -199,10 +199,14 @@ def waiting_room(room_id):
                 db.rooms.set_name(room_id, name)
             if description:
                 db.rooms.set_description(room_id, description)
+            if map_id:
+                lr_map = db.maps.get(map_id).to_dict()
+            else:
+                lr_map = None
             db.rooms.set_map(room_id, map_id)
             room = db.rooms.get(room_id)
             emit('update', {'event': 'change_settings', 'description': room.description, 
-                 'name': room.name, 'map': db.maps.get(map_id).to_dict()},
+                 'name': room.name, 'map': lr_map},
                  broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':

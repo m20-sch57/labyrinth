@@ -15,19 +15,19 @@
             <a href="{{ url_for('rules') }}">Помощь</a>   
         </div>
     {% endif %}
-    <div class="content">
+    <table class="content"><tr>
+        <td class="content-main">
+            {% block content %}{% endblock %}
+        </td>
         {% if show_sidebar_r %}
-            <div class="sidebar-r">
+            <td class="sidebar-r">
                 {% if username %}
                     {% set ub_show_play_button = true %}
                     {% include "_user_block.html" %}
                 {% else %}
                     {% include "_login_block.html" %}
                 {% endif %}
-            </div>
+            </td>
         {% endif %}
-        <div class="content-main">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
+    </tr></table>
 {% endblock %}
