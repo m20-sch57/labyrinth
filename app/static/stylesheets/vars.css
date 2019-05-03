@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab|Ubuntu');
 :root {
 	/* green*/
 	/*--clr-m1: #3bb34a;*/
@@ -5,6 +6,6 @@
 	--clr-m1: #ae0fff;
 	--clr-c1: #ffdc4b;
 
-	--font-text: 'Marmelad', sans-serif;
+	--font-text: 'Ubuntu', serif;
 	--font-logo: 'Roboto Slab', serif;
 }
