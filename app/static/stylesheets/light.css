@@ -380,21 +380,19 @@ h2:first-child {
 	margin-bottom: 20px;
 	overflow: hidden;
 	height: 60px;
+	box-shadow:  0 1px 1px rgba(0, 0, 0, 0.22);
 }
 
 .room-block-info {
 	display: inline-block;
-	width: calc(100% - 90px);
+	/*width: calc(100% - 90px);*/
 	vertical-align: top;
 	height: 100%;
 }
 
 .room-block-enter {
 	display: inline-block;
+	float: right;
 	width: 86px;
 	height: 100%;
-}
-
-.room-list-enter-btn:hover {
-	border-left-color: #ffdc4b;
 }

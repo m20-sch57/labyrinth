@@ -23,11 +23,15 @@
                 </div>
                 <div class="room-block-enter">
                     <svg style="height: 100%; width: 100%;">
+                        <defs>
+                            <filter id="filter">
+                            </filter>
+                        </defs>
                         <polygon class="svg-fill-m1" points="0,0 100,0 100,200 0,0"/>
                         <g onclick="enterRoom('{{ room.id }}')">
-                            <polygon class="svg-fill-hover-c1 svg-fill-white" style="fill: white;" points="43,8 68,28 43,48"/>
+                            <polygon class="svg-room-enter-btn" points="43,8 68,28 43,48"/>
                         </g>
-                    </svg>
+                     </svg>
                 </div>
             </div>
         {% endfor %}
