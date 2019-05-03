@@ -30,7 +30,7 @@ form input[type="button"] {
     display: block;
     margin-top: 10px;
     display: block;
-    border: 1px solid black;
+    border: 1px solid grey;
     background: #ffffff;
     font-size: 15pt;
     cursor: pointer;
