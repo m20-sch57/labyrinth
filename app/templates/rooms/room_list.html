@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 
 {% set show_sidebar_r = true %}
+{% set ub__hide_play_button = true %}
 {% block content %}
-    <div>
-        <form action="{{ url_for('create_room') }}">
-            <button class="btn">Создать комнату</button>
-        </form>
-    </div>
     <div>
         <form>
             <button formaction="{{ url_for('room_list', page=first_page) }}"><<</button>
@@ -41,4 +37,10 @@
             }
         </script>
     </div>
+{% endblock %}
+
+{% block sidebar_content %}
+    <form action="{{ url_for('create_room') }}">
+        <button class="btn">Создать комнату</button>
+    </form>
 {% endblock %}

@@ -23,18 +23,17 @@
             <td class="sidebar-r">
                 <div id="sidebar-content">
                     {% if username %}
-                        {% set ub__show_play_button = true %}
                         {% include "_user_block.html" %}
                     {% else %}
                         {% include "_login_block.html" %}
                     {% endif %}
+                    {% block sidebar_content %}{% endblock %}
                 </div>
                 <script type="text/javascript">
                     jQuery(function($) {
                         $(window).scroll(function(){
                             if($(this).scrollTop()>120){
                                 $('#sidebar-content').addClass('fixed');
-                                // alert('kek');
                             }
                             else if ($(this).scrollTop()<120){
                                 $('#sidebar-content').removeClass('fixed');

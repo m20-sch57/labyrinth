@@ -3,6 +3,10 @@ form {
 	width: 270px;
 }
 
+form:last-child {
+    margin-bottom: 0;
+}
+
 form img {
 	margin-top: 10px;
 }
