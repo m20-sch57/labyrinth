@@ -2,85 +2,85 @@
     "locations":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Outside"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Hole"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Arsenal"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Hole"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"FirstAidPost"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Exit"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Wall"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Wall"
         }
     ],
     "items":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Legs"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Gun"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Bomb"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Treasure"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Health"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Ammo"
         }
     ],
     "creatures":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Bear"
         }
     ],

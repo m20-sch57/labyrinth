@@ -1,6 +1,6 @@
-from LabyrinthEngine.ui_buttons import CommonButton, DirectionButton, ListButton
-from LabyrinthEngine.ui_status_bars import StringBar
-from LabyrinthEngine.common_functions import get_attr_safe, append_safe
+from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
+from labyrinth_engine.ui_status_bars import StringBar
+from labyrinth_engine.common_functions import get_attr_safe, append_safe
 import json
 
 

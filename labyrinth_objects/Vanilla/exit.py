@@ -1,5 +1,5 @@
 from random import choice
-from LabyrinthEngine import Location
+from labyrinth_engine import Location
 
 
 class Exit(Location):

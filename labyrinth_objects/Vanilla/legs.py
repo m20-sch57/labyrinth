@@ -1,5 +1,4 @@
-
-from LabyrinthEngine import Item
+from labyrinth_engine import Item
 
 
 class Legs(Item):

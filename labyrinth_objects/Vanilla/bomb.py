@@ -1,5 +1,5 @@
-from LabyrinthEngine import Item
-from LabyrinthObjects.Vanilla.walls import Wall, Outside
+from labyrinth_engine import Item
+from labyrinth_objects.Vanilla.walls import Wall, Outside
 
 
 class Bomb(Item):

@@ -1,4 +1,4 @@
-from LabyrinthEngine import LabyrinthObject as LO
+from labyrinth_engine import LabyrinthObject as LO
 
 
 class Location(LO):
