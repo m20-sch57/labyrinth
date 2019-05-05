@@ -4,16 +4,8 @@
 {% set ub__hide_play_button = true %}
 {% block content %}
     <h2>Список комнат</h2>
-    <div>
-        <form>
-            <button formaction="{{ url_for('room_list', page=first_page) }}"><<</button>
-            <button formaction="{{ url_for('room_list', page=prev_page) }}"><</button>
-            <button formaction="{{ url_for('room_list', page=next_page) }}">></button>
-            <button formaction="{{ url_for('room_list', page=last_page) }}">>></button>
-        </form>
-    </div>
     <div class="room-block-list">
-        {% for room in pager %}
+        {% for room in rooms %}
             <div class="room-block">
                 <div class="room-block-info">
                     <span class="name-large">{{ room.name }}</span>

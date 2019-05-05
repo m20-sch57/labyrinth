@@ -155,16 +155,9 @@ def room_list(page):
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
 
-    pages = db.rooms.page_by_page(100)
-    pages_number = len(pages)
-    page = int(page)
+    rooms = db.rooms.get_all()
 
-    return simple_render_template('rooms/room_list.html',
-                                  pager=pages[page],
-                                  first_page=0,
-                                  prev_page=max(0, page - 1),
-                                  next_page=min(pages_number - 1, page + 1),
-                                  last_page=pages_number - 1)
+    return simple_render_template('rooms/room_list.html', rooms = rooms)
 
 
 @app.route('/rules')
