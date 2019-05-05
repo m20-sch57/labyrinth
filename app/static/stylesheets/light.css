@@ -1,6 +1,9 @@
-:root {
-	--clr-m1: #ae0fff;
-}
+@import url('buttons.css');
+@import url('form.css');
+@import url('info_block.css');
+@import url('vars.css');
+@import url('svg.css');
+@import url('room_block.css');
 
 html, body{
 	background: rgb(249, 249, 249);
@@ -8,28 +11,47 @@ html, body{
 	height: 100%;
 }
 
+body {
+	min-width: 1100px;
+	height: 100%;
+}
+
+h2:first-child {
+	margin-top: 0;
+}
+
+h1, h2 {
+	font-family: var(--font-head);
+}
+
 .text-font {
-	font-family: 'Marmelad', sans-serif;
+	font-family: var(--font-text);
 }
 
 .logo-font {
-	font-family: 'Roboto Slab', serif;
+	font-family: var(--font-logo);
 }
 
 .content {
-	height: auto;
+	width: calc(100% - 150px);
 	margin-top: 100px;
+	margin-right: 75px;
+	margin-left: 75px;
+	/*table-layout: fixed;*/
 }
 
-.content > div {
-	margin-left: 100px;
-	margin-right: 100px;
+.content td {
+	vertical-align: top;
+}
+
+.content td:not(:last-child) {
+	padding-right: 100px;
 }
 
 .content-main {
-	height: 100%;
-	display: table;
+	padding: 0;
 }
+
 
 /* HEADER */
 #logo {
@@ -68,27 +90,22 @@ html, body{
 }
 
 .sidebar-r {
-	display: table;
-	float: right;
+	/*display: table;*/
+	/*float: right;*/
 	width: 300px;
 	height: 100%;
+	padding-top: 0;
 	border-top-width: 0;
 }
 
+
 .user-block {
-	border-left: 5px solid var(--clr-m1);
-	padding-left: 10px;
+	padding-top:0;
 }
 
 .user-block > div {
 	display: inline-block;
 	vertical-align: top;
-}
-
-.user-block-ava {
-	border: 1px solid black;
-	width: 100px;
-	height: 100px;
 }
 
 .user-block-info {
@@ -99,7 +116,7 @@ html, body{
 	margin-top: 10px;
 }
 
-.username-large {
+.name-large {
 	font-family: 'Roboto Slab', serif;
 	font-size: 20pt;
 	font-family: 
@@ -109,6 +126,7 @@ html, body{
 	width: 100px;
 	height: 100px;
 	vertical-align:bottom;
+	border: 1px solid black;
 }
 
 .navbar-sidebar {
@@ -143,32 +161,11 @@ html, body{
 	padding-left: 1%;
 	padding-right: 1%;	
 }
-
-.rooms {
-	position: absolute;
-	top: 20%;
-	height: 60%;
-	width: 770px;
-	background: rgb(230, 230, 230);
-}
-
-.room {
-	width: 770px;
-	border-bottom: 1px solid rgb(200, 200, 200);
-}
 		
 .join_form {
 	position: relative;
 	float: right; 
 	bottom: 20px;
-}
-
-.error {
-	background: rgb(255, 200, 200);
-	margin-top: 50px;
-	padding: 1%;
-	border: solid 1px rgb(255, 100, 100);
-	color: rgb(255, 10, 10);
 }
 
 .action-link { 
@@ -345,7 +342,7 @@ html, body{
 	font-style: italic;
 }
 
-.start-game-btn {
+.btn {
 	display: block;
 	margin-top: 10px;
 	width: 100%;
@@ -353,9 +350,29 @@ html, body{
 	border: 1px solid black;
 	background: #ffffff;
 	font-size: 15pt;
+	cursor: pointer;
 }
 
-.start-game-btn:hover {
+.btn:hover {
 	background: var(--clr-m1);
 	color: white;
+}
+
+.profile-clmn {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 40px;
+	margin-bottom: 60px;
+	width: 270px;
+}
+
+#sidebar-content {
+	border-left: 5px solid var(--clr-m1);
+	padding-left: 10px;
+}
+
+
+#sidebar-content.fixed {
+	position: fixed;
+	top: 30px;
 }

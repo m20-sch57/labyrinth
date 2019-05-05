@@ -31,16 +31,23 @@ def simple_render_template(url, **kwargs):
     username = session.get('username')
     ava_prefix = '/static/images/avatars/'
     if username is not None:
+        user = db.users.get_by_name(username)
         user_ava = ava_prefix + db.users.get_avatar(username)
     else:
+        user = None
         user_ava = None
-    return render_template(url, username=username, user_ava=user_ava, **kwargs)
+    return render_template(url, username=username, user_ava=user_ava, user=user, args=request.args, **kwargs)
+
+def redirect_with_args(url = None, **kwargs):
+    if url is None:
+        url = request.referrer.split('?')[0]
+    return redirect(url+'?'+ '&'.join([str(k)+'='+str(v) for k, v in kwargs.items()]))
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return simple_render_template('index.html', homepage=True, show_sidebar_r=True)
+    return simple_render_template('index.html', homepage=True)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -51,11 +58,11 @@ def login():
 
         if not db.users.have_user(username) or \
                 not db.users.check_password(password, username):
-            return redirect(url_for('login_failed'))
+            return redirect_with_args(form = 'login', result = 'false')
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login_register/login.html')
+    return simple_render_template('login_register/login.html')
 
 
 @app.route('/logout')
@@ -65,49 +72,51 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/change_login', methods=['POST', 'GET'])
+@app.route('/profile')
+@login_required
+def profile():
+    return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'))
+
+
+@app.route('/profile/change_login', methods=['POST', 'GET'])
 def change_login():
     if request.method == 'POST':
-        password = request.form.get("password")
         new_login = request.form.get("new_login")
-
-        if not db.users.check_password(password):
-            return redirect(url_for('change_login_failed'))
-
         db.users.set_username(new_login)
         session['username'] = new_login
 
-        return redirect(url_for('profile'))
+        return redirect_with_args(form='login', result='true')
 
-    return render_template('login_register/change_login.html')
+    return simple_render_template('profile/change_login.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
-@app.route('/change_password', methods=['POST', 'GET'])
+@app.route('/profile/change_password', methods=['POST', 'GET'])
 def change_password():
     if request.method == 'POST':
         username = session['username']
-        password = request.form.get('password')
+        password = request.form.get('old_password')
         new_password = request.form.get('new_password')
 
         if not db.users.check_password(password):
-            return redirect(url_for('change_password_failed'))
+            return redirect_with_args(form='password', result='false')
 
         db.users.set_password(new_password)
+        return redirect_with_args(form='password', result='true')
 
-        return redirect(url_for('profile'))
-
-    return render_template('login_register/change_password.html')
+    return simple_render_template('profile/change_password.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
-@app.route('/change_avatar', methods=['POST', 'GET'])
+@app.route('/profile/change_avatar', methods=['POST', 'GET'])
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
-        avatar = request.form['avatar']
-
-        answer = db.users.set_avatar(request.form['avatar'], username)
-
-    return render_template('login_register/change_avatar.html')
+        avatar = request.form['new_avatar']
+        answer = db.users.set_avatar(avatar, username)
+        if answer.ok:
+            return redirect_with_args(form='change_avatar', result='true')
+        else:
+            return redirect_with_args(form='change_avatar', result='false')
+    return simple_render_template('profile/change_avatar.html', form = request.args.get('form'), result = request.args.get('result'))
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -117,38 +126,12 @@ def register():
         password = request.form.get('password')
 
         if not db.users.add(username, password).ok:
-            return redirect(url_for('register_failed'))
+            return redirect_with_args(form='register', result='false')
 
         session['username'] = username
         return redirect(url_for('index'))
-    return render_template('login_register/register.html')
+    return simple_render_template('login_register/register.html')
 
-
-@app.route('/login_failed')
-def login_failed():
-    return render_template('index.html', username=None, reg_error=True, homepage=True, show_sidebar_r=True)
-
-
-@app.route('/change_login_failed')
-def change_login_failed():
-    return render_template('login_register/change_login.html', error=True)
-
-
-@app.route('/change_password_failed')
-def change_password_failed():
-    return render_template('login_register/change_password.html', error=True)
-
-
-@app.route('/register_failed')
-def register_failed():
-    return render_template('login_register/register_failed.html')
-
-
-@app.route('/profile')
-@login_required
-def profile():
-    username = session.get('username')
-    return simple_render_template('profile.html', ava='/static/images/avatars/'+db.users.get_avatar(username))
 
 @app.route('/add_map', methods=['POST', 'GET'])
 def add_map():
@@ -172,16 +155,9 @@ def room_list(page):
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
 
-    pages = db.rooms.page_by_page(6)
-    pages_number = len(pages)
-    page = int(page)
+    rooms = db.rooms.get_all()
 
-    return simple_render_template('rooms/room_list.html',
-                                  pager=pages[page],
-                                  first_page=0,
-                                  prev_page=max(0, page - 1),
-                                  next_page=min(pages_number - 1, page + 1),
-                                  last_page=pages_number - 1)
+    return simple_render_template('rooms/room_list.html', rooms = rooms)
 
 
 @app.route('/rules')
@@ -216,10 +192,14 @@ def waiting_room(room_id):
                 db.rooms.set_name(room_id, name)
             if description:
                 db.rooms.set_description(room_id, description)
+            if map_id:
+                lr_map = db.maps.get(map_id).to_dict()
+            else:
+                lr_map = None
             db.rooms.set_map(room_id, map_id)
             room = db.rooms.get(room_id)
             emit('update', {'event': 'change_settings', 'description': room.description, 
-                 'name': room.name, 'map': db.maps.get(map_id).to_dict()},
+                 'name': room.name, 'map': lr_map},
                  broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':

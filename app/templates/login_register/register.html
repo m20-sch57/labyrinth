@@ -1,14 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2> Регистрация </h2>
-  <form action="{{ url_for('register') }}" method="post" class="register_form">
-    <p>
-      Логин : <input type="text" name="login" minlength=4 required><br>
-    </p>
-    <p>
-      Пароль : <input type="password" name="password" minlength=8 required><br>
-    </p>
-    <input type="submit" value="Зарегистрироваться">
-  </form>
+    <h2> Регистрация </h2>
+    <form action="{{ url_for('register') }}" method="post" class="register_form">
+        <input type="text" name="login" placeholder="username"><br>
+        <input type="password" name="password" placeholder="password"><br>
+        <input type="submit" value="Регистрация">
+    </form>
 {% endblock %}
