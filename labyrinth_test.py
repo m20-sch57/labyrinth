@@ -3,7 +3,7 @@ from LabyrinthObjects.Vanilla import Bear, Treasure
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1', 'player #2'], 'imagepath')
+    TestLR = load_lrmap('example1', 'example1', ['player #1', 'player #2'], 'imagepath')
     while not TestLR.is_game_ended:
 
         print('\n')
