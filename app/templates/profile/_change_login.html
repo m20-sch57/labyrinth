@@ -1,0 +1,16 @@
+<form action="{{ url_for('change_login') }}" method="post">
+    <span class="text-font">Имя:</span>
+    <input type="text" name="new_login" value="{{ user.username }}" placeholder="username">
+    <input class="btn" type="submit" value="Сохранить">
+    {% if args.form == 'login' %}
+        {% if args.result == 'false' %}
+            <div class="failed-info-block">
+                <span>Имя занято или некорректно.</span>
+            </div>
+        {% else %}
+            <div class="succes-info-block">
+                <span>Имя успешно изменено.</span>
+            </div>
+        {% endif %}
+    {% endif %}
+</form>

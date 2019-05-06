@@ -1,0 +1,18 @@
+.svg-fill-m1 {
+	fill: var(--clr-m1);
+}
+
+.svg-room-enter-btn:hover {
+	fill: var(--clr-c1) !important;
+
+	stroke: #616161;
+	stroke-width: 1px;
+	stroke-linejoin: round;
+}
+
+.svg-room-enter-btn {
+	fill: white;
+	stroke: grey;
+	stroke-width: 1px;
+	stroke-linejoin: round;
+}

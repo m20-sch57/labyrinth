@@ -15,18 +15,33 @@
             <a href="{{ url_for('rules') }}">Помощь</a>   
         </div>
     {% endif %}
-    <div class="content">
-        {% if show_sidebar_r %}
-            <div class="sidebar-r">
-                {% if username %}
-                    {% include "sidebar_r_user_block.html" %}
-                {% else %}
-                    {% include "sidebar_r_register.html" %}
-                {% endif %}
-            </div>
-        {% endif %}
-        <div class="content-main">
+    <table class="content"><tr>
+        <td class="content-main">
             {% block content %}{% endblock %}
-        </div>
-    </div>
+        </td>
+        {% if show_sidebar_r %}
+            <td class="sidebar-r">
+                <div id="sidebar-content">
+                    {% if username %}
+                        {% include "_user_block.html" %}
+                    {% else %}
+                        {% include "_login_block.html" %}
+                    {% endif %}
+                    {% block sidebar_content %}{% endblock %}
+                </div>
+                <script type="text/javascript">
+                    jQuery(function($) {
+                        $(window).scroll(function(){
+                            if($(this).scrollTop()>120){
+                                $('#sidebar-content').addClass('fixed');
+                            }
+                            else if ($(this).scrollTop()<120){
+                                $('#sidebar-content').removeClass('fixed');
+                            }
+                        });
+                    });
+                </script>
+            </td>
+        {% endif %}
+    </tr></table>
 {% endblock %}

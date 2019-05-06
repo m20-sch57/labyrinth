@@ -85,15 +85,21 @@ var saveSettingsButton = document.getElementById('save_settings_btn');
 saveSettingsButton.onclick = saveSettings;
 
 var startButton = document.getElementById('start_button');
-startButton.onclick = startGame;
+if (startButton) {
+	startButton.onclick = startGame;
+}
 
 var deleteRoomButton = document.getElementById('delete_room_button');
-deleteRoomButton.onclick = deleteRoom;
+if (deleteRoomButton) {
+	deleteRoomButton.onclick = deleteRoom;
+}
 
 var settingButton = document.getElementById('settings_button');
 var roomInfo = document.getElementById('room_info');
 var roomSettings = document.getElementById('room_settings');
-settingButton.onclick = function() {
-	toggle(roomInfo);
-	toggle(roomSettings);
-};
+if (settingButton) {
+	settingButton.onclick = function() {
+		toggle(roomInfo);
+		toggle(roomSettings);
+	};
+}

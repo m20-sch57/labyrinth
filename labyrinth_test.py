@@ -1,5 +1,5 @@
-from LabyrinthEngine import load_lrmap, load_lrsave
-from LabyrinthObjects.Vanilla import Bear, Treasure
+from labyrinth_engine import load_lrmap, load_lrsave
+from labyrinth_objects.Vanilla import Bear, Treasure
 
 debug = True
 if __name__ == '__main__':
