@@ -1,21 +1,6 @@
 from LabyrinthEngine import load_lrmap, load_lrsave
 from LabyrinthObjects.Vanilla import Bear, Treasure
 
-#
-# ┌───┬───────────┐
-# │ 1 │ 2   3   4 │
-# │               │
-# │ 5   6 │ 7   8 │
-# └───┐   ├───────┘
-#     │ 9 │
-#     └───┘
-# OUTSIDE = 0
-# HOLES:  2↔7
-# ARSENAL: 4
-# FIRST AID POST: 8
-# EXIT: 9
-#
-
 debug = True
 if __name__ == '__main__':
     TestLR = load_lrmap('example', 'example', ['player #1', 'player #2'], 'imagepath')
