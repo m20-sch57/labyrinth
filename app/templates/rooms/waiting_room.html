@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% set title = room.name %}
 {% block content %}
     <div id='data' data-room_id="{{ room.id }}" data-post="{{ url_for('waiting_room', room_id=room.id) }}" data-start-redirect="{{ url_for('game_room', room_id=room.id) }}" data-del-redirecr="{{ url_for('room_list', page=0) }}"></div>
 

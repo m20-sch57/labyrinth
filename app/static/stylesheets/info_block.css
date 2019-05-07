@@ -1,0 +1,26 @@
+.succes-info-block,
+.failed-info-block,
+.warning-info-block {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-left: 10px;
+	width: calc(100% -10px -2px);
+}
+
+.succes-info-block {
+	border: 1px solid green;
+	background: #62ff00d9;
+	color: green;
+}
+
+.failed-info-block {
+	border: 1px solid red;
+	background: #ffb1b1;
+	color: red;
+}
+
+.warning-info-block {
+	border: 1px solid #ff9900;
+	background: #ffebb4;
+	color: #ff9900;
+}

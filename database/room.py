@@ -34,7 +34,7 @@ class RoomsTable:
             return DBAnswer(False, DBError.IncorrectUser, 
                    'Can\'t create a room with creator, which are not user.')
 
-        name = 'Room by ' + creator
+        name = 'Комната ' + ID
         description = 'This room has no description'
 
         # TODO: check ID or gen it here.
@@ -122,10 +122,12 @@ class RoomsTable:
 
         return DBAnswer(True, OK, 'User successfully removed')
 
-    def page_by_page(self, rooms_on_page):
+    def get_all(self):
         self.cursor.execute('SELECT id FROM rooms')
-        rooms = [self.get(ID[0]) for ID in self.cursor.fetchall()]
-        return break_list(rooms, rooms_on_page)
+        return [self.get(ID[0]) for ID in self.cursor.fetchall()]
+
+    def page_by_page(self, rooms_on_page):
+        return break_list(self.get_all(), rooms_on_page)
 
     def set_map(self, ID, map_id):
         # TODO Answer

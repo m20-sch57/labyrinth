@@ -1,0 +1,91 @@
+<form>
+    <span class="text-font">Предпросмотр:</span><br>
+    <img class="user-ava-large" src="{{ user_ava }}" id="avatar-preview">
+</form>
+<form id="change_avatar_form" action="{{ url_for('change_avatar') }}" method="post">
+    <span class="text-font">Изменить аватар:</span><br>
+    <div class="fileform">
+        <span class="text-font" id="avatar-filename"></span>   
+        <div class="text-font" id="choose-avatar">Обзор</div>
+        <input type="file" accept="image/png,image/jpg" id="load-avatar" name="avatar">
+    </div>
+    <canvas id='canvas' style='display: none;'></canvas>
+    <input id="new_avatar" name="new_avatar" style="display: none;">
+    <input class="btn" type="submit" value="Сохранить" id="save-avatar">
+    {% if form == 'change_avatar' %}
+        {% if result == 'false' %}
+            <div class="failed-info-block">
+                <span>Не получилось изменить аватар. Попробуйте ещё раз.</span>
+            </div>
+        {% else %}
+            <div class="succes-info-block">
+                <span>Аватар успешно изменён.</span>
+            </div>
+        {% endif %}
+    {% endif %}
+</form>
+<form>
+    <span class="text-font">Сбросить аватар:</span><br>
+    <input class="btn" type="submit" value="Сбросить">
+    {% if args.form == 'reset_avatar' %}
+        {% if args.result == 'false' %}
+            <div class="failed-info-block">
+                <span>Не получилось сбросить аватар. Попробуйте ещё раз.</span>
+            </div>
+        {% else %}
+            <div class="succes-info-block">
+                <span>Аватар успешно сброшен.</span>
+            </div>
+        {% endif %}
+    {% endif %}
+</form>
+<script type="text/javascript">
+    loadAvatar = document.getElementById('load-avatar')
+    document.getElementById('choose-avatar').onclick = function () {
+        loadAvatar.click();
+    }
+    loadAvatar.onchange = function () {
+        str = loadAvatar.value
+        if (str.lastIndexOf('\\')){
+            var i = str.lastIndexOf('\\')+1;
+        }
+        else{
+            var i = str.lastIndexOf('/')+1;
+        }                       
+        var filename = str.slice(i);            
+        var uploaded = document.getElementById("avatar-filename");
+        uploaded.innerHTML = filename;
+    }
+
+    var img = document.getElementById('avatar-preview');
+
+    function handleFileSelect(e) {
+        var file = e.target.files[0];
+
+        if (!file.type.match('image.*')) {
+            alert('Автатарка - это картинка. Загрузите картинку.');
+        } else {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                img.setAttribute('src', e.target.result)
+            }
+            reader.readAsDataURL(file); 
+        }
+
+    }
+
+    function changeAvatar(e) {
+        var canvas = document.getElementById('canvas')
+
+        canvas.width = 128;
+        canvas.height = 128;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, 128, 128);
+        var imageFile = canvas.toDataURL('iamge/png');
+
+        document.getElementById('new_avatar').setAttribute('value', imageFile);
+    }
+
+    document.getElementById('load-avatar').addEventListener('change', handleFileSelect);
+    document.getElementById('change_avatar_form').onsubmit = changeAvatar;
+</script>
