@@ -425,7 +425,7 @@
             "flags":["drop_items_when_injured"],
             "start_positions":
             {
-                "distribution": "random",
+                "distribution": "order",
                 "from": [1, 9, 17]
             }
         }

@@ -3,7 +3,7 @@ from LabyrinthObjects.Vanilla import Bear, Treasure
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example1', 'example1', ['player #1', 'player #2'], 'imagepath')
+    TestLR = load_lrmap('simple1', 'labyrinth_test_save', ['player #1'], 'imagepath')
     while not TestLR.is_game_ended:
 
         print('\n')
@@ -13,7 +13,7 @@ if __name__ == '__main__':
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
             print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
-            print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))[0].get_parent())))
+            #print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))[0].get_parent())))
             print('│Treasure position  :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Treasure))[0].get_parent())))
             print('├──────────────────────────────────────────────────────────┤')
         print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
