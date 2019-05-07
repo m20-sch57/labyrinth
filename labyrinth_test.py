@@ -1,5 +1,5 @@
-from LabyrinthEngine import load_lrmap, load_lrsave
-from LabyrinthObjects.Vanilla import Bear, Treasure
+from labyrinth_engine import load_lrmap, load_lrsave
+from labyrinth_objects.Vanilla import Bear, Treasure
 
 #
 # ┌───┬───────────┐
@@ -18,8 +18,8 @@ from LabyrinthObjects.Vanilla import Bear, Treasure
 
 debug = True
 if __name__ == '__main__':
-    TestLR = load_lrmap('example', 'example', ['player #1'])
-    while True:
+    TestLR = load_lrmap('example', 'example', ['player #1', 'player #2'], 'imagepath')
+    while not TestLR.is_game_ended:
 
         print('\n')
         ap = TestLR.get_active_player()

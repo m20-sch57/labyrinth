@@ -9,23 +9,17 @@ function xhrOpen(eventType) {
 };
 
 //settings
-function changeDescription(event) {
-	if (event.keyCode == 13){
-		var xhr = xhrOpen('change_description');
-		var newDescription = document.getElementById('room_description').value;
+function saveSettings() {
+	var xhr = xhrOpen('change_settings');
 
-		xhr.send("new_description=" + newDescription);	
-	};
-};
+	var description = document.getElementById('room_description').value;
+	var name = document.getElementById('room_name').value;
+	var mapId = document.getElementById('room_map').value;
 
-function changeName(event) {
-	if (event.keyCode == 13){
-		var xhr = xhrOpen('change_name');
-		var newName = document.getElementById('room_name').value;
+	console.log(description, name, mapId);
 
-		xhr.send("new_name=" + newName);
-	};
-};
+	xhr.send('description='+description+'&name='+name+'&map_id='+mapId)
+}
 
 function deleteRoom() {
 	var xhr = xhrOpen('delete_room');
@@ -35,24 +29,32 @@ function deleteRoom() {
 
 function startGame() {
 	var xhr = xhrOpen('start_game');
-
+	
 	xhr.send();
 };
 
-var socket = io.connect('http://' + document.domain + ':' + location.port + '/wrws');
+console.log('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
+var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 socket.on('update', function(msg) {
 	switch (msg.event) {
-		case 'change_name':
+		case 'change_settings':
+			console.log(msg.map);
 			var title = document.getElementById('title');
+			var description = document.getElementById('description');
+			var mapName = document.getElementById('map_name');
+			var mapDescription = document.getElementById('map_description');
 
 			title.innerHTML = (msg.name);
+			description.innerHTML = ('Описание:<br>' + msg.description.replace(/\n/g, '<br>'));
+			mapName.innerHTML = ('Карта:' + msg.map.name)
+			mapDescription.innerHTML = ('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>') )
 			break;
 
 		case 'player_enter_or_leave':
 			var player_list = document.getElementById('player_list');
 			player_list.innerHTML = '';
 			for (var i = 0; i < msg.players.split(',').length; i++) {
-				player_list.innerHTML += ('<p class="player">' + msg.players.split(',')[i] + '</p><hr>')
+				player_list.innerHTML += ('<div class="player"><p>' + msg.players.split(',')[i] + '</p></div>')
 			};
 			break;
 
@@ -72,26 +74,32 @@ socket.on('update', function(msg) {
 			break;
 	};
 });
-socket.on('connect', function() {
-	socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
-});
 
-var changeNameInput = document.getElementById('room_name');
-changeNameInput.onkeydown = changeName;
+// var changeNameInput = document.getElementById('room_name');
+// changeNameInput.onkeydown = changeName;
 
-var changeDescriptionInput = document.getElementById('room_description');
-changeDescriptionInput.onkeydown = changeDescription;
+// var changeDescriptionInput = document.getElementById('room_description');
+// changeDescriptionInput.onkeydown = changeDescription;
+
+var saveSettingsButton = document.getElementById('save_settings_btn');
+saveSettingsButton.onclick = saveSettings;
 
 var startButton = document.getElementById('start_button');
-startButton.onclick = startGame;
+if (startButton) {
+	startButton.onclick = startGame;
+}
 
 var deleteRoomButton = document.getElementById('delete_room_button');
-deleteRoomButton.onclick = deleteRoom;
+if (deleteRoomButton) {
+	deleteRoomButton.onclick = deleteRoom;
+}
 
 var settingButton = document.getElementById('settings_button');
 var roomInfo = document.getElementById('room_info');
 var roomSettings = document.getElementById('room_settings');
-settingButton.onclick = function() {
-	toggle(roomInfo);
-	toggle(roomSettings);
-};
+if (settingButton) {
+	settingButton.onclick = function() {
+		toggle(roomInfo);
+		toggle(roomSettings);
+	};
+}

@@ -1,38 +1,51 @@
 {% extends "base.html" %}
 
+{% set title = room.name %}
 {% block content %}
-  <div id='data' data-room_id="{{ room['room_id'] }}" data-post="{{ url_for('waiting_room', room_id=room['room_id']) }}" data-start-redirect="{{ url_for('game_room', room_id=room['room_id']) }}" data-del-redirecr="{{ url_for('room_list', page=0) }}"></div>
+    <div id='data' data-room_id="{{ room.id }}" data-post="{{ url_for('waiting_room', room_id=room.id) }}" data-start-redirect="{{ url_for('game_room', room_id=room.id) }}" data-del-redirecr="{{ url_for('room_list', page=0) }}"></div>
 
-  <header class="room-name" id="title">{{ room['name'] }}</header>
-  <div class="room-data-wrapper">
-    <div class="player-list" id="player_list">
-      {% for player in room['players_set'] %}
-      <p class="player">
-        {{ player }}
-      </p>
-      <hr>
-      {% endfor %}
+    <header class="room-name" id="title">{{ room.name }}</header>
+    <div class="room-data-wrapper">
+        <div class="player-list" id="player_list">
+            {% for player in room.users %}
+            <p class="player">
+                {{ player }}
+            </p>
+            {% endfor %}
+        </div>
+        <div class="room-info" id="room_info">
+            <p>Создана {{ room.date }} пользователем {{ room.creator }}</p>
+            <p id="description">
+            {% if room.description != None %}
+                Описание: {% autoescape false %}{{ room.description.split('\n') | join(' <br> ')}}{% endautoescape %}
+            {% endif %}
+            </p>
+            <p id="map_name">
+                Карта: карта не выбрана.
+            </p>
+            <p id="map_description">
+                Описание карты: карта не выбрана.
+            </p>
+        </div>
+        <div class="room-settings" id="room_settings">
+            Имя комнаты:<input type="text" id="room_name"/><br>
+            Описание:<textarea id="room_description"></textarea><br>
+            Карта:
+            <select id="room_map">
+                {% for map in maps %}
+                    <option value="{{ map.id }}">{{ map.name }}</option>
+                {% endfor %}
+            </select><br>
+            <button id="save_settings_btn">Сохранить!</button>
+        </div>
+        <div class="room-actions">
+            <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
+            {% if room.creator==username %}
+                <a class="action-link" id="delete_room_button">УДАЛИТЬ КОМНАТУ</a><br>
+                <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
+                <a class="action-link" id="settings_button">НАСТРОЙКИ КОМНАТЫ</a><br>
+            {% endif %}
+        </div>
     </div>
-    <div class="room-info" id="room_info">
-      <p>Создана {{ room['create_date'] }} пользователем {{ room['creator'] }}</p>
-      <p id="description">
-      {% if room['description'] != None %}
-        Description: {% autoescape false %}{{ room['description'].split('\n') | join(' <br> ')}}{% endautoescape %}
-      {% endif %}
-      </p>
-    </div>
-    <div class="room-settings" id="room_settings">
-      Имя комнаты:<input type="text" id="room_name"/>
-      Описание:<textarea id="room_description"></textarea>
-    </div>
-    <div class="room-actions">
-      <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
-      {% if room['creator']==username %}
-        <a class="action-link" id="delete_room_button">УДАЛИТЬ КОМНАТУ</a><br>
-        <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
-        <a class="action-link" id="settings_button">НАСТРОЙКИ КОМНАТЫ</a><br>
-      {% endif %}
-    </div>
-  </div>
-  <script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
 {% endblock %}

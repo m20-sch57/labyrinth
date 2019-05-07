@@ -1,0 +1,94 @@
+form {
+	margin-bottom: 30px;
+	width: 270px;
+}
+
+form:last-child {
+    margin-bottom: 0;
+}
+
+form img {
+	margin-top: 10px;
+}
+
+form input,
+form textarea {
+	margin-top: 10px;
+	border: 1px solid grey;
+    font-size: 12pt;
+}
+
+form span {
+    font-family: var(--font-text);
+}
+
+form input[type="submit"],
+form input[type="button"] {
+	width: 150px;
+
+    /* from btn class */
+    display: block;
+    margin-top: 10px;
+    display: block;
+    border: 1px solid grey;
+    background: #ffffff;
+    font-size: 15pt;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover,
+form input[type="button"]:hover {
+    background: var(--clr-m1);
+    color: white;
+}
+
+form input[type="text"],
+form input[type="password"] {
+	padding-left: 10px;
+	height: 20px; 
+
+    /*Учитываем паддинг и бордер*/
+	width: calc(100% - 10px - 2px);
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+	background: #ffeb99;
+}
+
+.fileform { 
+    background-color: #ffffff;
+    border: 1px solid grey;
+    height: 20px;
+    overflow: hidden;
+    padding: 1px;
+    margin-top: 10px;
+    width: calc(100% - 2px- 2px);
+}
+
+.fileform > div { 
+    background-color: #ffdc4b;
+    border: 1px solid grey;
+    border-radius: 2px;
+    color: #000000;
+    float: right;
+    font-size: 12pt;
+    height: 14px;
+    overflow: hidden;
+    padding: 2px 6px 2px;
+    line-height: 13px;
+    cursor: pointer;
+}
+
+.fileform > div:hover {
+	border-color: black;
+}
+
+.fileform > span {
+	font-size: 12pt;
+	padding-left: 10px;
+}
+
+.fileform #load-avatar{
+    display: none;
+}

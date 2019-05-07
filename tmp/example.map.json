@@ -2,85 +2,85 @@
     "locations":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Outside"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Hole"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Arsenal"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"EmptyLocation"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Hole"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"FirstAidPost"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Exit"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Wall"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Wall"
         }
     ],
     "items":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Legs"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Gun"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Bomb"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Treasure"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Health"
         },
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Ammo"
         }
     ],
     "creatures":
     [
         {
-            "module":"LabyrinthObjects.Vanilla",
+            "module":"labyrinth_objects.Vanilla",
             "class_name":"Bear"
         }
     ],
@@ -152,49 +152,83 @@
     ],
     "settings":
     {
-        "locations": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, 
+        "locations": [
             {
-                "fall_to":7,
+                "name":"0"
+            }, 
+            {
+                "name":"1", 
+                "enter_msg": {"ru":"Вы находитесь в тёмной комнате. Тут холодно и сыро."}
+            }, 
+            {
                 "name": "2",
-                "consts":{}
+                "fall_to":7
             },
-            {"name":"3", "consts":{}}, {"name":"4", "consts":{}}, {"name":"5", "consts":{}}, {"name":"6", "consts":{}}, 
             {
-                "fall_to":2,
-                "name":"7",
-                "consts":{}
-            }, 
-            {"name":"8", "consts":{}}, {"name":"9", "consts":{}}, 
-            {
-                "name":"10", 
-                "consts":{}
-            }, 
-            {
-                "name":"11", 
-                "consts":{}
-            }],
-        "items": [{"name":"0", "consts":{}}, {"name":"1", "consts":{}}, {"name":"2", "consts":{}},
-            {
-                "is_true": true,
-                "position":3,
                 "name":"3",
-                "consts":{}
-            }, {"name": "4", "consts":{}}, {"name": "5", "consts":{}}
+                "enter_msg": {"ru":"В комнате лежит скелет. Вы его уже видели.\nСкелет по прежнему выглядит угрожающе."},
+                "first_enter_msg": {"ru":"Вы находитесь в очередной комнате.\nЗдесь вас пробирает дрожь. Скелет у стенки выглядит угрожающе."}
+            }, 
+            {
+                "name":"4"
+            }, 
+            {
+                "name":"5"
+            }, 
+            {
+                "name":"6"
+            }, 
+            {
+                "name":"7",
+                "fall_to":2
+            }, 
+            {
+                "name":"8"
+            }, 
+            {
+                "name":"9"
+            }, 
+            {
+                "name":"10"
+            }, 
+            {
+                "name":"11"
+            }],
+        "items": [
+            {
+                "name":"0"
+            }, 
+            {
+                "name":"1"
+            }, 
+            {
+                "name":"2"
+            },
+            {
+                "name":"3",
+                "is_true": true,
+                "position":3
+            }, 
+            {
+                "name": "4"
+            }, 
+            {
+                "name": "5"
+            }
         ],
         "creatures": [
             {
-                "position":4,
-                "name":"0",
-                "consts":{}
+                "name":"Медведь",
+                "position":4
             }
         ],
         "player": {
-            "flags":["drop_items_when_injured"]
+            "flags":["drop_items_when_injured"],
+            "start_positions":
+            {
+                "distribution": "random",
+                "from": [1, 3, 5]
+            }
         }
-    },
-    "start_positions":
-    {
-        "distribution": "random",
-        "from": [1, 3, 5]
     }
 }
