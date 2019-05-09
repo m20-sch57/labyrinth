@@ -135,9 +135,7 @@ def register():
 
 @app.route('/add_map', methods=['POST', 'GET'])
 def add_map():
-    print('LOOL', request.method)
     if request.method == 'POST':
-        print('KEEEK')
         name = request.form.get('name')
         description = request.form.get('description')
         creator = session.get('username')
