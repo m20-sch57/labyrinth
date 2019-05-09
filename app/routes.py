@@ -1,6 +1,6 @@
 ﻿from flask import render_template, request, session, redirect, url_for
 from app.room_namespace import RoomNamespace
-from labyrinth_engine import load_lrmap
+from labyrinth_engine import load_map
 from app import app, db, socketio
 from flask_socketio import emit
 from functools import wraps
@@ -143,7 +143,7 @@ def add_map():
         creator = session.get('username')
         map_json = request.form.get('map_json')
 
-        db.maps.add(name, creator, description, name, map_json)
+        db.maps.add(name, creator, description, map_json)
 
         return redirect(url_for('index'))
     return simple_render_template('add_map.html')
@@ -204,7 +204,8 @@ def waiting_room(room_id):
 
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
-            labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users, imagepath)
+            map_id = db.rooms.get(room_id).map_id
+            labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
             db.lrm.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, namespace='/'+room_id)
