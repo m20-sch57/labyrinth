@@ -39,7 +39,7 @@ def load_lrsave(loadfile, savefile):
 def load_lrmap(loadfile, savefile, users, imagepath, lrseed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 	random.seed(loadseed)
 
-	with open('tmp\\' + loadfile + '.map.json', 'r', encoding='utf-8') as f:
+	with open('labyrinth_maps\\' + loadfile + '\\map.json', 'r', encoding='utf-8') as f:
 		lrmap = json.load(f)
 
 	Player = importlib.import_module('labyrinth_engine').__dict__['Player']
