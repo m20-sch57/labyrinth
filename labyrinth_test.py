@@ -2,21 +2,6 @@ from labyrinth_engine import load_map, load_save
 from labyrinth_objects.Vanilla import Bear, Treasure
 import json
 
-#
-# ┌───┬───────────┐
-# │ 1 │ 2   3   4 │
-# │               │
-# │ 5   6 │ 7   8 │
-# └───┐   ├───────┘
-#     │ 9 │
-#     └───┘
-# OUTSIDE = 0
-# HOLES:  2↔7
-# ARSENAL: 4
-# FIRST AID POST: 8
-# EXIT: 9
-#
-
 debug = True
 if __name__ == '__main__':
     # save = '''{
@@ -39,7 +24,7 @@ if __name__ == '__main__':
     # }'''
 
 
-    with open('tmp/example.map.json', 'r', encoding='utf-8') as f:
+    with open('labyrinth_maps/example/map.json', 'r', encoding='utf-8') as f:
         _map = f.read()
 
     # TestLR = load_save(save, _map)
@@ -53,7 +38,7 @@ if __name__ == '__main__':
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
             print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
-            print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))[0].get_parent())))
+            #print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))[0].get_parent())))
             print('│Treasure position  :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Treasure))[0].get_parent())))
             print('├──────────────────────────────────────────────────────────┤')
         print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
