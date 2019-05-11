@@ -18,7 +18,7 @@ class LRManager:
             return DBAnswer(True, OK, 'Labyrinth ssuccessfully added.')
 
     def remove_labyrinth(self, room_id):
-        if room_id in self.list:
+        if not room_id in self.list:
             return DBAnswer(False, DBAnswer.LabyrinthNotExist,
                            'Labyrinth with this room id do not exist.')
         else:

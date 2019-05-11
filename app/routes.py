@@ -227,7 +227,7 @@ def waiting_room(room_id):
 def game_room(room_id):
     username = session.get('username')
     labyrinth = db.lrm.get_labyrinth(room_id)
-    if request.method == 'POST':
+    if request.method == 'POST' and labyrinth:
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
@@ -235,10 +235,18 @@ def game_room(room_id):
             btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
-            if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
+            '''
+            0 - game ended
+            1 - your turn
+            2 - not your turn
+            '''
+            if labyrinth.is_game_ended:
+                return json.dumps({'game_state': 0, 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
             else:
-                return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
+                if labyrinth.get_active_player_username() == username:
+                    return json.dumps({'game_state': 1, 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
+                else:
+                    return json.dumps({'game_state': 2, 'msg': msg, 'bars': bar})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_username() == username:
