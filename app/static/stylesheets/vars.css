@@ -3,13 +3,16 @@
 :root {
 	/* green*/
 	/*--clr-m1: #3bb34a;*/
+	/*--clr-m1-l: #d8f5db;*/
 	/*purple*/
 	--clr-m1: #ae0fff;
 	--clr-m1-l: #f1dafd;
 	/*orange*/
 	/*--clr-m1: #e65124;*/
+	/*--clr-m1-l: #f3d0c6;*/
 	/*greyblue*/
 	/*--clr-m1: #4a94ab;*/
+	/*--clr-m1-l: #d8e6ea;*/
 
 	/*yellow*/
 	--clr-c1: #ffdc4b;
