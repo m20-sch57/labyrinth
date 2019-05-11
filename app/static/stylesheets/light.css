@@ -374,4 +374,5 @@ h1, h2 {
 
 .self {
 	border-color: var(--clr-m1);
+	background: var(--clr-m1-l)
 }
