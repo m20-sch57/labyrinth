@@ -4,20 +4,30 @@
 {% set show_sidebar_r = true %}
 {% block content %}
     <div class="profile">
-        <div class="profile-clmn">
-            <h2>Профиль:</h2>
-            {% include 'profile/_change_login.html' %}
-            {% include 'profile/_change_status.html' %}
-            {% include 'profile/_change_password.html' %}
-        </div>
-        <div class="profile-clmn">
-            <h2>Аватар:</h2>
-            {% include 'profile/_change_avatar.html' %}
-        </div>
-        <div class="profile-clmn">
-            <h2>Безопасность:</h2>
-            {% include 'profile/_change_email.html' %}
-            {% include 'profile/_change_phone.html' %}
-        </div>
+        {% if profile_user == '' %}
+            <div class="failed-info-block">
+                <span>Этот пользователь не существует</span>
+            </div>
+        {% elif profile_user %}
+            {% set ub__user = profile_user %}
+            {% set ub__hide_play_button = true %}
+            {% include '_user_block.html' %}
+        {% else %}
+            <div class="profile-clmn">
+                <h2>Профиль:</h2>
+                {% include 'profile/_change_login.html' %}
+                {% include 'profile/_change_status.html' %}
+                {% include 'profile/_change_password.html' %}
+            </div>
+            <div class="profile-clmn">
+                <h2>Аватар:</h2>
+                {% include 'profile/_change_avatar.html' %}
+            </div>
+            <div class="profile-clmn">
+                <h2>Безопасность:</h2>
+                {% include 'profile/_change_email.html' %}
+                {% include 'profile/_change_phone.html' %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

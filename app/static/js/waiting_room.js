@@ -53,7 +53,7 @@ socket.on('update', function(msg) {
 			var player_list = document.getElementById('player_list');
 			player_list.innerHTML = '';
 			for (var i = 0; i < msg.players.split(',').length; i++) {
-				player_list.innerHTML += ('<div class="player"><p>' + msg.players.split(',')[i] + '</p></div>')
+				player_list.innerHTML += ('<div class="player-block"><p>' + msg.players.split(',')[i] + '</p></div>')
 			};
 			break;
 

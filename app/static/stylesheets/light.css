@@ -90,8 +90,6 @@ h1, h2 {
 }
 
 .sidebar-r {
-	/*display: table;*/
-	/*float: right;*/
 	width: 300px;
 	height: 100%;
 	padding-top: 0;
@@ -103,12 +101,19 @@ h1, h2 {
 	padding-top:0;
 }
 
+.user-block-small {
+	width: 200px;
+	border: 1px solid grey;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
+}
+
 .user-block > div {
 	display: inline-block;
 	vertical-align: top;
 }
 
 .user-block-info {
+	vertical-align: center;
 	margin-left: 10px;
 }
 
@@ -116,10 +121,22 @@ h1, h2 {
 	margin-top: 10px;
 }
 
+.user-block-small-info-username {
+	margin-top: 0;
+}
+
+.user-block-small-ava {
+	border-right: 1px solid grey;
+}
+
 .name-large {
 	font-family: 'Roboto Slab', serif;
 	font-size: 20pt;
-	font-family: 
+}
+
+.name-medium {
+	font-family: 'Roboto Slab', serif;
+	font-size: 12pt;
 }
 
 .user-ava-large {
@@ -127,6 +144,21 @@ h1, h2 {
 	height: 100px;
 	vertical-align:bottom;
 	border: 1px solid black;
+}
+
+.user-ava-medium {
+	width: 60px;
+	height: 60px;
+	vertical-align:bottom;
+	border: 1px solid black;
+}
+
+.user-ava-small {
+	width: 40px;
+	height: 40px;
+	vertical-align:bottom;
+	border: 1px solid transparent;
+	border-radius: 3px;
 }
 
 .navbar-sidebar {
@@ -187,48 +219,6 @@ h1, h2 {
 	top: 0%;
 	left: 40%;
 	text-align: center;
-}
-
-.player-list {
-  width: 33%;
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  overflow: auto;
-}
-
-.room-info {
-	width: 33%;
-	position: absolute;
-	top: 0%;
-	left: 33.5%;
-	color: #000000;
-	text-align: center;
-}
-
-.room-settings {
-	display: none;
-	width: 33%;
-	position: absolute;
-	top: 0%;
-	left: 33.5%;
-}
-
-.room-data-wrapper {
-	background: rgb(230, 230, 230);
-	color: rgb(128, 128, 255);
-	position: absolute;
-	top: 20%;
-	height: 50%;
-	width: 60%;
-	left: 20%;
-	font-family: Verdana;
-}
-
-.room-actions {
-	position: absolute;
-	left: 67%;
-	width: 33%;
 }
 
 /* Ниже - стили комнаты игры. Их надо будет перенести в новый дизайн целиком */
@@ -328,7 +318,7 @@ h1, h2 {
 	overflow: auto;
 }
 
-.player {
+.player-block {
 	text-align: center;
 	margin-bottom: 7px;
 	color: #ff7e7e;
@@ -340,6 +330,7 @@ h1, h2 {
 .undone {
 	color: grey;
 	font-style: italic;
+	font-family: var(--font-text);
 }
 
 .btn {
@@ -375,4 +366,12 @@ h1, h2 {
 #sidebar-content.fixed {
 	position: fixed;
 	top: 30px;
+}
+
+.no-margin-top {
+	margin-top: 0;
+}
+
+.self {
+	border-color: var(--clr-m1);
 }

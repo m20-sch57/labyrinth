@@ -1,51 +1,39 @@
 {% extends "base.html" %}
 
 {% set title = room.name %}
+
 {% block content %}
     <div id='data' data-room_id="{{ room.id }}" data-post="{{ url_for('waiting_room', room_id=room.id) }}" data-start-redirect="{{ url_for('game_room', room_id=room.id) }}" data-del-redirecr="{{ url_for('room_list', page=0) }}"></div>
 
-    <header class="room-name" id="title">{{ room.name }}</header>
-    <div class="room-data-wrapper">
-        <div class="player-list" id="player_list">
-            {% for player in room.users %}
-            <p class="player">
-                {{ player }}
-            </p>
-            {% endfor %}
-        </div>
-        <div class="room-info" id="room_info">
-            <p>Создана {{ room.date }} пользователем {{ room.creator }}</p>
-            <p id="description">
-            {% if room.description != None %}
-                Описание: {% autoescape false %}{{ room.description.split('\n') | join(' <br> ')}}{% endautoescape %}
-            {% endif %}
-            </p>
-            <p id="map_name">
-                Карта: карта не выбрана.
-            </p>
-            <p id="map_description">
-                Описание карты: карта не выбрана.
-            </p>
-        </div>
-        <div class="room-settings" id="room_settings">
-            Имя комнаты:<input type="text" id="room_name"/><br>
-            Описание:<textarea id="room_description"></textarea><br>
-            Карта:
-            <select id="room_map">
-                {% for map in maps %}
-                    <option value="{{ map.id }}">{{ map.name }}</option>
-                {% endfor %}
-            </select><br>
-            <button id="save_settings_btn">Сохранить!</button>
-        </div>
-        <div class="room-actions">
-            <a class="action-link" href="{{ url_for('room_list', page=0) }}">ПОКИНУТЬ ИГРУ</a><br>
-            {% if room.creator==username %}
-                <a class="action-link" id="delete_room_button">УДАЛИТЬ КОМНАТУ</a><br>
-                <a class="action-link" id="start_button">НАЧАТЬ ИГРУ</a><br>
-                <a class="action-link" id="settings_button">НАСТРОЙКИ КОМНАТЫ</a><br>
-            {% endif %}
-        </div>
+    <div> <!-- Шапка комнаты -->
+        <span class="name-large">{{ room.name }}</span>
+    </div>
+    <div> <!-- Список с игроками -->
+        {% for user in room.users %}
+            <br>
+            {% set ub__user = user %}
+            {% set ub__signature = 'Создатель' if user.username == room.creator else 'Игрок' %}
+            {% include "_user_block-small.html" %}
+        {% endfor %}
+    </div>
+    <div> <!-- Чат -->
+    </div>
+    <div> <!-- Настройки -->
     </div>
     <script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
+{% endblock %}
+
+{% set show_sidebar_r = true %}
+{% set ub__hide_play_button = true %}
+{% block sidebar_content %}
+    <form>
+        {% if username == room.creator %}
+            <button class="btn">Начать</button>
+        {% endif %}
+        <button class="btn">Пригласить</button>
+        <button class="btn" formaction="{{ url_for('room_list') }}">Выйти</button>
+        {% if username == room.creator %}
+            <button class="btn">Настройки</button>
+        {% endif %}
+    </form>
 {% endblock %}

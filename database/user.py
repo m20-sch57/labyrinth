@@ -11,6 +11,7 @@ class User:
         self.username = username
         self.password_hash = password_hash
         self.avatar = avatar
+        self.avatar_path = '/static/images/avatars/' + avatar
 
     def __str__(self):
         return 'id: {}; username: {}; password_hash: {};'.format(

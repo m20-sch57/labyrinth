@@ -1,0 +1,18 @@
+{% if not ub__user %}
+    {% set ub__user = user %}
+{% endif %}
+<div class="{% if ub__user.username == username %}self{% endif %} user-block user-block-small">
+    <div class="{% if ub__user.username == username %}self{% endif %} user-block-ava user-block-small-ava">
+        <a href="{{ url_for('profile', username=ub__user.username) }}" class="user-ava-btn">
+            <img class="user-ava-small" src="{{ ub__user.avatar_path }}">
+        </a>
+    </div>
+    <div class="user-block-info">
+        <div class="user-block-info-username user-block-small-info-username">
+            <span class="name-medium">{{ ub__user.username }}</span>
+        </div>
+        <div>
+            <span class="undone" style="font-size: 10pt;">{{ ub__signature }}</span>
+        </div>  
+    </div>
+</div>

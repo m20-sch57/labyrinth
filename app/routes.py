@@ -73,9 +73,19 @@ def logout():
 
 
 @app.route('/profile')
-@login_required
-def profile():
+# @login_required
+def my_profile():
     return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'))
+
+@app.route('/profile/<username>')
+def profile(username):
+    if username == session.get('username'):
+        return redirect(url_for('my_profile'))
+    else:
+        profile_user = db.users.get_by_name(username) or ''
+        return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'),
+                                    profile_user=profile_user)
+
 
 
 @app.route('/profile/change_login', methods=['POST', 'GET'])
@@ -147,8 +157,8 @@ def add_map():
     return simple_render_template('add_map.html')
 
 
-@app.route('/room_list/<page>', methods=['POST', 'GET'])
-def room_list(page):
+@app.route('/room_list', methods=['POST', 'GET'])
+def room_list():
     if request.method == 'POST':
         room_id = request.form.get('join_button')
         return redirect(url_for('waiting_room', room_id=room_id))
@@ -220,7 +230,7 @@ def waiting_room(room_id):
     elif db.rooms.get(room_id) is None:
         return redirect(url_for('room_list', page=0))
     else:
-        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True, maps=db.maps.get_all())
+        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), maps=db.maps.get_all())
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])

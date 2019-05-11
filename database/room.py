@@ -4,12 +4,13 @@ import json
 
 
 class Room:
-    def __init__(self, ID, name, creator, description, users, date, map_id):
+    def __init__(self, ID, name, creator, description, users, date, map_id, db):
         self.id = ID
         self.name = name
         self.description = description
         self.creator = creator
-        self.users = users_from_string(users)
+        self.usernames = usernames_from_string(users)
+        self.users = list(map(db.users.get_by_name, self.usernames))
         self.date = date
         self.map_id = map_id
 
@@ -17,7 +18,7 @@ class Room:
     def __str__(self):
         return 'id: {}; name: {}; date: {}'.format(self.id, self.name, self.date)
 
-def users_from_string(users_string):
+def usernames_from_string(users_string):
     return json.loads(users_string)
 
 def users_to_string(users):
@@ -51,7 +52,7 @@ class RoomsTable:
 
         if room is None:
             return None
-        return Room(*room)
+        return Room(*room, self.db)
 
     def delete(self, ID):
         if self.get(ID) is None:
@@ -90,7 +91,7 @@ class RoomsTable:
             return DBAnswer(False, DBError.IncorrectUser, 
                 'Can\'t add nonexistent user into room')
 
-        users = self.get(ID).users
+        users = self.get(ID).usernames
 
         if username in users:
             return DBAnswer(False, DBError.IncorrectUser, 'This user already in this room')

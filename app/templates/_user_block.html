@@ -1,12 +1,15 @@
+{% if not ub__user %}
+    {% set ub__user = user %}
+{% endif %}
 <div class="user-block">
     <div class="user-block-ava">
-        <a href="{{ url_for('profile') }}" class="user-ava-btn">
-            <img class="user-ava-large" src="{{ user_ava }}">
+        <a href="{{ url_for('profile', username=ub__user.username) }}" class="user-ava-btn">
+            <img class="user-ava-large" src="{{ ub__user.avatar_path }}">
         </a>
     </div>
     <div class="user-block-info">
         <div class="user-block-info-username">
-            <span class="name-large">{{ username }}</span>
+            <span class="name-large">{{ ub__user.username }}</span>
         </div>
     </div>
     {% if not ub__hide_play_button %}
