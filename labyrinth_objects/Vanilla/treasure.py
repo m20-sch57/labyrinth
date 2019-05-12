@@ -17,7 +17,7 @@ class Treasure(Item):
 
         if self.is_true:
             if 'treasures' not in self.labyrinth.unique_objects:
-                self.labyrinth.set_unique_key(set(), 'treasures')
+                self.labyrinth.set_unique(set(), 'treasures')
 
             self.labyrinth.unique_objects['treasures'].add(self)
 

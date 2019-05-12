@@ -66,6 +66,7 @@ class Labyrinth:
     def __str__(self):
         return '<labyrinth: {}>'.format(self.filename)
 
+    # Сообщения.
     def send_msg(self, msg, player, priority=0):
         clear_list = {player.get_username(): [] for player in self.players_list}
         if priority not in self.to_send:
@@ -83,13 +84,31 @@ class Labyrinth:
 
         return answer
 
-    def set_unique_key(self, obj, key):
+    def player_to_send(self, username):
+        return self.regularize_to_send()[username]
+
+    def get_msgs(self, username):
+        """
+        Возвращает все сообщения отосланные игроку username
+        """
+
+        if username in self.msgs_log:
+            return self.msgs_log[username]
+        else:
+            return []
+
+    # Уникальные предметы.
+    def set_unique(self, obj, key):
         if key in self.unique_objects:
             pass
             # тут должен быть какой-то идейный warning
         else:
             self.unique_objects[key] = obj
 
+    def get_unique(self, key):
+        return self.unique_objects[key]
+
+    # Ход игрока.
     def make_turn(self, turn):
         """
         Вызвать эту функцию, если активный игрок сделал ход turn
@@ -138,9 +157,29 @@ class Labyrinth:
         # возвращаем все сообщения, которые нужно отправить
         return self.regularize_to_send()
 
+    def get_turns(self, number=None, username=None):
+        """
+        Возвращает все ходы сделанные игроками
+        Возвращает ходы сделанные только указанным игроками, если указан параметр username
+        Возвращает ход под номером number с конца, если указан параметр number
+        Например get_turns(1, 'Вася') вернёт последний ход Васи
+        """
+
+        if username is None:
+            if number is None:
+                return self.turns_log
+            else:
+                return self.turns_log[-number]
+        else:
+            if number is None:
+                return list(filter(lambda turn: turn['player'] in username, self.turns))
+            else:
+                return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
+
     def end_game(self):
         self.is_game_ended = True
 
+    # Активный игрок.
     def get_next_active_player(self):
         return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
 
@@ -163,17 +202,12 @@ class Labyrinth:
 
         return active_player_ats
 
+    # Объекты Либиринта.
     def get_all_objects(self):
         return self.locations | self.items | self.creatures | set(self.players_list)
 
-    def get_unique(self, key):
-        return self.unique_objects[key]
-
     def get_objects(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
-
-    def player_to_send(self, username):
-        return self.regularize_to_send()[username]
 
     def save(self, savefile):
         save = {}
@@ -183,35 +217,6 @@ class Labyrinth:
         save['turns'] = self.turns_log
         with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
             json.dump(save, f, indent=4, ensure_ascii=False)
-
-    def get_msgs(self, username):
-        """
-        Возвращает все сообщения отосланные игроку username
-        """
-
-        if username in self.msgs_log:
-            return self.msgs_log[username]
-        else:
-            return [] 
-
-    def get_turns(self, number=None, username=None):
-        """
-        Возвращает все ходы сделанные игроками
-        Возвращает ходы сделанные только указанным игроками, если указан параметр username
-        Возвращает ход под номером number с конца, если указан параметр number
-        Например get_turns(1, 'Вася') вернёт последний ход Васи
-        """
-
-        if username is None:
-            if number is None:
-                return self.turns_log
-            else:
-                return self.turns_log[-number]
-        else:
-            if number is None:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))
-            else:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
 
     def get_buttons(self):
         ats = self.get_active_player_ats()

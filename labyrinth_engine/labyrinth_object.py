@@ -9,12 +9,17 @@ class LabyrinthObject:
     LabyrinthObject is class of objects that can be used by players at their turns
     """
 
+    # Предлагаемые игрокам ходы.
     def new_at(self, function, condition_function, turn_name):
         """
         new available turn
         """
         append_safe(self, 'turn_set', turn_name, {'function': function, 'condition': condition_function})
 
+    def get_turns(self):
+        return get_attr_safe(self, 'turn_set', {})
+
+    # Флаги.
     def add_flag(self, flag_name):
         append_safe(self, 'flags', flag_name)
 
@@ -24,6 +29,7 @@ class LabyrinthObject:
     def have_flag(self, flag_name):
         return flag_name in get_attr_safe(self, 'flags', set())
 
+    # Кнопки.
     def new_button(self, turn, image):
         append_safe(self, 'button_set', CommonButton([turn], image))
 
@@ -33,11 +39,19 @@ class LabyrinthObject:
     def new_lbutton(self, turns, image, turn_images):
         append_safe(self, 'button_set', ListButton(turns, image, turn_images))
 
+    def get_buttons(self):
+        return get_attr_safe(self, 'button_set', [])
+
+    # Бары.
     def new_status_bar(self, name, init_value):
         bar = StringBar(name, init_value)
         append_safe(self, 'bar_set', bar)
         return bar
 
+    def get_bars(self):
+        return get_attr_safe(self, 'bar_set', [])
+
+    # Родители, дети и т.д.
     def set_parent(self, parent):
         if not isinstance(parent, LabyrinthObject):
             raise ValueError(
@@ -56,7 +70,7 @@ class LabyrinthObject:
     def get_neighbour(self, direction):
         if self.lrtype != 'location':
             raise TypeError(
-                'You can\'t get neighbour for object with lrtype ' + self.type)
+                'You can\'t get neighbour for object with lrtype ' + self.lrtype)
         elif direction not in self.directions:
             raise ValueError(
                 'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
@@ -66,21 +80,12 @@ class LabyrinthObject:
     def set_neighbour(self, direction, neighbour):
         if self.lrtype != 'location':
             raise TypeError(
-                'You can\'t set neighbour for object with lrtype ' + self.type)
+                'You can\'t set neighbour for object with lrtype ' + self.lrtype)
         elif not isinstance(neighbour, LabyrinthObject):
             raise ValueError(
                 'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
         else:
             self.directions[direction] = neighbour
-
-    def get_turns(self):
-        return get_attr_safe(self, 'turn_set', {})
-
-    def get_buttons(self):
-        return get_attr_safe(self, 'button_set', [])
-
-    def get_bars(self):
-        return get_attr_safe(self, 'bar_set', [])
 
     @property
     def lrtype(self):
@@ -92,7 +97,7 @@ class LabyrinthObject:
         """
         pass
 
-    def set_settings(self, settings, *args):
+    def set_settings(self, settings, locations, items, creatures, players):
         pass
 
     def get_name(self):
