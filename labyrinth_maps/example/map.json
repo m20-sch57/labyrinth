@@ -75,6 +75,10 @@
         {
             "module":"labyrinth_objects.Vanilla",
             "class_name":"Ammo"
+        },
+        {
+            "module":"labyrinth_objects.Vanilla",
+            "class_name":"ExitChecker"
         }
     ],
     "creatures":
@@ -214,6 +218,9 @@
             }, 
             {
                 "name": "5"
+            },
+            {
+                "name": "6"
             }
         ],
         "creatures": [

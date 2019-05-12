@@ -15,6 +15,7 @@ class Exit(Location):
         now_here = self.get_children(['player'])
 
         for player in now_here - self.must_be_here:
+
             self.labyrinth.send_msg(self.ENTER_MSG, player, 5)
         for player in now_here & self.must_be_here:
             self.labyrinth.send_msg(choice(self.STAY_MSGS), player, 5)
@@ -28,7 +29,8 @@ class ExitChecker(Item):
 
     def main(self):
         treasure_takers = {true_tres.get_parent() for true_tres in self.labyrinth.get_unique('treasures')}
-        players_in_exits = self.labyrinth.get_objects(['player'], and_key=(lambda pl: type(pl.get_parent()) is Exit))
+        players_in_exits = set(self.labyrinth.get_objects(['player'],
+                                                          and_key=(lambda pl: type(pl.get_parent()) is Exit)))
         winners = treasure_takers & players_in_exits
 
         if winners:

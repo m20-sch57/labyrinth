@@ -23,12 +23,13 @@ if __name__ == '__main__':
     # "loadseed": 8316663732998351558
     # }'''
 
-
-    with open('labyrinth_maps/example/map.json', 'r', encoding='utf-8') as f:
+    with open('labyrinth_maps/training/map.json', 'r', encoding='utf-8') as f:
         _map = f.read()
 
+    save_file = open('debug/save.txt', 'w', encoding='utf-8')
+
     # TestLR = load_save(save, _map)
-    TestLR = load_map(_map, ['player #1'])
+    TestLR = load_map(_map, ['player #1', 'player #2', 'player #3'])
     while not TestLR.is_game_ended:
 
         print('\n')
@@ -38,7 +39,9 @@ if __name__ == '__main__':
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
             print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
-            #print('│Bear position      :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))[0].get_parent())))
+            bears = TestLR.get_objects(and_key=lambda x: isinstance(x, Bear))
+            if bears:
+                print('│Bear position      :  {:<36}│'.format(str(bears[0].get_parent())))
             print('│Treasure position  :  {:<36}│'.format(str(TestLR.get_objects(and_key=lambda x: isinstance(x, Treasure))[0].get_parent())))
             print('├──────────────────────────────────────────────────────────┤')
         print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
@@ -51,7 +54,7 @@ if __name__ == '__main__':
         print('; '.join(ats), end = '\n\n')
 
         msgs = TestLR.make_turn(input('(' + TestLR.get_active_player().get_username() + ') '))
-        print(TestLR.save())
+        save_file.write(TestLR.save())
 
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))
