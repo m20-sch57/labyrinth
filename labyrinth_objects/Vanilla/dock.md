@@ -41,7 +41,7 @@
 
 #### ExitChecker
 
-######
+###### not obligatory
 - `win_msg`
 - `stay_msg`
 
