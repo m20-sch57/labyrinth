@@ -23,17 +23,14 @@ function saveSettings() {
 
 function deleteRoom() {
 	var xhr = xhrOpen('delete_room');
-
 	xhr.send();
 };
 
 function startGame() {
 	var xhr = xhrOpen('start_game');
-	
 	xhr.send();
 };
 
-console.log('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
 socket.on('update', function(msg) {
 	switch (msg.event) {
@@ -45,15 +42,16 @@ socket.on('update', function(msg) {
 
 			title.innerHTML = (msg.name);
 			description.innerHTML = ('Описание:<br>' + msg.description.replace(/\n/g, '<br>'));
-			mapName.innerHTML = ('Карта:' + msg.map.name)
-			mapDescription.innerHTML = ('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>') )
+			mapName.innerHTML = ('Карта:' + msg.map.name);
+			mapDescription.innerHTML = ('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>'));
 			break;
 
 		case 'player_enter_or_leave':
-			var player_list = document.getElementById('player_list');
-			player_list.innerHTML = '';
-			for (var i = 0; i < msg.players.split(',').length; i++) {
-				player_list.innerHTML += ('<div class="player-block"><p>' + msg.players.split(',')[i] + '</p></div>')
+			var players_list = document.getElementById('players_list');
+			var xhr = xhrOpen('get_players_list');
+			xhr.send()
+			xhr.onload = function () {
+				players_list.innerHTML = xhr.responseText
 			};
 			break;
 
@@ -80,8 +78,8 @@ socket.on('update', function(msg) {
 // var changeDescriptionInput = document.getElementById('room_description');
 // changeDescriptionInput.onkeydown = changeDescription;
 
-var saveSettingsButton = document.getElementById('save_settings_btn');
-saveSettingsButton.onclick = saveSettings;
+// var saveSettingsButton = document.getElementById('save_settings_btn');
+// saveSettingsButton.onclick = saveSettings;
 
 var startButton = document.getElementById('start_button');
 if (startButton) {

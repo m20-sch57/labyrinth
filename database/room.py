@@ -21,7 +21,7 @@ class Room:
 def usernames_from_string(users_string):
     return json.loads(users_string)
 
-def users_to_string(users):
+def usernames_to_string(users):
     return json.dumps(users)
 
 
@@ -97,7 +97,7 @@ class RoomsTable:
             return DBAnswer(False, DBError.IncorrectUser, 'This user already in this room')
 
         users.append(username)
-        users_string = users_to_string(users) 
+        users_string = usernames_to_string(users) 
         self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
         self.connect.commit()
 
@@ -111,14 +111,14 @@ class RoomsTable:
             return DBAnswer(False, DBError.RoomNotExist,
                 'Can\'t remove user from nonexistent room')  
 
-        users = self.get(ID).users
+        usernames = self.get(ID).usernames
 
-        if username not in users:
+        if username not in usernames:
             return DBAnswer(False, DBError.IncorrectUser, 'This user not in this room')
 
-        users.remove(username)
-        users_string = users_to_string(users)
-        self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
+        usernames.remove(username)
+        usernames_string = usernames_to_string(usernames)
+        self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [usernames_string, ID])
         self.connect.commit()
 
         return DBAnswer(True, OK, 'User successfully removed')

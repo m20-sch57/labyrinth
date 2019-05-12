@@ -1,0 +1,6 @@
+{% for user in room.users %}
+    <br>
+    {% set ub__user = user %}
+    {% set ub__signature = 'Создатель' if user.username == room.creator else 'Игрок' %}
+    {% include "_user_block-small.html" %}
+{% endfor %}

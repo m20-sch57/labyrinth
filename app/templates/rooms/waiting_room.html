@@ -8,19 +8,13 @@
     <div> <!-- Шапка комнаты -->
         <span class="name-large">{{ room.name }}</span>
     </div>
-    <div> <!-- Список с игроками -->
-        {% for user in room.users %}
-            <br>
-            {% set ub__user = user %}
-            {% set ub__signature = 'Создатель' if user.username == room.creator else 'Игрок' %}
-            {% include "_user_block-small.html" %}
-        {% endfor %}
+    <div id="players_list"> <!-- Список с игроками -->
+        {% include "rooms/_player_list.html" %}
     </div>
     <div> <!-- Чат -->
     </div>
     <div> <!-- Настройки -->
     </div>
-    <script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
 {% endblock %}
 
 {% set show_sidebar_r = true %}
@@ -28,12 +22,16 @@
 {% block sidebar_content %}
     <form>
         {% if username == room.creator %}
-            <button class="btn">Начать</button>
+            <button class="btn" id="start_button">Начать</button>
         {% endif %}
         <button class="btn">Пригласить</button>
         <button class="btn" formaction="{{ url_for('room_list') }}">Выйти</button>
         {% if username == room.creator %}
-            <button class="btn">Настройки</button>
+            <button class="btn" id="settings_button">Настройки</button>
         {% endif %}
     </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/waiting_room.js') }}"></script>
 {% endblock %}

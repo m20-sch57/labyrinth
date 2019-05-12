@@ -187,7 +187,7 @@ def create_room():
 
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
-@login_required
+# @login_required
 def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
@@ -213,15 +213,19 @@ def waiting_room(room_id):
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
             map_id = db.rooms.get(room_id).map_id
-            labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
-            db.lrm.add_labyrinth(room_id, labyrinth)
-            emit('update', {'event': 'start_game'},
-                 broadcast=True, namespace='/'+room_id)
+            if db.maps.get(map_id).map:
+                labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
+                db.lrm.add_labyrinth(room_id, labyrinth)
+                emit('update', {'event': 'start_game'},
+                     broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'delete_room':
             emit('update', {'event': 'delete_room'},
                  broadcast=True, namespace='/'+room_id)
             db.rooms.delete(room_id)
+
+        elif event_type == 'get_players_list':
+            return simple_render_template('rooms/_player_list.html', room=db.rooms.get(room_id))
 
     username = session.get('username')
     labyrinth = db.lrm.get_labyrinth(room_id)
