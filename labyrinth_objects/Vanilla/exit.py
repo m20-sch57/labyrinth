@@ -15,8 +15,10 @@ class Exit(Location):
 
     def main(self):
         now_here = self.get_children(['player'])
-        winner = self.labyrinth.get_unique('treasure').get_parent()
-        if winner in now_here:
+
+        winners = {true_tres.get_parent() for true_tres in self.labyrinth.get_unique('treasures')}
+        if winners & now_here:
+            for player in winners & now_here
             self.labyrinth.send_msg(self.WIN_MSG, winner)
             for player in set(self.labyrinth.get_objects('player')) - set([winner]):
                 self.labyrinth.send_msg(self.LOOSE_MSG, player)
