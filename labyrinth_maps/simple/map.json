@@ -178,6 +178,10 @@
         {
             "module":"labyrinth_objects.Vanilla",
             "class_name":"Treasure"
+        },
+        {
+            "module":"labyrinth_objects.Vanilla",
+            "class_name":"ExitChecker"
         }
     ],
     "creatures":
@@ -553,15 +557,18 @@
                 "name":"Bomb"
             },
             {
-                "name": "Health"
+                "name":"Health"
             },
             {
-                "name": "Ammo"
+                "name":"Ammo"
             },
             {
                 "name":"Treasure",
                 "is_true": true,
                 "position":15
+            },
+            {
+                "name":"ExitChecker"
             }
         ],
         "creatures": [

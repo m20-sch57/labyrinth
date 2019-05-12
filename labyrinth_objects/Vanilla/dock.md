@@ -6,6 +6,8 @@
 - `init_bullets_count`
 - `init_bombs_count`
 
+#### Arsenal
+
 #### Bear
 
 ###### obligatory
@@ -36,6 +38,12 @@
 ###### not obligatory
 - `enter_msg`
 - `stay_msgs`
+
+#### ExitChecker
+
+###### not obligatory
+- `win_msg`
+- `stay_msg`
 
 #### FirstAidPost
 
@@ -73,6 +81,8 @@
 ###### not obligatory
 - `border_msg`
 
+#### Outside
+
 #### Treasure
 
 ###### obligatory
@@ -84,11 +94,7 @@
 - `can_player_drop_treasure`
 - `underfoot_msg`
 
-#### Outside
-
 #### Wall
-
-#### Arsenal
 
 ###### not obligatory
 - `enter_msg`
