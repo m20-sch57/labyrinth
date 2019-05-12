@@ -7,6 +7,7 @@ from functools import wraps
 import random
 import string
 import json
+import time
 
 
 
@@ -19,7 +20,6 @@ help functions
 def login_required(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
-        print(request.method)
         if session.get('username') is None and request.method == 'GET':
             return redirect(url_for('index'))
         else:
@@ -171,7 +171,7 @@ def room_list():
     rooms = db.rooms.get_all()
 
     return simple_render_template('rooms/room_list.html', rooms = rooms)
-#
+
 
 @app.route('/rules')
 def rules():
