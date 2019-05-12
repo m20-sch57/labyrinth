@@ -4,7 +4,7 @@ import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, creatures, players, adjacence_list, settings, savefile, imagepath, save_mode=True, dead_players=[], \
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='', dead_players=[], \
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
@@ -58,10 +58,6 @@ class Labyrinth:
         self.turns_log = []
         self.msgs_log = {}
 
-        # Временное решение.
-        # Если True, то всё сохраняется
-        self.save_mode = save_mode
-        self.savefile = savefile
 
     def __str__(self):
         return '<labyrinth: {}>'.format(self.filename)
@@ -131,9 +127,6 @@ class Labyrinth:
                 self.msgs_log[username].append(self.player_to_send(username))
             else:
                 self.msgs_log[username] = [self.player_to_send(username)]
-        # если save_mode == True, сохраняем всё в файл tmp\test.log
-        if self.save_mode:
-            self.save(self.savefile)
 
         # возвращаем все сообщения, которые нужно отправить
         return self.regularize_to_send()
@@ -175,14 +168,13 @@ class Labyrinth:
     def player_to_send(self, username):
         return self.regularize_to_send()[username]
 
-    def save(self, savefile):
+    def save(self):
         save = {}
         save['seed'] = self.seed
         save['loadseed'] = self.loadseed
         save['users'] = list(map(lambda user: user.get_username(), self.players_list))
         save['turns'] = self.turns_log
-        with open('tmp\\' + savefile + '.save.json', 'w', encoding='utf-8') as f:
-            json.dump(save, f, indent=4, ensure_ascii=False)
+        return json.dumps(save, indent=4, ensure_ascii=False)
 
     def get_msgs(self, username):
         """
