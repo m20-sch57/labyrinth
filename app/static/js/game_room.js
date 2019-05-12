@@ -25,6 +25,7 @@ function makeTurn(turn) {
 function getUpdate() {
 	var xhr = xhrOpen('update');
 	xhr.send();
+	console.log(xhr.responseText);
 	responseData = JSON.parse(xhr.responseText);
 	console.log(responseData);
 
@@ -42,7 +43,11 @@ function getUpdate() {
 	});
 
 	var turnState = document.getElementById('your-turn');
-	if (responseData.your_turn == 'yes') {
+	// 1 - my turn
+	// 2 - not my turn
+	// 0 - game ended
+
+	if (responseData.game_state == 1) {
 		turnState.innerHTML = 'Твой ход';
 		removeAllButtons();
 		responseData.buttons.forEach(function(entry) {
@@ -59,10 +64,13 @@ function getUpdate() {
 			};
 		});
 
-	} else {
+	} else if (responseData.game_state == 2) {
 		removeAllButtons();
 		turnState.innerHTML = 'Подожди';
-	};
+	} else if (responseData.game_state == 0) {
+		removeAllButtons();	 
+		turnState.innerHTML = 'Игра окончена';
+	}
 };
 
 // Interface

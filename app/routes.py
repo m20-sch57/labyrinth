@@ -1,6 +1,6 @@
 ﻿from flask import render_template, request, session, redirect, url_for
 from app.room_namespace import RoomNamespace
-from labyrinth_engine import load_lrmap
+from labyrinth_engine import load_map
 from app import app, db, socketio
 from flask_socketio import emit
 from functools import wraps
@@ -135,15 +135,13 @@ def register():
 
 @app.route('/add_map', methods=['POST', 'GET'])
 def add_map():
-    print('LOOL', request.method)
     if request.method == 'POST':
-        print('KEEEK')
         name = request.form.get('name')
         description = request.form.get('description')
         creator = session.get('username')
         map_json = request.form.get('map_json')
 
-        db.maps.add(name, creator, description, name, map_json)
+        db.maps.add(name, creator, description, map_json)
 
         return redirect(url_for('index'))
     return simple_render_template('add_map.html')
@@ -204,7 +202,8 @@ def waiting_room(room_id):
 
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
-            labyrinth = load_lrmap('example', room_id, db.rooms.get(room_id).users, imagepath)
+            map_id = db.rooms.get(room_id).map_id
+            labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
             db.lrm.add_labyrinth(room_id, labyrinth)
             emit('update', {'event': 'start_game'},
                  broadcast=True, namespace='/'+room_id)
@@ -228,7 +227,7 @@ def waiting_room(room_id):
 def game_room(room_id):
     username = session.get('username')
     labyrinth = db.lrm.get_labyrinth(room_id)
-    if request.method == 'POST':
+    if request.method == 'POST' and labyrinth:
         event_type = request.headers.get('Event-Type')
 
         if event_type == 'update':
@@ -236,10 +235,18 @@ def game_room(room_id):
             btn = labyrinth.get_buttons()
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
-            if labyrinth.get_active_player_username() == username:
-                return json.dumps({'your_turn': 'yes', 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
+            '''
+            0 - game ended
+            1 - your turn
+            2 - not your turn
+            '''
+            if labyrinth.is_game_ended:
+                return json.dumps({'game_state': 0, 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
             else:
-                return json.dumps({'your_turn': 'no', 'msg': msg, 'bars': bar})
+                if labyrinth.get_active_player_username() == username:
+                    return json.dumps({'game_state': 1, 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})
+                else:
+                    return json.dumps({'game_state': 2, 'msg': msg, 'bars': bar})
 
         elif event_type == 'turn':
             if labyrinth.get_active_player_username() == username:

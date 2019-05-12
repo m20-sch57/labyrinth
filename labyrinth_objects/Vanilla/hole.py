@@ -17,9 +17,8 @@ class Hole(Location):
         self.new_at(self.go_into_hole, self.condition, settings['go_throught_turn']['ru'])
 
         # TODO: solve this problem (two buttins "fall into hole")
-        if 'kek' in self.__class__.__dict__:
+        if not 'kek' in self.__class__.__dict__:
             self.new_button(settings['go_throught_turn']['ru'], 'into_hole.png')
-        else:
             self.__class__.kek = 'kek'
 
     def main(self):

@@ -38,7 +38,6 @@ var socket = io.connect('http://' + document.domain + ':' + location.port + '/' 
 socket.on('update', function(msg) {
 	switch (msg.event) {
 		case 'change_settings':
-			console.log(msg.map);
 			var title = document.getElementById('title');
 			var description = document.getElementById('description');
 			var mapName = document.getElementById('map_name');
