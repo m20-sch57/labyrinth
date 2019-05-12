@@ -26,8 +26,6 @@ if __name__ == '__main__':
     with open('labyrinth_maps/training/map.json', 'r', encoding='utf-8') as f:
         _map = f.read()
 
-    save_file = open('debug/save.txt', 'w', encoding='utf-8')
-
     # TestLR = load_save(save, _map)
     TestLR = load_map(_map, ['player #1', 'player #2', 'player #3'])
     while not TestLR.is_game_ended:
@@ -54,7 +52,7 @@ if __name__ == '__main__':
         print('; '.join(ats), end = '\n\n')
 
         msgs = TestLR.make_turn(input('(' + TestLR.get_active_player().get_username() + ') '))
-        save_file.write(TestLR.save())
+        print(TestLR.save())
 
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))
