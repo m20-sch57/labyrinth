@@ -25,7 +25,7 @@ class Ammo(Item):
         self.bombs = {player: self.INIT_BOMBS_COUNT for player in players}
         self.update_bars()
 
-        self.labyrinth.set_unique_key(self, 'ammo')
+        self.labyrinth.set_unique(self, 'ammo')
 
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':

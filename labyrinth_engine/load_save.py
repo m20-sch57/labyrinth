@@ -41,13 +41,13 @@ def load_map(_map, users, loadseed=random.randrange(sys.maxsize), **kwargs):
         'creatures': [],
     }
 
-    # пилим настройки
-    for lrtype in lrtypes:
-        # кол-во настроек для объектов должно совпадать с кол-вом объектов
-        if len(settings[lrtype]) != len(_map[lrtype]):
-            raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
-                                      of {0} objects ({2})'.format(lrtype, len(settings[lrtype]),
-                                                                   len(_map[lrtype])))
+	# пилим настройки
+	for lrtype in lrtypes:
+		# кол-во настроек для объектов должно совпадать с кол-вом объектов
+		if len(settings[lrtype]) != len(_map[lrtype]):
+			raise LabyrinthLoadError('The number of {0} settings ({1}) does not match the number \
+                                      of {0} objects ({2})'.format(lrtype, len(settings[lrtype]), 
+                                      len(_map[lrtype])))
 
         for i in range(len(_map[lrtype])):
             obj = _map[lrtype][i]

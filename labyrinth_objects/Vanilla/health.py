@@ -21,7 +21,7 @@ class Health(Item):
         self.hp = {player: self.MAX_CREATURE_HEALTH for player in players}
         self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
 
-        self.labyrinth.set_unique_key(self, 'health')
+        self.labyrinth.set_unique(self, 'health')
 
         self.DEATH_MSG = settings['death_msg']['ru']
 

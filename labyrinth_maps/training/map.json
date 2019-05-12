@@ -135,6 +135,10 @@
         {
             "module":"labyrinth_objects.Vanilla",
             "class_name":"Treasure"
+        },
+        {
+            "module":"labyrinth_objects.Vanilla",
+            "class_name":"ExitChecker"
         }
     ],
     "creatures":
@@ -398,10 +402,10 @@
                 "name":"Bomb"
             },
             {
-                "name": "Health"
+                "name":"Health"
             },
             {
-                "name": "Ammo"
+                "name":"Ammo"
             },
             {
                 "name":"Treasure1",
@@ -410,13 +414,16 @@
             },
             {
                 "name":"Treasure2",
-                "is_true": false,
+                "is_true": true,
                 "position":14
             },
             {
                 "name":"Treasure3",
-                "is_true": false,
+                "is_true": true,
                 "position":22
+            },
+            {
+                "name":"ExitChecker"
             }
         ],
         "creatures": [
