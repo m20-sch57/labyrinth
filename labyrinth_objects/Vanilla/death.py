@@ -1,11 +1,10 @@
-from LabyrinthObjects.Vanilla.consts import *
-from LabyrinthEngine import Item
+from labyrinth_engine import Item
 
 
 class Death(Item):
     def set_settings(self, settings, locations, items, creatures, players):
-        self.DEATH_MSG = settings.get('consts', {}).get('death_msg') or DEATH_MSG
-        self.REVIVAL_MSG = settings.get('consts', {}).get('revival_msg') or REVIVAL_MSG
+        self.DEATH_MSG = settings['death_msg']
+        self.REVIVAL_MSG = settings['revival_msg']
 
         self.death = {player: False for player in players}
         self.crt_death = {creature: False for creature in creatures}
