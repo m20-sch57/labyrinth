@@ -2,6 +2,7 @@ from labyrinth_objects.Vanilla.ammo import Ammo
 from labyrinth_objects.Vanilla.arsenal import Arsenal
 from labyrinth_objects.Vanilla.bear import Bear
 from labyrinth_objects.Vanilla.bomb import Bomb
+from labyrinth_objects.Vanilla.death import Death
 from labyrinth_objects.Vanilla.empty import EmptyLocation
 from labyrinth_objects.Vanilla.exit import Exit, ExitChecker
 from labyrinth_objects.Vanilla.first_aid_post import FirstAidPost

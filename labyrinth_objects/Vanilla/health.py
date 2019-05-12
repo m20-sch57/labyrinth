@@ -23,8 +23,6 @@ class Health(Item):
 
         self.labyrinth.set_unique(self, 'health')
 
-        self.DEATH_MSG = settings['death_msg']['ru']
-
         self.update_health_bar()
 
     def hurt(self, body, death_msg=None):
@@ -51,3 +49,9 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
             self.update_health_bar()
+
+    def set_health(self, body, value):
+        if body.lrtype == 'creature':
+            self.creature_hp[body] = value
+        elif body.lrtype == 'player':
+            self.hp[body] = value

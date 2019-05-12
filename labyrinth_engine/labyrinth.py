@@ -7,6 +7,8 @@ class Labyrinth:
     def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='', dead_players=[], \
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
+        self.active_player_modifier = 1
+
         random.seed(seed)
         self.seed = seed
         self.loadseed = loadseed
@@ -136,8 +138,9 @@ class Labyrinth:
             obj.main()
 
         # Делаем слудующего игрока активным
-        self.active_player_number += 1
+        self.active_player_number += self.active_player_modifier
         self.active_player_number %= len(self.players_list)
+        self.active_player_modifier = 1
 
         # обновляем лог сообщений
         for player in self.get_objects(lrtype='player'):

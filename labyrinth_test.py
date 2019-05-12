@@ -23,11 +23,11 @@ if __name__ == '__main__':
     # "loadseed": 8316663732998351558
     # }'''
 
-    with open('labyrinth_maps/training/map.json', 'r', encoding='utf-8') as f:
+    with open('labyrinth_maps/example/map.json', 'r', encoding='utf-8') as f:
         _map = f.read()
 
     # TestLR = load_save(save, _map)
-    TestLR = load_map(_map, ['player #1', 'player #2', 'player #3'])
+    TestLR = load_map(_map, ['player #1', 'player #2'])
     while not TestLR.is_game_ended:
 
         print('\n')
