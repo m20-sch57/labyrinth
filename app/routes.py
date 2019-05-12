@@ -19,7 +19,8 @@ help functions
 def login_required(f):
     @wraps(f)
     def wrapped(*args, **kwargs):
-        if session.get('username') is None:
+        print(request.method)
+        if session.get('username') is None and request.method == 'GET':
             return redirect(url_for('index'))
         else:
             return f(*args, **kwargs)
@@ -73,7 +74,7 @@ def logout():
 
 
 @app.route('/profile')
-# @login_required
+@login_required
 def my_profile():
     return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'))
 
@@ -89,6 +90,7 @@ def profile(username):
 
 
 @app.route('/profile/change_login', methods=['POST', 'GET'])
+@login_required
 def change_login():
     if request.method == 'POST':
         new_login = request.form.get("new_login")
@@ -101,6 +103,7 @@ def change_login():
 
 
 @app.route('/profile/change_password', methods=['POST', 'GET'])
+@login_required
 def change_password():
     if request.method == 'POST':
         username = session['username']
@@ -117,6 +120,7 @@ def change_password():
 
 
 @app.route('/profile/change_avatar', methods=['POST', 'GET'])
+@login_required
 def change_avatar():
     if request.method == 'POST':
         username = session['username']
@@ -158,6 +162,7 @@ def add_map():
 
 
 @app.route('/room_list', methods=['POST', 'GET'])
+@login_required
 def room_list():
     if request.method == 'POST':
         room_id = request.form.get('join_button')
@@ -166,7 +171,7 @@ def room_list():
     rooms = db.rooms.get_all()
 
     return simple_render_template('rooms/room_list.html', rooms = rooms)
-
+#
 
 @app.route('/rules')
 def rules():
@@ -187,7 +192,7 @@ def create_room():
 
 
 @app.route('/waiting_room/<room_id>', methods=['POST', 'GET'])
-# @login_required
+@login_required
 def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
@@ -238,6 +243,7 @@ def waiting_room(room_id):
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
+@login_required
 def game_room(room_id):
     username = session.get('username')
     labyrinth = db.lrm.get_labyrinth(room_id)
