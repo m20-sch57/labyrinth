@@ -4,7 +4,7 @@ from labyrinth_engine import Location
 class Outside(Location):
     def set_settings(self, *args):
         self.add_flag('border')
-        self.labyrinth.set_unique_key(self, 'outside')
+        self.labyrinth.set_unique(self, 'outside')
 
 
 class Wall(Location):

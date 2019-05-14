@@ -1,4 +1,5 @@
 from database.db_answer import DBAnswer, DBError, OK
+from database.db_table import DBTable
 from database.common_functions import *
 import json
 
@@ -25,10 +26,7 @@ def usernames_to_string(users):
     return json.dumps(users)
 
 
-class RoomsTable:
-    def __init__(self, db):
-        self.db = db
-        self.connect, self.cursor = self.db.connect, self.db.cursor
+class RoomsTable(DBTable):
 
     def add(self, ID, creator):
         if not self.db.users.have_user(creator):
@@ -40,15 +38,14 @@ class RoomsTable:
 
         # TODO: check ID or gen it here.
 
-        self.cursor.execute('''INSERT INTO rooms (id, name, description, creator, create_date, users) 
+        self.execute('''INSERT INTO rooms (id, name, description, creator, create_date, users) 
             VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, '[]')''', [ID, name, description, creator])
-        self.connect.commit()
 
         return DBAnswer(True, OK, 'Room successfully created')
 
     def get(self, ID):
-        self.cursor.execute('SELECT * FROM rooms WHERE id=?', [ID])
-        room = self.cursor.fetchone()
+        data = self.execute('SELECT * FROM rooms WHERE id=?', [ID])
+        room = data.fetchone()
 
         if room is None:
             return None
@@ -59,8 +56,7 @@ class RoomsTable:
             return DBAnswer(False, DBError.RoomNotExist, 
                 'Can\'t delete nonexistent room')
 
-        self.cursor.execute('DELETE FROM rooms WHERE id=?', [ID])
-        self.connect.commit()
+        self.execute('DELETE FROM rooms WHERE id=?', [ID])
         return DBAnswer(True, OK, 'Room successfully deleted')
 
     def set_name(self, ID, name):
@@ -71,14 +67,12 @@ class RoomsTable:
             return DBAnswer(False, DBError.IncorrectRoomName, 
                 'Name contains invalid characters')
 
-        self.cursor.execute('UPDATE rooms SET name=? WHERE id=?', [name, ID])
-        self.connect.commit()
+        self.execute('UPDATE rooms SET name=? WHERE id=?', [name, ID])
         return DBAnswer(True, OK, '')
 
     def set_description(self, ID, description):
         # TODO Answer
-        self.cursor.execute('UPDATE rooms SET description=? WHERE id=?', [description, ID])
-        self.connect.commit()
+        self.execute('UPDATE rooms SET description=? WHERE id=?', [description, ID])
 
     def add_user(self, ID, username = None):
         if username is None:
@@ -98,8 +92,7 @@ class RoomsTable:
 
         users.append(username)
         users_string = usernames_to_string(users) 
-        self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
-        self.connect.commit()
+        self.execute('UPDATE rooms SET users=? WHERE id=?', [users_string, ID])
 
         return DBAnswer(True, OK, 'User successfully added')
 
@@ -118,19 +111,17 @@ class RoomsTable:
 
         usernames.remove(username)
         usernames_string = usernames_to_string(usernames)
-        self.cursor.execute('UPDATE rooms SET users=? WHERE id=?', [usernames_string, ID])
-        self.connect.commit()
+        self.execute('UPDATE rooms SET users=? WHERE id=?', [usernames_string, ID])
 
         return DBAnswer(True, OK, 'User successfully removed')
 
     def get_all(self):
-        self.cursor.execute('SELECT id FROM rooms')
-        return [self.get(ID[0]) for ID in self.cursor.fetchall()]
+        data = self.execute('SELECT id FROM rooms')
+        return [self.get(ID[0]) for ID in data.fetchall()]
 
     def page_by_page(self, rooms_on_page):
         return break_list(self.get_all(), rooms_on_page)
 
     def set_map(self, ID, map_id):
         # TODO Answer
-        self.cursor.execute('UPDATE rooms SET map_id=? WHERE id=?', [map_id, ID])
-        self.connect.commit()
+        self.execute('UPDATE rooms SET map_id=? WHERE id=?', [map_id, ID])

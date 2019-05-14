@@ -2,6 +2,7 @@ from flask import session
 import base64
 
 from database.db_answer import DBAnswer, DBError, OK
+from database.db_table import DBTable
 from database.common_functions import *
 
 
@@ -18,21 +19,18 @@ class User:
                self.id, self.username, self.password_hash)
 
 
-class UsersTable:
-    def __init__(self, db):
-        self.db = db
-        self.connect, self.cursor = self.db.connect, self.db.cursor
+class UsersTable(DBTable):
 
     def get_by_name(self, username):
-        self.cursor.execute('SELECT * FROM users WHERE username=?', [username])
-        user_data = self.cursor.fetchone()
+        data = self.execute('SELECT * FROM users WHERE username=?', [username])
+        user_data = data.fetchone()
         if user_data is None:
             return None
         return User(*user_data)
 
     def get_by_id(self, ID):
-        self.cursor.execute('SELECT * FROM users WHERE id=?', [ID])
-        user_data = self.cursor.fetchone()
+        data = self.execute('SELECT * FROM users WHERE id=?', [ID])
+        user_data = data.fetchone()
         if user_data is None:
             return None
         return User(*user_data)
@@ -47,8 +45,8 @@ class UsersTable:
         return not self.get_by_name(username) is None
 
     def number_of_users(self):
-        self.cursor.execute('SELECT * FROM users')
-        return len(self.cursor.fetchall())
+        data = self.execute('SELECT id FROM users')
+        return len(data.fetchall())
 
     def add(self, username, password):
         if self.have_user(username):
@@ -65,9 +63,8 @@ class UsersTable:
         ID = self.number_of_users()
         avatar = 'default.png'
 
-        self.cursor.execute('''INSERT INTO users (id, username, password_hash, avatar)
+        self.execute('''INSERT INTO users (id, username, password_hash, avatar)
                                VALUES (?, ?, ?, ?) ''', [ID, username, password_hash, avatar])
-        self.connect.commit()
         return DBAnswer(True, OK, 'User successfully created')
 
 
@@ -86,9 +83,8 @@ class UsersTable:
                 'Can\'t set password for nonexistent user.')
 
         password_hash = sha1_hash(password)
-        self.cursor.execute('''UPDATE users SET password_hash=? WHERE username=?''', 
+        self.execute('''UPDATE users SET password_hash=? WHERE username=?''', 
                                [password_hash, username])
-        self.connect.commit()
         return DBAnswer(True, OK, 'Password successfully changed')
 
 
@@ -117,9 +113,8 @@ class UsersTable:
             return DBAnswer(False, DBError.IncorrectUser, 
                 'Can\'t set username for nonexistent user.')
 
-        self.cursor.execute('''UPDATE users SET username=? WHERE username=?''', 
+        self.execute('''UPDATE users SET username=? WHERE username=?''', 
                                [new_username, username])
-        self.connect.commit()
         return DBAnswer(True, OK, 'Username successfully changed')
 
     # avatar
@@ -150,9 +145,8 @@ class UsersTable:
         with open(path + filename, 'wb') as f:
             f.write(avatar)
 
-        self.cursor.execute('UPDATE users SET avatar=? WHERE username=?', 
+        self.execute('UPDATE users SET avatar=? WHERE username=?', 
                                                           (filename, username))
-        self.connect.commit()
 
         return DBAnswer(True, OK, 'Avatar successfully changed')
 
