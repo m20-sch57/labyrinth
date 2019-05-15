@@ -4,6 +4,7 @@
 @import url('vars.css');
 @import url('svg.css');
 @import url('room_block.css');
+@import url('user_block.css');
 
 html, body{
 	background: rgb(249, 249, 249);
@@ -94,39 +95,6 @@ h1, h2 {
 	height: 100%;
 	padding-top: 0;
 	border-top-width: 0;
-}
-
-
-.user-block {
-	padding-top:0;
-}
-
-.user-block-small {
-	width: 200px;
-	border: 1px solid grey;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
-}
-
-.user-block > div {
-	display: inline-block;
-	vertical-align: top;
-}
-
-.user-block-info {
-	vertical-align: center;
-	margin-left: 10px;
-}
-
-.user-block-info-username {
-	margin-top: 10px;
-}
-
-.user-block-small-info-username {
-	margin-top: 0;
-}
-
-.user-block-small-ava {
-	border-right: 1px solid grey;
 }
 
 .name-large {

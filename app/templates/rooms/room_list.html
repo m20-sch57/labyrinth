@@ -6,7 +6,7 @@
     <h2>Список комнат</h2>
     <div class="room-block-list">
         {% for room in rooms %}
-            <div class="room-block">
+            <div class="room-block" onclick="enterRoom('{{ room.id }}')">
                 <div class="room-block-info">
                     <span class="name-large">{{ room.name }}</span>
                 </div>

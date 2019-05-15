@@ -1,0 +1,39 @@
+.user-block {
+	padding-top:0;
+}
+
+.user-block-small {
+	width: 200px;
+	border: 1px solid grey;
+	border-left-width: 0;
+	cursor: pointer;
+}
+
+.user-block-small:hover {
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.22);
+}
+
+.user-block > div {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.user-block-info {
+	vertical-align: center;
+	margin-left: 10px;
+	/*background: var(--clr-m1-l)*/
+}
+
+.user-block-info-username {
+	margin-top: 10px;
+}
+
+.user-block-small-info-username {
+	margin-top: 0;
+	color: var(--clr-m1);
+}
+
+.user-block-small-ava {
+	border-left: 4px solid var(--clr-m1);
+	padding-left: 1px;
+}
