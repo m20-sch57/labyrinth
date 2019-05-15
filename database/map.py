@@ -1,4 +1,5 @@
 from database.db_answer import DBAnswer, DBError, OK
+from database.db_table import DBTable
 from database.common_functions import *
 import json
 
@@ -18,36 +19,29 @@ class Map:
 
 
 # TODO add checks
-class MapsTable:
-    def __init__(self, db):
-        self.db = db
-        self.connect, self.cursor = self.db.connect, self.db.cursor
+class MapsTable(DBTable):
 
     def add(self, name, creator, description, _map):
-        self.cursor.execute('''INSERT INTO maps (name, creator, description, map)
+        self.execute('''INSERT INTO maps (name, creator, description, map)
                                VALUES (?, ?, ?, ?)''', [name, creator, description, _map])
-        self.connect.commit()
         return DBAnswer(True, OK, 'Map successfully added')
 
     def get(self, ID):
-        self.cursor.execute('''SELECT * FROM maps WHERE id=?''', [ID])
-        map_data = self.cursor.fetchone()
+        data = self.execute('''SELECT * FROM maps WHERE id=?''', [ID])
+        map_data = data.fetchone()
         if map_data is None:
             return None
         return Map(*map_data)
 
     def get_all(self):
-        self.cursor.execute('''SELECT * FROM maps''')
-        return list(map(lambda x: Map(*x), self.cursor.fetchall()))
+        data = self.execute('''SELECT * FROM maps''')
+        return list(map(lambda x: Map(*x), data.fetchall()))
 
     def change_map(self, ID, new_map):
-        self.cursor.execute('''UPDATE maps SET map=? WHERE id=?''', [new_map, ID])
-        self.connect.commit()
+        self.execute('''UPDATE maps SET map=? WHERE id=?''', [new_map, ID])
 
     def change_name(self, ID, name):
-        self.cursor.execute('''UPDATE maps SET name=? WHERE id=?''', [name, ID])
-        self.connect.commit()
+        self.execute('''UPDATE maps SET name=? WHERE id=?''', [name, ID])
 
     def change_description(self, ID, description):
-        self.cursor.execute('''UPDATE maps SET description=? WHERE id=?''', [description, ID])
-        self.connect.commit()
+        self.execute('''UPDATE maps SET description=? WHERE id=?''', [description, ID])
