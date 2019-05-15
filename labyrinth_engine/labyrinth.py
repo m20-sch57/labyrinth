@@ -60,7 +60,7 @@ class Labyrinth:
 
 
     def __str__(self):
-        return '<labyrinth: {}>'.format(self.filename)
+        return '<labyrinth: {}>'.format(self.players_list)
 
     # Сообщения.
     def send_msg(self, msg, player, priority=0):

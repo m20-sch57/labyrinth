@@ -3,46 +3,14 @@ from app.room_namespace import RoomNamespace
 from labyrinth_engine import load_map
 from app import app, db, socketio
 from flask_socketio import emit
-from functools import wraps
+from app.help_functions import *
 import random
 import string
 import json
 import time
+import os
 
 
-
-
-
-'''
-help functions
-'''
-
-def login_required(f):
-    @wraps(f)
-    def wrapped(*args, **kwargs):
-        if session.get('username') is None and request.method == 'GET':
-            return redirect(url_for('index'))
-        else:
-            return f(*args, **kwargs)
-
-    return wrapped
-
-
-def simple_render_template(url, **kwargs):
-    username = session.get('username')
-    ava_prefix = '/static/images/avatars/'
-    if username is not None:
-        user = db.users.get_by_name(username)
-        user_ava = ava_prefix + db.users.get_avatar(username)
-    else:
-        user = None
-        user_ava = None
-    return render_template(url, username=username, user_ava=user_ava, user=user, args=request.args, **kwargs)
-
-def redirect_with_args(url = None, **kwargs):
-    if url is None:
-        url = request.referrer.split('?')[0]
-    return redirect(url+'?'+ '&'.join([str(k)+'='+str(v) for k, v in kwargs.items()]))
 
 
 @app.route('/')
@@ -217,9 +185,10 @@ def waiting_room(room_id):
 
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
-            map_id = db.rooms.get(room_id).map_id
+            # map_id = db.rooms.get(room_id).map_id
+            map_id = 1
             if db.maps.get(map_id).map:
-                labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
+                labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).usernames, imagepath=imagepath)
                 db.lrm.add_labyrinth(room_id, labyrinth)
                 emit('update', {'event': 'start_game'},
                      broadcast=True, namespace='/'+room_id)
@@ -278,3 +247,14 @@ def game_room(room_id):
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
         return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id))
+
+
+@app.route('/templates/<template_name>')
+def get_template(template_name): 
+    try:
+        f = open('app/templates/' + template_name, 'r')
+        data = f.read()
+        f.close()
+        return data
+    except:
+        return ''
