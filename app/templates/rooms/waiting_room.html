@@ -6,11 +6,17 @@
     <div> <!-- Шапка комнаты -->
         <span class='name-large'>{{ room.name }}</span>
     </div>
-    <div id='players_list'> <!-- Список с игроками -->
-    </div>
-    <div> <!-- Чат -->
-    </div>
-    <div> <!-- Настройки -->
+    <div class='inline-flex-container space-between'>
+        <div id='players_list' class='wroom-clmn-fixed'> <!-- Список с игроками -->
+        </div>
+        <div class='wroom-clmn'>
+            <span class='name-medium'>Чат</span>
+            <div>
+            </div>
+        </div>
+        <div class='wroom-clmn-fixed'>
+            Описание карты
+        </div>
     </div>
 {% endblock %}
 
@@ -29,7 +35,7 @@
 
 {% block scripts %}
     <script>
-            function xhrOpen(eventType) {
+        function xhrOpen(eventType) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', "{{ url_for('waiting_room', room_id=room.id) }}");
             xhr.setRequestHeader('Event-Type', eventType);
