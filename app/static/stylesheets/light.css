@@ -344,3 +344,28 @@ h1, h2 {
 	border-color: var(--clr-m1);
 	background: var(--clr-m1-l)
 }
+
+.inline-flex-container {
+	display: -webkit-inline-flex;
+	display: inline-flex; 
+	width: 100%;
+}
+
+.inline-flex-container.space-between {
+	justify-conten: space-between;
+	-webkit-justify-content: space-between;
+}
+
+.wroom-clmn-fixed {
+	width: 200px;
+	border: 1px solid grey;
+	margin: 0;
+}
+
+.wroom-clmn {
+	margin-left: 20px;
+	margin-right: 20px;
+	/*width: auto;*/
+	flex-grow: 1;
+	align-content: stretch;
+}
