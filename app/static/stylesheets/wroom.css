@@ -1,0 +1,44 @@
+.wroom-clmn-fixed {
+	min-width: 200px;
+	margin: 0;
+	/*background: #d2d2d2;*/
+}
+
+.wroom-clmn {
+	flex-grow: 1;
+	align-content: stretch;
+	/*background: #d2d2d2;*/
+}
+
+.wroom-chat-info {
+	margin-left: 5px;
+}
+
+.wroom-chat-info p {
+	font-family: var(--font-text);
+	text-align: justify;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+.wroom-chat {
+	max-height: 500px;
+	overflow-y: scroll;
+}
+
+.wroom-chat::-webkit-scrollbar-track
+{
+	border: 1px solid black;
+	/*background-color: var(--clr-m1);*/
+}
+
+.wroom-chat::-webkit-scrollbar
+{
+	width: 10px;
+	/*background-color: white;*/
+}
+
+.wroom-chat::-webkit-scrollbar-thumb
+{
+	background-color: var(--clr-m1);	
+}

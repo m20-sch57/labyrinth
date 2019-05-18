@@ -7,15 +7,28 @@
         <span class='name-large'>{{ room.name }}</span>
     </div>
     <div class='inline-flex-container space-between'>
-        <div id='players_list' class='wroom-clmn-fixed'> <!-- Список с игроками -->
+        <div class='wroom-clmn-fixed'> <!-- Список с игроками -->
+            <span class='name-medium'>Игроки</span>
+            <div id='players_list'></div>
+        </div>
+        <div class='wroom-clmn-fixed'>
+            <span class='name-medium'>Карта</span>
         </div>
         <div class='wroom-clmn'>
             <span class='name-medium'>Чат</span>
-            <div>
+            <div class='wroom-chat'>
+                {% for _ in range(10) %}
+                <div class='inline-flex-container'>
+                    <a href="{{ url_for('my_profile') }}"><img class='user-ava-small' src='{{ user_ava }}'></a>
+                    <div class='wroom-chat-info'>
+                        <span class='name-medium clr-m1'>{{ username }}</span>
+                        <p>
+    Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-        </div>
-        <div class='wroom-clmn-fixed'>
-            Описание карты
         </div>
     </div>
 {% endblock %}
@@ -23,14 +36,16 @@
 {% set show_sidebar_r = true %}
 {% set ub__hide_play_button = true %}
 {% block sidebar_content %}
-    {% if username == room.creator %}
-        <button class='btn' id='start_game'>Начать</button>
-    {% endif %}
-    <button class='btn'>Пригласить</button>
-    <button class='btn' id='exit_room'>Выйти</button>
-    {# {% if username == room.creator %}
-        <button class="btn" id="settings_button">Настройки</button>
-    {% endif %} #}
+    <form action="javascript:void(0);">
+        {% if username == room.creator %}
+            <button class='btn' id='start_game'>Начать</button>
+        {% endif %}
+        <button class='btn'>Пригласить</button>
+        <button class='btn' id='exit_room'>Выйти</button>
+        {# {% if username == room.creator %}
+            <button class="btn" id="settings_button">Настройки</button>
+        {% endif %} #}
+    </form>
 {% endblock %}
 
 {% block scripts %}

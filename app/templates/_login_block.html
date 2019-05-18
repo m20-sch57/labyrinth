@@ -4,10 +4,10 @@
             <input type="text" name="login" placeholder="username">
             <input type="password" name="password" placeholder="password">
             <input class="btn" type="submit" value="Войти">
-        </form>
         {% if args.form == 'login' and args.result == 'false' %}
             <div class="failed-info-block">
                 <span>Неверный логин или пароль!</span>
             </div>
         {% endif %}
+        </form>
 </div>

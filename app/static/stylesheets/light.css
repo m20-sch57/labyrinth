@@ -5,6 +5,7 @@
 @import url('svg.css');
 @import url('room_block.css');
 @import url('user_block.css');
+@import url('wroom.css');
 
 html, body{
 	background: rgb(249, 249, 249);
@@ -13,7 +14,7 @@ html, body{
 }
 
 body {
-	min-width: 1100px;
+	min-width: 1310px;
 	height: 100%;
 }
 
@@ -141,7 +142,7 @@ h1, h2 {
 
 
 .news {
-	font-size: 20pt;
+	font-size: 17pt;
 	text-align: justify;
 }
 
@@ -331,7 +332,7 @@ h1, h2 {
 }
 
 
-#sidebar-content.fixed {
+.fixed-when-scroll.fixed {
 	position: fixed;
 	top: 30px;
 }
@@ -356,16 +357,10 @@ h1, h2 {
 	-webkit-justify-content: space-between;
 }
 
-.wroom-clmn-fixed {
-	width: 200px;
-	border: 1px solid grey;
-	margin: 0;
+.inline-flex-container.space-between > div:not(:first-child) {
+	margin-left: 20px;
 }
 
-.wroom-clmn {
-	margin-left: 20px;
-	margin-right: 20px;
-	/*width: auto;*/
-	flex-grow: 1;
-	align-content: stretch;
+.clr-m1 {
+	color: var(--clr-m1);
 }

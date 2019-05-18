@@ -2,11 +2,11 @@
 
 :root {
 	/* green*/
-	/*--clr-m1: #3bb34a;*/
-	/*--clr-m1-l: #d8f5db;*/
+	--clr-m1: #3bb34a;
+	--clr-m1-l: #d8f5db;
 	/*purple*/
-	--clr-m1: #ae0fff;
-	--clr-m1-l: #f1dafd;
+	/*--clr-m1: #ae0fff;*/
+	/*--clr-m1-l: #f1dafd;*/
 	/*orange*/
 	/*--clr-m1: #e65124;*/
 	/*--clr-m1-l: #f3d0c6;*/
@@ -17,7 +17,7 @@
 	/*yellow*/
 	--clr-c1: #ffdc4b;
 
-	--font-text: 'Marmelad', sans-serif ;
+	--font-text: Verdana, Geneva sans-serif;
 	--font-head: 'Ubuntu', serif;
 	--font-logo: 'Roboto Slab', serif;
 }

@@ -21,7 +21,7 @@
         </td>
         {% if show_sidebar_r %}
             <td class="sidebar-r">
-                <div id="sidebar-content">
+                <div id="sidebar-content" class="fixed-when-scroll">
                     {% if username %}
                         {% include "_user_block.html" %}
                     {% else %}
@@ -29,20 +29,20 @@
                     {% endif %}
                     {% block sidebar_content %}{% endblock %}
                 </div>
-                <script type="text/javascript">
-                    jQuery(function($) {
-                        $(window).scroll(function(){
-                            if($(this).scrollTop()>120){
-                                $('#sidebar-content').addClass('fixed');
-                            }
-                            else if ($(this).scrollTop()<120){
-                                $('#sidebar-content').removeClass('fixed');
-                            }
-                        });
-                    });
-                </script>
             </td>
         {% endif %}
     </tr></table>
+    <script type="text/javascript">
+        jQuery(function($) {
+            $(window).scroll(function(){
+                if($(this).scrollTop()>120){
+                    $('.fixed-when-scroll').addClass('fixed');
+                }
+                else if ($(this).scrollTop()<120){
+                    $('.fixed-when-scroll').removeClass('fixed');
+                }
+            });
+        });
+    </script>
     {% block scripts %}{% endblock %}
 {% endblock %}
