@@ -30,4 +30,3 @@ class Bear(Creature):
 
     def die(self):
         self.labyrinth.creatures.discard(self)
-        del self
