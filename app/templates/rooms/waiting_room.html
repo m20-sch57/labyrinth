@@ -40,8 +40,8 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
                 {% endfor %}
             </div>
             <div>
-                <div contenteditable='plaintext-only' class='chat-input scrollbar' 
-                data-placeholder='Введите сообщение'></div>
+                <div contenteditable class='chat-input scrollbar' 
+                data-placeholder='Введите сообщение' id='chat-input'></div>
             </div>
         </div>
     </div>
@@ -63,7 +63,18 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
 {% endblock %}
 
 {% block scripts %}
-    <script>
+    <script type='text/javascript'>
+        $('#editor').on('paste', function(e) {
+             e.preventDefault();
+             
+             if( e.originalEvent.clipboardData ) {
+                  var content = e.originalEvent.clipboardData.getData('text/plain').replace(/\r\n|\r|\n/g, '');
+                  console.log('pasted content only text', content);
+                  document.execCommand('insertText', false, content);
+            }
+        });
+    </script>
+    <script type='text/javascript'>
         function xhrOpen(eventType) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', "{{ url_for('waiting_room', room_id=room.id) }}");

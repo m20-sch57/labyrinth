@@ -54,7 +54,7 @@
 	outline: none;
 }
 
-.chat-input:empty:not(:focus):before {
+.chat-input:empty:before {
     content:attr(data-placeholder);
     color: grey;
 }
