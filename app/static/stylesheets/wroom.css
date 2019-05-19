@@ -1,13 +1,10 @@
 .wroom-clmn-fixed {
-	min-width: 200px;
 	margin: 0;
-	/*background: #d2d2d2;*/
 }
 
-.wroom-clmn {
+.wroom-clmn-grow {
 	flex-grow: 1;
 	align-content: stretch;
-	/*background: #d2d2d2;*/
 }
 
 .wroom-chat-info {
@@ -16,29 +13,48 @@
 
 .wroom-chat-info p {
 	font-family: var(--font-text);
+	font-size: 12pt;
 	text-align: justify;
 	margin-top: 5px;
 	margin-right: 10px;
 }
 
-.wroom-chat {
+.wroom-chat-msgs {
+	margin-top: 10px;
 	max-height: 500px;
 	overflow-y: scroll;
 }
 
-.wroom-chat::-webkit-scrollbar-track
-{
-	border: 1px solid black;
-	/*background-color: var(--clr-m1);*/
+.scrollbar::-webkit-scrollbar-track {
+	/*border: 1px solid black;*/
 }
 
-.wroom-chat::-webkit-scrollbar
-{
-	width: 10px;
+.scrollbar::-webkit-scrollbar {
+	width: 5px;
 	/*background-color: white;*/
 }
 
-.wroom-chat::-webkit-scrollbar-thumb
-{
+.scrollbar::-webkit-scrollbar-thumb {
 	background-color: var(--clr-m1);	
+}
+
+.chat-input {
+	margin-top: 10px;
+	font-size: 12pt;
+	overflow-x: hidden;
+	font-family: var(--font-text);
+	border: 1px solid grey;
+	border-radius: 2px;
+	word-break: break-all;
+	max-height: 120px;
+	padding: 4px;
+}
+
+.chat-input:focus {
+	outline: none;
+}
+
+.chat-input:empty:not(:focus):before {
+    content:attr(data-placeholder);
+    color: grey;
 }

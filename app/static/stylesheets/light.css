@@ -99,11 +99,13 @@ h1, h2 {
 }
 
 .name-large {
+	text-decoration: none;
 	font-family: 'Roboto Slab', serif;
 	font-size: 20pt;
 }
 
 .name-medium {
+	text-decoration: none;
 	font-family: 'Roboto Slab', serif;
 	font-size: 12pt;
 }
@@ -363,4 +365,10 @@ h1, h2 {
 
 .clr-m1 {
 	color: var(--clr-m1);
+}
+
+.time {
+	color: grey;
+	font-family: var(--font-text);
+	font-size: 10pt;
 }
