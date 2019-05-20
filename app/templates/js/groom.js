@@ -146,7 +146,6 @@
     };
 
      // Bars
-      
     function addCommonBar(name, value) {
         // <span class="resource-name">Бомбы: </span><span class="resource-value">3</span><br>
         resourceName = document.createElement('span');
@@ -166,12 +165,11 @@
     }
 
     function clearBars() {
-        var turnState = document.getElementById('turn-state');
-        turnState.innerHTML = '';
+        $('#turn-state').html('');
     }
 
     // When the document is loaded 
-    function ready() {
+    $(document).ready(function(){
         getUpdate();
         var socket = io.connect('http://' + document.domain + ':' + location.port + '/' + document.getElementById('data').dataset.room_id);
         socket.on('update', function(msg) {
@@ -182,12 +180,10 @@
             };
         });
         socket.on('connect', function() {
-            socket.emit('player join', {'room_id': document.getElementById('data').dataset.room_id});
+            socket.emit('player join', {'room_id': '{{ room.id }}' }
         });
-    };
+    });
 
     var turnInput = document.getElementById('input');
     turnInput.onkeydown = makeTurnFromInput;
-
-    document.addEventListener("DOMContentLoaded", ready);
 </script>

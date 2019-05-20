@@ -8,14 +8,14 @@
                data-show-on-change='.save_roomname'
                value='{{ room.name }}' maxlength='25' style='width: 500px;'>
         <button class='btn auto-width save_roomname'>Сохранить</button>
-        <button class='btn auto-width save_roomname'>Отмена</button>
+        <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
     </div>
     <div class='inline-flex-container space-between'>
         <div class='wroom-clmn wroom-clmn-fixed' style='min-width: 200px'> <!-- Список с игроками -->
             <span class='name-medium'>Игроки</span>
             <div id='players_list'></div>
         </div>
-        <div class='wroom-clmn wroom-clmn-fixed' style='min-width: 300px'>
+{#         <div class='wroom-clmn wroom-clmn-fixed' style='min-width: 300px'>
             <span class='name-medium'>Карта</span>
             <div>
                 <br>
@@ -26,7 +26,7 @@
                     Описание карты. Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
                 </p>
             </div>
-        </div>
+        </div> #}
         <div class='wroom-clmn wroom-clmn-grow'>
             <span class='name-medium'>Чат</span>
             <div class='wroom-chat-msgs scroller'>
@@ -75,6 +75,11 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
 {% endblock %}
 
 {% block scripts %}
+    <script type="text/javascript">
+        $('#reset').click(function(){
+            $('.changeble').val(function(){return $(this).attr('data-saved-value')}).trigger('change');
+        })
+    </script>
     {% include 'js/contenteditable.js' %}
     {% include 'js/onchange.js' %}
     {% include 'js/wroom.js' %}
