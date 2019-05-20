@@ -16,7 +16,7 @@ class Treasure(Item):
         self.new_button(settings['take_turn']['ru'], 'treasure_up.png')
 
         if self.is_true:
-            self.add_flag('true_tres')
+            self.set_flag('true_tres')
 
     def take(self, player):
         if self.RETURNS_BACK_WHEN_IS_DROPPED:

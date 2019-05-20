@@ -18,6 +18,19 @@ def append_safe(obj, attr, key, value=None):
             obj.__dict__[attr][key] = value
 
 
+def delete_safe(obj, attr, key):
+    if not hasattr(obj, attr):
+        obj.__dict__[attr].remove(key)
+
+
+def get_safe(obj, attr, key, *args):
+    if len(args) > 1:
+        pass
+        # raise ...
+    if hasattr(obj, attr):
+        obj.__dict__[attr].get(key, *args)
+
+
 def add_safe(obj, attr, value):
     if hasattr(obj, attr):
         obj.__dict__[attr].add(value)
