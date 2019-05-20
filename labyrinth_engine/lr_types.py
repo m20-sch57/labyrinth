@@ -27,6 +27,12 @@ class Player(LO):
         if count:
             self.set_flag('skip_turns', count)
 
+    def die(self):
+        self.skip_turns(-1)
+
+    def revive(self):
+        self.delete_flag('skip_turns')
+
 
 class Creature(LO):
     _lrtype = 'creature'
