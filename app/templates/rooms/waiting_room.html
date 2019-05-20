@@ -8,7 +8,8 @@
             <div class='inline-flex-container'> <!-- Шапка комнаты -->
                 <input class='name-large input-on-focus changeble flex-grow' 
                        data-show-on-change='.save_roomname' id='roomname'
-                       value='{{ room.name }}' maxlength='25' style='width: 500px;'>
+                       autocomplete="off" value='{{ room.name }}' maxlength='25' 
+                       style='width: 500px;'>
                 <button class='btn auto-width save_roomname'>Сохранить</button>
                 <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
             </div>
