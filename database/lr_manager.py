@@ -12,7 +12,7 @@ class LRManager:
 
     def add_labyrinth(self, room_id, labyrinth):
         if room_id in self.list:
-            return DBAnswer(False, DBAnswer.LabyrinthAlreadyExist,
+            return DBAnswer(False, DBError.LabyrinthAlreadyExist,
                             'Labyrinth with this room id alredy exists.')
         else:
             self.list[room_id] = labyrinth
@@ -20,7 +20,7 @@ class LRManager:
 
     def remove_labyrinth(self, room_id):
         if room_id not in self.list:
-            return DBAnswer(False, DBAnswer.LabyrinthNotExist,
+            return DBAnswer(False, DBError.LabyrinthNotExist,
                             'Labyrinth with this room id do not exist.')
         else:
             self.list.pop(room_id)
