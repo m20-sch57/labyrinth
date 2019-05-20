@@ -51,5 +51,8 @@
 			Description: {% autoescape false %}{{ room.description.split('\n') | join(' <br> ')}}{% endautoescape %}
 		</div>
 	{% endif %}
-	<script src="{{ url_for('static', filename='js/game_room.js') }}"></script>
+{% endblock %}
+
+{% blcok scripts %}
+	{% include 'js/groom.js' %}
 {% endblock %}

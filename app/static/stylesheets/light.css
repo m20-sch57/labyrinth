@@ -312,6 +312,12 @@ h1, h2 {
 	border: 1px solid black;
 	background: #ffffff;
 	font-size: 15pt;
+
+	transition: 50ms;
+	transition-timing-function: ease-in-out;
+	-webkit-transition: 50ms;
+	-webkit-transition-timing-function: ease-in-out;
+
 	cursor: pointer;
 }
 
@@ -371,4 +377,20 @@ h1, h2 {
 	color: grey;
 	font-family: var(--font-text);
 	font-size: 10pt;
+}
+
+.auto-width {
+	width: auto;
+}
+
+.flex-row-reverse {
+	flex-direction: row-reverse;
+}
+
+.flex-grow {
+	flex-grow: 1;
+}
+
+.border-grey {
+	border-color: grey;
 }

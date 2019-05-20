@@ -25,6 +25,11 @@
 	overflow-y: scroll;
 }
 
+.wroom-header {
+	margin-bottom: 20px;
+	justify-content: flex-end;
+}
+
 .scroller::-webkit-scrollbar-track {
 }
 
@@ -43,10 +48,12 @@
 	overflow-x: hidden;
 	font-family: var(--font-text);
 	border: 1px solid grey;
-	border-radius: 2px;
+	/*border-radius: 2px;*/
 	word-break: break-all;
 	max-height: 120px;
-	padding: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	line-height: 25px;
 }
 
 .chat-input:focus {
@@ -56,4 +63,27 @@
 .chat-input:empty:before {
     content:attr(data-placeholder);
     color: grey;
+}
+
+.save_roomname{
+	margin-left: 5px;
+}
+
+
+
+.edit-icon {
+	fill: grey;
+}
+
+.edit-icon:hover {
+	fill: var(--clr-m1-d);
+}
+
+.input-on-focus {
+	border-width: 0;
+	background: inherit;
+}
+
+.input-on-focus:focus {
+	outline: none;
 }
