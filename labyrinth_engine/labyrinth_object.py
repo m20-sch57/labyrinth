@@ -8,6 +8,8 @@ class LabyrinthObject:
     LabyrinthObject is class of objects that can be used by players at their turns
     """
 
+    labyrinth = None
+
     # Предлагаемые игрокам ходы.
     def new_at(self, function, condition_function, turn_name):
         """
@@ -64,7 +66,8 @@ class LabyrinthObject:
     def get_parent(self):
         return get_attr_safe(self, 'parent', None)
 
-    def get_children(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_children(self, lrtype=['location', 'item', 'player', 'creature'],
+                     and_key=lambda x: True, or_key=lambda x: False):
         all_objs = self.labyrinth.get_all_objects()
         return set(filter(lambda obj: obj.get_parent() == self and (obj.lrtype in lrtype and and_key(obj) or or_key(obj)),
                         all_objs))

@@ -22,6 +22,9 @@
 	<div id='info' post="{{ url_for('game_room', room_id=room.id) }}"  room_id="{{ room.id }}"></div>
 	<div class="game-main">
 		<div id="log">
+			{% for msg in msgs %}
+				<p>{% autoescape false %}{{ msg | join(' <br> ')}}{% endautoescape %}</p>
+			{% endfor %}
 		</div>
 
 		<div class="input-wrapper">

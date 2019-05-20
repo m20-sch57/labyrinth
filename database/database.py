@@ -6,23 +6,23 @@ from database.map import MapsTable
 from database.lr_manager import LRManager
 
 
-
 def connection():
-    connect = sqlite3.connect('database.db', check_same_thread = False)
-    cursor = connect.cursor()
+    connect = sqlite3.connect('database.db', check_same_thread=False)
+    cursor = connect.cursor
     return cursor, connect
 
-def init_db():
-    connect, cursor = connection()
 
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users (
+def init_db():
+    cursor, connect = connection()
+
+    cursor().execute('''CREATE TABLE IF NOT EXISTS users (
                     id TEXT PRIMARY KEY,
                     username TEXT, 
                     password_hash TEXT,
                     avatar TEXT
                     )''')
 
-    cursor.execute('''CREATE TABLE IF NOT EXISTS rooms (
+    cursor().execute('''CREATE TABLE IF NOT EXISTS rooms (
                     id TEXT PRIMARY KEY,
                     name TEXT,
                     creator TEXT,
@@ -33,20 +33,21 @@ def init_db():
                     FOREIGN KEY (creator) REFERENCES users (username)
                     )''')
 
-    cursor.execute('''CREATE TABLE IF NOT EXISTS maps (
+    cursor().execute('''CREATE TABLE IF NOT EXISTS maps (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT,
                     creator TEXT,
                     description TEXT,
                     map TEXT)''')
 
+
 def drop_db():
     cursor, connect = connection()
 
     init_db()
-    cursor.execute('DROP TABLE rooms')
-    cursor.execute('DROP TABLE users')
-    cursor.execute('DROP TABLE maps')
+    cursor().execute('DROP TABLE rooms')
+    cursor().execute('DROP TABLE users')
+    cursor().execute('DROP TABLE maps')
     connect.commit()
 
 

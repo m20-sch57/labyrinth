@@ -8,13 +8,10 @@ import random
 import string
 import json
 
-
-
-
-
 '''
 help functions
 '''
+
 
 def login_required(f):
     @wraps(f)
@@ -38,10 +35,11 @@ def simple_render_template(url, **kwargs):
         user_ava = None
     return render_template(url, username=username, user_ava=user_ava, user=user, args=request.args, **kwargs)
 
-def redirect_with_args(url = None, **kwargs):
+
+def redirect_with_args(url=None, **kwargs):
     if url is None:
         url = request.referrer.split('?')[0]
-    return redirect(url+'?'+ '&'.join([str(k)+'='+str(v) for k, v in kwargs.items()]))
+    return redirect(url+'?' + '&'.join([str(k)+'='+str(v) for k, v in kwargs.items()]))
 
 
 @app.route('/')
@@ -58,7 +56,7 @@ def login():
 
         if not db.users.have_user(username) or \
                 not db.users.check_password(password, username):
-            return redirect_with_args(form = 'login', result = 'false')
+            return redirect_with_args(form='login', result='false')
 
         session['username'] = username
         return redirect(url_for('index'))
@@ -75,7 +73,8 @@ def logout():
 @app.route('/profile')
 @login_required
 def profile():
-    return simple_render_template('profile/profile.html', form = request.args.get('form'), result = request.args.get('result'))
+    return simple_render_template('profile/profile.html', form=request.args.get('form'),
+                                  result=request.args.get('result'))
 
 
 @app.route('/profile/change_login', methods=['POST', 'GET'])
@@ -87,7 +86,8 @@ def change_login():
 
         return redirect_with_args(form='login', result='true')
 
-    return simple_render_template('profile/change_login.html', form = request.args.get('form'), result = request.args.get('result'))
+    return simple_render_template('profile/change_login.html', form=request.args.get('form'),
+                                  result=request.args.get('result'))
 
 
 @app.route('/profile/change_password', methods=['POST', 'GET'])
@@ -103,7 +103,8 @@ def change_password():
         db.users.set_password(new_password)
         return redirect_with_args(form='password', result='true')
 
-    return simple_render_template('profile/change_password.html', form = request.args.get('form'), result = request.args.get('result'))
+    return simple_render_template('profile/change_password.html', form=request.args.get('form'),
+                                  result=request.args.get('result'))
 
 
 @app.route('/profile/change_avatar', methods=['POST', 'GET'])
@@ -116,7 +117,8 @@ def change_avatar():
             return redirect_with_args(form='change_avatar', result='true')
         else:
             return redirect_with_args(form='change_avatar', result='false')
-    return simple_render_template('profile/change_avatar.html', form = request.args.get('form'), result = request.args.get('result'))
+    return simple_render_template('profile/change_avatar.html', form=request.args.get('form'),
+                                  result=request.args.get('result'))
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -155,7 +157,7 @@ def room_list(page):
 
     rooms = db.rooms.get_all()
 
-    return simple_render_template('rooms/room_list.html', rooms = rooms)
+    return simple_render_template('rooms/room_list.html', rooms=rooms)
 
 
 @app.route('/rules')
@@ -201,7 +203,7 @@ def waiting_room(room_id):
                  broadcast=True, namespace='/'+room_id)
 
         elif event_type == 'start_game':
-            imagepath='/static/images/button_images/'
+            imagepath = '/static/images/button_images/'
             map_id = db.rooms.get(room_id).map_id
             labyrinth = load_map(db.maps.get(map_id).map, db.rooms.get(room_id).users, imagepath=imagepath)
             db.lrm.add_labyrinth(room_id, labyrinth)
@@ -220,7 +222,8 @@ def waiting_room(room_id):
     elif db.rooms.get(room_id) is None:
         return redirect(url_for('room_list', page=0))
     else:
-        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True, maps=db.maps.get_all())
+        return simple_render_template('rooms/waiting_room.html', room=db.rooms.get(room_id), hide_header=True,
+                                      maps=db.maps.get_all())
 
 
 @app.route('/game_room/<room_id>', methods=['POST', 'GET'])
@@ -257,4 +260,6 @@ def game_room(room_id):
     if labyrinth is None or username not in [user.get_username() for user in labyrinth.players_list]:
         return redirect(url_for('waiting_room', room_id=room_id))
     else:
-        return simple_render_template('rooms/game_room.html', room=db.rooms.get(room_id))
+        return simple_render_template('rooms/game_room.html',
+                                      room=db.rooms.get(room_id),
+                                      msgs=labyrinth.get_msgs(username))

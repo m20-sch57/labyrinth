@@ -35,12 +35,13 @@ def add_safe(obj, attr, value):
     if hasattr(obj, attr):
         obj.__dict__[attr].add(value)
     else:
-        obj = set([value])
+        obj.__dict__[attr] = {value}
 
 
 def remove_safe(obj, attr, value):
     if hasattr(obj, attr):
         obj.__dct__[attr].discard(value)
+
 
 def from_module_name_to_path(module):
     return module.replace('.', '\\')

@@ -6,5 +6,16 @@
         <input type="text" name="login" placeholder="username"><br>
         <input type="password" name="password" placeholder="password"><br>
         <input type="submit" value="Регистрация">
+    {% if args.form == 'register' %}
+        {% if args.result == 'false' %}
+            <div class="failed-info-block">
+                <span>Имя занято или некорректно.</span>
+            </div>
+        {% else %}
+            <div class="succes-info-block">
+                <span>Успешная регистрация</span>
+            </div>
+        {% endif %}
+    {% endif %}
     </form>
 {% endblock %}

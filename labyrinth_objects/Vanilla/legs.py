@@ -10,9 +10,9 @@ class Legs(Item):
         self.new_at(self.turn_move('left'), lambda: True, settings['go_west']['ru'])
         self.new_at(self.turn_move('right'), lambda: True, settings['go_east']['ru'])
 
-        self.new_lbutton([settings['go_north']['ru'], settings['go_south']['ru'], 
-            settings['go_west']['ru'], settings['go_east']['ru']], 'leg.png', 
-            ['up.png', 'down.png', 'left.png', 'right.png'])
+        self.new_lbutton([settings['go_north']['ru'], settings['go_south']['ru'],
+                          settings['go_west']['ru'], settings['go_east']['ru']], 'leg.png',
+                         ['up.png', 'down.png', 'left.png', 'right.png'])
 
     def turn_move(self, direction):
         def move():

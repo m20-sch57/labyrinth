@@ -4,7 +4,7 @@ import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='', \
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='',
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
@@ -54,10 +54,6 @@ class Labyrinth:
         """
         self.turns_log = []
         self.msgs_log = {}
-
-
-    def __str__(self):
-        return '<labyrinth: {}>'.format(self.filename)
 
     # Сообщения.
     def send_msg(self, msg, player, priority=0):
@@ -233,15 +229,17 @@ class Labyrinth:
     def get_all_objects(self):
         return self.locations | self.items | self.creatures | set(self.players_list)
 
-    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'], and_key=lambda x: True, or_key=lambda x: False):
+    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'],
+                    and_key=lambda x: True, or_key=lambda x: False):
         return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
 
     def save(self):
-        save = {}
-        save['seed'] = self.seed
-        save['loadseed'] = self.loadseed
-        save['users'] = list(map(lambda user: user.get_username(), self.players_list))
-        save['turns'] = self.turns_log
+        save = {
+        'seed': self.seed,
+        'loadseed': self.loadseed,
+        'users': list(map(lambda user: user.get_username(), self.players_list)),
+        'turns': self.turns_log,
+        }
         return json.dumps(save, indent=4, ensure_ascii=False)
 
     def get_buttons(self):
