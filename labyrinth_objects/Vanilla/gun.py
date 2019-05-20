@@ -13,9 +13,9 @@ class Gun(Item):
         self.new_at(self.turn_fire('left'), self.condition, settings['fire_west']['ru'])
         self.new_at(self.turn_fire('right'), self.condition, settings['fire_east']['ru'])
 
-        self.new_lbutton([settings['fire_north']['ru'], settings['fire_south']['ru'], 
-            settings['fire_west']['ru'], settings['fire_east']['ru']], 
-            'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
+        self.new_lbutton([settings['fire_north']['ru'], settings['fire_south']['ru'],
+                          settings['fire_west']['ru'], settings['fire_east']['ru']],
+                         'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 
     def turn_fire(self, direction):
         def fire():

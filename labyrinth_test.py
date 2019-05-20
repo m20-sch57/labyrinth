@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
         ats = TestLR.get_active_player_ats()
         ats[0:-1:4] = list(map(lambda x: '\n'+x, ats[0:-1:4]))
-        print('; '.join(ats), end = '\n\n')
+        print('; '.join(ats), end='\n\n')
 
         msgs = TestLR.make_turn(input('(' + TestLR.get_active_player().get_username() + ') '))
         print(TestLR.save())

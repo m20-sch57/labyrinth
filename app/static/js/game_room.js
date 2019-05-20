@@ -71,6 +71,8 @@ function getUpdate() {
 		removeAllButtons();	 
 		turnState.innerHTML = 'Игра окончена';
 	}
+	
+	$('#log').scrollTop(1000000000);
 };
 
 // Interface
