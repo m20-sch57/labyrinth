@@ -3,9 +3,8 @@ class LabyrinthError(Exception):
 
 
 class LabyrinthLoadError(LabyrinthError):
-    def __init__(self, msg, file):
+    def __init__(self, msg):
         self.msg = msg
-        self.file = file
 
     def __str__(self):
         return 'File "{}"\n{}'.format(self.file, self.msg)
