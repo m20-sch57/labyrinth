@@ -25,7 +25,7 @@
         </div>
         <div class='wroom-clmn wroom-clmn-grow'>
             <span class='name-medium'>Чат</span>
-            <div class='wroom-chat-msgs scrollbar'>
+            <div class='wroom-chat-msgs scroller'>
                 {% for i in range(10) %}
                 <div class='inline-flex-container'>
                     <a href="{{ url_for('my_profile') }}"><img class='user-ava-small' src='{{ user_ava }}'></a>
@@ -40,8 +40,8 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
                 {% endfor %}
             </div>
             <div>
-                <div contenteditable class='chat-input scrollbar' 
-                data-placeholder='Введите сообщение' id='chat-input'></div>
+                <div contenteditable='plaintext-only' class='chat-input scroller' 
+                data-placeholder='Введите сообщение'></div>
             </div>
         </div>
     </div>
@@ -63,17 +63,7 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
 {% endblock %}
 
 {% block scripts %}
-    <script type='text/javascript'>
-        $('#editor').on('paste', function(e) {
-             e.preventDefault();
-             
-             if( e.originalEvent.clipboardData ) {
-                  var content = e.originalEvent.clipboardData.getData('text/plain').replace(/\r\n|\r|\n/g, '');
-                  console.log('pasted content only text', content);
-                  document.execCommand('insertText', false, content);
-            }
-        });
-    </script>
+     {% include 'js/contenteditable.js' %}
     <script type='text/javascript'>
         function xhrOpen(eventType) {
             var xhr = new XMLHttpRequest();

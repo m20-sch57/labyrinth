@@ -25,18 +25,17 @@
 	overflow-y: scroll;
 }
 
-.scrollbar::-webkit-scrollbar-track {
-	/*border: 1px solid black;*/
+.scroller::-webkit-scrollbar-track {
 }
 
-.scrollbar::-webkit-scrollbar {
+.scroller::-webkit-scrollbar {
 	width: 5px;
-	/*background-color: white;*/
 }
 
-.scrollbar::-webkit-scrollbar-thumb {
+.scroller::-webkit-scrollbar-thumb {
 	background-color: var(--clr-m1);	
 }
+
 
 .chat-input {
 	margin-top: 10px;
