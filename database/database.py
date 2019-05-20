@@ -6,11 +6,11 @@ from database.map import MapsTable
 from database.lr_manager import LRManager
 
 
-
 def connection():
-    connect = sqlite3.connect('database.db', check_same_thread = False)
+    connect = sqlite3.connect('database.db', check_same_thread=False)
     cursor = connect.cursor
     return cursor, connect
+
 
 def init_db():
     cursor, connect = connection()
@@ -39,6 +39,7 @@ def init_db():
                     creator TEXT,
                     description TEXT,
                     map TEXT)''')
+
 
 def drop_db():
     cursor, connect = connection()

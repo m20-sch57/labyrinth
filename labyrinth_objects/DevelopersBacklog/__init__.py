@@ -1,2 +1,2 @@
-from LabyirnthObjects.DevelopersBacklog.see_and_forsee import DivineLightning, Flashlight
-from LabyirnthObjects.DevelopersBacklog.unexpected_moving import FlyingIsland, FIBottom
+from labyrinth_objects.DevelopersBacklog.see_and_foresee import DivineLightning, Flashlight
+from labyrinth_objects.DevelopersBacklog.unexpected_moving import FlyingIsland, FIBottom
