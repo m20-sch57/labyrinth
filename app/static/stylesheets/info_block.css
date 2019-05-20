@@ -1,4 +1,4 @@
-.succes-info-block,
+.success-info-block,
 .failed-info-block,
 .warning-info-block {
 	margin-top: 10px;
@@ -7,7 +7,7 @@
 	width: calc(100% -10px -2px);
 }
 
-.succes-info-block {
+.success-info-block {
 	border: 1px solid green;
 	background: #62ff00d9;
 	color: green;
