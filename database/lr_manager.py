@@ -1,6 +1,7 @@
 from database.db_answer import DBAnswer, DBError, OK
 from database.common_functions import *
 
+
 class LRManager:
     def __init__(self, db):
         self.list = {}
@@ -11,16 +12,16 @@ class LRManager:
 
     def add_labyrinth(self, room_id, labyrinth):
         if room_id in self.list:
-            return DBAnswer(False, DBAnswer.LabyrinthAlreadyExist, 
-                           'Labyrinth with this room id alredy exists.')
+            return DBAnswer(False, DBError.LabyrinthAlreadyExist,
+                            'Labyrinth with this room id alredy exists.')
         else:
             self.list[room_id] = labyrinth
             return DBAnswer(True, OK, 'Labyrinth ssuccessfully added.')
 
     def remove_labyrinth(self, room_id):
-        if not room_id in self.list:
-            return DBAnswer(False, DBAnswer.LabyrinthNotExist,
-                           'Labyrinth with this room id do not exist.')
+        if room_id not in self.list:
+            return DBAnswer(False, DBError.LabyrinthNotExist,
+                            'Labyrinth with this room id do not exist.')
         else:
             self.list.pop(room_id)
             return DBAnswer(True, OK, 'Labyrinth ssuccessfully removed.')

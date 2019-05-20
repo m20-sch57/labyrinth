@@ -1,5 +1,6 @@
 from enum import IntEnum
 
+
 class DBAnswer:
     def __init__(self, ok, error, info):
         self.ok = ok
@@ -24,5 +25,6 @@ class DBError(IntEnum):
     IncorrectRoomName = 32
     LabyrinthAlreadyExist = 40
     LabyrinthNotExist = 41
+
 
 OK = DBError.AlwaysOk

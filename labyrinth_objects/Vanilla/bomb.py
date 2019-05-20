@@ -17,9 +17,9 @@ class Bomb(Item):
         self.new_at(self.turn_blow_up('left'), self.condition, settings['blow_up_west']['ru'])
         self.new_at(self.turn_blow_up('right'), self.condition, settings['blow_up_east']['ru'])
 
-        self.new_lbutton([settings['blow_up_north']['ru'], settings['blow_up_south']['ru'], 
-            settings['blow_up_west']['ru'], settings['blow_up_east']['ru']], 
-            'bomb.png', ['up.png', 'down.png', 'left.png', 'right.png'])
+        self.new_lbutton([settings['blow_up_north']['ru'], settings['blow_up_south']['ru'],
+                          settings['blow_up_west']['ru'], settings['blow_up_east']['ru']],
+                         'bomb.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 
     def turn_blow_up(self, direction):
         def blow_up():

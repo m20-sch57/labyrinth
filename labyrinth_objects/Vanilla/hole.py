@@ -17,7 +17,7 @@ class Hole(Location):
         self.new_at(self.go_into_hole, self.condition, settings['go_through_turn']['ru'])
 
         # TODO: solve this problem (two buttins "fall into hole")
-        if not 'kek' in self.__class__.__dict__:
+        if 'kek' not in self.__class__.__dict__:
             self.new_button(settings['go_through_turn']['ru'], 'into_hole.png')
             self.__class__.kek = 'kek'
 
@@ -27,7 +27,7 @@ class Hole(Location):
                 self.indulgence[obj] = None
 
         for obj in self.get_children(lrtype=self.types_who_must_fall,
-                                     and_key=lambda obj: self.indulgence.get(obj, None) is None):
+                                     and_key=lambda lrobj: self.indulgence.get(lrobj, None) is None):
             obj.set_parent(self.fall_to)
             if type(self.fall_to) is Hole:
                 self.indulgence[obj] = self.fall_to

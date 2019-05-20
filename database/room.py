@@ -14,12 +14,13 @@ class Room:
         self.date = date
         self.map_id = map_id
 
-
     def __str__(self):
         return 'id: {}; name: {}; date: {}'.format(self.id, self.name, self.date)
 
+
 def users_from_string(users_string):
     return json.loads(users_string)
+
 
 def users_to_string(users):
     return json.dumps(users)
@@ -29,8 +30,8 @@ class RoomsTable(DBTable):
 
     def add(self, ID, creator):
         if not self.db.users.have_user(creator):
-            return DBAnswer(False, DBError.IncorrectUser, 
-                   'Can\'t create a room with creator, which are not user.')
+            return DBAnswer(False, DBError.IncorrectUser,
+                            'Can\'t create a room with creator, which are not user.')
 
         name = 'Комната ' + ID
         description = 'This room has no description'
@@ -52,19 +53,19 @@ class RoomsTable(DBTable):
 
     def delete(self, ID):
         if self.get(ID) is None:
-            return DBAnswer(False, DBError.RoomNotExist, 
-                'Can\'t delete nonexistent room')
+            return DBAnswer(False, DBError.RoomNotExist,
+                            'Can\'t delete nonexistent room')
 
         self.execute('DELETE FROM rooms WHERE id=?', [ID])
         return DBAnswer(True, OK, 'Room successfully deleted')
 
     def set_name(self, ID, name):
         if self.get(ID) is None:
-            return DBAnswer(False, DBError.RoomNotExist, 
-                'Can\'t set name for nonexistent room')
-        if False: # TODO check, that name is correct
-            return DBAnswer(False, DBError.IncorrectRoomName, 
-                'Name contains invalid characters')
+            return DBAnswer(False, DBError.RoomNotExist,
+                            'Can\'t set name for nonexistent room')
+        if False:  # TODO check, that name is correct
+            return DBAnswer(False, DBError.IncorrectRoomName,
+                            'Name contains invalid characters')
 
         self.execute('UPDATE rooms SET name=? WHERE id=?', [name, ID])
         return DBAnswer(True, OK, '')
@@ -73,16 +74,16 @@ class RoomsTable(DBTable):
         # TODO Answer
         self.execute('UPDATE rooms SET description=? WHERE id=?', [description, ID])
 
-    def add_user(self, ID, username = None):
+    def add_user(self, ID, username=None):
         if username is None:
             return self.add_user(ID, self.db.users.current_username())
 
         if self.get(ID) is None:
             return DBAnswer(False, DBError.RoomNotExist,
-                'Can\'t add user into nonexistent room')
+                            'Can\'t add user into nonexistent room')
         if not self.db.users.have_user(username):
-            return DBAnswer(False, DBError.IncorrectUser, 
-                'Can\'t add nonexistent user into room')
+            return DBAnswer(False, DBError.IncorrectUser,
+                            'Can\'t add nonexistent user into room')
 
         users = self.get(ID).users
 
@@ -95,13 +96,13 @@ class RoomsTable(DBTable):
 
         return DBAnswer(True, OK, 'User successfully added')
 
-    def remove_user(self, ID, username = None):
+    def remove_user(self, ID, username=None):
         if username is None:
             return self.remove_user(ID, self.db.users.current_username())
 
         if self.get(ID) is None:
             return DBAnswer(False, DBError.RoomNotExist,
-                'Can\'t remove user from nonexistent room')  
+                            'Can\'t remove user from nonexistent room')
 
         users = self.get(ID).users
 
