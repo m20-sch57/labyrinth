@@ -23,7 +23,7 @@
 	<div class="game-main">
 		<div id="log">
 			{% for msg in msgs %}
-				msg
+				<p>{% autoescape false %}{{ msg | join(' <br> ')}}{% endautoescape %}</p>
 			{% endfor %}
 		</div>
 
