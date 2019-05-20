@@ -3,12 +3,21 @@
 {% set title = room.name %}
 
 {% block content %}
-    <div class='inline-flex-container wroom-header'> <!-- Шапка комнаты -->
-        <input class='name-large input-on-focus changeble flex-grow' 
-               data-show-on-change='.save_roomname'
-               value='{{ room.name }}' maxlength='25' style='width: 500px;'>
-        <button class='btn auto-width save_roomname'>Сохранить</button>
-        <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
+    <div class='wroom-header'>
+        {% if username == room.creator %}
+            <div class='inline-flex-container'> <!-- Шапка комнаты -->
+                <input class='name-large input-on-focus changeble flex-grow' 
+                       data-show-on-change='.save_roomname' id='roomname'
+                       value='{{ room.name }}' maxlength='25' style='width: 500px;'>
+                <button class='btn auto-width save_roomname'>Сохранить</button>
+                <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
+            </div>
+            <div id='helper__change_roomname' class='undone'>
+                Вы может изменить имя просто нажав на него.<a href=''>Больше не показывать эту подсказку.</a>
+            </div>
+        {% else %}
+            <span class='name-large'>{{ room.name }}</span>
+        {% endif %}
     </div>
     <div class='inline-flex-container space-between'>
         <div class='wroom-clmn wroom-clmn-fixed' style='min-width: 200px'> <!-- Список с игроками -->
@@ -37,6 +46,7 @@
                         <span class='name-medium clr-m1'>{{ username }}</span>
                         <span class='time'>13:{{ 44+i}}</span>
                         <p>
+                            {# kek #}
 Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
                         </p>
                     </div>
@@ -53,7 +63,6 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
                 <div>
                     <button class='btn auto-width border-grey'>Написать</button>
                 </div>
-                {# <div class='inline-flex-container flex-row-reverse'> #}
             </div>
         </div>
     </div>
@@ -68,17 +77,15 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
         {% endif %}
         <button class='btn'>Пригласить</button>
         <button class='btn' id='exit_room'>Выйти</button>
-        {# {% if username == room.creator %}
-            <button class="btn" id="settings_button">Настройки</button>
-        {% endif %} #}
     </form>
 {% endblock %}
 
 {% block scripts %}
     <script type="text/javascript">
         $('#reset').click(function(){
-            $('.changeble').val(function(){return $(this).attr('data-saved-value')}).trigger('change');
+            $('#roomname').val(function(){return $(this).attr('data-saved-value')}).trigger('change');
         })
+        $('#roomname').on('change paste keyup', function(){$('#helper__change_roomname').css('display', 'none')})
     </script>
     {% include 'js/contenteditable.js' %}
     {% include 'js/onchange.js' %}
