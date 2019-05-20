@@ -11,14 +11,14 @@ class Hole(Location):
         self.set_fall_to(locations[settings['fall_to']])
 
         self.types_who_must_fall = settings['who_fall_in_it']
-        self.GO_TROUGH_MSG = settings['go_throught_msg']['ru']
+        self.GO_TROUGH_MSG = settings['go_through_msg']['ru']
         self.FALL_MSG = settings['fall_msg']['ru']
 
-        self.new_at(self.go_into_hole, self.condition, settings['go_throught_turn']['ru'])
+        self.new_at(self.go_into_hole, self.condition, settings['go_through_turn']['ru'])
 
         # TODO: solve this problem (two buttins "fall into hole")
         if not 'kek' in self.__class__.__dict__:
-            self.new_button(settings['go_throught_turn']['ru'], 'into_hole.png')
+            self.new_button(settings['go_through_turn']['ru'], 'into_hole.png')
             self.__class__.kek = 'kek'
 
     def main(self):
