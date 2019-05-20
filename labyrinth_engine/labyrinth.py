@@ -128,18 +128,19 @@ class Labyrinth:
         for obj in self.get_all_objects():
             obj.main()
 
+        # Делаем следующего игрока активным
+        while self.get_next_active_player_number() is None or self.is_game_ended:
+            self.skip_turn()
+        self.active_player_number = self.get_next_active_player_number()
 
+        # Уменьшаем у всех игроков пропуски ходов.
         for player in self.players_list:
             if player.have_flag('skip_turns'):
                 count = player.get_flag('skip_turns')
                 if count > 1:
                     player.set_flag('skip_turns', count - 1)
-                elif count == 1 or count == 0:
+                elif count == 1:
                     player.delete_flag('skip_turns')
-
-        # Делаем следующего игрока активным
-        while self.get_next_active_player_number() is None:
-            self.skip_turn()
 
         # Обновляем лог сообщений
         for player in self.players_list:
@@ -157,7 +158,7 @@ class Labyrinth:
         for obj in self.get_all_objects():
             obj.main()
 
-
+        # Уменьшаем у всех игроков пропуски ходов.
         for player in self.players_list:
             if player.have_flag('skip_turns'):
                 count = player.get_flag('skip_turns')
@@ -165,10 +166,6 @@ class Labyrinth:
                     player.set_flag('skip_turns', count - 1)
                 elif count == 1 or count == 0:
                     player.delete_flag('skip_turns')
-
-        # Делаем следующего игрока активным
-        while self.get_next_active_player_number() is None:
-            self.skip_turn()
 
     def get_turns(self, number=None, username=None):
         """
@@ -198,7 +195,7 @@ class Labyrinth:
         for i in range(len(self.players_list)):
             apn += 1
             apn %= len(self.players_list)
-            if not self.players_list[self.active_player_number].have_flag('skip_turns'):
+            if not self.players_list[apn].have_flag('skip_turns'):
                 return apn
         return None
 

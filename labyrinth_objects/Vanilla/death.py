@@ -59,15 +59,6 @@ class Death(Item):
                 creature.die()
 
     def main(self):
-        labyrinth = self.labyrinth
-        now = labyrinth.active_player_number
-        length = len(labyrinth.players_list)
-        for i in range(len(self.labyrinth.players_list)):
-            if self.death[labyrinth.players_list[(now + labyrinth.active_player_modifier) % length]]:
-                labyrinth.active_player_modifier += 1
-            else:
-                break
-
         if all(self.death.values()) and self.end_game_when_all_dead:
             for player in self.death:
                 self.labyrinth.send_msg(self.DRAW_MSG, player)
