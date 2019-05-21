@@ -26,9 +26,7 @@
     function getUpdate() {
         var xhr = xhrOpen('update');
         xhr.send();
-        console.log(xhr.responseText);
         responseData = JSON.parse(xhr.responseText);
-        console.log(responseData);
 
         var log = document.getElementById('log');
         msg = document.createElement('p');
@@ -180,7 +178,7 @@
             };
         });
         socket.on('connect', function() {
-            socket.emit('player join', {'room_id': '{{ room.id }}' }
+            socket.emit('player join', {'room_id': '{{ room.id }}' })
         });
     });
 

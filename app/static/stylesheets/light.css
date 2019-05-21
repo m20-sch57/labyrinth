@@ -335,8 +335,12 @@ h1, h2 {
 }
 
 #sidebar-content {
-	border-left: 5px solid var(--clr-m1);
+	/*padding-left: 10px;*/
+}
+
+#sidebar-content > div {
 	padding-left: 10px;
+	border-left: 5px solid var(--clr-m1);
 }
 
 

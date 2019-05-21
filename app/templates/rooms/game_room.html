@@ -51,8 +51,5 @@
 			Description: {% autoescape false %}{{ room.description.split('\n') | join(' <br> ')}}{% endautoescape %}
 		</div>
 	{% endif %}
-{% endblock %}
-
-{% blcok scripts %}
 	{% include 'js/groom.js' %}
 {% endblock %}

@@ -14,7 +14,7 @@
                 <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
             </div>
             <div id='helper__change_roomname' class='undone'>
-                Вы может изменить имя просто нажав на него.<a href=''>Больше не показывать эту подсказку.</a>
+                Вы может изменить имя просто нажав на него, или перейдя в настройки.<a href=''>Больше не показывать эту подсказку.</a>
             </div>
         {% else %}
             <span class='name-large'>{{ room.name }}</span>
@@ -72,14 +72,32 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
 {% set show_sidebar_r = true %}
 {% set ub__hide_play_button = true %}
 {% block sidebar_content %}
+    <br>
+    <div>
+        <span class='name-medium'>Карта</span>
+        <div>
+            <br>
+            <div style='width: 100px;height: 100px; border-color: grey; border: 1px solid grey; background: var(--clr-m1-l)'>
+                <img> 
+            </div>
+            <p class='text-font' style='text-align: justify;'>
+                Описание карты. Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block ub__actions %}
     <form action="javascript:void(0);">
         {% if username == room.creator %}
             <button class='btn' id='start_game'>Начать</button>
+            <button class='btn'>Настройки</button>
         {% endif %}
         <button class='btn'>Пригласить</button>
         <button class='btn' id='exit_room'>Выйти</button>
     </form>
 {% endblock %}
+
 
 {% block scripts %}
     <script type="text/javascript">

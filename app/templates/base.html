@@ -22,11 +22,14 @@
         {% if show_sidebar_r %}
             <td class="sidebar-r">
                 <div id="sidebar-content" class="fixed-when-scroll">
-                    {% if username %}
-                        {% include "_user_block.html" %}
-                    {% else %}
-                        {% include "_login_block.html" %}
-                    {% endif %}
+                    <div>
+                        {% if username %}
+                            {% include "_user_block.html" %}
+                        {% else %}
+                            {% include "_login_block.html" %}
+                        {% endif %}
+                        {% block ub__actions %}{% endblock %}
+                    </div>
                     {% block sidebar_content %}{% endblock %}
                 </div>
             </td>
