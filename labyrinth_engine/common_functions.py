@@ -24,7 +24,8 @@ def delete_safe(obj, attr, key):
 
 
 def get_safe(obj, attr, key, default=None):
-    obj.__dict__[attr].get(key, default)
+    if hasattr(obj, attr):
+        obj.__dict__[attr].get(key, default)
 
 
 def add_safe(obj, attr, value):
