@@ -18,7 +18,7 @@ class Health(Item):
         self.MAX_PLAYER_HEALTH = settings['max_player_health']
         self.MAX_CREATURE_HEALTH = settings['max_creature_health']
 
-        self.hp = {player: self.MAX_CREATURE_HEALTH for player in players}
+        self.hp = {player: self.MAX_PLAYER_HEALTH for player in players}
         self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
 
         self.labyrinth.set_unique(self, 'health')

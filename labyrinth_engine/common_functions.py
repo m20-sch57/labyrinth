@@ -5,14 +5,22 @@ def get_attr_safe(obj, attr, default_value):
         return default_value
 
 
-def append_safe(obj, attr, key, value=None):
+def append_safe(obj, attr, key, *args, **kvargs):
+    if len(args) + len(kvargs) > 1:
+        pass
+        # raise ...
+    elif args:
+        value = args[0]
+    elif kvargs:
+        value = kvargs['value']
+
     if not hasattr(obj, attr):
-        if value is None:
+        if 'value' not in dir():
             obj.__dict__[attr] = [key]
         else:
             obj.__dict__[attr] = {key: value}
     else:
-        if value is None:
+        if 'value' not in dir():
             obj.__dict__[attr].append(key)
         else:
             obj.__dict__[attr][key] = value
@@ -25,7 +33,7 @@ def delete_safe(obj, attr, key):
 
 def get_safe(obj, attr, key, default=None):
     if hasattr(obj, attr):
-        obj.__dict__[attr].get(key, default)
+        return obj.__dict__[attr].get(key, default)
 
 
 def add_safe(obj, attr, value):
