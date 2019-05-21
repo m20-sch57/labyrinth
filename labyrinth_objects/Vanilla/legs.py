@@ -4,6 +4,7 @@ from labyrinth_engine import Item
 class Legs(Item):
     def set_settings(self, settings, locations, items, creatures, players):
         self.BORDER_MSG = settings['border_msg']['ru']
+        self.SUCCESS_MSG = settings['success_msg']['ru']
 
         self.new_at(self.turn_move('up'), lambda: True, settings['go_north']['ru'])
         self.new_at(self.turn_move('down'), lambda: True, settings['go_south']['ru'])
@@ -22,5 +23,6 @@ class Legs(Item):
                 self.labyrinth.send_msg(self.BORDER_MSG, active_player, 1)
             else:
                 active_player.set_parent(next_position)
+                self.labyrinth.send_msg(self.SUCCESS_MSG, active_player, 1)
 
         return move
