@@ -193,8 +193,7 @@ class Labyrinth:
     def get_next_active_player_number(self):
         apn = self.active_player_number
         for i in range(len(self.players_list)):
-            apn += 1
-            apn %= len(self.players_list)
+            apn = (apn + 1) % len(self.players_list)
             if not self.players_list[apn].have_flag('skip_turns'):
                 return apn
         return None

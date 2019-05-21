@@ -23,12 +23,8 @@ def delete_safe(obj, attr, key):
         obj.__dict__[attr].remove(key)
 
 
-def get_safe(obj, attr, key, *args):
-    if len(args) > 1:
-        pass
-        # raise ...
-    if hasattr(obj, attr):
-        obj.__dict__[attr].get(key, *args)
+def get_safe(obj, attr, key, default=None):
+    obj.__dict__[attr].get(key, default)
 
 
 def add_safe(obj, attr, value):

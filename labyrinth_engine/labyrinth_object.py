@@ -30,8 +30,8 @@ class LabyrinthObject:
     def have_flag(self, flag_name):
         return flag_name in get_attr_safe(self, 'flags', {})
 
-    def get_flag(self, flag_name):
-        return get_safe(self, 'flags', flag_name)
+    def get_flag(self, flag_name, default=None):
+        return get_safe(self, 'flags', flag_name, default)
 
     # Кнопки.
     def new_button(self, turn, image):

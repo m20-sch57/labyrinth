@@ -27,6 +27,3 @@ class Bear(Creature):
         if self.labyrinth.get_turns(1)['turn'] in directions and \
                 self.labyrinth.get_active_player_username() == self.labyrinth.get_turns(1)['username']:
             self.move(directions[self.labyrinth.get_turns(1)['turn']])
-
-    def die(self):
-        self.labyrinth.creatures.discard(self)
