@@ -60,9 +60,13 @@
 	outline: none;
 }
 
-.chat-input:empty:before {
+.chat-input.chat-input-show-placeholder:after {
     content:attr(data-placeholder);
     color: grey;
+}
+
+.chat-input:focus:after {
+	content: '';
 }
 
 .save_roomname{
