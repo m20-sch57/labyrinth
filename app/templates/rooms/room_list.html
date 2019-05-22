@@ -32,18 +32,6 @@
     </div>
 {% endblock %}
 
-{% block sidebar_content %}
-    <br>
-    <div>
-        <span class='name-medium'>Фильтры поиска</span>
-        <form>
-        {% for i in range(10) %}
-                <button class='btn'>Фильтр {{ i }}</button>
-        {% endfor %}
-        </form>
-    </div>  
-{% endblock %}
-
 {% block ub__actions %}
     <form action="{{ url_for('create_room') }}">
         <button class="btn">Создать комнату</button>
