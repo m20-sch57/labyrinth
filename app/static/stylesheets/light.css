@@ -14,7 +14,7 @@ html, body{
 }
 
 body {
-	min-width: 1310px;
+	min-width: 1140px;
 	height: 100%;
 }
 
@@ -336,6 +336,9 @@ h1, h2 {
 
 #sidebar-content {
 	/*padding-left: 10px;*/
+	max-height: calc(100vh - 180px);
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #sidebar-content > div {

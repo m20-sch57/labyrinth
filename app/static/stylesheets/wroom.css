@@ -21,16 +21,14 @@
 
 .wroom-chat-msgs {
 	margin-top: 10px;
-	max-height: 500px;
+	max-height: calc(100vh - 450px);
+	min-height: 200px;
 	overflow-y: scroll;
 }
 
 .wroom-header {
 	margin-bottom: 20px;
 	justify-content: flex-end;
-}
-
-.scroller::-webkit-scrollbar-track {
 }
 
 .scroller::-webkit-scrollbar {
