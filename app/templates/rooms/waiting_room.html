@@ -5,19 +5,19 @@
 {% block content %}
     <div class='wroom-header'>
         {% if username == room.creator %}
-            <div class='inline-flex-container'> <!-- Шапка комнаты -->
+            <div class='inline-flex-container space-between'> <!-- Шапка комнаты -->
                 <input class='name-large input-on-focus changeble flex-grow' 
-                       data-show-on-change='.save_roomname' id='roomname'
+                       data-show-on-change='.roomname_changed' id='roomname'
                        autocomplete="off" value='{{ room.name }}' maxlength='25' 
                        style='width: 500px;'>
-                <button class='btn auto-width save_roomname'>Сохранить</button>
-                <button id='reset' class='btn auto-width save_roomname'>Отмена</button>
+                <button id='save_roomname' class='btn auto-width roomname_changed'>Сохранить</button>
+                <button id='reset_roomname' class='btn auto-width roomname_changed'>Отмена</button>
             </div>
             <div id='helper__change_roomname' class='undone'>
                 Вы может изменить имя просто нажав на него, или перейдя в настройки.<a href=''>Больше не показывать эту подсказку.</a>
             </div>
         {% else %}
-            <span class='name-large'>{{ room.name }}</span>
+            <span id='roomname' class='name-large'>{{ room.name }}</span>
         {% endif %}
     </div>
     <div class='inline-flex-container space-between'>
@@ -25,18 +25,6 @@
             <span class='name-medium'>Игроки</span>
             <div id='players_list'></div>
         </div>
-{#         <div class='wroom-clmn wroom-clmn-fixed' style='min-width: 300px'>
-            <span class='name-medium'>Карта</span>
-            <div>
-                <br>
-                <div style='width: 100px;height: 100px; border-color: grey; border: 1px solid grey; background: var(--clr-m1-l)'>
-                    <img> 
-                </div>
-                <p class='text-font' style='text-align: justify;'>
-                    Описание карты. Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов.
-                </p>
-            </div>
-        </div> #}
         <div class='wroom-clmn wroom-clmn-grow'>
             <span class='name-medium'>Чат</span>
             <div class='wroom-chat-msgs scroller'>
@@ -100,8 +88,21 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
 
 
 {% block scripts %}
-    <script type="text/javascript">
-        $('#reset').click(function(){
+    <script type='text/javascript'>
+        $('#save_roomname').click(function() {
+            console.log('[changing name] request sent')
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ url_for("waiting_room", room_id=room.id) }}');
+            xhr.setRequestHeader('Event-Type', 'changed_settings');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('roomname=' + $('#roomname').val());
+            xhr.onload = function() {
+                console.log('[changing name] result: ', xhr.responseText);
+            };
+        })
+    </script>
+    <script type='text/javascript'>
+        $('#reset_roomname').click(function(){
             $('#roomname').val(function(){return $(this).attr('data-saved-value')}).trigger('change');
         })
         $('#roomname').on('change paste keyup', function(){$('#helper__change_roomname').css('display', 'none')})
@@ -109,4 +110,5 @@ Lorem Ipsum - это текст-"рыба", часто используемый 
     {% include 'js/contenteditable.js' %}
     {% include 'js/onchange.js' %}
     {% include 'js/wroom.js' %}
+
 {% endblock %}

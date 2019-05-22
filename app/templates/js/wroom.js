@@ -32,10 +32,13 @@
         socket.on('update', function(msg) {
             switch (msg.event) {
                 case 'change_settings':
-                    $('#title').html(msg.name);
+                    $('#roomname').attr('data-saved-value', msg.name).html(msg.name).trigger('change');
+                    // $('#roomname').trigger('change');
                     $('#description').html('Описание:<br>' + msg.description.replace(/\n/g, '<br>'));
-                    $('#map_name').html('Карта:' + msg.map.name);
-                    $('#map_description').html('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>'));
+                    if (msg.map) {
+                        $('#map_name').html('Карта:' + msg.map.name);
+                        $('#map_description').html('Описание карты:<br>' + msg.map.description.replace(/\n/g, '<br>'));
+                    }
                     break;
 
                 case 'player_enter_or_leave':

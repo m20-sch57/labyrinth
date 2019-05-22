@@ -67,7 +67,7 @@ class RoomsTable(DBTable):
                             'Name contains invalid characters')
 
         self.execute('UPDATE rooms SET name=? WHERE id=?', [name, ID])
-        return DBAnswer(True, OK, '')
+        return DBAnswer(True, OK, 'Room name successfully set')
 
     def set_description(self, ID, description):
         # TODO Answer
@@ -124,3 +124,4 @@ class RoomsTable(DBTable):
     def set_map(self, ID, map_id):
         # TODO Answer
         self.execute('UPDATE rooms SET map_id=? WHERE id=?', [map_id, ID])
+        return DBAnswer(True, OK, 'Map successfully set')

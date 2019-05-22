@@ -69,10 +69,9 @@
 	content: '';
 }
 
-.save_roomname{
+#reset_roomname {
 	margin-left: 10px;
 }
-
 
 
 .edit-icon {

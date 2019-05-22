@@ -166,23 +166,26 @@ def waiting_room(room_id):
     if request.method == 'POST':
         event_type = request.headers.get('Event-Type')
 
-        if event_type == 'change_settings':
-            name = request.form.get('name')
+        if event_type == 'changed_settings':
+            name = request.form.get('roomname')
             description = request.form.get('description')
             map_id = request.form.get('map_id')
+            answer = []
             if name:
-                db.rooms.set_name(room_id, name)
+                answer.append(db.rooms.set_name(room_id, name).info)
             if description:
-                db.rooms.set_description(room_id, description)
+                answer.append(db.rooms.set_description(room_id, description).info)
             if map_id:
                 lr_map = db.maps.get(map_id).to_dict()
             else:
                 lr_map = None
-            db.rooms.set_map(room_id, map_id)
+            if map_id:
+                answer.append(db.rooms.set_map(room_id, map_id).info)
             room = db.rooms.get(room_id)
             emit('update', {'event': 'change_settings', 'description': room.description, 
                  'name': room.name, 'map': lr_map},
                  broadcast=True, namespace='/'+room_id)
+            return str(answer)
 
         elif event_type == 'start_game':
             imagepath='/static/images/button_images/'
@@ -202,6 +205,8 @@ def waiting_room(room_id):
         elif event_type == 'get_players_list':
             return simple_render_template('rooms/_player_list.html', room=db.rooms.get(room_id))
 
+        return ''
+ 
     username = session.get('username')
     labyrinth = db.lrm.get_labyrinth(room_id)
     if labyrinth is not None and username in [user.get_username() for user in labyrinth.players_list]:
