@@ -347,9 +347,8 @@ h1, h2 {
 }
 
 
-.fixed-when-scroll.fixed {
-	position: fixed;
-	top: 30px;
+.position-absolute {
+	position: absolute;
 }
 
 .no-margin-top {
