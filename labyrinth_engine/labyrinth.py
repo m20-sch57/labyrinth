@@ -206,7 +206,7 @@ class Labyrinth:
         return self.players_list[self.active_player_number]
 
     def get_active_player_username(self):
-        return self.get_active_player().get_username()
+        return self.get_active_player().get_username() if self.get_active_player() is not None else None
 
     def get_active_player_ats(self):
         """
