@@ -1,7 +1,5 @@
 from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
 from labyrinth_engine.ui_status_bars import StringBar
-from labyrinth_engine.common_functions import get_attr_safe, append_safe, remove_safe
-import json
 
 
 class LabyrinthObject:
@@ -11,58 +9,67 @@ class LabyrinthObject:
 
     labyrinth = None
 
+    def __init__(self):
+        self.turn_set = {}
+        self.flags = set()
+        self.button_set = []
+        self.bar_set = []
+        self.parent = None
+        self.name = ''
+        self._lrtype = ''
+
     # Предлагаемые игрокам ходы.
     def new_at(self, function, condition_function, turn_name):
         """
         new available turn
         """
-        append_safe(self, 'turn_set', turn_name, {'function': function, 'condition': condition_function})
+        self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
 
     def get_turns(self):
-        return get_attr_safe(self, 'turn_set', {})
+        return self.turn_set
 
     # Флаги.
     def add_flag(self, flag_name):
-        append_safe(self, 'flags', flag_name)
+        self.flags.add(flag_name)
 
     def remove_flag(self, flag_name):
-        remove_safe(self, 'flags', flag_name)
+        self.flags.discard(flag_name)
 
     def have_flag(self, flag_name):
-        return flag_name in get_attr_safe(self, 'flags', set())
+        return flag_name in self.flags
 
     # Кнопки.
     def new_button(self, turn, image):
-        append_safe(self, 'button_set', CommonButton([turn], image))
+        self.button_set.append(CommonButton([turn], image))
 
     def new_dbutton(self, turns, image):
-        append_safe(self, 'button_set', DirectionButton(turns, image))
+        self.button_set.append(DirectionButton(turns, image))
 
     def new_lbutton(self, turns, image, turn_images):
-        append_safe(self, 'button_set', ListButton(turns, image, turn_images))
+        self.button_set.append_safe(ListButton(turns, image, turn_images))
 
     def get_buttons(self):
-        return get_attr_safe(self, 'button_set', [])
+        return self.button_set
 
     # Бары.
     def new_status_bar(self, name, init_value):
         bar = StringBar(name, init_value)
-        append_safe(self, 'bar_set', bar)
+        self.bar_set.append(bar)
         return bar
 
     def get_bars(self):
-        return get_attr_safe(self, 'bar_set', [])
+        return self.bar_set
 
     # Родители, дети и т.д.
     def set_parent(self, parent):
-        if not isinstance(parent, LabyrinthObject):
+        if not (isinstance(parent, LabyrinthObject) or parent is None):
             raise ValueError(
                 'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
         else:
             self.parent = parent
 
     def get_parent(self):
-        return get_attr_safe(self, 'parent', None)
+        return self.parent
 
     def get_children(self, lrtype=['location', 'item', 'player', 'creature'], class_names=[], flags=[], key=lambda x: True):
         return list(filter(lambda obj:
@@ -71,26 +78,6 @@ class LabyrinthObject:
                            (all(obj.have_flag(flag) for flag in flags) or not flags) and
                            key(obj),
                            self.labyrinth.get_all_objects()))
-
-    def get_neighbour(self, direction):
-        if self.lrtype != 'location':
-            raise TypeError(
-                'You can\'t get neighbour for object with lrtype ' + self.lrtype)
-        elif direction not in self.directions:
-            raise ValueError(
-                'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
-        else:
-            return self.directions[direction]
-
-    def set_neighbour(self, direction, neighbour):
-        if self.lrtype != 'location':
-            raise TypeError(
-                'You can\'t set neighbour for object with lrtype ' + self.lrtype)
-        elif not isinstance(neighbour, LabyrinthObject):
-            raise ValueError(
-                'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
-        else:
-            self.directions[direction] = neighbour
 
     @property
     def lrtype(self):
@@ -106,7 +93,7 @@ class LabyrinthObject:
         pass
 
     def get_name(self):
-        return get_attr_safe(self, 'name', '')
+        return self.name
 
     def set_name(self, name):
         self.name = name

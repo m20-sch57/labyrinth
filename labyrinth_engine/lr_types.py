@@ -2,26 +2,53 @@ from labyrinth_engine import LabyrinthObject as LO
 
 
 class Location(LO):
-	_lrtype = 'location'
+    _lrtype = 'location'
+
+    def __init__(self):
+        super().__init__()
+
+        self.directions = {}
+
+    def get_neighbour(self, direction):
+        if self.lrtype != 'location':
+            raise TypeError(
+                'You can\'t get neighbour for object with lrtype ' + self.lrtype)
+        elif direction not in self.directions:
+            raise ValueError(
+                'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
+        else:
+            return self.directions[direction]
+
+    def set_neighbour(self, direction, neighbour):
+        if self.lrtype != 'location':
+            raise TypeError(
+                'You can\'t set neighbour for object with lrtype ' + self.lrtype)
+        elif not isinstance(neighbour, LO):
+            raise ValueError(
+                'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
+        else:
+            self.directions[direction] = neighbour
 
 
 class Item(LO):
-	_lrtype = 'item'
+    _lrtype = 'item'
 
 
 class Player(LO):
-	"""
-	Class of players of the game
-	"""
+    """
+    Class of players of the game
+    """
 
-	_lrtype = 'player'
+    _lrtype = 'player'
 
-	def __init__(self, username):
-		self.name = self.username = username
+    def __init__(self, username):
+        super().__init__()
 
-	def get_username(self):
-		return self.username
+        self.name = self.username = username
+
+    def get_username(self):
+        return self.username
 
 
 class Creature(LO):
-	_lrtype = 'creature'
+    _lrtype = 'creature'
