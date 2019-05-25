@@ -139,6 +139,10 @@
         {
             "module":"labyrinth_objects.Vanilla",
             "class_name":"ExitChecker"
+        },
+        {
+            "module":"labyrinth_objects.Vanilla",
+            "class_name":"Death"
         }
     ],
     "creatures":
@@ -424,6 +428,9 @@
             },
             {
                 "name":"ExitChecker"
+            },
+            {
+                "name":"Death"
             }
         ],
         "creatures": [

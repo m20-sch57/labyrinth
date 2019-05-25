@@ -32,11 +32,12 @@ class Ammo(Item):
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':
             self.bullets[player] -= 1
+            self.update_bars()
             return self.bullets[player]
         elif ammo_type == 'bomb':
             self.bombs[player] -= 1
+            self.update_bars()
             return self.bombs[player]
-        self.update_bars()
 
     def have(self, ammo_type, player):
         if ammo_type == 'bullet':

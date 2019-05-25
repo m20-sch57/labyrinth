@@ -4,7 +4,7 @@ import sys
 
 
 class Labyrinth:
-    def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='', dead_players=[],
+    def __init__(self, locations, items, creatures, players, adjacence_list, settings, imagepath='',
                  seed=random.randrange(sys.maxsize), loadseed=random.randrange(sys.maxsize)):
 
         random.seed(seed)
@@ -20,9 +20,7 @@ class Labyrinth:
         for player in players:
             player.labyrinth = self
             for flag in settings['player'].get('flags', []):
-                player.add_flag(flag)
-        for player in dead_players:
-            player._lrtype = 'dead_player'
+                player.set_flag(flag)
 
         lrtypes = {
             'location': locations,
@@ -35,7 +33,7 @@ class Labyrinth:
                 obj = lrtypes[lrtype][i]
                 obj.labyrinth = self
                 for flag in settings[obj.lrtype + 's'][i].get('flags', []):
-                    obj.add_flag(flag)
+                    obj.set_flag(flag)
                 obj.set_name(settings[obj.lrtype + 's'][i].get('name', ''))
                 obj.set_settings(settings[obj.lrtype + 's'][i], *lrlist)
 
@@ -43,7 +41,6 @@ class Labyrinth:
         self.items = set(items)
         self.creatures = set(creatures)
         self.players_list = players
-        self.dead_players = set(dead_players)
 
         self.to_send = {}
         self.active_player_number = 0
@@ -131,12 +128,22 @@ class Labyrinth:
         for obj in self.get_all_objects():
             obj.main()
 
-        # Делаем слудующего игрока активным
-        self.active_player_number += 1
-        self.active_player_number %= len(self.players_list)
+        # Делаем следующего игрока активным
+        while self.get_next_active_player_number() is None or self.is_game_ended:
+            self.skip_turn()
+        self.active_player_number = self.get_next_active_player_number()
 
-        # обновляем лог сообщений
-        for player in self.get_objects('player'):
+        # Уменьшаем у всех игроков пропуски ходов.
+        for player in self.players_list:
+            if player.have_flag('skip_turns'):
+                count = player.get_flag('skip_turns')
+                if count > 1:
+                    player.set_flag('skip_turns', count - 1)
+                elif count == 1:
+                    player.delete_flag('skip_turns')
+
+        # Обновляем лог сообщений
+        for player in self.players_list:
             username = player.get_username()
             if username in self.msgs_log:
                 self.msgs_log[username].append(self.player_to_send(username))
@@ -145,6 +152,20 @@ class Labyrinth:
 
         # возвращаем все сообщения, которые нужно отправить
         return self.regularize_to_send()
+
+    def skip_turn(self):
+        # Запускаем для всех объектов main-функцию
+        for obj in self.get_all_objects():
+            obj.main()
+
+        # Уменьшаем у всех игроков пропуски ходов.
+        for player in self.players_list:
+            if player.have_flag('skip_turns'):
+                count = player.get_flag('skip_turns')
+                if count > 1:
+                    player.set_flag('skip_turns', count - 1)
+                elif count == 1 or count == 0:
+                    player.delete_flag('skip_turns')
 
     def get_turns(self, number=None, username=None):
         """
@@ -169,8 +190,17 @@ class Labyrinth:
         self.is_game_ended = True
 
     # Активный игрок.
+    def get_next_active_player_number(self):
+        apn = self.active_player_number
+        for i in range(len(self.players_list)):
+            apn = (apn + 1) % len(self.players_list)
+            if not self.players_list[apn].have_flag('skip_turns'):
+                return apn
+        return None
+
     def get_next_active_player(self):
-        return self.players_list[(self.active_player_number + 1) % len(self.players_list)]
+        apn = self.get_next_active_player_number()
+        return self.players_list[apn] if apn is not None else None
 
     def get_active_player(self):
         return self.players_list[self.active_player_number]

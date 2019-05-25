@@ -20,6 +20,7 @@ def load_save(save, _map):
 
     return labyrinth
 
+
 def load_map(_map, users, loadseed=random.randrange(sys.maxsize), **kwargs):
     # установили сид для загрузки карты.
     random.seed(loadseed)
@@ -61,7 +62,6 @@ def load_map(_map, users, loadseed=random.randrange(sys.maxsize), **kwargs):
                 # сохраняем в словарь конечных настроек
                 settings[lrtype][i] = ds
 
-
     # создаем объекты лабиринта
     for lrtype in lrtypes:
         for obj in _map[lrtype]:
@@ -98,7 +98,6 @@ def load_map(_map, users, loadseed=random.randrange(sys.maxsize), **kwargs):
 
     for player in players:
         player.set_parent(lrtypes['locations'][next(position)])
-
 
     return Labyrinth(lrtypes['locations'], lrtypes['items'], lrtypes['creatures'], players, adjacence_list,
                      settings, loadseed=loadseed, **kwargs)

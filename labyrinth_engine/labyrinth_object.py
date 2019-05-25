@@ -1,4 +1,4 @@
-from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
+﻿from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
 from labyrinth_engine.ui_status_bars import StringBar
 
 
@@ -29,14 +29,17 @@ class LabyrinthObject:
         return self.turn_set
 
     # Флаги.
-    def add_flag(self, flag_name):
-        self.flags.add(flag_name)
+    def set_flag(self, flag_name, arg=None):
+        self.flags[flag_name] = arg
 
-    def remove_flag(self, flag_name):
-        self.flags.discard(flag_name)
+    def delete_flag(self, flag_name):
+        del self.flags[flag_name]
 
     def have_flag(self, flag_name):
         return flag_name in self.flags
+
+    def get_flag(self, flag_name, default=None):
+        return get_safe(self, 'flags', flag_name, default)
 
     # Кнопки.
     def new_button(self, turn, image):

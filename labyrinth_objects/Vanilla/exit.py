@@ -7,7 +7,7 @@ class Exit(Location):
         super().__init__()
 
         self.must_be_here = set()
-        self.add_flag('safe_zone')
+        self.set_flag('safe_zone')
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.ENTER_MSG = settings['enter_msg']['ru']

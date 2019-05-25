@@ -1,4 +1,4 @@
-from labyrinth_engine import LabyrinthObject as LO
+﻿from labyrinth_engine import LabyrinthObject as LO
 
 
 class Location(LO):
@@ -42,6 +42,25 @@ class Player(LO):
 
     def get_username(self):
         return self.username
+
+    def set_turns_skip(self, count):
+        self.delete_flag('skip_turns')
+        if count:
+            self.set_flag('skip_turns', count)
+
+    def add_turns_skip(self, count):
+        prev_turns_skip = self.get_flag('skip_turns', 0)
+        if prev_turns_skip != -1:
+            if count + prev_turns_skip > 0:
+                self.set_flag('skip_turns', count + prev_turns_skip)
+            else:
+                self.delete_flag('skip_turns')
+
+    def die(self):
+        self.set_turns_skip(-1)
+
+    def revive(self):
+        self.delete_flag('skip_turns')
 
 
 class Creature(LO):
