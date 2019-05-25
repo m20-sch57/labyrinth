@@ -191,7 +191,7 @@ class Labyrinth:
 
         return active_player_ats
 
-    # Объекты Либиринта.
+    # Объекты Лабиринта.
     def get_all_objects(self):
         return self.locations | self.items | self.creatures | set(self.players_list)
 
