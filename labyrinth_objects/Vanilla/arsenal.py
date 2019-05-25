@@ -11,10 +11,10 @@ class Arsenal(Location):
 
     def main(self):
         ammo = self.labyrinth.get_unique('ammo')
-        for player in self.get_children(lrtype='player'):
+        for player in self.get_children('player'):
             ammo.reset_all(player)
             if player in self.stayed:
                 self.labyrinth.send_msg(self.STAY_MSG, player, 5)
             else:
                 self.labyrinth.send_msg(self.ENTER_MSG, player, 5)
-        self.stayed = set(self.get_children(lrtype='player'))
+        self.stayed = set(self.get_children('player'))

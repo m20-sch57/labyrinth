@@ -31,13 +31,13 @@ class Gun(Item):
             health = self.labyrinth.get_unique('health')
 
             if self.CAN_HURT_IN_SAME_LOCATION:
-                kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
+                kicked_characters |= current_location.get_children(['player', 'creature'])
                 kicked_characters.discard(active_player)
 
             current_location = current_location.get_neighbour(direction)
             while current_location not in met_locations and not current_location.have_flag('border'):
                 met_locations.add(current_location)
-                kicked_characters |= current_location.get_children(lrtype=['player', 'creature'])
+                kicked_characters |= current_location.get_children(['player', 'creature'])
                 current_location = current_location.get_neighbour(direction)
 
             if not self.CAN_HURT_HIMSELF:

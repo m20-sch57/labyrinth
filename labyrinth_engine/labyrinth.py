@@ -136,7 +136,7 @@ class Labyrinth:
         self.active_player_number %= len(self.players_list)
 
         # обновляем лог сообщений
-        for player in self.get_objects(lrtype='player'):
+        for player in self.get_objects('player'):
             username = player.get_username()
             if username in self.msgs_log:
                 self.msgs_log[username].append(self.player_to_send(username))
@@ -195,9 +195,13 @@ class Labyrinth:
     def get_all_objects(self):
         return self.locations | self.items | self.creatures | set(self.players_list)
 
-    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'],
-                    and_key=lambda x: True, or_key=lambda x: False):
-        return list(filter(lambda obj: obj.lrtype in lrtype and and_key(obj) or or_key(obj), self.get_all_objects()))
+    def get_objects(self, lrtype=['location', 'item', 'player', 'creature'], class_names=[], flags=[], key=lambda x: True):
+        return list(filter(lambda obj:
+                           obj.lrtype in lrtype and
+                           (type(obj).__name__ in class_names or not class_names) and
+                           (all(obj.have_flag(flag) for flag in flags) or not flags) and
+                           key(obj),
+                           self.get_all_objects()))
 
     def save(self):
         save = {
@@ -220,7 +224,7 @@ class Labyrinth:
 
     def get_bars(self, username):
         bars = []
-        player = self.get_objects('player', lambda p: p.username == username)[0]
+        player = self.get_objects('player', key=lambda p: p.username == username)[0]
         for obj in self.get_all_objects():
             for bar in obj.get_bars():
                 bar_info = bar.get(player)
