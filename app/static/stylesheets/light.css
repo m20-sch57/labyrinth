@@ -6,6 +6,7 @@
 @import url('room_block.css');
 @import url('user_block.css');
 @import url('wroom.css');
+@import url('groom.css');
 
 html, body{
 	background: rgb(249, 249, 249);
@@ -39,7 +40,6 @@ h1, h2 {
 	margin-top: 100px;
 	margin-right: 75px;
 	margin-left: 75px;
-	/*table-layout: fixed;*/
 }
 
 .content td {
@@ -163,139 +163,6 @@ h1, h2 {
 	padding-top: 5%;
 	padding-left: 1%;
 	padding-right: 1%;	
-}
-		
-.join_form {
-	position: relative;
-	float: right; 
-	bottom: 20px;
-}
-
-.action-link { 
-	display: block;
-	text-decoration: None;
-	color: #ff7b7b;
-}
-
-.action-link:hover {
-	background: rgb(174, 15, 255);
-	color: rgb(230, 230, 230);
-	cursor: pointer;
-}
-
-.room-name { 
-	width: 20%;
-	background: rgb(230, 230, 230);
-	position: absolute;
-	top: 0%;
-	left: 40%;
-	text-align: center;
-}
-
-/* Ниже - стили комнаты игры. Их надо будет перенести в новый дизайн целиком */
-
-.game-room-header {
-	margin-left: 0% !important;
-	margin-right: 0% !important;
-	background-color: var(--clr-m1);
-	height: 54px;
-	font-family: Verdana;
-	text-align: center;
-	color: white;
-	font-size: 24pt;
-}
-
-.game-player-condition {
-	position: absolute;
-	top: 20%;
-	width: 15%;
-	height: 20%;
-	font-family: Georgia;
-	border: 1px solid #ba55d3;
-	text-align: center;
-	left: 10%;
-}
-
-
-
-.game-actions {
-	position: absolute;
-	bottom: 20%;
-	border: 1px solid #ba55d3;
-	height: 20%;
-	width: 15%;
-	left: 10%;
-}
-
-.game-button {
-	position: absolute;
-	left: 10%;
-	top: 10%;
-	background-color: var(--clr-m1);
-	height: 33%;
-	border-radius: 10%;
-	-webkit-border-radius: 10%;
-	color: white;
-	width: 80%;
-	font-size: 16pt;
-}
-
-.game-main {
-	position: absolute;
-	top: 20%;
-	height: 60%;
-	border: 1px solid #ba55d3;
-	width: 40%;
-	left: 30%;
-}
-
-#log {
-	border-bottom: 1px solid #ba55d3;
-	position: relative;
-	height: 66%;
-	width: 100%;
-	overflow: auto;
-}
-
-.input-wrapper {
-	border-bottom: 1px solid #ba55d3;
-	height: 5%;
-}
-
-#input {
-	position: relative;
-	left: 15%;
-	top: 15%;
-}
-
-.location {
-	position: absolute;
-	top: 20%;
-	width: 15%;
-	height: 20%;
-	font-family: Georgia;
-	border: 1px solid #ba55d3;
-	text-align: center;
-	right: 10%;
-}
-
-.players {
-	position: absolute;
-	bottom: 20%;
-	border: 1px solid #ba55d3;
-	height: 20%;
-	width: 15%;
-	right: 10%;
-	overflow: auto;
-}
-
-.player-block {
-	text-align: center;
-	margin-bottom: 7px;
-	color: #ff7e7e;
-	background: #efefef;
-	border: 1px solid #ba55d3;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.22);
 }
 
 .undone {

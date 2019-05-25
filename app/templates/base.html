@@ -36,16 +36,17 @@
         {% endif %}
     </tr></table>
     <script type="text/javascript">
-        jQuery(function($) {
-            $(window).scroll(function(){
-                if($(this).scrollTop()>120){
-                    $('.fixed-when-scroll').addClass('position-absolute');
-                    $('.fixed-when-scroll').css('top', $(this).scrollTop() + 30)
-                }
-                else if ($(this).scrollTop()<120){
-                    $('.fixed-when-scroll').removeClass('position-absolute');
-                }
-            });
+        $(document).ready(function() {
+            $(window).trigger('scroll');
+        });
+        $(window).scroll(function(){
+            if($(this).scrollTop()>120){
+                $('.fixed-when-scroll').addClass('position-absolute');
+                $('.fixed-when-scroll').css('top', $(this).scrollTop() + 30)
+            }
+            else if ($(this).scrollTop()<120){
+                $('.fixed-when-scroll').removeClass('position-absolute');
+            }
         });
     </script>
     {% block scripts %}{% endblock %}
