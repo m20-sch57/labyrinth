@@ -4,6 +4,8 @@ from labyrinth_engine import Location, Item
 
 class Exit(Location):
     def __init__(self):
+        super().__init__()
+
         self.must_be_here = set()
         self.set_flag('safe_zone')
 
@@ -12,7 +14,7 @@ class Exit(Location):
         self.STAY_MSGS = settings['stay_msgs']['ru']
 
     def main(self):
-        now_here = self.get_children(['player'])
+        now_here = self.get_children('player')
 
         for player in now_here - self.must_be_here:
 
@@ -28,9 +30,8 @@ class ExitChecker(Item):
         self.LOOSE_MSG = settings['loose_msg']['ru']
 
     def main(self):
-        players_in_exits = set(self.labyrinth.get_objects(['player'],
-                                                          and_key=(lambda pl: type(pl.get_parent()) is Exit)))
-        winners = set(filter(lambda player: bool(player.get_children(and_key=lambda obj: obj.have_flag('true_tres'))),
+        players_in_exits = set(self.labyrinth.get_objects(['player'], key=(lambda pl: type(pl.get_parent()) is Exit)))
+        winners = set(filter(lambda player: bool(player.get_children(flags='true_tres')),
                              players_in_exits))
 
         if winners:

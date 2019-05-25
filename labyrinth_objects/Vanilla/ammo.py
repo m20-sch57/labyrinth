@@ -7,6 +7,8 @@ class Ammo(Item):
         #     self.reset_all(self.labyrinth.get_active_player())
         # self.new_at(resetallself, lambda: True, 'Восстановить патроны')
 
+        super().__init__()
+
         self.bullet_counter_bar = self.new_status_bar('Пули', None) 
         self.bomb_counter_bar = self.new_status_bar('Бомбы', None)
 

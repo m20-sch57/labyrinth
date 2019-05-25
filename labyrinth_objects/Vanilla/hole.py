@@ -26,8 +26,8 @@ class Hole(Location):
             if obj in self.indulgence and obj.get_parent() != self.indulgence[obj]:
                 self.indulgence[obj] = None
 
-        for obj in self.get_children(lrtype=self.types_who_must_fall,
-                                     and_key=lambda lrobj: self.indulgence.get(lrobj, None) is None):
+        for obj in self.get_children(self.types_who_must_fall,
+                                     key=lambda lrobj: self.indulgence.get(lrobj) is None):
             obj.set_parent(self.fall_to)
             if type(self.fall_to) is Hole:
                 self.indulgence[obj] = self.fall_to

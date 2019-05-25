@@ -1,4 +1,4 @@
-from labyrinth_engine import Location
+﻿from labyrinth_engine import Location
 
 
 class Outside(Location):
@@ -9,6 +9,8 @@ class Outside(Location):
 
 class Wall(Location):
     def __init__(self):
+        super().__init__()
+
         self.set_flag('border')
 
     def break_wall(self):
