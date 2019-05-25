@@ -3,13 +3,13 @@ from labyrinth_engine import Location
 
 class Outside(Location):
     def set_settings(self, *args):
-        self.add_flag('border')
+        self.set_flag('border')
         self.labyrinth.set_unique(self, 'outside')
 
 
 class Wall(Location):
     def __init__(self):
-        self.add_flag('border')
+        self.set_flag('border')
 
     def break_wall(self):
         for loc in self.labyrinth.get_objects('location'):

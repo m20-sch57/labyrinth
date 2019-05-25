@@ -1,7 +1,6 @@
 from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
 from labyrinth_engine.ui_status_bars import StringBar
-from labyrinth_engine.common_functions import get_attr_safe, append_safe, remove_safe
-import json
+from labyrinth_engine.common_functions import get_attr_safe, append_safe, get_safe, delete_safe
 
 
 class LabyrinthObject:
@@ -22,14 +21,17 @@ class LabyrinthObject:
         return get_attr_safe(self, 'turn_set', {})
 
     # Флаги.
-    def add_flag(self, flag_name):
-        append_safe(self, 'flags', flag_name)
+    def set_flag(self, flag_name, arg=None):
+        append_safe(self, 'flags', flag_name, arg)
 
-    def remove_flag(self, flag_name):
-        remove_safe(self, 'flags', flag_name)
+    def delete_flag(self, flag_name):
+        delete_safe(self, 'flags', flag_name)
 
     def have_flag(self, flag_name):
-        return flag_name in get_attr_safe(self, 'flags', set())
+        return flag_name in get_attr_safe(self, 'flags', {})
+
+    def get_flag(self, flag_name, default=None):
+        return get_safe(self, 'flags', flag_name, default)
 
     # Кнопки.
     def new_button(self, turn, image):

@@ -5,7 +5,7 @@ from labyrinth_engine import Location, Item
 class Exit(Location):
     def __init__(self):
         self.must_be_here = set()
-        self.add_flag('safe_zone')
+        self.set_flag('safe_zone')
 
     def set_settings(self, settings, locations, items, creatures, players):
         self.ENTER_MSG = settings['enter_msg']['ru']

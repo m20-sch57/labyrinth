@@ -1,4 +1,4 @@
-from labyrinth_engine import Item
+﻿from labyrinth_engine import Item
 
 
 class Health(Item):
@@ -18,20 +18,18 @@ class Health(Item):
         self.MAX_PLAYER_HEALTH = settings['max_player_health']
         self.MAX_CREATURE_HEALTH = settings['max_creature_health']
 
-        self.hp = {player: self.MAX_CREATURE_HEALTH for player in players}
+        self.hp = {player: self.MAX_PLAYER_HEALTH for player in players}
         self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
 
         self.labyrinth.set_unique(self, 'health')
 
-        self.DEATH_MSG = settings['death_msg']['ru']
-
         self.update_health_bar()
 
-    def hurt(self, body):
+    def hurt(self, body, death_msg=None):
         if body.lrtype == 'creature':
             self.creature_hp[body] -= 1
             if self.creature_hp[body] == 0:
-                self.labyrinth.creatures.discard(body)
+                self.labyrinth.get_unique('death').kill(body)
 
         elif body.lrtype == 'player':
             self.hp[body] -= 1
@@ -42,10 +40,7 @@ class Health(Item):
                     item.set_parent(location)
 
             if self.hp[body] == 0:
-                index = self.labyrinth.players_list.index(body)
-                del self.labyrinth.players_list[index]
-
-                self.labyrinth.send_msg(self.DEATH_MSG, body)
+                self.labyrinth.get_unique('death').kill(body, death_msg)
             self.update_health_bar()
 
     def heal(self, body):
@@ -54,3 +49,9 @@ class Health(Item):
         elif body.lrtype == 'player':
             self.hp[body] = self.MAX_PLAYER_HEALTH
             self.update_health_bar()
+
+    def set_health(self, body, value):
+        if body.lrtype == 'creature':
+            self.creature_hp[body] = value
+        elif body.lrtype == 'player':
+            self.hp[body] = value
