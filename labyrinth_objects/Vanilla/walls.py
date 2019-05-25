@@ -9,6 +9,8 @@ class Outside(Location):
 
 class Wall(Location):
     def __init__(self):
+        super().__init__()
+
         self.add_flag('border')
 
     def break_wall(self):

@@ -4,6 +4,8 @@ from labyrinth_engine import Location, Item
 
 class Exit(Location):
     def __init__(self):
+        super().__init__()
+
         self.must_be_here = set()
         self.add_flag('safe_zone')
 

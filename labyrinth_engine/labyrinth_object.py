@@ -46,7 +46,7 @@ class LabyrinthObject:
         self.button_set.append(DirectionButton(turns, image))
 
     def new_lbutton(self, turns, image, turn_images):
-        self.button_set.append_safe(ListButton(turns, image, turn_images))
+        self.button_set.append(ListButton(turns, image, turn_images))
 
     def get_buttons(self):
         return self.button_set

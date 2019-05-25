@@ -3,6 +3,8 @@ from labyrinth_engine import Location
 
 class EmptyLocation(Location):
     def __init__(self):
+        super().__init__()
+
         self.used = set()
 
     def set_settings(self, settings, locations, items, creatures, players):

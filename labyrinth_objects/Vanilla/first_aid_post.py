@@ -3,6 +3,8 @@ from labyrinth_engine import Location
 
 class FirstAidPost(Location):
     def __init__(self):
+        super().__init__()
+
         self.stayed = set()
 
     def set_settings(self, settings, *args):

@@ -3,6 +3,8 @@ from labyrinth_engine import Item
 
 class Health(Item):
     def __init__(self):
+        super().__init__()
+
         # def hurtself():
         #     self.hurt(self.labyrinth.get_active_player())
         # self.new_at(hurtself, lambda: True, 'Ранить себя')
