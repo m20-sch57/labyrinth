@@ -10,20 +10,14 @@ class Location(LO):
         self.directions = {}
 
     def get_neighbour(self, direction):
-        if self.lrtype != 'location':
-            raise TypeError(
-                'You can\'t get neighbour for object with lrtype ' + self.lrtype)
-        elif direction not in self.directions:
+        if direction not in self.directions:
             raise ValueError(
                 'Invalid "direction" argument for LabyrinthObject.get_neighbour: ' + str(direction))
         else:
             return self.directions[direction]
 
     def set_neighbour(self, direction, neighbour):
-        if self.lrtype != 'location':
-            raise TypeError(
-                'You can\'t set neighbour for object with lrtype ' + self.lrtype)
-        elif not isinstance(neighbour, LO):
+        if not isinstance(neighbour, LO) or neighbour.lrtype != 'location':
             raise ValueError(
                 'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
         else:
