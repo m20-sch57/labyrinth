@@ -44,45 +44,6 @@ h1, h2 {
 	padding: 0;
 }
 
-
-/* HEADER */
-#logo {
-	position: relative;
-	float: left;
-	font-size: 30pt;
-	padding-left: 20px;
-	padding-right: 20px;
-	height: inherit;
-	font-family: var(--font-logo);
-	text-decoration: none;
-	color: #ffffff;
-	text-shadow: 0px 2px 0px #00000024;
-	background: var(--clr-m1);
-}
-
-.header {
-	display: flexbox;	
-	height: 50px;
-	background: var(--clr-m1);
-}
-
-.header a:not(#logo) {
-	float: right;
-	margin: 10px;
-	color: #ffffff;
-	text-decoration: none;
-	font-family: var(--font-logo);
-	font-size: 14pt;
-	padding: 2px;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.header a:hover:not(#logo) {
-	background: #ffffff24;
-	border-radius: 50px 50px 50px 50px;
-}
-
 .sidebar-r {
 	width: 300px;
 	height: 100%;
