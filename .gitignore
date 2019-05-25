@@ -108,3 +108,6 @@ venv.bak/
 
 # Database. let it always be empty
 *.db
+
+# CSS assets
+all-min.css
