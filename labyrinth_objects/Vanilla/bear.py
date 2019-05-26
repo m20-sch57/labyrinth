@@ -14,7 +14,8 @@ class Bear(Creature):
 
     def main(self):
         health = self.labyrinth.get_unique('health')
-        for player in self.get_parent().get_children('player'):
+        death = self.labyrinth.get_unique('death')
+        for player in self.get_parent().get_children('player', key=lambda obj: not death.death[obj]):
             health.hurt(player)
             self.labyrinth.send_msg(self.ATTACK_MSG, player)
 
