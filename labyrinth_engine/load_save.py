@@ -57,7 +57,7 @@ def load_map(_map, users, loadseed=random.randrange(sys.maxsize), **kwargs):
             with open(obj_dir+'\\default_settings.json', 'r', encoding='utf-8') as f:
                 # получаем дефолтные настройки для класса нашего объекта
                 ds = json.load(f).get(obj['class_name'], {})
-                # обновляем настройки из картыы дефолтными настройками
+                # обновляем настройки из карты дефолтными настройками
                 ds.update(settings[lrtype][i])
                 # сохраняем в словарь конечных настроек
                 settings[lrtype][i] = ds

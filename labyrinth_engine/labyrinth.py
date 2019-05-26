@@ -56,6 +56,11 @@ class Labyrinth:
         self.msgs_log = {}
 
         # Пилим настройки.
+        with open('labyrinth_engine\\default_settings.json', 'r', encoding='utf-8') as def_set_file:
+            default_settings = json.load(def_set_file).get('Labyrinth', {})
+            default_settings.update(settings['Labyrinth'])
+            settings['Labyrinth'] = default_settings
+
         self.MAX_COUNT_OF_SKIPS = settings['Labyrinth']['max_count_of_skips']
 
     # Сообщения.
