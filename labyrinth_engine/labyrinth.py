@@ -182,9 +182,9 @@ class Labyrinth:
                 return self.turns_log[-number]
         else:
             if number is None:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))
+                return list(filter(lambda turn: turn['player'] in username, self.turns_log))
             else:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
+                return list(filter(lambda turn: turn['player'] in username, self.turns_log))[-number]
 
     def end_game(self):
         self.is_game_ended = True

@@ -11,7 +11,7 @@ class LabyrinthObject:
 
     def __init__(self):
         self.turn_set = {}
-        self.flags = set()
+        self.flags = {}
         self.button_set = []
         self.bar_set = []
         self.parent = None
@@ -39,7 +39,7 @@ class LabyrinthObject:
         return flag_name in self.flags
 
     def get_flag(self, flag_name, default=None):
-        return get_safe(self, 'flags', flag_name, default)
+        return self.flags.get(flag_name, default)
 
     # Кнопки.
     def new_button(self, turn, image):
