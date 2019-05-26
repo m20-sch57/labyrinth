@@ -55,6 +55,9 @@ class Labyrinth:
         self.turns_log = []
         self.msgs_log = {}
 
+        # Пилим настройки.
+        self.MAX_COUNT_OF_SKIPS = settings['Labyrinth']['max_count_of_skips']
+
     # Сообщения.
     def send_msg(self, msg, player, priority=0):
         clear_list = {player.get_username(): [] for player in self.players_list}
@@ -129,8 +132,12 @@ class Labyrinth:
             obj.main()
 
         # Делаем следующего игрока активным
-        while self.get_next_active_player_number() is None or self.is_game_ended:
+        count_of_skips = 0
+        while self.get_next_active_player_number() is None and not self.is_game_ended:
+            if count_of_skips > self.MAX_COUNT_OF_SKIPS >= 0:
+                self.end_game()
             self.skip_turn()
+            count_of_skips += 1
         self.active_player_number = self.get_next_active_player_number()
 
         # Уменьшаем у всех игроков пропуски ходов.
