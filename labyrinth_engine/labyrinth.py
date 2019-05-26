@@ -129,7 +129,7 @@ class Labyrinth:
             obj.main()
 
         # Делаем следующего игрока активным
-        while self.get_next_active_player_number() is None:
+        while self.get_next_active_player_number() is None and not self.is_game_ended:
             self.skip_turn()
         self.active_player_number = self.get_next_active_player_number()
 

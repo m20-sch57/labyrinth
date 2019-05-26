@@ -8,6 +8,7 @@ class LabyrinthObject:
     """
 
     labyrinth = None
+    _lrtype = 'labyrinth_object'
 
     def __init__(self):
         self.turn_set = {}
