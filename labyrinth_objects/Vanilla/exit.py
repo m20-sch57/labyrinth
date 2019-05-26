@@ -30,8 +30,8 @@ class ExitChecker(Item):
         self.LOOSE_MSG = settings['loose_msg']['ru']
 
     def main(self):
-        players_in_exits = set(self.labyrinth.get_objects(['player'], key=(lambda pl: type(pl.get_parent()) is Exit)))
-        winners = set(filter(lambda player: bool(player.get_children(flags='true_tres')),
+        players_in_exits = self.labyrinth.get_objects(['player'], key=(lambda p: type(p.get_parent()) is Exit))
+        winners = set(filter(lambda player: bool(player.get_children(flags=['true_tres'])),
                              players_in_exits))
 
         if winners:
