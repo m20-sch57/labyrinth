@@ -8,15 +8,15 @@ class LabyrinthObject:
     """
 
     labyrinth = None
+    _lrtype = 'labyrinth_object'
 
     def __init__(self):
         self.turn_set = {}
-        self.flags = set()
+        self.flags = {}
         self.button_set = []
         self.bar_set = []
         self.parent = None
         self.name = ''
-        self._lrtype = ''
 
     # Предлагаемые игрокам ходы.
     def new_at(self, function, condition_function, turn_name):
@@ -33,13 +33,13 @@ class LabyrinthObject:
         self.flags[flag_name] = arg
 
     def delete_flag(self, flag_name):
-        del self.flags[flag_name]
+        return self.flags.pop(flag_name, None)
 
     def have_flag(self, flag_name):
         return flag_name in self.flags
 
     def get_flag(self, flag_name, default=None):
-        return get_safe(self, 'flags', flag_name, default)
+        return self.flags.get(flag_name, default)
 
     # Кнопки.
     def new_button(self, turn, image):
@@ -75,7 +75,8 @@ class LabyrinthObject:
         return self.parent
 
     def get_children(self, lrtype=['location', 'item', 'player', 'creature'], class_names=[], flags=[], key=lambda x: True):
-        return list(filter(lambda obj:
+        return set(filter(lambda obj:
+                           obj.get_parent() == self and 
                            obj.lrtype in lrtype and
                            (type(obj).__name__ in class_names or not class_names) and
                            (all(obj.have_flag(flag) for flag in flags) or not flags) and
