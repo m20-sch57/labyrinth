@@ -55,6 +55,14 @@ class Labyrinth:
         self.turns_log = []
         self.msgs_log = {}
 
+        # Пилим настройки.
+        with open('labyrinth_engine\\default_settings.json', 'r', encoding='utf-8') as def_set_file:
+            default_settings = json.load(def_set_file).get('Labyrinth', {})
+            default_settings.update(settings['Labyrinth'])
+            settings['Labyrinth'] = default_settings
+
+        self.MAX_COUNT_OF_SKIPS = settings['Labyrinth']['max_count_of_skips']
+
     # Сообщения.
     def send_msg(self, msg, player, priority=0):
         clear_list = {player.get_username(): [] for player in self.players_list}
@@ -129,8 +137,12 @@ class Labyrinth:
             obj.main()
 
         # Делаем следующего игрока активным
+        count_of_skips = 0
         while self.get_next_active_player_number() is None and not self.is_game_ended:
+            if count_of_skips > self.MAX_COUNT_OF_SKIPS >= 0:
+                self.end_game()
             self.skip_turn()
+            count_of_skips += 1
         self.active_player_number = self.get_next_active_player_number()
 
         # Уменьшаем у всех игроков пропуски ходов.
@@ -182,9 +194,9 @@ class Labyrinth:
                 return self.turns_log[-number]
         else:
             if number is None:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))
+                return list(filter(lambda turn: turn['player'] in username, self.turns_log))
             else:
-                return list(filter(lambda turn: turn['player'] in username, self.turns))[-number]
+                return list(filter(lambda turn: turn['player'] in username, self.turns_log))[-number]
 
     def end_game(self):
         self.is_game_ended = True
@@ -206,7 +218,7 @@ class Labyrinth:
         return self.players_list[self.active_player_number]
 
     def get_active_player_username(self):
-        return self.get_active_player().get_username()
+        return self.get_active_player().get_username() if self.get_active_player() is not None else None
 
     def get_active_player_ats(self):
         """

@@ -160,6 +160,10 @@
     ],
     "settings":
     {
+        "Labyrinth":
+        {
+
+        },
         "locations": [
             {
                 "name":"0"

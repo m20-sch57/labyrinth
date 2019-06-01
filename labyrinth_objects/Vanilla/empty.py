@@ -14,7 +14,7 @@ class EmptyLocation(Location):
     def main(self):
         next_active_player = self.labyrinth.get_next_active_player()
 
-        if next_active_player.get_parent() == self:
+        if next_active_player is not None and next_active_player.get_parent() == self:
             if next_active_player in self.used:
                 self.labyrinth.send_msg(self.ENTER_MSG, next_active_player, 5)
             else:
