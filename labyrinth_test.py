@@ -52,7 +52,7 @@ if __name__ == '__main__':
         print('; '.join(ats), end='\n\n')
 
         msgs = TestLR.make_turn(input('(' + TestLR.get_active_player().get_username() + ') '))
-        print(TestLR.save())
+        #print(TestLR.save())
 
         for player in msgs:
             print('\n'.join('[{}] - {}'.format(player, msg) for msg in msgs[player]))
