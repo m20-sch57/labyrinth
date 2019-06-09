@@ -35,7 +35,9 @@ class Gun(Item):
                 kicked_characters.discard(active_player)
 
             current_location = current_location.get_neighbour(direction)
-            while current_location not in met_locations and not current_location.have_flag('border'):
+            while current_location not in met_locations\
+                    and not current_location.have_flag('border')\
+                    and not current_location.have_flag('safe_zone'):
                 met_locations.add(current_location)
                 kicked_characters |= current_location.get_children(['player', 'creature'])
                 current_location = current_location.get_neighbour(direction)
@@ -57,4 +59,4 @@ class Gun(Item):
     def condition(self):
         active_player = self.labyrinth.get_active_player()
         ammo = self.labyrinth.get_unique('ammo')
-        return ammo.have('bullet', active_player)
+        return ammo.have('bullet', active_player) and not active_player.get_parent().have_flag('safe_zone')
