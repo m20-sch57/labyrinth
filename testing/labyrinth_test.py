@@ -1,6 +1,10 @@
 from labyrinth_engine import load_map, load_save
 from labyrinth_objects.Vanilla import Bear, Treasure
 import json
+from os import chdir, getcwd, listdir
+
+if 'labyrinth_maps' not in listdir('.'):
+    chdir('\\'.join(getcwd().split('\\')[:-1]))
 
 debug = True
 if __name__ == '__main__':

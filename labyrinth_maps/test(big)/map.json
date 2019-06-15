@@ -1,0 +1,1649 @@
+{
+    "locations":
+    [
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "Outside"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "EmptyLocation"
+        }
+    ],
+    "items":
+    [
+    ],
+    "creatures":
+    [
+    ],
+    "adjacence_list":
+    [
+        {}
+    ,
+        {
+            "up": 0,
+            "down": 12,
+            "left": 0,
+            "right": 2
+        },
+        {
+            "up": 0,
+            "down": 13,
+            "left": 1,
+            "right": 3
+        },
+        {
+            "up": 0,
+            "down": 14,
+            "left": 2,
+            "right": 4
+        },
+        {
+            "up": 0,
+            "down": 15,
+            "left": 3,
+            "right": 5
+        },
+        {
+            "up": 0,
+            "down": 16,
+            "left": 4,
+            "right": 6
+        },
+        {
+            "up": 0,
+            "down": 17,
+            "left": 5,
+            "right": 7
+        },
+        {
+            "up": 0,
+            "down": 18,
+            "left": 6,
+            "right": 8
+        },
+        {
+            "up": 0,
+            "down": 19,
+            "left": 7,
+            "right": 9
+        },
+        {
+            "up": 0,
+            "down": 20,
+            "left": 8,
+            "right": 10
+        },
+        {
+            "up": 0,
+            "down": 21,
+            "left": 9,
+            "right": 11
+        },
+        {
+            "up": 0,
+            "down": 22,
+            "left": 10,
+            "right": 0
+        }
+    ,
+        {
+            "up": 1,
+            "down": 23,
+            "left": 0,
+            "right": 13
+        },
+        {
+            "up": 2,
+            "down": 24,
+            "left": 12,
+            "right": 14
+        },
+        {
+            "up": 3,
+            "down": 25,
+            "left": 13,
+            "right": 15
+        },
+        {
+            "up": 4,
+            "down": 26,
+            "left": 14,
+            "right": 16
+        },
+        {
+            "up": 5,
+            "down": 27,
+            "left": 15,
+            "right": 17
+        },
+        {
+            "up": 6,
+            "down": 28,
+            "left": 16,
+            "right": 18
+        },
+        {
+            "up": 7,
+            "down": 29,
+            "left": 17,
+            "right": 19
+        },
+        {
+            "up": 8,
+            "down": 30,
+            "left": 18,
+            "right": 20
+        },
+        {
+            "up": 9,
+            "down": 31,
+            "left": 19,
+            "right": 21
+        },
+        {
+            "up": 10,
+            "down": 32,
+            "left": 20,
+            "right": 22
+        },
+        {
+            "up": 11,
+            "down": 33,
+            "left": 21,
+            "right": 0
+        }
+    ,
+        {
+            "up": 12,
+            "down": 34,
+            "left": 0,
+            "right": 24
+        },
+        {
+            "up": 13,
+            "down": 35,
+            "left": 23,
+            "right": 25
+        },
+        {
+            "up": 14,
+            "down": 36,
+            "left": 24,
+            "right": 26
+        },
+        {
+            "up": 15,
+            "down": 37,
+            "left": 25,
+            "right": 27
+        },
+        {
+            "up": 16,
+            "down": 38,
+            "left": 26,
+            "right": 28
+        },
+        {
+            "up": 17,
+            "down": 39,
+            "left": 27,
+            "right": 29
+        },
+        {
+            "up": 18,
+            "down": 40,
+            "left": 28,
+            "right": 30
+        },
+        {
+            "up": 19,
+            "down": 41,
+            "left": 29,
+            "right": 31
+        },
+        {
+            "up": 20,
+            "down": 42,
+            "left": 30,
+            "right": 32
+        },
+        {
+            "up": 21,
+            "down": 43,
+            "left": 31,
+            "right": 33
+        },
+        {
+            "up": 22,
+            "down": 44,
+            "left": 32,
+            "right": 0
+        }
+    ,
+        {
+            "up": 23,
+            "down": 45,
+            "left": 0,
+            "right": 35
+        },
+        {
+            "up": 24,
+            "down": 46,
+            "left": 34,
+            "right": 36
+        },
+        {
+            "up": 25,
+            "down": 47,
+            "left": 35,
+            "right": 37
+        },
+        {
+            "up": 26,
+            "down": 48,
+            "left": 36,
+            "right": 38
+        },
+        {
+            "up": 27,
+            "down": 49,
+            "left": 37,
+            "right": 39
+        },
+        {
+            "up": 28,
+            "down": 50,
+            "left": 38,
+            "right": 40
+        },
+        {
+            "up": 29,
+            "down": 51,
+            "left": 39,
+            "right": 41
+        },
+        {
+            "up": 30,
+            "down": 52,
+            "left": 40,
+            "right": 42
+        },
+        {
+            "up": 31,
+            "down": 53,
+            "left": 41,
+            "right": 43
+        },
+        {
+            "up": 32,
+            "down": 54,
+            "left": 42,
+            "right": 44
+        },
+        {
+            "up": 33,
+            "down": 55,
+            "left": 43,
+            "right": 0
+        }
+    ,
+        {
+            "up": 34,
+            "down": 56,
+            "left": 0,
+            "right": 46
+        },
+        {
+            "up": 35,
+            "down": 57,
+            "left": 45,
+            "right": 47
+        },
+        {
+            "up": 36,
+            "down": 58,
+            "left": 46,
+            "right": 48
+        },
+        {
+            "up": 37,
+            "down": 59,
+            "left": 47,
+            "right": 49
+        },
+        {
+            "up": 38,
+            "down": 60,
+            "left": 48,
+            "right": 50
+        },
+        {
+            "up": 39,
+            "down": 61,
+            "left": 49,
+            "right": 51
+        },
+        {
+            "up": 40,
+            "down": 62,
+            "left": 50,
+            "right": 52
+        },
+        {
+            "up": 41,
+            "down": 63,
+            "left": 51,
+            "right": 53
+        },
+        {
+            "up": 42,
+            "down": 64,
+            "left": 52,
+            "right": 54
+        },
+        {
+            "up": 43,
+            "down": 65,
+            "left": 53,
+            "right": 55
+        },
+        {
+            "up": 44,
+            "down": 66,
+            "left": 54,
+            "right": 0
+        }
+    ,
+        {
+            "up": 45,
+            "down": 67,
+            "left": 0,
+            "right": 57
+        },
+        {
+            "up": 46,
+            "down": 68,
+            "left": 56,
+            "right": 58
+        },
+        {
+            "up": 47,
+            "down": 69,
+            "left": 57,
+            "right": 59
+        },
+        {
+            "up": 48,
+            "down": 70,
+            "left": 58,
+            "right": 60
+        },
+        {
+            "up": 49,
+            "down": 71,
+            "left": 59,
+            "right": 61
+        },
+        {
+            "up": 50,
+            "down": 72,
+            "left": 60,
+            "right": 62
+        },
+        {
+            "up": 51,
+            "down": 73,
+            "left": 61,
+            "right": 63
+        },
+        {
+            "up": 52,
+            "down": 74,
+            "left": 62,
+            "right": 64
+        },
+        {
+            "up": 53,
+            "down": 75,
+            "left": 63,
+            "right": 65
+        },
+        {
+            "up": 54,
+            "down": 76,
+            "left": 64,
+            "right": 66
+        },
+        {
+            "up": 55,
+            "down": 77,
+            "left": 65,
+            "right": 0
+        }
+    ,
+        {
+            "up": 56,
+            "down": 78,
+            "left": 0,
+            "right": 68
+        },
+        {
+            "up": 57,
+            "down": 79,
+            "left": 67,
+            "right": 69
+        },
+        {
+            "up": 58,
+            "down": 80,
+            "left": 68,
+            "right": 70
+        },
+        {
+            "up": 59,
+            "down": 81,
+            "left": 69,
+            "right": 71
+        },
+        {
+            "up": 60,
+            "down": 82,
+            "left": 70,
+            "right": 72
+        },
+        {
+            "up": 61,
+            "down": 83,
+            "left": 71,
+            "right": 73
+        },
+        {
+            "up": 62,
+            "down": 84,
+            "left": 72,
+            "right": 74
+        },
+        {
+            "up": 63,
+            "down": 85,
+            "left": 73,
+            "right": 75
+        },
+        {
+            "up": 64,
+            "down": 86,
+            "left": 74,
+            "right": 76
+        },
+        {
+            "up": 65,
+            "down": 87,
+            "left": 75,
+            "right": 77
+        },
+        {
+            "up": 66,
+            "down": 88,
+            "left": 76,
+            "right": 0
+        }
+    ,
+        {
+            "up": 67,
+            "down": 89,
+            "left": 0,
+            "right": 79
+        },
+        {
+            "up": 68,
+            "down": 90,
+            "left": 78,
+            "right": 80
+        },
+        {
+            "up": 69,
+            "down": 91,
+            "left": 79,
+            "right": 81
+        },
+        {
+            "up": 70,
+            "down": 92,
+            "left": 80,
+            "right": 82
+        },
+        {
+            "up": 71,
+            "down": 93,
+            "left": 81,
+            "right": 83
+        },
+        {
+            "up": 72,
+            "down": 94,
+            "left": 82,
+            "right": 84
+        },
+        {
+            "up": 73,
+            "down": 95,
+            "left": 83,
+            "right": 85
+        },
+        {
+            "up": 74,
+            "down": 96,
+            "left": 84,
+            "right": 86
+        },
+        {
+            "up": 75,
+            "down": 97,
+            "left": 85,
+            "right": 87
+        },
+        {
+            "up": 76,
+            "down": 98,
+            "left": 86,
+            "right": 88
+        },
+        {
+            "up": 77,
+            "down": 99,
+            "left": 87,
+            "right": 0
+        }
+    ,
+        {
+            "up": 78,
+            "down": 100,
+            "left": 0,
+            "right": 90
+        },
+        {
+            "up": 79,
+            "down": 101,
+            "left": 89,
+            "right": 91
+        },
+        {
+            "up": 80,
+            "down": 102,
+            "left": 90,
+            "right": 92
+        },
+        {
+            "up": 81,
+            "down": 103,
+            "left": 91,
+            "right": 93
+        },
+        {
+            "up": 82,
+            "down": 104,
+            "left": 92,
+            "right": 94
+        },
+        {
+            "up": 83,
+            "down": 105,
+            "left": 93,
+            "right": 95
+        },
+        {
+            "up": 84,
+            "down": 106,
+            "left": 94,
+            "right": 96
+        },
+        {
+            "up": 85,
+            "down": 107,
+            "left": 95,
+            "right": 97
+        },
+        {
+            "up": 86,
+            "down": 108,
+            "left": 96,
+            "right": 98
+        },
+        {
+            "up": 87,
+            "down": 109,
+            "left": 97,
+            "right": 99
+        },
+        {
+            "up": 88,
+            "down": 110,
+            "left": 98,
+            "right": 0
+        }
+    ,
+        {
+            "up": 89,
+            "down": 111,
+            "left": 0,
+            "right": 101
+        },
+        {
+            "up": 90,
+            "down": 112,
+            "left": 100,
+            "right": 102
+        },
+        {
+            "up": 91,
+            "down": 113,
+            "left": 101,
+            "right": 103
+        },
+        {
+            "up": 92,
+            "down": 114,
+            "left": 102,
+            "right": 104
+        },
+        {
+            "up": 93,
+            "down": 115,
+            "left": 103,
+            "right": 105
+        },
+        {
+            "up": 94,
+            "down": 116,
+            "left": 104,
+            "right": 106
+        },
+        {
+            "up": 95,
+            "down": 117,
+            "left": 105,
+            "right": 107
+        },
+        {
+            "up": 96,
+            "down": 118,
+            "left": 106,
+            "right": 108
+        },
+        {
+            "up": 97,
+            "down": 119,
+            "left": 107,
+            "right": 109
+        },
+        {
+            "up": 98,
+            "down": 120,
+            "left": 108,
+            "right": 110
+        },
+        {
+            "up": 99,
+            "down": 121,
+            "left": 109,
+            "right": 0
+        }
+    ,
+        {
+            "up": 100,
+            "down": 0,
+            "left": 0,
+            "right": 112
+        },
+        {
+            "up": 101,
+            "down": 0,
+            "left": 111,
+            "right": 113
+        },
+        {
+            "up": 102,
+            "down": 0,
+            "left": 112,
+            "right": 114
+        },
+        {
+            "up": 103,
+            "down": 0,
+            "left": 113,
+            "right": 115
+        },
+        {
+            "up": 104,
+            "down": 0,
+            "left": 114,
+            "right": 116
+        },
+        {
+            "up": 105,
+            "down": 0,
+            "left": 115,
+            "right": 117
+        },
+        {
+            "up": 106,
+            "down": 0,
+            "left": 116,
+            "right": 118
+        },
+        {
+            "up": 107,
+            "down": 0,
+            "left": 117,
+            "right": 119
+        },
+        {
+            "up": 108,
+            "down": 0,
+            "left": 118,
+            "right": 120
+        },
+        {
+            "up": 109,
+            "down": 0,
+            "left": 119,
+            "right": 121
+        },
+        {
+            "up": 110,
+            "down": 0,
+            "left": 120,
+            "right": 0
+        }
+    ],
+    "settings":
+    {
+        "locations":
+        [
+            {
+                "name": "Out"
+            }
+        ,
+            {
+                "name": "1"
+            },
+            {
+                "name": "2"
+            },
+            {
+                "name": "3"
+            },
+            {
+                "name": "4"
+            },
+            {
+                "name": "5"
+            },
+            {
+                "name": "6"
+            },
+            {
+                "name": "7"
+            },
+            {
+                "name": "8"
+            },
+            {
+                "name": "9"
+            },
+            {
+                "name": "10"
+            },
+            {
+                "name": "11"
+            }
+        ,
+            {
+                "name": "12"
+            },
+            {
+                "name": "13"
+            },
+            {
+                "name": "14"
+            },
+            {
+                "name": "15"
+            },
+            {
+                "name": "16"
+            },
+            {
+                "name": "17"
+            },
+            {
+                "name": "18"
+            },
+            {
+                "name": "19"
+            },
+            {
+                "name": "20"
+            },
+            {
+                "name": "21"
+            },
+            {
+                "name": "22"
+            }
+        ,
+            {
+                "name": "23"
+            },
+            {
+                "name": "24"
+            },
+            {
+                "name": "25"
+            },
+            {
+                "name": "26"
+            },
+            {
+                "name": "27"
+            },
+            {
+                "name": "28"
+            },
+            {
+                "name": "29"
+            },
+            {
+                "name": "30"
+            },
+            {
+                "name": "31"
+            },
+            {
+                "name": "32"
+            },
+            {
+                "name": "33"
+            }
+        ,
+            {
+                "name": "34"
+            },
+            {
+                "name": "35"
+            },
+            {
+                "name": "36"
+            },
+            {
+                "name": "37"
+            },
+            {
+                "name": "38"
+            },
+            {
+                "name": "39"
+            },
+            {
+                "name": "40"
+            },
+            {
+                "name": "41"
+            },
+            {
+                "name": "42"
+            },
+            {
+                "name": "43"
+            },
+            {
+                "name": "44"
+            }
+        ,
+            {
+                "name": "45"
+            },
+            {
+                "name": "46"
+            },
+            {
+                "name": "47"
+            },
+            {
+                "name": "48"
+            },
+            {
+                "name": "49"
+            },
+            {
+                "name": "50"
+            },
+            {
+                "name": "51"
+            },
+            {
+                "name": "52"
+            },
+            {
+                "name": "53"
+            },
+            {
+                "name": "54"
+            },
+            {
+                "name": "55"
+            }
+        ,
+            {
+                "name": "56"
+            },
+            {
+                "name": "57"
+            },
+            {
+                "name": "58"
+            },
+            {
+                "name": "59"
+            },
+            {
+                "name": "60"
+            },
+            {
+                "name": "61"
+            },
+            {
+                "name": "62"
+            },
+            {
+                "name": "63"
+            },
+            {
+                "name": "64"
+            },
+            {
+                "name": "65"
+            },
+            {
+                "name": "66"
+            }
+        ,
+            {
+                "name": "67"
+            },
+            {
+                "name": "68"
+            },
+            {
+                "name": "69"
+            },
+            {
+                "name": "70"
+            },
+            {
+                "name": "71"
+            },
+            {
+                "name": "72"
+            },
+            {
+                "name": "73"
+            },
+            {
+                "name": "74"
+            },
+            {
+                "name": "75"
+            },
+            {
+                "name": "76"
+            },
+            {
+                "name": "77"
+            }
+        ,
+            {
+                "name": "78"
+            },
+            {
+                "name": "79"
+            },
+            {
+                "name": "80"
+            },
+            {
+                "name": "81"
+            },
+            {
+                "name": "82"
+            },
+            {
+                "name": "83"
+            },
+            {
+                "name": "84"
+            },
+            {
+                "name": "85"
+            },
+            {
+                "name": "86"
+            },
+            {
+                "name": "87"
+            },
+            {
+                "name": "88"
+            }
+        ,
+            {
+                "name": "89"
+            },
+            {
+                "name": "90"
+            },
+            {
+                "name": "91"
+            },
+            {
+                "name": "92"
+            },
+            {
+                "name": "93"
+            },
+            {
+                "name": "94"
+            },
+            {
+                "name": "95"
+            },
+            {
+                "name": "96"
+            },
+            {
+                "name": "97"
+            },
+            {
+                "name": "98"
+            },
+            {
+                "name": "99"
+            }
+        ,
+            {
+                "name": "100"
+            },
+            {
+                "name": "101"
+            },
+            {
+                "name": "102"
+            },
+            {
+                "name": "103"
+            },
+            {
+                "name": "104"
+            },
+            {
+                "name": "105"
+            },
+            {
+                "name": "106"
+            },
+            {
+                "name": "107"
+            },
+            {
+                "name": "108"
+            },
+            {
+                "name": "109"
+            },
+            {
+                "name": "110"
+            }
+        ,
+            {
+                "name": "111"
+            },
+            {
+                "name": "112"
+            },
+            {
+                "name": "113"
+            },
+            {
+                "name": "114"
+            },
+            {
+                "name": "115"
+            },
+            {
+                "name": "116"
+            },
+            {
+                "name": "117"
+            },
+            {
+                "name": "118"
+            },
+            {
+                "name": "119"
+            },
+            {
+                "name": "120"
+            },
+            {
+                "name": "121"
+            }
+        ],
+        "items":
+        [
+        ],
+        "creatures":
+        [
+        ],
+        "player":
+        {
+            "flags": ["drop_items_when_injured"],
+            "start_positions":
+            {
+                "distribution": "random",
+                "from": [3, 17]
+            }
+        }
+    }
+}

@@ -1,4 +1,8 @@
 from database import Database, drop_db
+from os import chdir, getcwd, listdir
+
+if 'labyrinth_maps' not in listdir('.'):
+    chdir('\\'.join(getcwd().split('\\')[:-1]))
 
 drop_db()
 db = Database()
