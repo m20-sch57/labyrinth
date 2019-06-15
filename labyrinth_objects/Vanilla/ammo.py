@@ -1,6 +1,7 @@
-from labyrinth_engine import Item
+from labyrinth_engine import Item, unique
 
 
+@unique('ammo')
 class Ammo(Item):
     def __init__(self):
         # def resetallself():
@@ -26,8 +27,6 @@ class Ammo(Item):
         self.bullets = {player: self.INIT_BULLETS_COUNT for player in players}
         self.bombs = {player: self.INIT_BOMBS_COUNT for player in players}
         self.update_bars()
-
-        self.labyrinth.set_unique(self, 'ammo')
 
     def spend(self, ammo_type, player):
         if ammo_type == 'bullet':

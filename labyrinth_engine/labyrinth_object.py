@@ -1,5 +1,6 @@
 ﻿from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
 from labyrinth_engine.ui_status_bars import StringBar
+from copy import copy
 
 
 class LabyrinthObject:
@@ -9,6 +10,7 @@ class LabyrinthObject:
 
     labyrinth = None
     _lrtype = 'labyrinth_object'
+    _metadata = {}
 
     def __init__(self):
         self.turn_set = {}
@@ -86,6 +88,18 @@ class LabyrinthObject:
     @property
     def lrtype(self):
         return self._lrtype
+
+    @property
+    def metadata(self):
+        return copy(self._metadata)
+
+    @metadata.setter
+    def metadata(self, *args, **kwargs):
+        for key in args:
+            self._metadata[key] = True
+        self._metadata.update(kwargs)
+
+    add_meta = metadata.setter
 
     def main(self):
         """

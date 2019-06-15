@@ -1,6 +1,7 @@
-from labyrinth_engine import Item
+from labyrinth_engine import Item, unique
 
 
+@unique('death')
 class Death(Item):
     def set_settings(self, settings, locations, items, creatures, players):
         self.DEATH_MSG = settings['death_msg']['ru']
@@ -11,8 +12,6 @@ class Death(Item):
 
         self.death = {player: False for player in players}
         self.crt_death = {creature: False for creature in creatures}
-
-        self.labyrinth.set_unique(self, 'death')
 
     def revive(self, body, revival_msg=None):
         if body.lrtype == 'player':

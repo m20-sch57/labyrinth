@@ -1,6 +1,7 @@
-﻿from labyrinth_engine import Item
+﻿from labyrinth_engine import Item, unique
 
 
+@unique('health')
 class Health(Item):
     def __init__(self):
         super().__init__()
@@ -22,8 +23,6 @@ class Health(Item):
 
         self.hp = {player: self.MAX_PLAYER_HEALTH for player in players}
         self.creature_hp = {creature: self.MAX_CREATURE_HEALTH for creature in creatures}
-
-        self.labyrinth.set_unique(self, 'health')
 
         self.update_health_bar()
 
