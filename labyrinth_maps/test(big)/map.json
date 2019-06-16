@@ -503,6 +503,10 @@
     ],
     "items":
     [
+        {
+            "module":"labyrinth_objects.Vanilla",
+            "class_name":"Legs"
+        }
     ],
     "creatures":
     [
@@ -1250,6 +1254,10 @@
     ],
     "settings":
     {
+        "Labyrinth":
+        {
+        
+        },
         "locations":
         [
             {
@@ -1632,6 +1640,9 @@
         ],
         "items":
         [
+            {
+                "name": "Legs"
+            }
         ],
         "creatures":
         [
@@ -1642,7 +1653,7 @@
             "start_positions":
             {
                 "distribution": "random",
-                "from": [3, 17]
+                "from": [61]
             }
         }
     }

@@ -298,6 +298,10 @@
     ],
     "settings":
     {
+        "Labyrinth":
+        {
+
+        },
         "locations": [
             {
                 "name":"Out"

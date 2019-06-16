@@ -3,12 +3,12 @@ from os import chdir, getcwd, listdir
 if 'labyrinth_maps' not in listdir('.'):
     chdir('\\'.join(getcwd().split('\\')[:-1]))
 
-map_name = input()
+map_name = input('Map name?\n')
 
 with open('labyrinth_maps\\' + map_name + '\\map.scheme', 'w', encoding='utf-8') as scheme:
     scheme.write('\n')
 
-    height, width = map(int, input().split())
+    height, width = map(int, input('Height and width?\n').split())
 
     scheme.write(' ┌' + '─' * (4 * width - 1) + '┐\n')
     for i in range(height):

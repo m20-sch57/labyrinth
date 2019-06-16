@@ -27,11 +27,11 @@ if __name__ == '__main__':
     # "loadseed": 8316663732998351558
     # }'''
 
-    with open('labyrinth_maps/example/map.json', 'r', encoding='utf-8') as f:
+    with open('labyrinth_maps/test(small)/map.json', 'r', encoding='utf-8') as f:
         _map = f.read()
 
     # TestLR = load_save(save, _map)
-    TestLR = load_map(_map, ['player #1', 'player #2'])
+    TestLR = load_map(_map, ['player #1'])
     while not TestLR.is_game_ended:
 
         print('\n')
@@ -40,15 +40,27 @@ if __name__ == '__main__':
         print('┌──────────────────────────────────────────────────────────┐')
         if debug:
             print('│Player position    :  {:<36}│'.format(str(ap.get_parent())))
-            print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
-            bears = TestLR.get_objects(class_names=['Bear'])
-            if bears:
-                print('│Bear position      :  {:<36}│'.format(str(bears[0].get_parent())))
-            print('│Treasure position  :  {:<36}│'.format(str(TestLR.get_objects(class_names=['Treasure'])[0].get_parent())))
+            try:
+                print('│Creatures health   :  {:<36}│'.format(str(TestLR.get_unique('health').creature_hp)))
+            except:
+                pass
+            for bear in TestLR.get_objects(class_names=['Bear']):
+                print('│Bear position      :  {:<36}│'.format(str(bear.get_parent())))
+            for treasure in TestLR.get_objects(class_names=['Treasure']):
+                print('│Treasure position  :  {:<36}│'.format(str(treasure.get_parent())))
             print('├──────────────────────────────────────────────────────────┤')
-        print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
-        print('│bombs              :  {:<36}│'.format(TestLR.get_unique('ammo').bombs[ap]))
-        print('│bullets            :  {:<36}│'.format(TestLR.get_unique('ammo').bullets[ap]))
+        try:
+            print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
+        except:
+            pass
+        try:
+            print('│bombs              :  {:<36}│'.format(TestLR.get_unique('ammo').bombs[ap]))
+        except:
+            pass
+        try:
+            print('│bullets            :  {:<36}│'.format(TestLR.get_unique('ammo').bullets[ap]))
+        except:
+            pass
         print('└──────────────────────────────────────────────────────────┘')
 
         ats = TestLR.get_active_player_ats()
