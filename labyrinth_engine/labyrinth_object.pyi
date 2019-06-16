@@ -1,0 +1,69 @@
+from labyrinth_engine.labyrinth import Labyrinth
+from labyrinth_engine.event import Event
+from labyrinth_engine.lr_types import Location, Item, Player, Creature
+from labyrinth_engine.ui_buttons import Button
+from labyrinth_engine.ui_status_bars import Bar, StringBar
+
+from typing import Any, Dict, Union, List, Callable
+
+class LabyrinthObject:
+    labyrinth = ... # type: Labyrinth
+    _lrtype = ... # type: str
+
+    def __init__(self) -> None:
+        self.turn_set = ... # type: Dict[Event, Dict[str, Callable[[], Any]]]
+        self.flags = ... # type: Dict[str: Any]
+        self.button_set = ... # type: List[Button]
+        self.bar_set = ... # type: List[Bar]
+        self.parent = ... # type: Union[None, LabyrinthObject]
+        self.name = ... # type: str
+
+    # Предлагаемые игрокам ходы.
+    def new_at(self, function: Callable[[], None], condition: Callable[[], bool], turn_name: str) -> None: ...
+    def get_turns(self) -> Dict[Event, Dict[str, Callable[[], Any]]]: ...
+
+    # Флаги.
+    def set_flag(self, flag_name: str, arg: Any = None) -> None: ...
+    def delete_flag(self, flag_name: str) -> Any: ...
+    def have_flag(self, flag_name: str) -> bool: ...
+    def get_flag(self, flag_name: str, default: Any = None) -> Any: ...
+
+    # Кнопки.
+    def new_button(self, turn: str, image: str): ...
+    def new_dbutton(self, turns: List[str], image: str): ...
+    def new_lbutton(self, turns: List[str], image: str, turn_images): ...
+    def get_buttons(self) -> List[Button]: ...
+
+    # Бары.
+    def new_status_bar(self, name: str, init_value: Dict[Player, Any]) -> StringBar: ...
+    def get_bars(self) -> List[Bar]: ...
+
+    # Родители, дети и т.д.
+    def set_parent(self, parent: LabyrinthObject) -> None: ...
+    def get_parent(self) -> Union[None, LabyrinthObject]: ...
+    def get_children(self,
+                     lrtype: Union[str, List[str]] = ['location', 'item', 'player', 'creature'],
+                     class_names: Union[str, List[str]] = [],
+                     flags: List[str] = [],
+                     key: Callable[[LabyrinthObject], bool] = lambda x: True): ...
+
+    @property
+    def lrtype(self) -> str:
+        return self._lrtype
+
+    def main(self) -> None: ...
+
+    def set_settings(self,
+                     settings: Dict[str, Any],
+                     locations: List[Location],
+                     items: List[Item],
+                     creatures: List[Creature],
+                     players: List[Player]) -> None: ...
+
+    def get_name(self) -> str: ...
+
+    def set_name(self, name: str) -> None: ...
+
+    def __str__(self) -> str: ...
+
+    def __repr__(self) -> str: ...
