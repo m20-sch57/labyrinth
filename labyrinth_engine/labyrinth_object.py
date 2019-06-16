@@ -19,11 +19,12 @@ class LabyrinthObject:
         self.name = ''
 
     # Предлагаемые игрокам ходы.
-    def new_at(self, function, condition_function, turn_name):
+    def new_at(self, event, condition, function, *args, **kwargs):
         """
         new available turn
         """
-        self.turn_set[turn_name] = {'function': function, 'condition': condition_function}
+        self.turn_set[event] = {'function': function, 'condition': condition, 'args': args, 'kwargs': kwargs}
+        event.add_trigger(self, condition, function, *args, **kwargs)
 
     def get_turns(self):
         return self.turn_set
