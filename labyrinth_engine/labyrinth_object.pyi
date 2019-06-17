@@ -1,5 +1,4 @@
 from labyrinth_engine.labyrinth import Labyrinth
-from labyrinth_engine.event import Event
 from labyrinth_engine.lr_types import Location, Item, Player, Creature
 from labyrinth_engine.ui_buttons import Button
 from labyrinth_engine.ui_status_bars import Bar, StringBar
@@ -11,7 +10,7 @@ class LabyrinthObject:
     _lrtype = ... # type: str
 
     def __init__(self) -> None:
-        self.turn_set = ... # type: Dict[Event, Dict[str, Callable[[], Any]]]
+        self.turn_set = ... # type: Dict[str, Dict[str, Callable[[], Any]]]
         self.flags = ... # type: Dict[str: Any]
         self.button_set = ... # type: List[Button]
         self.bar_set = ... # type: List[Bar]
@@ -20,13 +19,13 @@ class LabyrinthObject:
 
     # Предлагаемые игрокам ходы.
     def new_at(self, function: Callable[[], None], condition: Callable[[], bool], turn_name: str) -> None: ...
-    def get_turns(self) -> Dict[Event, Dict[str, Callable[[], Any]]]: ...
+    def get_turns(self) -> Dict[str, Dict[str, Callable[[], Any]]]: ...
 
     # Флаги.
-    def set_flag(self, flag_name: str, arg: Any = None) -> None: ...
+    def set_flag(self, flag_name: str, arg: Any = ...) -> None: ...
     def delete_flag(self, flag_name: str) -> Any: ...
     def have_flag(self, flag_name: str) -> bool: ...
-    def get_flag(self, flag_name: str, default: Any = None) -> Any: ...
+    def get_flag(self, flag_name: str, default: Any = ...) -> Any: ...
 
     # Кнопки.
     def new_button(self, turn: str, image: str): ...
@@ -42,10 +41,10 @@ class LabyrinthObject:
     def set_parent(self, parent: LabyrinthObject) -> None: ...
     def get_parent(self) -> Union[None, LabyrinthObject]: ...
     def get_children(self,
-                     lrtype: Union[str, List[str]] = ['location', 'item', 'player', 'creature'],
-                     class_names: Union[str, List[str]] = [],
-                     flags: List[str] = [],
-                     key: Callable[[LabyrinthObject], bool] = lambda x: True): ...
+                     lrtype: Union[str, List[str]] = ...,
+                     class_names: Union[str, List[str]] = ...,
+                     flags: List[str] = ...,
+                     key: Callable[[LabyrinthObject], bool] = ...): ...
 
     @property
     def lrtype(self) -> str:

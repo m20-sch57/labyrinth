@@ -1,5 +1,6 @@
 from labyrinth_engine import Item
 from labyrinth_objects.Vanilla.walls import Wall, Outside
+from labyrinth_objects.Vanilla.ammo import Ammo
 
 
 class Bomb(Item):
@@ -31,7 +32,7 @@ class Bomb(Item):
             current_location = active_player.get_parent()
             location_in_direction = current_location.get_neighbour(direction)
 
-            health = self.labyrinth.get_unique('health')
+            health = self.labyrinth.get_unique('health') #
 
             if type(location_in_direction) is Wall:
                 location_in_direction.break_wall()
