@@ -64,7 +64,7 @@ if __name__ == '__main__':
         print('└──────────────────────────────────────────────────────────┘')
 
         ats = TestLR.get_active_player_ats()
-        ats_names = list(map(lambda pair: pair[0], ats))
+        ats_names = list(map(lambda turn: turn['name'], ats))
         ats_names[0:-1:4] = list(map(lambda x: '\n'+x, ats_names[0:-1:4]))
         print('; '.join(ats_names), end='\n\n')
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
         while turn not in ats_names:
             turn = input('([RE]' + TestLR.get_active_player().get_username() + ') ')
         i = ats_names.index(turn)
-        msgs = ats[i][1].push(ats[i][2])
+        msgs = ats[i]['button'].push(ats[i]['index'])
         #print(TestLR.save())
 
         for player in msgs:

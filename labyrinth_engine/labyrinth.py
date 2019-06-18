@@ -133,15 +133,6 @@ class Labyrinth:
         # Запускаем для всех объектов main-функцию
         self.main_event.trigger()
 
-        # Делаем следующего игрока активным
-        count_of_skips = 0
-        while self.get_next_active_player_number() is None and not self.is_game_ended:
-            if count_of_skips > self.MAX_COUNT_OF_SKIPS >= 0:
-                self.end_game()
-            self.skip_turn()
-            count_of_skips += 1
-        self.active_player_number = self.get_next_active_player_number()
-
         # Уменьшаем у всех игроков пропуски ходов.
         for player in self.players_list:
             if player.have_flag('skip_turns'):
@@ -150,6 +141,15 @@ class Labyrinth:
                     player.set_flag('skip_turns', count - 1)
                 elif count == 1:
                     player.delete_flag('skip_turns')
+
+        # Делаем следующего игрока активным
+        count_of_skips = 0
+        while self.get_next_active_player_number() is None and not self.is_game_ended:
+            if count_of_skips > self.MAX_COUNT_OF_SKIPS >= 0:
+                self.end_game()
+            self.skip_turn()
+            count_of_skips += 1
+        self.active_player_number = self.get_next_active_player_number()
 
         # Запускаем end-of-turn-функцию
         self.end_of_turn_event.trigger()
@@ -226,7 +226,7 @@ class Labyrinth:
 
         active_player_ats = []
         for button in self.get_buttons():
-            active_player_ats += [(button.names[i], button, i) for i in range(len(button.names))]
+            active_player_ats += [{'name': button.names[i], 'button': button, 'index': i} for i in range(len(button.names))]
 
         return active_player_ats
 
@@ -259,9 +259,6 @@ class Labyrinth:
 
     def get_bars(self, username):
         bars = []
-        player = self.get_objects('player', key=lambda p: p.username == username)[0]
         for obj in self.get_all_objects():
-            for bar in obj.get_bars():
-                bar_info = bar.get(player)
-                bars.append(bar_info)
+            bars += obj.get_bars()
         return bars

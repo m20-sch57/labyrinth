@@ -10,15 +10,18 @@ class Event:
         self.name = None
 
     def add_trigger(self, obj, function, condition=lambda: True):
-        self.triggers[obj] = {'condition': condition, 'function': function}
+        triggers = self.triggers.get(obj, [])
+        triggers.append({'condition': condition, 'function': function})
+        self.triggers[obj] = triggers
 
     def del_trigger(self, obj):
         del self.triggers[obj]
 
     def trigger(self):
         for obj in self.triggers:
-            if self.triggers[obj]['condition']():
-                self.triggers[obj]['function']()
+            for trigger in self.triggers[obj]:
+                if trigger['condition']():
+                    trigger['function']()
 
     def __str__(self):
         return '<Event: {}>'.format(self.__class__.__name__) if self.name is not None else\
