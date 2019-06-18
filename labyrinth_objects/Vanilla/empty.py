@@ -11,12 +11,14 @@ class EmptyLocation(Location):
         self.ENTER_MSG = settings['enter_msg']['ru']
         self.FIRST_ENTER_MSG = settings.get('first_enter_msg', {}).get('ru') or self.ENTER_MSG
 
-    def main(self):
-        next_active_player = self.labyrinth.get_next_active_player()
+        self.labyrinth.end_of_turn_event.add_trigger(self, self.main)
 
-        if next_active_player is not None and next_active_player.get_parent() == self:
-            if next_active_player in self.used:
-                self.labyrinth.send_msg(self.ENTER_MSG, next_active_player, 5)
+    def main(self):
+        active_player = self.labyrinth.get_active_player()
+
+        if active_player.get_parent() == self:
+            if active_player in self.used:
+                self.labyrinth.send_msg(self.ENTER_MSG, active_player, 5)
             else:
-                self.used.add(next_active_player)
-                self.labyrinth.send_msg(self.FIRST_ENTER_MSG, next_active_player, 5)
+                self.used.add(active_player)
+                self.labyrinth.send_msg(self.FIRST_ENTER_MSG, active_player, 5)

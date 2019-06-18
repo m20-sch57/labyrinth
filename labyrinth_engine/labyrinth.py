@@ -1,4 +1,5 @@
-﻿import random
+﻿from labyrinth_engine.event import MainEvent, EndOfTurn
+import random
 import json
 import sys
 
@@ -13,6 +14,9 @@ class Labyrinth:
         self.imagepath = imagepath
 
         self.unique_objects = {}
+
+        self.end_of_turn_event = EndOfTurn()
+        self.main_event = MainEvent()
 
         for i in range(len(locations)):
             locations[i].directions = {
@@ -106,7 +110,7 @@ class Labyrinth:
         return self.unique_objects[key]
 
     # Ход игрока.
-    def make_turn(self, turn):
+    def make_turn(self, event):
         """
         Вызвать эту функцию, если активный игрок сделал ход turn
 
@@ -121,20 +125,13 @@ class Labyrinth:
             return self.regularize_to_send()
 
         # обновляем лог ходов
-        self.turns_log.append({'username': self.get_active_player_username(), 'turn': turn})
+        self.turns_log.append({'username': self.get_active_player_username(), 'turn': event.name})
 
-        # В списке возможных ходов локаций и предметов ищем ход с именем turn
-        # и запускаем действия найденных локаций и предметов
-        to_do = []
-        for obj in self.get_all_objects():
-            if turn in obj.get_turns() and obj.get_turns()[turn]['condition']():
-                to_do.append(obj.get_turns()[turn]['function'])
-        for function in to_do:
-            function()
+        # Запускаем событие.
+        event.trigger()
 
         # Запускаем для всех объектов main-функцию
-        for obj in self.get_all_objects():
-            obj.main()
+        self.main_event.trigger()
 
         # Делаем следующего игрока активным
         count_of_skips = 0
@@ -154,6 +151,9 @@ class Labyrinth:
                 elif count == 1:
                     player.delete_flag('skip_turns')
 
+        # Запускаем end-of-turn-функцию
+        self.end_of_turn_event.trigger()
+
         # Обновляем лог сообщений
         for player in self.players_list:
             username = player.get_username()
@@ -167,8 +167,7 @@ class Labyrinth:
 
     def skip_turn(self):
         # Запускаем для всех объектов main-функцию
-        for obj in self.get_all_objects():
-            obj.main()
+        self.main_event.trigger()
 
         # Уменьшаем у всех игроков пропуски ходов.
         for player in self.players_list:
@@ -226,10 +225,8 @@ class Labyrinth:
         """
 
         active_player_ats = []
-        for obj in self.get_all_objects():
-            for turn in obj.get_turns():
-                if obj.get_turns()[turn]['condition']():
-                    active_player_ats.append(turn)
+        for button in self.get_buttons():
+            active_player_ats += [(button.names[i], button, i) for i in range(len(button.names))]
 
         return active_player_ats
 
@@ -255,13 +252,9 @@ class Labyrinth:
         return json.dumps(save, indent=4, ensure_ascii=False)
 
     def get_buttons(self):
-        ats = self.get_active_player_ats()
         buttons = []
         for obj in self.get_all_objects():
-            for btn in obj.get_buttons():
-                btn_info = btn.get(ats, self.imagepath)
-                if btn_info is not None:
-                    buttons.append(btn_info)
+            buttons += obj.get_buttons()
         return buttons
 
     def get_bars(self, username):

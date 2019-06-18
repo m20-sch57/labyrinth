@@ -15,14 +15,19 @@ class CommonButton(Button):
     image - путь до изображения, которое
     должно быть отображено на кнопке.
     """
-    def __init__(self, turns, image):
+    def __init__(self, labyrinth, events, names, image):
         self.btn_type = 'button'
-        self.turns = turns
+        self.labyrinth = labyrinth
+        self.events = events
+        self.names = names
         self.image = image
 
+    def push(self, index):
+        return self.labyrinth.make_turn(self.events[index])
+
     def get(self, ats, imagepath):
-        if self.turns[0] in ats: 
-            return {'type': self.btn_type,  'turns': self.turns, 'image': imagepath + self.image}
+        if self.events[0] in ats:
+            return {'type': self.btn_type, 'events': self.events, 'image': imagepath + self.image}
 
 
 class DirectionButton(Button):
@@ -57,11 +62,16 @@ class ListButton(Button):
     каждого хода, который можно сделать,
     использую эту кнопку.
     """
-    def __init__(self, turns, image, turn_images):
+    def __init__(self, labyrinth, events, names, image, turn_images):
         self.btn_type = 'lbutton'
-        self.turns = turns
+        self.labyrinth = labyrinth
+        self.events = events
+        self.names = names
         self.image = image
         self.turn_images = turn_images
+
+    def push(self, index):
+        return self.labyrinth.make_turn(self.events[index])
 
     def get(self, ats, imagepath):
         turns = []

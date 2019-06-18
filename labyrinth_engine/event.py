@@ -1,8 +1,15 @@
 class Event:
-    def __init__(self):
+    def __init__(self, name=None):
         self.triggers = {}
+        self.name = name
 
-    def add_trigger(self, obj, condition, function):
+    def set_name(self, name):
+        self.name = name
+
+    def del_name(self):
+        self.name = None
+
+    def add_trigger(self, obj, function, condition=lambda: True):
         self.triggers[obj] = {'condition': condition, 'function': function}
 
     def del_trigger(self, obj):
@@ -14,11 +21,13 @@ class Event:
                 self.triggers[obj]['function']()
 
     def __str__(self):
-        return '<Event: {}>'.format(self.__class__.__name__)
-
-    def __repr__(self):
-        return '<Event: {}>'.format(self.__class__.__name__)
+        return '<Event: {}>'.format(self.__class__.__name__) if self.name is not None else\
+            '<Event: {}: [{}]>'.format(self.__class__.__name__, self.name)
 
 
 class EndOfTurn(Event):
+    pass
+
+
+class MainEvent(Event):
     pass

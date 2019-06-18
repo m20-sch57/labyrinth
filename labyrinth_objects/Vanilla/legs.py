@@ -2,12 +2,13 @@ from labyrinth_engine import Item, Event
 
 
 class Walk(Event):
-    def __init__(self, direction):
-        super().__init__()
+    def __init__(self, direction, name=None):
+        super().__init__(name)
         self.direction = direction
 
     def __str__(self):
-        return '<Event: {}: {}>'.format(self.__class__.__name__, self.direction)
+        return '<Event: {}: {}>'.format(self.__class__.__name__, self.direction) if self.name is not None else\
+            '<Event: {}: {}: [{}]>'.format(self.__class__.__name__, self.direction, self.name)
 
 
 class Legs(Item):
@@ -15,12 +16,17 @@ class Legs(Item):
         self.BORDER_MSG = settings['border_msg']['ru']
         self.SUCCESS_MSG = settings['success_msg']['ru']
 
-        self.new_at(Walk('up'), lambda: True, self.turn_move('up'))
-        self.new_at(Walk('down'), lambda: True, self.turn_move('down'))
-        self.new_at(Walk('left'), lambda: True, self.turn_move('left'))
-        self.new_at(Walk('right'), lambda: True, self.turn_move('right'))
+        up_event = Walk('up', settings['go_north']['ru'])
+        down_event = Walk('down', settings['go_south']['ru'])
+        left_event = Walk('left', settings['go_west']['ru'])
+        right_event = Walk('right', settings['go_east']['ru'])
+        self.new_at(up_event, self.turn_move('up'))
+        self.new_at(down_event, self.turn_move('down'))
+        self.new_at(left_event, self.turn_move('left'))
+        self.new_at(right_event, self.turn_move('right'))
 
-        self.new_lbutton([settings['go_north']['ru'], settings['go_south']['ru'],
+        self.new_lbutton([up_event, down_event, left_event, right_event],
+                         [settings['go_north']['ru'], settings['go_south']['ru'],
                           settings['go_west']['ru'], settings['go_east']['ru']], 'leg.png',
                          ['up.png', 'down.png', 'left.png', 'right.png'])
 

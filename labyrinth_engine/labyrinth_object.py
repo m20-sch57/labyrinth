@@ -11,7 +11,7 @@ class LabyrinthObject:
     _lrtype = 'labyrinth_object'
 
     def __init__(self):
-        self.turn_set = {}
+        self.triggers_set = []
         self.flags = {}
         self.button_set = []
         self.bar_set = []
@@ -19,15 +19,15 @@ class LabyrinthObject:
         self.name = ''
 
     # Предлагаемые игрокам ходы.
-    def new_at(self, event, condition, function, *args, **kwargs):
+    def new_at(self, event, function, condition=lambda: True):
         """
         new available turn
         """
-        self.turn_set[event] = {'function': function, 'condition': condition, 'args': args, 'kwargs': kwargs}
-        event.add_trigger(self, condition, function, *args, **kwargs)
+        self.triggers_set.append({'event': event, 'function': function, 'condition': condition})
+        event.add_trigger(self, condition, function)
 
-    def get_turns(self):
-        return self.turn_set
+    def get_triggers(self):
+        return self.triggers_set
 
     # Флаги.
     def set_flag(self, flag_name, arg=None):
@@ -49,8 +49,8 @@ class LabyrinthObject:
     def new_dbutton(self, turns, image):
         self.button_set.append(DirectionButton(turns, image))
 
-    def new_lbutton(self, turns, image, turn_images):
-        self.button_set.append(ListButton(turns, image, turn_images))
+    def new_lbutton(self, events, names, image, turn_images):
+        self.button_set.append(ListButton(self.labyrinth, events, names, image, turn_images))
 
     def get_buttons(self):
         return self.button_set
