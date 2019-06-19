@@ -13,6 +13,8 @@ class Exit(Location):
         self.ENTER_MSG = settings['enter_msg']['ru']
         self.STAY_MSGS = settings['stay_msgs']['ru']
 
+        self.labyrinth.main_event.add_trigger(self, self.main)
+
     def main(self):
         now_here = self.get_children('player')
 
@@ -28,6 +30,8 @@ class ExitChecker(Item):
     def set_settings(self, settings, locations, items, creatures, players):
         self.WIN_MSG = settings['win_msg']['ru']
         self.LOOSE_MSG = settings['loose_msg']['ru']
+
+        self.labyrinth.main_event.add_trigger(self, self.main)
 
     def main(self):
         players_in_exits = self.labyrinth.get_objects(['player'], key=(lambda p: type(p.get_parent()) is Exit))

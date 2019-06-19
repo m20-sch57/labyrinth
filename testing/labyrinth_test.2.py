@@ -55,8 +55,9 @@ if __name__ == '__main__':
 
         ats = TestLR.get_active_player_ats()
         ats_names = list(map(lambda turn: turn['name'], ats))
-        ats_names[0:-1:4] = list(map(lambda x: '\n'+x, ats_names[0:-1:4]))
-        print('; '.join(ats_names), end='\n\n')
+        ats_print = ats_names[:]
+        ats_print[0:-1:4] = list(map(lambda x: '\n'+x, ats_names[0:-1:4]))
+        print('; '.join(ats_print), end='\n\n')
 
         turn = input('(' + TestLR.get_active_player().get_username() + ') ')
         while turn not in ats_names:

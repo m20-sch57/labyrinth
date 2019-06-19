@@ -198,7 +198,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Legs"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Gun']:
         if not is_first:
@@ -207,7 +207,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Gun"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Bomb']:
         if not is_first:
@@ -216,7 +216,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Bomb"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Health']:
         if not is_first:
@@ -225,7 +225,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Health"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Ammo']:
         if not is_first:
@@ -234,7 +234,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Ammo"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Treasure']:
         if not is_first:
@@ -253,7 +253,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             except:
                 pos = input("Treasure's position?\n")
         Map.write('                "position":' + str(pos) + '\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['ExitChecker']:
         if not is_first:
@@ -262,7 +262,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "ExitChecker"\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if decision['Death']:
         if not is_first:
@@ -271,7 +271,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
             is_first = False
         Map.write('            {\n')
         Map.write('                "name": "Death\n')
-        Map.write('            }')
+        Map.write('            }\n')
 
     if any(decision.values()):
         Map.write('\n')

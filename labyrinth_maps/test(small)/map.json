@@ -110,6 +110,11 @@
             "module": "labyrinth_objects.Vanilla",
             "class_name": "EmptyLocation"
         }
+    ,
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "Exit"
+        }
     ],
     "items":
     [
@@ -120,6 +125,10 @@
         {
             "module": "labyrinth_objects.Vanilla",
             "class_name": "Treasure"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "ExitChecker"
         }
     ],
     "creatures":
@@ -267,7 +276,7 @@
         },
         {
             "up": 18,
-            "down": 0,
+            "down": 26,
             "left": 22,
             "right": 24
         },
@@ -282,6 +291,13 @@
             "down": 0,
             "left": 24,
             "right": 0
+        }
+    ,
+        {
+            "up": 23,
+            "down": 23,
+            "left": 23,
+            "right": 23
         }
     ],
     "settings":
@@ -375,6 +391,10 @@
             {
                 "name": "25"
             }
+        ,
+            {
+                "name": "26"
+            }
         ],
         "items":
         [
@@ -385,6 +405,9 @@
                 "name": "Treasure",
                 "is_true": true,
                 "position":23
+            },
+            {
+                "name": "ExitChecker"
             }
         ],
         "creatures":
