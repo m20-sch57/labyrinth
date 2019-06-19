@@ -49,18 +49,8 @@ if __name__ == '__main__':
             for treasure in TestLR.get_objects(class_names=['Treasure']):
                 print('│Treasure position  :  {:<36}│'.format(str(treasure.get_parent())))
             print('├──────────────────────────────────────────────────────────┤')
-        try:
-            print('│health             :  {:<36}│'.format(TestLR.get_unique('health').hp[ap]))
-        except:
-            pass
-        try:
-            print('│bombs              :  {:<36}│'.format(TestLR.get_unique('ammo').bombs[ap]))
-        except:
-            pass
-        try:
-            print('│bullets            :  {:<36}│'.format(TestLR.get_unique('ammo').bullets[ap]))
-        except:
-            pass
+        for bar in TestLR.get_bars():
+            print(('│' + bar.name + ':  {:<36}│').format(str(bar.values[ap])))
         print('└──────────────────────────────────────────────────────────┘')
 
         ats = TestLR.get_active_player_ats()

@@ -257,7 +257,7 @@ class Labyrinth:
             buttons += obj.get_buttons()
         return buttons
 
-    def get_bars(self, username):
+    def get_bars(self):
         bars = []
         for obj in self.get_all_objects():
             bars += obj.get_bars()

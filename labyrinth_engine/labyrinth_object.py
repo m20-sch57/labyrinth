@@ -43,11 +43,11 @@ class LabyrinthObject:
         return self.flags.get(flag_name, default)
 
     # Кнопки.
-    def new_button(self, turn, image):
-        self.button_set.append(CommonButton([turn], image))
+    def new_button(self, event, name, image):
+        self.button_set.append(CommonButton(self.labyrinth, [event], [name], image))
 
-    def new_dbutton(self, turns, image):
-        self.button_set.append(DirectionButton(turns, image))
+    def new_dbutton(self, events, names, image):
+        self.button_set.append(DirectionButton(self.labyrinth, events, names, image))
 
     def new_lbutton(self, events, names, image, turn_images):
         self.button_set.append(ListButton(self.labyrinth, events, names, image, turn_images))

@@ -242,7 +242,7 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
         else:
             is_first = False
         Map.write('            {\n')
-        Map.write('                "name": "Treasure"\n')
+        Map.write('                "name": "Treasure",\n')
         Map.write('                "is_true": true,\n')
         pos = ''
         while True:
@@ -250,8 +250,8 @@ with open('labyrinth_maps\\' + map_name + '\\map.json', 'w', encoding='utf-8') a
                 pos = int(pos)
                 if 0 < pos < All:
                     break
-            finally:
-                pass
+            except:
+                pos = input("Treasure's position?\n")
         Map.write('                "position":' + str(pos) + '\n')
         Map.write('            }')
 

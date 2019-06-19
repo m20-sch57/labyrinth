@@ -1,4 +1,4 @@
-from labyrinth_engine import Item
+from labyrinth_engine import Item, Event
 
 
 class Treasure(Item):
@@ -10,13 +10,18 @@ class Treasure(Item):
         self.CAN_PLAYER_DROP_TREASURE = settings['can_player_drop_treasure']
         self.UNDERFOOT_MSG = settings['underfoot_msg']['ru']
 
-        self.new_at(self.turn_take, self.take_condition, settings['take_turn']['ru'])
-        self.new_at(self.turn_drop, self.drop_condition, settings['drop_turn']['ru'])
+        take_event = Event(settings['take_turn']['ru'])
+        drop_event = Event(settings['drop_turn']['ru'])
+        self.new_at(take_event, self.turn_take, self.take_condition)
+        self.new_at(drop_event, self.turn_drop, self.drop_condition)
 
-        self.new_button(settings['take_turn']['ru'], 'treasure_up.png')
+        self.new_button(take_event, settings['take_turn']['ru'], 'treasure_up.png')
+        self.new_button(drop_event, settings['drop_turn']['ru'], 'drop_treasure.png')
 
         if self.is_true:
             self.set_flag('true_tres')
+
+        self.labyrinth.end_of_turn_event.add_trigger(self, self.main)
 
     def take(self, player):
         if self.RETURNS_BACK_WHEN_IS_DROPPED:

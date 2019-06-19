@@ -41,10 +41,15 @@ class DirectionButton(Button):
     turns - список из четырёх ходов.
     порядок: вверх, вниз, вправо, влево.
     """
-    def __init__(self, turns, image):
+    def __init__(self, labyrinth, events, names, image):
         self.btn_type = 'dbutton'
-        self.turns = turns
+        self.labyrinth = labyrinth
+        self.events = events
+        self.names = names
         self.image = image
+
+    def push(self, index):
+        return self.labyrinth.make_turn(self.events[index])
 
     def get(self, ats, imagepath):
         if set(self.turns) & set(ats):

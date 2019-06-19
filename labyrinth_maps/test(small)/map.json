@@ -116,6 +116,10 @@
         {
             "module":"labyrinth_objects.Vanilla",
             "class_name":"Legs"
+        },
+        {
+            "module": "labyrinth_objects.Vanilla",
+            "class_name": "Treasure"
         }
     ],
     "creatures":
@@ -376,6 +380,11 @@
         [
             {
                 "name": "Legs"
+            },
+            {
+                "name": "Treasure",
+                "is_true": true,
+                "position":23
             }
         ],
         "creatures":
