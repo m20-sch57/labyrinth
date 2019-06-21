@@ -1,4 +1,4 @@
-from labyrinth_engine.labyrinth_object import LabyrinthObject
+from labyrinth_engine.labyrinth_object import AnyLO
 from labyrinth_engine.lr_types import Location, Item, Player, Creature
 from labyrinth_engine.ui_buttons import Button
 from labyrinth_engine.ui_status_bars import Bar
@@ -7,6 +7,27 @@ from typing import Any, Dict, Union, List, Callable, Set
 
 
 class Labyrinth:
+
+    seed: Union[int, Any]
+    loadseed: Union[int, Any]
+    imagepath: str
+
+    unique_objects: Dict[str, AnyLO]
+
+    locations: Set[Location]
+    items: Set[Item]
+    creatures: Set[Creature]
+    players_list: List[Player]
+
+    to_send: Dict[int, Dict[str, List[str]]]
+    active_player_number: int
+    is_game_ended: bool
+
+    turns_log: List[Dict[str, str]]
+    msgs_log: Dict[str, List[str]]
+
+    MAX_COUNT_OF_SKIPS: int
+
     def __init__(self,
                  locations: List[Location],
                  items: List[Item],
@@ -16,27 +37,7 @@ class Labyrinth:
                  settings: Dict[str, Any],
                  imagepath: str,
                  seed: Union[int, Any],
-                 loadseed: Union[int, Any]) -> None:
-
-        self.seed = ... # type: Union[int, Any]
-        self.loadseed = ... # type: Union[int, Any]
-        self.imagepath = ... # type: str
-
-        self.unique_objects = ... # type: Dict[str, LabyrinthObject]
-
-        self.locations = ... # type: Set[Location]
-        self.items = ... # type: Set[Item]
-        self.creatures = ... # type: Set[Creature]
-        self.players_list = ... # type: List[Player]
-
-        self.to_send = ... # type: Dict[int, Dict[str, List[str]]]
-        self.active_player_number = ... # type: int
-        self.is_game_ended = ... # type: bool
-
-        self.turns_log = ... # type: List[Dict[str, str]]
-        self.msgs_log = ... # type: Dict[str, List[str]]
-
-        self.MAX_COUNT_OF_SKIPS = ... # type: int
+                 loadseed: Union[int, Any]) -> None: ...
 
     # Сообщения.
     def send_msg(self, msg: str, player: Player, priority: int = ...) -> None: ...
@@ -46,8 +47,8 @@ class Labyrinth:
     def get_msgs(self, username: str) -> List[str]: ...
 
     # Уникальные предметы.
-    def set_unique(self, obj: LabyrinthObject, key: str) -> None: ...
-    def get_unique(self, key: str) -> LabyrinthObject: ...
+    def set_unique(self, obj: AnyLO, key: str) -> None: ...
+    def get_unique(self, key: str) -> AnyLO: ...
 
     # Ход игрока.
     def make_turn(self, turn: str) -> Dict[str, List[str]]: ...
@@ -63,12 +64,12 @@ class Labyrinth:
     def get_active_player_ats(self) -> List[str]: ...
 
     # Объекты Лабиринта.
-    def get_all_objects(self) -> Set[LabyrinthObject]: ...
+    def get_all_objects(self) -> Set[AnyLO]: ...
     def get_objects(self,
                     lrtype: Union[str, List[str]] = ...,
                     class_names: Union[str, List[str]] = ...,
                     flags: List[str] = ...,
-                    key: Callable[[LabyrinthObject], bool] = lambda x: True): ...
+                    key: Callable[[AnyLO], bool] = lambda x: True): ...
 
     def save(self) -> str: ...
 

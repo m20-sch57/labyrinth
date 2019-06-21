@@ -3,19 +3,19 @@ from labyrinth_engine.lr_types import Location, Item, Player, Creature
 from labyrinth_engine.ui_buttons import Button
 from labyrinth_engine.ui_status_bars import Bar, StringBar
 
-from typing import Any, Dict, Union, List, Callable
+from typing import Any, Dict, Union, List, Callable, TypeVar
 
 class LabyrinthObject:
-    labyrinth = ... # type: Labyrinth
-    _lrtype = ... # type: str
+    labyrinth: Labyrinth
+    _lrtype: str
+    turn_set: Dict[str, Dict[str, Callable[[], Any]]]
+    flags: Dict[str: Any]
+    button_set: List[Button]
+    bar_set: List[Bar]
+    parent: Union[None, AnyLO]
+    name: str
 
-    def __init__(self) -> None:
-        self.turn_set = ... # type: Dict[str, Dict[str, Callable[[], Any]]]
-        self.flags = ... # type: Dict[str: Any]
-        self.button_set = ... # type: List[Button]
-        self.bar_set = ... # type: List[Bar]
-        self.parent = ... # type: Union[None, LabyrinthObject]
-        self.name = ... # type: str
+    def __init__(self) -> None: ...
 
     # Предлагаемые игрокам ходы.
     def new_at(self, function: Callable[[], None], condition: Callable[[], bool], turn_name: str) -> None: ...
@@ -38,13 +38,13 @@ class LabyrinthObject:
     def get_bars(self) -> List[Bar]: ...
 
     # Родители, дети и т.д.
-    def set_parent(self, parent: LabyrinthObject) -> None: ...
-    def get_parent(self) -> Union[None, LabyrinthObject]: ...
+    def set_parent(self, parent: AnyLO) -> None: ...
+    def get_parent(self) -> Union[None, AnyLO]: ...
     def get_children(self,
                      lrtype: Union[str, List[str]] = ...,
                      class_names: Union[str, List[str]] = ...,
                      flags: List[str] = ...,
-                     key: Callable[[LabyrinthObject], bool] = ...): ...
+                     key: Callable[[AnyLO], bool] = ...): ...
 
     @property
     def lrtype(self) -> str:
@@ -66,3 +66,5 @@ class LabyrinthObject:
     def __str__(self) -> str: ...
 
     def __repr__(self) -> str: ...
+
+AnyLO = TypeVar('AnyLO', bound=LabyrinthObject)

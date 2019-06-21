@@ -1,9 +1,9 @@
 from typing import Any, Dict, Union, List
 
 class Button:
-    btn_type = ... # type: str
-    turns = ... # type: List[str]
-    image = ... # type: str
+    btn_type: str
+    turns: List[str]
+    image: str
 
     def __str__(self) -> str: ...
 
@@ -23,8 +23,8 @@ class DirectionButton(Button):
 
 
 class ListButton(Button):
-    def __init__(self, turns: List[str], image: str, turn_images: List[str]) -> None:
-        self.turn_images = ... # type: List[str]
-        ...
+    turn_images: List[str]
+
+    def __init__(self, turns: List[str], image: str, turn_images: List[str]) -> None: ...
 
     def get(self, ats: List[str], imagepath: str) -> Dict[str, Union[str, List[str]]]: ...

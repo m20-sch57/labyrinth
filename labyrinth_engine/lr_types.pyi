@@ -1,28 +1,28 @@
 from labyrinth_engine import LabyrinthObject as LO
 
-from typing import Any, Dict
+from typing import Any, Dict, TypeVar
 
 
 class Location(LO):
-    _lrtype = ... # type: str
+    directions: Dict[str, AnyLocation]
 
-    def __init__(self) -> None:
-        self.directions = ... # type: Dict[str, Location]
+    def get_neighbour(self, direction: str) -> AnyLocation: ...
 
-    def get_neighbour(self, direction: str) -> Location: ...
+    def set_neighbour(self, direction: str, neighbour: AnyLocation) -> Any: ...
 
-    def set_neighbour(self, direction: str, neighbour: Location) -> Any: ...
+AnyLocation = TypeVar('AnyLocation', bound=Location)
 
 
-class Item(LO):
-    _lrtype = ... # type: str
+class Item(LO):  ...
+
+AnyItem = TypeVar('AnyItem', bound=Item)
 
 
 class Player(LO):
-    _lrtype = ... # type: str
+    name: str
+    username: str
 
-    def __init__(self, username: str):
-        self.name = self.username = ... # type: str
+    def __init__(self, username: str): ...
 
     def get_username(self) -> str: ...
 
@@ -34,6 +34,9 @@ class Player(LO):
 
     def revive(self) -> None: ...
 
+AnyPlayer = TypeVar('AnyPlayer', bound=Player)
 
-class Creature(LO):
-    _lrtype = ... # type: str
+
+class Creature(LO): ...
+
+AnyCreature = TypeVar('AnyCreature', bound=Creature)

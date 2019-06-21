@@ -1,6 +1,6 @@
-from labyrinth_engine.lr_types import Player
+from labyrinth_engine.lr_types import AnyPlayer
 
-from typing import Any, Dict, Union, List, Callable
+from typing import Any, Dict, Union
 
 class Bar:
     def __str__(self) -> str: ...
@@ -9,13 +9,14 @@ class Bar:
 
 
 class StringBar(Bar):
-    def __init__(self, name: str, init_values: Dict[Player, Any]) -> None:
-        self.bar_type = ... # type: str
-        self.name = ... # type: str
-        self.values = ... # type: Dict[Player, Any]
+    bar_type: str
+    name: str
+    values: Dict[AnyPlayer, Any]
 
-    def set_value(self, new_value: Any, player: Player) -> None: ...
+    def __init__(self, name: str, init_values: Dict[AnyPlayer, Any]) -> None: ...
 
-    def set_all_values(self, new_values: Dict[Player, Any]) -> None: ...
+    def set_value(self, new_value: Any, player: AnyPlayer) -> None: ...
 
-    def get(self, player: Player) -> Dict[str, Union[str, Any]]: ...
+    def set_all_values(self, new_values: Dict[AnyPlayer, Any]) -> None: ...
+
+    def get(self, player: AnyPlayer) -> Dict[str, Union[str, Any]]: ...
