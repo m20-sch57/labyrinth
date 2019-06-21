@@ -11,6 +11,8 @@ class Arsenal(Location):
         self.ENTER_MSG = settings['enter_msg']['ru']
         self.STAY_MSG = settings['stay_msg']['ru']
 
+        self.labyrinth.main_event.add_trigger(self, self.main)
+
     def main(self):
         ammo = self.labyrinth.get_unique('ammo')
         for player in self.get_children('player'):

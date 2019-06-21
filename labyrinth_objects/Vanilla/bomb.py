@@ -1,5 +1,15 @@
-from labyrinth_engine import Item
+from labyrinth_engine import Item, Event
 from labyrinth_objects.Vanilla.walls import Wall, Outside
+
+
+class Bombing(Event):
+    def __init__(self, direction, name=None):
+        super().__init__(name)
+        self.direction = direction
+
+    def __str__(self):
+        return '<Event: {}: {}>'.format(self.__class__.__name__, self.direction) if self.name is not None else\
+            '<Event: {}: {}: [{}]>'.format(self.__class__.__name__, self.direction, self.name)
 
 
 class Bomb(Item):
@@ -12,12 +22,17 @@ class Bomb(Item):
         self.BLOWUP_ONEBODY_MSG = settings['blowup_onebody_msg']['ru']
         self.BLOWUP_MANYBODY_MSG = settings['blowup_manybody_msg']['ru']
 
-        self.new_at(self.turn_blow_up('up'), self.condition, settings['blow_up_north']['ru'])
-        self.new_at(self.turn_blow_up('down'), self.condition, settings['blow_up_south']['ru'])
-        self.new_at(self.turn_blow_up('left'), self.condition, settings['blow_up_west']['ru'])
-        self.new_at(self.turn_blow_up('right'), self.condition, settings['blow_up_east']['ru'])
+        up_event = Bombing('up', settings['bomb_north']['ru'])
+        down_event = Bombing('down', settings['bomb_south']['ru'])
+        left_event = Bombing('left', settings['bomb_west']['ru'])
+        right_event = Bombing('right', settings['bomb_east']['ru'])
+        self.new_at(up_event, self.turn_blow_up('up'), self.condition)
+        self.new_at(down_event, self.turn_blow_up('down'), self.condition)
+        self.new_at(left_event, self.turn_blow_up('left'), self.condition)
+        self.new_at(right_event, self.turn_blow_up('right'), self.condition)
 
-        self.new_lbutton([settings['blow_up_north']['ru'], settings['blow_up_south']['ru'],
+        self.new_lbutton([up_event, down_event, left_event, right_event],
+                         [settings['blow_up_north']['ru'], settings['blow_up_south']['ru'],
                           settings['blow_up_west']['ru'], settings['blow_up_east']['ru']],
                          'bomb.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 

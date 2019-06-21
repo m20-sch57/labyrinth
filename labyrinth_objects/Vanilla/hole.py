@@ -1,4 +1,8 @@
-from labyrinth_engine import Location
+from labyrinth_engine import Location, Event
+
+
+class HoleJumping(Event):
+    pass
 
 
 class Hole(Location):
@@ -14,9 +18,10 @@ class Hole(Location):
         self.GO_TROUGH_MSG = settings['go_through_msg']['ru']
         self.FALL_MSG = settings['fall_msg']['ru']
 
-        self.new_at(self.go_into_hole, self.condition, settings['go_through_turn']['ru'])
+        jumping_event = HoleJumping(settings['go_through_turn']['ru'])
+        self.new_at(jumping_event, self.go_into_hole, self.condition)
 
-        # TODO: solve this problem (two buttins "fall into hole")
+        # TODO: solve this problem (two buttons "fall into hole")
         if 'kek' not in self.__class__.__dict__:
             self.new_button(settings['go_through_turn']['ru'], 'into_hole.png')
             self.__class__.kek = 'kek'

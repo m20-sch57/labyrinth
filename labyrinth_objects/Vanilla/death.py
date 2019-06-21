@@ -14,6 +14,8 @@ class Death(Item):
 
         self.labyrinth.set_unique(self, 'death')
 
+        self.labyrinth.main_event.add_trigger(self, self.main)
+
     def revive(self, body, revival_msg=None):
         if body.lrtype == 'player':
             self.death[body] = False

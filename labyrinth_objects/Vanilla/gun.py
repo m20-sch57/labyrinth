@@ -1,4 +1,14 @@
-from labyrinth_engine import Item
+from labyrinth_engine import Item, Event
+
+
+class Fire(Event):
+    def __init__(self, direction, name=None):
+        super().__init__(name)
+        self.direction = direction
+
+    def __str__(self):
+        return '<Event: {}: {}>'.format(self.__class__.__name__, self.direction) if self.name is not None else\
+            '<Event: {}: {}: [{}]>'.format(self.__class__.__name__, self.direction, self.name)
 
 
 class Gun(Item):
@@ -8,12 +18,17 @@ class Gun(Item):
         self.FIRE_SUCCESS_MSG = settings['fire_success_msg']['ru']
         self.FIRE_FAILURE_MSG = settings['fire_failure_msg']['ru']
 
-        self.new_at(self.turn_fire('up'), self.condition, settings['fire_north']['ru'])
-        self.new_at(self.turn_fire('down'), self.condition, settings['fire_south']['ru'])
-        self.new_at(self.turn_fire('left'), self.condition, settings['fire_west']['ru'])
-        self.new_at(self.turn_fire('right'), self.condition, settings['fire_east']['ru'])
+        up_event = Fire('up', settings['fire_north']['ru'])
+        down_event = Fire('down', settings['fire_south']['ru'])
+        left_event = Fire('left', settings['fire_west']['ru'])
+        right_event = Fire('right', settings['fire_east']['ru'])
+        self.new_at(up_event, self.turn_fire('up'), self.condition())
+        self.new_at(down_event, self.turn_fire('down'), self.condition())
+        self.new_at(left_event, self.turn_fire('left'), self.condition())
+        self.new_at(right_event, self.turn_fire('right'))
 
-        self.new_lbutton([settings['fire_north']['ru'], settings['fire_south']['ru'],
+        self.new_lbutton([up_event, down_event, left_event, right_event],
+                         [settings['fire_north']['ru'], settings['fire_south']['ru'],
                           settings['fire_west']['ru'], settings['fire_east']['ru']],
                          'gun.png', ['up.png', 'down.png', 'left.png', 'right.png'])
 

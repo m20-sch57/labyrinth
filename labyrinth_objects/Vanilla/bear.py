@@ -7,6 +7,8 @@ class Bear(Creature):
 
         self.ATTACK_MSG = settings['attack_msg']['ru']
 
+        self.labyrinth.main_event.add_trigger(self, self.main)
+
     def move(self, direction):
         next_position = self.get_parent().get_neighbour(direction)
         if not (next_position.have_flag('border') or next_position.have_flag('safe_zone')):
