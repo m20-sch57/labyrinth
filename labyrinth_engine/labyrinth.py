@@ -1,4 +1,5 @@
 ﻿from labyrinth_engine.event import MainEvent, EndOfTurn
+from labyrinth_engine.metadata import add_meta, get_meta
 import random
 import json
 import sys
@@ -65,7 +66,19 @@ class Labyrinth:
             default_settings.update(settings['Labyrinth'])
             settings['Labyrinth'] = default_settings
 
+        # Регистрируем методы.
+        for obj in sum(lrlist):
+            for arg in obj.__dict__:
+                # ищем методы, которые должны быть зарегистрированы через декоратор
+                if get_meta(arg).get('action_for_register'):
+                    # регистрируем их с учётом регистрационной информации
+                    self.register_action(arg, *arg.register_data[0], **arg.register_data[1])
+
         self.MAX_COUNT_OF_SKIPS = settings['Labyrinth']['max_count_of_skips']
+
+    # События.
+    def register_action(self, method, *args, **kwargs):
+        pass
 
     # Сообщения.
     def send_msg(self, msg, player, priority=0):
@@ -262,3 +275,13 @@ class Labyrinth:
         for obj in self.get_all_objects():
             bars += obj.get_bars()
         return bars
+
+
+def register_action(*args, **kwargs):
+    def register_action_decorator(method):
+        # положили регистрационную информацию в метод
+        method.register_data = (args, kwargs)
+        # добавили информацию о том, что этот метод нужно зарегистрировать
+        add_meta(method, 'action_for_register')
+        return method
+    return register_action_decorator

@@ -3,18 +3,12 @@ class Event:
         self.triggers = {}
         self.name = name
 
-    def set_name(self, name):
-        self.name = name
-
-    def del_name(self):
-        self.name = None
-
-    def add_trigger(self, obj, function, condition=lambda: True):
+    def add_handler(self, obj, function, condition=lambda: True):
         triggers = self.triggers.get(obj, [])
         triggers.append({'condition': condition, 'function': function})
         self.triggers[obj] = triggers
 
-    def del_trigger(self, obj):
+    def del_handler(self, obj):
         del self.triggers[obj]
 
     def trigger(self):
