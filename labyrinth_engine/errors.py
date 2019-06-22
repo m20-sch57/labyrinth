@@ -9,4 +9,4 @@ class LabyrinthLoadError(LabyrinthError):
     def __str__(self):
         return 'File "{}"\n{}'.format(self.file, self.msg)
 
-# TODO: understand errors. to continue the list of errors. Issue #44
+# TODO: understand errors. To continue the list of errors. Issue #44

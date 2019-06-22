@@ -111,7 +111,7 @@ class Labyrinth:
         Вызвать эту функцию, если активный игрок сделал ход turn
 
         to_send: словарь сообщения для отправки.
-        {username1: msg1, ... , username_n: msg_n}
+        {username1: msg1, ..., username_n: msg_n}
         """
 
         # обнуляем to_send

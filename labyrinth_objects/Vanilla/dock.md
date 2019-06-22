@@ -14,7 +14,7 @@
 - `position`
 
 ###### not obligatory
-- `atack_msg`
+- `attack_msg`
 
 #### Bomb
 
