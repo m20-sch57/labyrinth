@@ -9,8 +9,8 @@ class Ammo(Item):
 
         super().__init__()
 
-        self.bullet_counter_bar = self.new_status_bar('Пули', None) 
-        self.bomb_counter_bar = self.new_status_bar('Бомбы', None)
+        self.bullet_counter_bar = self.new_status_bar('Пули', {})
+        self.bomb_counter_bar = self.new_status_bar('Бомбы', {})
 
     def update_bars(self):
         self.bullet_counter_bar.set_all_values(self.bullets)
@@ -20,8 +20,8 @@ class Ammo(Item):
         self.MAX_BULLETS_COUNT = settings['max_bullets_count']
         self.MAX_BOMBS_COUNT = settings['max_bombs_count']
 
-        self.INIT_BULLETS_COUNT = settings.get('init_bullets_count') or self.MAX_BULLETS_COUNT
-        self.INIT_BOMBS_COUNT = settings.get('init_bombs_count') or self.MAX_BOMBS_COUNT
+        self.INIT_BULLETS_COUNT = settings.get('init_bullets_count', self.MAX_BULLETS_COUNT)
+        self.INIT_BOMBS_COUNT = settings.get('init_bombs_count', self.MAX_BOMBS_COUNT)
 
         self.bullets = {player: self.INIT_BULLETS_COUNT for player in players}
         self.bombs = {player: self.INIT_BOMBS_COUNT for player in players}

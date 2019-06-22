@@ -239,9 +239,9 @@ def game_room(room_id):
             msg = labyrinth.player_to_send(username)
             ats = labyrinth.get_active_player_ats()
             '''
-            0 - game ended
-            1 - your turn
-            2 - not your turn
+            0 — game ended
+            1 — your turn
+            2 — not your turn
             '''
             if labyrinth.is_game_ended:
                 return json.dumps({'game_state': 0, 'msg': msg, 'ats': ats, 'bars': bar, 'buttons': btn})

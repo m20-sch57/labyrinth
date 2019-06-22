@@ -128,7 +128,7 @@ class Labyrinth:
         Вызвать эту функцию, если активный игрок сделал ход turn
 
         to_send: словарь сообщения для отправки.
-        {username1: msg1, ... , username_n: msg_n}
+        {username1: msg1, ..., username_n: msg_n}
         """
 
         # обнуляем to_send
@@ -230,7 +230,7 @@ class Labyrinth:
         return self.players_list[self.active_player_number]
 
     def get_active_player_username(self):
-        return self.get_active_player().get_username() if self.get_active_player() is not None else None
+        return self.get_active_player().get_username()
 
     def get_active_player_ats(self):
         """
@@ -257,10 +257,10 @@ class Labyrinth:
 
     def save(self):
         save = {
-        'seed': self.seed,
-        'loadseed': self.loadseed,
-        'users': list(map(lambda user: user.get_username(), self.players_list)),
-        'turns': self.turns_log,
+            'seed': self.seed,
+            'loadseed': self.loadseed,
+            'users': list(map(lambda user: user.get_username(), self.players_list)),
+            'turns': self.turns_log
         }
         return json.dumps(save, indent=4, ensure_ascii=False)
 

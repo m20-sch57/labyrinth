@@ -2,6 +2,9 @@ class Button:
     def __str__(self):
         return '<UI.button: {}: {}>'.format(self.btn_type, ', '.join(self.turns))
 
+    def get(self, *args, **kwargs):
+        pass
+
 
 class CommonButton(Button):
     """

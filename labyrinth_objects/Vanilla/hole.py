@@ -1,4 +1,4 @@
-from labyrinth_engine import Location, Event
+﻿from labyrinth_engine import Location, Event
 
 
 class HoleJumping(Event):

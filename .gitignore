@@ -103,8 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-# PyCharm env
+# PyCharm environment
 .idea/
 
-# Database. let it always be empty
+# Database. Let it always be empty
 *.db

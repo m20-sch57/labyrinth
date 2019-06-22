@@ -1,4 +1,4 @@
-﻿from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
+from labyrinth_engine.ui_buttons import CommonButton, DirectionButton, ListButton
 from labyrinth_engine.ui_status_bars import StringBar
 
 
@@ -7,7 +7,6 @@ class LabyrinthObject:
     LabyrinthObject is class of objects that can be used by players at their turns
     """
 
-    labyrinth = None
     _lrtype = 'labyrinth_object'
 
     def __init__(self):
@@ -66,7 +65,7 @@ class LabyrinthObject:
 
     # Родители, дети и т.д.
     def set_parent(self, parent):
-        if not (isinstance(parent, LabyrinthObject) or parent is None):
+        if not (isinstance(parent, LabyrinthObject)):
             raise ValueError(
                 'Invalid type of "parent" argument for LabyrinthObject.set_parent: ' + str(type(parent)))
         else:

@@ -64,7 +64,7 @@ socket.on('update', function(msg) {
 			break;
 
 		case 'delete_room':
-			alert('Oups. Room was deleted');
+			alert('Oops. Room was deleted');
 			document.location.href = document.getElementById('data').dataset.delRedirect;
 			break;
 
