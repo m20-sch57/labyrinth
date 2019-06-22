@@ -17,7 +17,7 @@ class Location(LO):
             return self.directions[direction]
 
     def set_neighbour(self, direction, neighbour):
-        if not isinstance(neighbour, LO) or neighbour.lrtype != 'location':
+        if not isinstance(neighbour, Location):
             raise ValueError(
                 'Invalid "neighbour" argument for LabyrinthObject.set_neighbour: ' + str(neighbour))
         else:

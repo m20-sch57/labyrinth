@@ -2,11 +2,14 @@ class Bar:
     def __str__(self):
         return '<UI.bar: {}: {}>'.format(self.bar_type, self.name)
 
+    def get(self, *args, **kwargs):
+        pass
+
 
 class StringBar(Bar):
     """
     Текстовая строка состояния.
-    Т.е значения предстовляется в текстовом виде
+    Т.е значения представляется в текстовом виде
 
     values - словарь со значениями строки состояния
     для каждого игрока
