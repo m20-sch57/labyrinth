@@ -2,6 +2,9 @@ class Bar:
     def __str__(self):
         return '<UI.bar: {}: {}>'.format(self.bar_type, self.name)
 
+    def get(self, *args, **kwargs):
+        pass
+
 
 class StringBar(Bar):
     """

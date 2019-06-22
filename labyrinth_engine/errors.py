@@ -3,10 +3,10 @@ class LabyrinthError(Exception):
 
 
 class LabyrinthLoadError(LabyrinthError):
-    def __init__(self, msg):
+    def __init__(self, msg: str):
         self.msg = msg
 
-    def __str__(self):
+    def __str__(self) -> str:
         return 'File "{}"\n{}'.format(self.file, self.msg)
 
 # TODO: understand errors. To continue the list of errors. Issue #44
